@@ -1,6 +1,6 @@
 
 #!/bin/sh
 
-curl -O http://localhost:8000/api/docs.json
-openapi-generator-cli generate -i docs.json -g typescript-axios -o src/api
-rm docs.json
+../server/bin/console api:openapi:export > swagger.json
+openapi-generator-cli generate -i swagger.json -g typescript-axios -o src/api 
+rm swagger.json
