@@ -13,21 +13,20 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import { Ingredients, Recipes } from '../../rest/models'
-import { IngredientsApi } from '../../rest/api'
-import { restConfig } from '../constants'
+import { IngredientsClient } from '../clients/IngredientsClient'
+import { Ingredient } from '../types'
 
 @Options({
   components: {}
 })
 export default class IngredientsView extends Vue {
-  ingredients: Ingredients[] = [];
+  ingredients: Ingredient[] = [];
 
   mounted (): void {
-    const client = new IngredientsApi(restConfig)
-    client.getIngredientsCollection().then((ret) => {
-      this.ingredients = ret.data['hydra:member']
-      console.log(this.ingredients)
+    const client = new IngredientsClient()
+    client.getIngredients().then((ret) => {
+      this.ingredients = ret
+      console.log(ret)
     })
   }
 }

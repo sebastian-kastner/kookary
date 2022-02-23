@@ -32,23 +32,22 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import { Ingredients, Recipes } from '../../rest/models'
-import { IngredientsApi } from '../../rest/api'
-import { restConfig } from '../constants'
+import { IngredientsClient } from '../clients/IngredientsClient'
+import { Ingredient } from '../types'
 
 @Options({
   components: {}
 })
-export default class Ingredient extends Vue {
-  ingredients: Ingredients[] = [];
-  recipe: Recipes = {};
+export default class IngredientComponent extends Vue {
+  ingredients: Ingredient[] = [];
+  client: IngredientsClient = new IngredientsClient();
 
-  // mounted (): void {
-  //   const client = new IngredientsApi(restConfig)
-  //   client.getIngredientsCollection().then((ret) => {
-  //     this.ingredients = ret.data['hydra:member']
-  //     console.log(this.ingredients)
-  //   })
-  // }
+  mounted (): void {
+    const client = new IngredientsClient()
+    client.getIngredients().then((ret) => {
+      this.ingredients = ret
+      console.log(this.ingredients)
+    })
+  }
 }
 </script>

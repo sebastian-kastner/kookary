@@ -47,32 +47,21 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import { Ingredients, Recipes } from '../../rest/models'
-import { IngredientsApi, RecipesApi } from '../../rest/api'
-import { restConfig } from '../constants'
+import { RecipesClient } from '../clients/RecipesClient'
 
 @Options({
   components: {}
 })
 export default class AddRecipeView extends Vue {
+  client: RecipesClient = new RecipesClient();
   ingredients: Ingredients[] = [];
   recipe: Recipes = {}
 
   mounted (): void {
     this.recipe.recipeIngredients?.push()
-    const client = new RecipesApi(restConfig)
-    client.getRecipesCollection().then((ret) => {
-      const recipes = ret.data['hydra:member']
-      const ingredients = recipes[0].recipeIngredients
-      // if (ingredients) {
-      //   const foo = ingredients[0].ingredient
-      //   console.log(foo.name)
-      // }
+    this.client.getRecipes().then((recipes) => {
+      console.log(recipes)
     })
-
-    // client.getIngredientsCollection().then((ret) => {
-    //   this.ingredients = ret.data['hydra:member']
-    //   console.log(this.ingredients)
-    // })
   }
 }
 </script>
