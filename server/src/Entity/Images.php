@@ -52,12 +52,9 @@ class Images
      */
     private $recipe;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recipe = new ArrayCollection();
     }
 
     public function getImageId(): ?int

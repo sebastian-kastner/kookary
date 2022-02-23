@@ -32,29 +32,6 @@ class Ingredients
      */
     private $name;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Recipes", inversedBy="ingredient")
-     * @ORM\JoinTable(name="ingredients_to_recipes",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="ingredient_id", referencedColumnName="ingredient_id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     *   }
-     * )
-     */
-    private $recipe;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
     public function getIngredientId(): ?int
     {
         return $this->ingredientId;
@@ -68,30 +45,6 @@ class Ingredients
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Recipes>
-     */
-    public function getRecipe(): Collection
-    {
-        return $this->recipe;
-    }
-
-    public function addRecipe(Recipes $recipe): self
-    {
-        if (!$this->recipe->contains($recipe)) {
-            $this->recipe[] = $recipe;
-        }
-
-        return $this;
-    }
-
-    public function removeRecipe(Recipes $recipe): self
-    {
-        $this->recipe->removeElement($recipe);
 
         return $this;
     }

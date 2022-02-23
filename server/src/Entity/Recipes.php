@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Entity\RecipeIngredient;
 
 /**
  * Recipes
@@ -83,10 +84,10 @@ class Recipes
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Ingredients", mappedBy="recipe")
+     * 
+     * @ORM\OneToMany(targetEntity="\App\Entity\RecipeIngredient", mappedBy="recipe")
      */
-    private $ingredient;
+    private $recipeIngredients;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -95,14 +96,11 @@ class Recipes
      */
     private $tag;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->image = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ingredient = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tag = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->recipeIngredients = new ArrayCollection();
+        $this->tag = new ArrayCollection();
     }
 
     public function getRecipeId(): ?int
@@ -222,27 +220,30 @@ class Recipes
     }
 
     /**
-     * @return Collection<int, Ingredients>
+     * @return Collection<int, RecipeIngredient>
      */
-    public function getIngredient(): Collection
+    public function getRecipeIngredients(): Collection
     {
-        return $this->ingredient;
+        return $this->recipeIngredients;
     }
 
-    public function addIngredient(Ingredients $ingredient): self
+    public function addRecipeIngredient(\App\Entity\RecipeIngredient $recipeIngredient): self
     {
-        if (!$this->ingredient->contains($ingredient)) {
-            $this->ingredient[] = $ingredient;
-            $ingredient->addRecipe($this);
+        if (!$this->recipeIngredients->contains($recipeIngredient)) {
+            $this->recipeIngredients[] = $recipeIngredient;
+            $recipeIngredient->setRecipe($this);
         }
 
         return $this;
     }
 
-    public function removeIngredient(Ingredients $ingredient): self
+    public function removeRecipeIngredient(\App\Entity\RecipeIngredient $recipeIngredient): self
     {
-        if ($this->ingredient->removeElement($ingredient)) {
-            $ingredient->removeRecipe($this);
+        if ($this->recipeIngredients->removeElement($recipeIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($recipeIngredient->getRecipe() === $this) {
+                $recipeIngredient->setRecipe(null);
+            }
         }
 
         return $this;
@@ -274,5 +275,4 @@ class Recipes
 
         return $this;
     }
-
 }
