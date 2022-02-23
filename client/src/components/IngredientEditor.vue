@@ -1,6 +1,5 @@
 <template>
   <div class="form-group">
-    <label>Zutaten</label>
     <div class="row g-3">
       <div class="col-sm-7">
         <input
@@ -31,14 +30,14 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+import { Vue, Component } from 'vue-property-decorator'
 import { IngredientsClient } from '../clients/IngredientsClient'
 import { Ingredient } from '../types'
 
-@Options({
+@Component({
   components: {}
 })
-export default class IngredientComponent extends Vue {
+export default class IngredientEditor extends Vue {
   ingredients: Ingredient[] = [];
   client: IngredientsClient = new IngredientsClient();
 

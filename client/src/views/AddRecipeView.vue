@@ -12,31 +12,11 @@
       </div>
       <div class="form-group">
         <label>Zutaten</label>
-        <div class="row g-3">
-          <div class="col-sm-7">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Zutatenname"
-              aria-label="Ingredient"
-            />
-          </div>
-          <div class="col-sm">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Menge"
-              aria-label="Amount"
-            />
-          </div>
-          <div class="col-sm">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Einheit"
-              aria-label="Unit"
-            />
-          </div>
+        <div
+          v-for="ingredient in ingredients"
+          v-bind:key="ingredient.ingredientId"
+        >
+          <ingredient-editor />
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
@@ -45,22 +25,24 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-import { Ingredients, Recipes } from '../../rest/models'
-import { RecipesClient } from '../clients/RecipesClient'
+import { Component, Vue } from 'vue-property-decorator'
+import { RecipeIngredient, Ingredient } from '../types'
+import { IngredientsClient } from '../clients/IngredientsClient'
+import IngredientEditor from '../components/IngredientEditor.vue'
 
-@Options({
-  components: {}
+@Component({
+  components: { IngredientEditor }
 })
 export default class AddRecipeView extends Vue {
-  client: RecipesClient = new RecipesClient();
-  ingredients: Ingredients[] = [];
-  recipe: Recipes = {}
+  ingredients: RecipeIngredient[] = [];
+  availableIngredients: Ingredient[] = [];
+  ingredientsClient: IngredientsClient = new IngredientsClient();
 
   mounted (): void {
-    this.recipe.recipeIngredients?.push()
-    this.client.getRecipes().then((recipes) => {
-      console.log(recipes)
+    this.ingredients.push({})
+
+    this.ingredientsClient.getIngredients().then((ingredients) => {
+      this.availableIngredients = ingredients
     })
   }
 }

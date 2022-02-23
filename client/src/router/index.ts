@@ -1,12 +1,15 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import Vue from 'vue'
+import VueRouter, { RouteConfig } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AddRecipe from '../views/AddRecipeView.vue'
-import Ingredients from '../views/IngredientsView.vue'
+import AddRecipeView from '../views/AddRecipeView.vue'
+import IngredientsView from '../views/IngredientsView.vue'
 
-const routes: Array<RouteRecordRaw> = [
+Vue.use(VueRouter)
+
+const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: HomeView },
-  { path: '/add-recipe', name: 'Rezept hinzufügen', component: AddRecipe },
-  { path: '/ingredients', name: 'Zutaten', component: Ingredients }
+  { path: '/add-recipe', name: 'Rezept hinzufügen', component: AddRecipeView },
+  { path: '/ingredients', name: 'Zutaten', component: IngredientsView }
   // {
   //   path: '/about',
   //   name: 'about',
@@ -17,8 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   // }
 ]
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+const router = new VueRouter({
   routes
 })
 

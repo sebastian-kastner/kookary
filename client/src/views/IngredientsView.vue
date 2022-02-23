@@ -12,11 +12,11 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
+import { Component, Vue } from 'vue-property-decorator'
 import { IngredientsClient } from '../clients/IngredientsClient'
 import { Ingredient } from '../types'
 
-@Options({
+@Component({
   components: {}
 })
 export default class IngredientsView extends Vue {

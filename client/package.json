@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "client2",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,12 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.26.0",
-    "bootstrap": "^4.6.1",
+	"axios": "^0.26.0",
+	"bootstrap": "^4.5.3",
+    "bootstrap-vue": "^2.20.0",
     "core-js": "^3.8.3",
-    "vue": "^3.2.13",
-    "vue-class-component": "^8.0.0-0",
-    "vue-router": "^4.0.3"
+    "vue": "^2.6.14",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^9.1.2",
+    "vue-router": "^3.5.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
@@ -23,7 +25,6 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "@vue/eslint-config-standard": "^6.1.0",
     "@vue/eslint-config-typescript": "^9.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
@@ -32,7 +33,8 @@
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
     "root": true,
@@ -40,8 +42,7 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/vue3-essential",
-      "@vue/standard",
+      "plugin:vue/essential",
       "@vue/typescript/recommended"
     ],
     "parserOptions": {
@@ -52,7 +53,6 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not dead",
-    "not ie 11"
+    "not dead"
   ]
 }
