@@ -4,29 +4,35 @@
       <div class="form-group">
         <label for="recipe-name">Rezeptname</label>
         <input
-          type="email"
+          autocomplete="off"
           class="form-control"
           id="recipe-name"
           placeholder="Rezeptname"
+          v-model="recipe.name"
         />
       </div>
       <div class="form-group">
         <label>Zutaten</label>
         <div
-          v-for="ingredient in ingredients"
+          v-for="ingredient in recipe.recipeIngredients"
+          v-bind="ingredient"
           v-bind:key="ingredient.ingredientId"
         >
-          <ingredient-editor />
+          <ingredient-editor 
+            :ingredient="ingredient"
+            :existingIngredients="availableIngredients"
+            @onNameChanged="updateName"
+            />
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" v-on:click="doSubmit">Submit</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { RecipeIngredient, Ingredient } from '../types'
+import { Ingredient, Recipe } from '../types'
 import { IngredientsClient } from '../clients/IngredientsClient'
 import IngredientEditor from '../components/IngredientEditor.vue'
 
@@ -34,16 +40,28 @@ import IngredientEditor from '../components/IngredientEditor.vue'
   components: { IngredientEditor }
 })
 export default class AddRecipeView extends Vue {
-  ingredients: RecipeIngredient[] = [];
+  recipe: Recipe = {};
   availableIngredients: Ingredient[] = [];
   ingredientsClient: IngredientsClient = new IngredientsClient();
 
   mounted (): void {
-    this.ingredients.push({})
-
+    this.recipe = {
+      recipeIngredients: [{}]
+    }
+    
     this.ingredientsClient.getIngredients().then((ingredients) => {
       this.availableIngredients = ingredients
     })
+  }
+
+  updateName(foo: object): void {
+    console.log(foo);
+    this.recipe.recipeIngredients?.push({});
+  }
+
+  doSubmit(): void {
+    console.log(this.recipe);
+    console.log(this.recipe.recipeIngredients);
   }
 }
 </script>

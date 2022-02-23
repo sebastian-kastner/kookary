@@ -31,7 +31,7 @@ export type Recipe = {
     rating?: number;
     timesCooked?: number;
     dateAdded?: string;
-    images?: Array<Image>;
-    recipeIngredients?: Array<RecipeIngredient>;
-    tags?: Array<Tag>;
+    images?: Image[];
+    recipeIngredients?: RecipeIngredient[];
+    tags?: Tag[];
 }

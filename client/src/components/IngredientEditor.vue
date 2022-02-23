@@ -6,7 +6,8 @@
           type="text"
           class="form-control"
           placeholder="Zutatenname"
-          aria-label="Ingredient"
+          v-model="ingredient.name"
+          v-on:change="onNameChanged"
         />
       </div>
       <div class="col-sm">
@@ -14,7 +15,7 @@
           type="text"
           class="form-control"
           placeholder="Menge"
-          aria-label="Amount"
+          v-model="ingredient.amount"
         />
       </div>
       <div class="col-sm">
@@ -22,7 +23,7 @@
           type="text"
           class="form-control"
           placeholder="Einheit"
-          aria-label="Unit"
+          v-model="ingredient.unit"
         />
       </div>
     </div>
@@ -30,23 +31,29 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { IngredientsClient } from '../clients/IngredientsClient'
-import { Ingredient } from '../types'
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { IngredientsClient } from "../clients/IngredientsClient";
+import { Ingredient } from "../types";
 
 @Component({
-  components: {}
+  components: {},
 })
 export default class IngredientEditor extends Vue {
+  @Prop({ required: true }) ingredient!: Ingredient;
+  @Prop({ required: true }) existingIngredients!: Ingredient[];
+
   ingredients: Ingredient[] = [];
   client: IngredientsClient = new IngredientsClient();
 
-  mounted (): void {
-    const client = new IngredientsClient()
+  mounted(): void {
+    const client = new IngredientsClient();
     client.getIngredients().then((ret) => {
-      this.ingredients = ret
-      console.log(this.ingredients)
-    })
+      this.ingredients = ret;
+    });
+  }
+
+  onNameChanged(): void {
+    this.$emit("onNameChanged", this.ingredient.name);
   }
 }
 </script>
