@@ -13,13 +13,14 @@
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import { Ingredients, IngredientsApi } from '../api/api'
+import { Ingredients, Recipes } from '../../rest/models'
+import { IngredientsApi } from '../../rest/api'
 import { restConfig } from '../constants'
 
 @Options({
   components: {}
 })
-export default class HomeView extends Vue {
+export default class IngredientsView extends Vue {
   ingredients: Ingredients[] = [];
 
   mounted (): void {

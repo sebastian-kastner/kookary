@@ -13,6 +13,8 @@
  */
 
 
-export * from "./api";
-export * from "./configuration";
+
+export * from './api/ingredients-api';
+export * from './api/recipes-api';
+export * from './api/tags-api';
 
