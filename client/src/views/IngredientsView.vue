@@ -26,7 +26,6 @@ export default class IngredientsView extends Vue {
     const client = new IngredientsClient()
     client.getIngredients().then((ret) => {
       this.ingredients = ret
-      console.log(ret)
     })
   }
 }

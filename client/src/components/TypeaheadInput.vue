@@ -14,7 +14,7 @@
     <div class="typeahead-dropdown list-group">
       <div v-if="showSuggestions && addNewHandler" v-on:click="addNewItem">
         <a class="list-group-item">
-          ➕ <span class="glyphicon glyphicon-plus text-muted">{{ internalValue }}</span>
+          ➕ <span style="font-style: italic;">{{ internalValue }}</span>
         </a>
       </div>
       <div
@@ -54,7 +54,6 @@ export default class TypeaheadInput extends Vue {
   }
 
   get disabled(): boolean {
-      console.log("get disabled state");
       return this.isSelected;
   }
 
@@ -96,7 +95,6 @@ export default class TypeaheadInput extends Vue {
   private onSuggestionSelected(suggestion: any) {
     this.internalValue = this.getLabel(suggestion);
     this.isSelected = true;
-    console.log(this.isSelected);
     this.$emit("onSuggestionSelected", suggestion);
   }
 

@@ -5,6 +5,7 @@
       <input
         autocomplete="off"
         class="form-control"
+        :class="(doValidate && !hasValidName) ? 'is-invalid' : ''"
         id="recipe-name"
         placeholder="Rezeptname"
         v-model="recipe.name"
@@ -24,6 +25,10 @@
         />
       </div>
     </div>
+    <div class="form-group">
+      <label>Beschreibung</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-bind="recipe.description" />  
+    </div>
     <button class="btn btn-primary" v-on:click="doSubmit">Submit</button>
   </div>
 </template>
@@ -41,6 +46,7 @@ export default class AddRecipeView extends Vue {
   recipe: Recipe = {};
   availableIngredients: Ingredient[] = [];
   ingredientsClient: IngredientsClient = new IngredientsClient();
+  doValidate = false;
 
   mounted(): void {
     this.recipe = {
@@ -52,10 +58,15 @@ export default class AddRecipeView extends Vue {
     });
   }
 
+  get hasValidName(): boolean {
+    if(this.recipe.name && this.recipe.name.length > 2) {
+      return true;
+    }
+    return false;
+  }
+
   updateName(): void {
     if(this.recipe.recipeIngredients) {
-      console.log("ingredients found");
-      console.log("last ingredient name", this.recipe.recipeIngredients[this.recipe.recipeIngredients.length - 1].ingredient?.name)
       if(this.recipe.recipeIngredients[this.recipe.recipeIngredients.length - 1].ingredient?.name) {
         this.recipe.recipeIngredients?.push({});
       }
@@ -63,8 +74,12 @@ export default class AddRecipeView extends Vue {
   }
 
   doSubmit(): void {
-    // do something
-    console.log(this.recipe)
+    if(!this.hasValidName) {
+      this.doValidate = true;
+    } else {
+      // do something
+      console.log(this.recipe);
+    }
   }
 }
 </script>
