@@ -17,4 +17,11 @@ export class IngredientsClient {
 
       return ingredients
     }
+
+    public async createIngredient(ingredientName: string): Promise<Ingredient> {
+      const ret = await this.client.postIngredientsCollection({
+        name: ingredientName
+      });
+      return convertIngredient(ret.data);
+    }
 }

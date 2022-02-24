@@ -2,12 +2,13 @@
   <div class="form-group">
     <div class="row g-3">
       <div class="col-sm-7">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Zutatenname"
-          v-model="ingredient.name"
-          v-on:change="onNameChanged"
+        <typeahead-input
+          :data="existingIngredients"
+          :value="ingredient.name"
+          :labelProvider="getIngredientLabel"
+          :idProvider="getIngredientId"
+          :addNewHandler="addNewIngredient"
+          @onSuggestionSelected="setIngredient"
         />
       </div>
       <div class="col-sm">
@@ -32,28 +33,44 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { IngredientsClient } from "../clients/IngredientsClient";
-import { Ingredient } from "../types";
+import { RecipeIngredient, Ingredient } from "../types";
+import { IngredientsClient } from "../clients/IngredientsClient"
+import TypeaheadInput from "./TypeaheadInput.vue";
 
 @Component({
-  components: {},
+  components: { TypeaheadInput },
 })
 export default class IngredientEditor extends Vue {
-  @Prop({ required: true }) ingredient!: Ingredient;
+  @Prop({ required: true }) ingredient!: RecipeIngredient;
   @Prop({ required: true }) existingIngredients!: Ingredient[];
 
-  ingredients: Ingredient[] = [];
-  client: IngredientsClient = new IngredientsClient();
+  ingredientsClient = new IngredientsClient();
 
-  mounted(): void {
-    const client = new IngredientsClient();
-    client.getIngredients().then((ret) => {
-      this.ingredients = ret;
-    });
+  setIngredient(ingredient: Ingredient): void {
+    this.ingredient.ingredient = ingredient;
+    this.$emit("onNameChanged");
   }
 
-  onNameChanged(): void {
-    this.$emit("onNameChanged", this.ingredient.name);
+  getIngredientLabel(ingredient: Ingredient): string {
+    if(ingredient.name) {
+      return ingredient.name;
+    }
+    return ''
+  }
+
+  getIngredientId(ingredient: Ingredient): string {
+    if(ingredient.ingredientId) {
+      return ingredient.ingredientId.toString();
+    }
+    return ''
+  }
+
+  async addNewIngredient(ingredientName: string): Promise<void> {
+    this.ingredientsClient.createIngredient(ingredientName).then((ingredient) => {
+      this.setIngredient(ingredient);
+    }).catch((reason) => {
+      console.error("Failed to create ingredient", ingredientName, reason);
+    });
   }
 }
 </script>

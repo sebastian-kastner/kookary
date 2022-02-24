@@ -1,67 +1,70 @@
 <template>
   <div class="about">
-    <form>
-      <div class="form-group">
-        <label for="recipe-name">Rezeptname</label>
-        <input
-          autocomplete="off"
-          class="form-control"
-          id="recipe-name"
-          placeholder="Rezeptname"
-          v-model="recipe.name"
+    <div class="form-group">
+      <label for="recipe-name">Rezeptname</label>
+      <input
+        autocomplete="off"
+        class="form-control"
+        id="recipe-name"
+        placeholder="Rezeptname"
+        v-model="recipe.name"
+      />
+    </div>
+    <div class="form-group">
+      <label>Zutaten</label>
+      <div
+        v-for="(ingredient, index) in recipe.recipeIngredients"
+        v-bind="ingredient"
+        v-bind:key="index.toString().concat(ingredient.ingredientId)"
+      >
+        <ingredient-editor
+          :ingredient="ingredient"
+          :existingIngredients="availableIngredients"
+          @onNameChanged="updateName"
         />
       </div>
-      <div class="form-group">
-        <label>Zutaten</label>
-        <div
-          v-for="ingredient in recipe.recipeIngredients"
-          v-bind="ingredient"
-          v-bind:key="ingredient.ingredientId"
-        >
-          <ingredient-editor 
-            :ingredient="ingredient"
-            :existingIngredients="availableIngredients"
-            @onNameChanged="updateName"
-            />
-        </div>
-      </div>
-      <button type="submit" class="btn btn-primary" v-on:click="doSubmit">Submit</button>
-    </form>
+    </div>
+    <button class="btn btn-primary" v-on:click="doSubmit">Submit</button>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { Ingredient, Recipe } from '../types'
-import { IngredientsClient } from '../clients/IngredientsClient'
-import IngredientEditor from '../components/IngredientEditor.vue'
+import { Component, Vue } from "vue-property-decorator";
+import { Ingredient, Recipe } from "../types";
+import { IngredientsClient } from "../clients/IngredientsClient";
+import IngredientEditor from "../components/IngredientEditor.vue";
 
 @Component({
-  components: { IngredientEditor }
+  components: { IngredientEditor },
 })
 export default class AddRecipeView extends Vue {
   recipe: Recipe = {};
   availableIngredients: Ingredient[] = [];
   ingredientsClient: IngredientsClient = new IngredientsClient();
 
-  mounted (): void {
+  mounted(): void {
     this.recipe = {
-      recipeIngredients: [{}]
-    }
-    
+      recipeIngredients: [{}],
+    };
+
     this.ingredientsClient.getIngredients().then((ingredients) => {
-      this.availableIngredients = ingredients
-    })
+      this.availableIngredients = ingredients;
+    });
   }
 
-  updateName(foo: object): void {
-    console.log(foo);
-    this.recipe.recipeIngredients?.push({});
+  updateName(): void {
+    if(this.recipe.recipeIngredients) {
+      console.log("ingredients found");
+      console.log("last ingredient name", this.recipe.recipeIngredients[this.recipe.recipeIngredients.length - 1].ingredient?.name)
+      if(this.recipe.recipeIngredients[this.recipe.recipeIngredients.length - 1].ingredient?.name) {
+        this.recipe.recipeIngredients?.push({});
+      }
+    }
   }
 
   doSubmit(): void {
-    console.log(this.recipe);
-    console.log(this.recipe.recipeIngredients);
+    // do something
+    console.log(this.recipe)
   }
 }
 </script>
