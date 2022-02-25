@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <div class="row g-3">
-      <div class="col-sm-7">
+      <div class="col-sm-6">
         <typeahead-input
           :data="existingIngredients"
           :value="ingredient.name"
@@ -27,6 +27,9 @@
           v-model="ingredient.unit"
         />
       </div>
+      <div class="col-sm">
+        <button type="button" class="btn btn-light" v-if="ingredientSelected" v-on:click="removeIngredient">X</button>
+      </div>
     </div>
   </div>
 </template>
@@ -44,10 +47,12 @@ export default class IngredientEditor extends Vue {
   @Prop({ required: true }) ingredient!: RecipeIngredient;
   @Prop({ required: true }) existingIngredients!: Ingredient[];
 
+  ingredientSelected = false;
   ingredientsClient = new IngredientsClient();
 
   setIngredient(ingredient: Ingredient): void {
     this.ingredient.ingredient = ingredient;
+    this.ingredientSelected = true;
     this.$emit("onNameChanged");
   }
 
@@ -63,6 +68,10 @@ export default class IngredientEditor extends Vue {
       return ingredient.ingredientId.toString();
     }
     return ''
+  }
+
+  removeIngredient(): void {
+    this.$emit("onDelete", this.ingredient);
   }
 
   async addNewIngredient(ingredientName: string): Promise<void> {

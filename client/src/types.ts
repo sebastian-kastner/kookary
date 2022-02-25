@@ -16,6 +16,7 @@ export type Ingredient = {
 
 export type RecipeIngredient = {
     ingredientId?: number;
+    uuid?: string;
     ingredient?: Ingredient | null;
     recipeId?: string | null;
     amount?: string;

@@ -14,14 +14,15 @@
     <div class="form-group">
       <label>Zutaten</label>
       <div
-        v-for="(ingredient, index) in recipe.recipeIngredients"
+        v-for="ingredient in recipe.recipeIngredients"
         v-bind="ingredient"
-        v-bind:key="index.toString().concat(ingredient.ingredientId)"
+        v-bind:key="ingredient.uuid"
       >
         <ingredient-editor
           :ingredient="ingredient"
           :existingIngredients="availableIngredients"
           @onNameChanged="updateName"
+          @onDelete="onDelete"
         />
       </div>
     </div>
@@ -35,9 +36,10 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Ingredient, Recipe } from "../types";
+import { Ingredient, Recipe, RecipeIngredient } from "../types";
 import { IngredientsClient } from "../clients/IngredientsClient";
 import IngredientEditor from "../components/IngredientEditor.vue";
+import {v4 as uuid} from 'uuid';
 
 @Component({
   components: { IngredientEditor },
@@ -50,8 +52,9 @@ export default class AddRecipeView extends Vue {
 
   mounted(): void {
     this.recipe = {
-      recipeIngredients: [{}],
+      recipeIngredients: [],
     };
+    this.createNewIngredient();
 
     this.ingredientsClient.getIngredients().then((ingredients) => {
       this.availableIngredients = ingredients;
@@ -68,8 +71,20 @@ export default class AddRecipeView extends Vue {
   updateName(): void {
     if(this.recipe.recipeIngredients) {
       if(this.recipe.recipeIngredients[this.recipe.recipeIngredients.length - 1].ingredient?.name) {
-        this.recipe.recipeIngredients?.push({});
+        this.createNewIngredient();
       }
+    }
+  }
+
+  private createNewIngredient(): void {
+    this.recipe.recipeIngredients?.push({
+      uuid: uuid(),
+    })
+  }
+
+  onDelete(ingredientToRemove: RecipeIngredient): void {
+    if (this.recipe.recipeIngredients) {
+      this.recipe.recipeIngredients.splice(this.recipe.recipeIngredients.indexOf(ingredientToRemove), 1);
     }
   }
 
