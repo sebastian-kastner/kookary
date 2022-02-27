@@ -28,7 +28,7 @@
     </div>
     <div class="form-group">
       <label>Beschreibung</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-bind="recipe.description" />  
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="recipe.description" />  
     </div>
     <button class="btn btn-primary" v-on:click="doSubmit">Submit</button>
   </div>
@@ -38,15 +38,17 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Ingredient, Recipe, RecipeIngredient } from "../types";
 import { IngredientsClient } from "../clients/IngredientsClient";
+import { RecipesClient } from "../clients/RecipesClient";
 import IngredientEditor from "../components/IngredientEditor.vue";
 import {v4 as uuid} from 'uuid';
 
 @Component({
   components: { IngredientEditor },
 })
-export default class AddRecipeView extends Vue {
+export default class RecipeEditorView extends Vue {
   recipe: Recipe = {};
   availableIngredients: Ingredient[] = [];
+  recipesClient: RecipesClient = new RecipesClient();
   ingredientsClient: IngredientsClient = new IngredientsClient();
   doValidate = false;
 
@@ -93,7 +95,11 @@ export default class AddRecipeView extends Vue {
       this.doValidate = true;
     } else {
       // do something
-      console.log(this.recipe);
+      this.recipesClient.saveRecipe(this.recipe).then((recipe) => {
+        console.log("recipe saved: ", recipe)
+      }).catch((err) => {
+        // console.error("failed to save recipe.", err);
+      });
     }
   }
 }

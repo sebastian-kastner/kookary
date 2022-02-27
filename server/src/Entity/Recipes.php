@@ -62,16 +62,9 @@ class Recipes
     private $rating;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="times_cooked", type="integer", nullable=false)
-     */
-    private $timesCooked;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_added", type="date", nullable=false)
+     * @ORM\Column(name="date_added", type="datetime", nullable=false)
      */
     private $dateAdded;
 
@@ -164,18 +157,6 @@ class Recipes
     public function setRating(int $rating): self
     {
         $this->rating = $rating;
-
-        return $this;
-    }
-
-    public function getTimesCooked(): ?int
-    {
-        return $this->timesCooked;
-    }
-
-    public function setTimesCooked(int $timesCooked): self
-    {
-        $this->timesCooked = $timesCooked;
 
         return $this;
     }

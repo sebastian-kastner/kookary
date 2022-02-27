@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AddRecipeView from '../views/AddRecipeView.vue'
+import RecipeEditorView from '../views/RecipeEditorView.vue'
 import IngredientsView from '../views/IngredientsView.vue'
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: HomeView },
-  { path: '/add-recipe', name: 'Rezept hinzufügen', component: AddRecipeView },
+  { path: '/add-recipe', name: 'Rezept hinzufügen', component: RecipeEditorView },
   { path: '/ingredients', name: 'Zutaten', component: IngredientsView }
   // {
   //   path: '/about',

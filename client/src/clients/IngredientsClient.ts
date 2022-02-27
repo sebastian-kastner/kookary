@@ -1,10 +1,11 @@
 import { Ingredient } from '../types'
 import { IngredientsApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
-import { convertIngredient } from './converter'
+import { ToViewModelConverter } from './ToViewModelconverter'
 
 export class IngredientsClient {
     client: IngredientsApi = new IngredientsApi(clientConfiguration);
+    toViewModelConverter = new ToViewModelConverter();
 
     public async getIngredients (): Promise<Ingredient[]> {
       const ret = await this.client.getIngredientsCollection()
@@ -12,7 +13,7 @@ export class IngredientsClient {
 
       const ingredients: Ingredient[] = []
       apiIngredients.forEach((apiIngredient) => {
-        ingredients.push(convertIngredient(apiIngredient))
+        ingredients.push(this.toViewModelConverter.convertIngredient(apiIngredient))
       })
 
       return ingredients
@@ -22,6 +23,6 @@ export class IngredientsClient {
       const ret = await this.client.postIngredientsCollection({
         name: ingredientName
       });
-      return convertIngredient(ret.data);
+      return this.toViewModelConverter.convertIngredient(ret.data);
     }
 }
