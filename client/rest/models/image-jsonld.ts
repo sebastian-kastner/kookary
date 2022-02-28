@@ -17,38 +17,50 @@
 /**
  * 
  * @export
- * @interface RecipeIngredient
+ * @interface ImageJsonld
  */
-export interface RecipeIngredient {
+export interface ImageJsonld {
+    /**
+     * 
+     * @type {string | any}
+     * @memberof ImageJsonld
+     */
+    '@context'?: string | any;
+    /**
+     * 
+     * @type {string}
+     * @memberof ImageJsonld
+     */
+    '@id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ImageJsonld
+     */
+    '@type'?: string;
     /**
      * 
      * @type {number}
-     * @memberof RecipeIngredient
+     * @memberof ImageJsonld
      */
-    'recipeIngredientId'?: number;
+    'imageId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof ImageJsonld
      */
-    'quantity'?: string | null;
+    'date'?: string;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof ImageJsonld
      */
-    'unit'?: string | null;
+    'path'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof RecipeIngredient
+     * @type {Array<string>}
+     * @memberof ImageJsonld
      */
-    'recipe'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'ingredient'?: string | null;
+    'recipe'?: Array<string>;
 }
 

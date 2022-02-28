@@ -1,14 +1,14 @@
 import { Ingredient } from '../types'
-import { IngredientsApi } from '../../rest/api'
+import { IngredientApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
 import { ToViewModelConverter } from './ToViewModelconverter'
 
 export class IngredientsClient {
-    client: IngredientsApi = new IngredientsApi(clientConfiguration);
+    client: IngredientApi = new IngredientApi(clientConfiguration);
     toViewModelConverter = new ToViewModelConverter();
 
     public async getIngredients (): Promise<Ingredient[]> {
-      const ret = await this.client.getIngredientsCollection()
+      const ret = await this.client.getIngredientCollection()
       const apiIngredients = ret.data['hydra:member']
 
       const ingredients: Ingredient[] = []
@@ -20,7 +20,7 @@ export class IngredientsClient {
     }
 
     public async createIngredient(ingredientName: string): Promise<Ingredient> {
-      const ret = await this.client.postIngredientsCollection({
+      const ret = await this.client.postIngredientCollection({
         name: ingredientName
       });
       return this.toViewModelConverter.convertIngredient(ret.data);

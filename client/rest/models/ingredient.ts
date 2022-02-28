@@ -14,7 +14,23 @@
 
 
 
-export * from './api/ingredient-api';
-export * from './api/recipe-api';
-export * from './api/tag-api';
+/**
+ * Ingredient
+ * @export
+ * @interface Ingredient
+ */
+export interface Ingredient {
+    /**
+     * 
+     * @type {number}
+     * @memberof Ingredient
+     */
+    'ingredientId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Ingredient
+     */
+    'name'?: string;
+}
 

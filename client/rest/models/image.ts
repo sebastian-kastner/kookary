@@ -17,38 +17,32 @@
 /**
  * 
  * @export
- * @interface RecipeIngredient
+ * @interface Image
  */
-export interface RecipeIngredient {
+export interface Image {
     /**
      * 
      * @type {number}
-     * @memberof RecipeIngredient
+     * @memberof Image
      */
-    'recipeIngredientId'?: number;
+    'imageId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof Image
      */
-    'quantity'?: string | null;
+    'date'?: string;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof Image
      */
-    'unit'?: string | null;
+    'path'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof RecipeIngredient
+     * @type {Array<string>}
+     * @memberof Image
      */
-    'recipe'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'ingredient'?: string | null;
+    'recipe'?: Array<string>;
 }
 

@@ -13,74 +13,74 @@
  */
 
 
-import { Images } from './images';
+import { Image } from './image';
 import { RecipeIngredient } from './recipe-ingredient';
 
 /**
- * Recipes
+ * Recipe
  * @export
- * @interface Recipes
+ * @interface Recipe
  */
-export interface Recipes {
+export interface Recipe {
     /**
      * 
      * @type {number}
-     * @memberof Recipes
+     * @memberof Recipe
      */
     'recipeId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof Recipes
+     * @memberof Recipe
      */
     'name'?: string;
     /**
      * 
      * @type {string}
-     * @memberof Recipes
+     * @memberof Recipe
      */
-    'description'?: string;
+    'description'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof Recipes
+     * @memberof Recipe
      */
-    'servings'?: number;
+    'servings'?: number | null;
     /**
      * 
      * @type {string}
-     * @memberof Recipes
+     * @memberof Recipe
      */
-    'source'?: string;
+    'source'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof Recipes
+     * @memberof Recipe
      */
-    'rating'?: number;
+    'rating'?: number | null;
     /**
      * 
      * @type {string}
-     * @memberof Recipes
+     * @memberof Recipe
      */
-    'dateAdded'?: string;
+    'dateAdded'?: string | null;
     /**
      * 
-     * @type {Array<Images>}
-     * @memberof Recipes
+     * @type {Array<Image>}
+     * @memberof Recipe
      */
-    'image'?: Array<Images>;
-    /**
-     * 
-     * @type {Array<RecipeIngredient>}
-     * @memberof Recipes
-     */
-    'recipeIngredients'?: Array<RecipeIngredient>;
+    'image'?: Array<Image>;
     /**
      * 
      * @type {Array<string>}
-     * @memberof Recipes
+     * @memberof Recipe
      */
     'tag'?: Array<string>;
+    /**
+     * 
+     * @type {Array<RecipeIngredient>}
+     * @memberof Recipe
+     */
+    'ingredients'?: Array<RecipeIngredient>;
 }
 

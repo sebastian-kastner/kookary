@@ -15,7 +15,7 @@
 
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
-import { RecipesJsonld } from './recipes-jsonld';
+import { RecipeJsonld } from './recipe-jsonld';
 
 /**
  * 
@@ -25,10 +25,10 @@ import { RecipesJsonld } from './recipes-jsonld';
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {Array<RecipesJsonld>}
+     * @type {Array<RecipeJsonld>}
      * @memberof InlineResponse2001
      */
-    'hydra:member': Array<RecipesJsonld>;
+    'hydra:member': Array<RecipeJsonld>;
     /**
      * 
      * @type {number}

@@ -13,92 +13,92 @@
  */
 
 
-import { ImagesJsonld } from './images-jsonld';
+import { ImageJsonld } from './image-jsonld';
 import { RecipeIngredientJsonld } from './recipe-ingredient-jsonld';
 
 /**
- * Recipes
+ * Recipe
  * @export
- * @interface RecipesJsonld
+ * @interface RecipeJsonld
  */
-export interface RecipesJsonld {
+export interface RecipeJsonld {
     /**
      * 
      * @type {string | any}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
     '@context'?: string | any;
     /**
      * 
      * @type {string}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
     '@id'?: string;
     /**
      * 
      * @type {string}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
     '@type'?: string;
     /**
      * 
      * @type {number}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
     'recipeId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
     'name'?: string;
     /**
      * 
      * @type {string}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
-    'description'?: string;
+    'description'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
-    'servings'?: number;
+    'servings'?: number | null;
     /**
      * 
      * @type {string}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
-    'source'?: string;
+    'source'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
-    'rating'?: number;
+    'rating'?: number | null;
     /**
      * 
      * @type {string}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
-    'dateAdded'?: string;
+    'dateAdded'?: string | null;
     /**
      * 
-     * @type {Array<ImagesJsonld>}
-     * @memberof RecipesJsonld
+     * @type {Array<ImageJsonld>}
+     * @memberof RecipeJsonld
      */
-    'image'?: Array<ImagesJsonld>;
-    /**
-     * 
-     * @type {Array<RecipeIngredientJsonld>}
-     * @memberof RecipesJsonld
-     */
-    'recipeIngredients'?: Array<RecipeIngredientJsonld>;
+    'image'?: Array<ImageJsonld>;
     /**
      * 
      * @type {Array<string>}
-     * @memberof RecipesJsonld
+     * @memberof RecipeJsonld
      */
     'tag'?: Array<string>;
+    /**
+     * 
+     * @type {Array<RecipeIngredientJsonld>}
+     * @memberof RecipeJsonld
+     */
+    'ingredients'?: Array<RecipeIngredientJsonld>;
 }
 

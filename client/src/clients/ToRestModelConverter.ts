@@ -1,16 +1,17 @@
-import { RecipesJsonld, TagsJsonld, ImagesJsonld, IngredientsJsonld, RecipeIngredientJsonld } from '../../rest/models'
+import { RecipeJsonld, TagJsonld, ImageJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
 import { Recipe, Tag, Image, Ingredient, RecipeIngredient } from '../types'
+import * as ep from './endpoints'
 
 export class ToRestModelConverter {
 
-    public convertTag (apiTag: Tag): TagsJsonld {
+    public convertTag (apiTag: Tag): TagJsonld {
         return {
           tagId: apiTag.tagId,
           name: apiTag.name
         }
       }
       
-      public convertImage (apiImage: Image): ImagesJsonld {
+      public convertImage (apiImage: Image): ImageJsonld {
         return {
           imageId: apiImage.imageId,
           date: apiImage.date,
@@ -18,27 +19,31 @@ export class ToRestModelConverter {
         }
       }
       
-      public convertIngredient (apiIngredient: Ingredient): IngredientsJsonld {
+      public convertIngredient (apiIngredient: Ingredient | null | undefined): IngredientJsonld {
+        if(!apiIngredient) {
+          return {};
+        }
         return {
           ingredientId: apiIngredient.ingredientId,
           name: apiIngredient.name
         }
       }
+
+      private toApiId(prefix: string, id: number | null | undefined): string {
+        if(!id) {
+          return '';
+        }
+        return prefix + "/" + id;
+      }
       
       public convertRecipeIngredient (viewModelIngredient: RecipeIngredient): RecipeIngredientJsonld {
-        let ingredientId = viewModelIngredient.ingredientId;
-        if(!ingredientId) {
-          ingredientId = viewModelIngredient.ingredient?.ingredientId;
-        }
-
         return {
-          ingredientId: ingredientId,
-          // FIXME does this work?
-          // ingredient: viewModelIngredient.ingredientId,
-          // recipeId: viewModelIngredient.recipeId,
-          recipe: viewModelIngredient.ingredientId?.toString(),
-          amount: viewModelIngredient.amount,
-          unit: viewModelIngredient.unit
+          recipeIngredientId: viewModelIngredient.recipeIngredientId,
+          ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
+          unit: viewModelIngredient.unit,
+          quantity: viewModelIngredient.quantity,
+          // FIXME: do i need to set the recipe here as well?
+          // recipe: what do i do??
         }
       }
       
@@ -48,14 +53,14 @@ export class ToRestModelConverter {
         }
         const ingredients: RecipeIngredientJsonld[] = []
         viewModelIngredients.forEach((viewModelIngredient) => {
-          if(viewModelIngredient.ingredientId || viewModelIngredient.ingredient?.ingredientId) {
+          if(viewModelIngredient.ingredient?.ingredientId) {
             ingredients.push(this.convertRecipeIngredient(viewModelIngredient))
           }
         })
         return ingredients
       }
       
-      public convertRecipe (apiRecipe: Recipe): RecipesJsonld {
+      public convertRecipe (apiRecipe: Recipe): RecipeJsonld {
         return {
           recipeId: apiRecipe.recipeId,
           name: apiRecipe.name,
@@ -63,11 +68,10 @@ export class ToRestModelConverter {
           servings: apiRecipe.servings,
           source: apiRecipe.source,
           rating: apiRecipe.rating,
-          timesCooked: apiRecipe.timesCooked,
           dateAdded: apiRecipe.dateAdded,
           // FIXME convert images
           image: [],
-          recipeIngredients: this.convertRecipeIngredients(apiRecipe.recipeIngredients),
+          ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
           // FIXME convert tags
           tag: []
         }

@@ -15,24 +15,22 @@ export type Ingredient = {
 }
 
 export type RecipeIngredient = {
-    ingredientId?: number;
-    uuid?: string;
+    recipeIngredientId?: number;
+    uuid: string;
     ingredient?: Ingredient | null;
-    recipeId?: string | null;
-    amount?: string;
-    unit?: string;
+    quantity?: string | null;
+    unit?: string | null;
 }
 
 export type Recipe = {
     recipeId?: number;
     name?: string;
-    description?: string;
-    servings?: number;
-    source?: string;
-    rating?: number;
-    timesCooked?: number;
-    dateAdded?: string;
+    description?: string | null;
+    servings?: number | null;
+    source?: string | null;
+    rating?: number | null;
+    dateAdded?: string | null;
     images?: Image[];
-    recipeIngredients?: RecipeIngredient[];
+    ingredients?: RecipeIngredient[];
     tags?: Tag[];
 }

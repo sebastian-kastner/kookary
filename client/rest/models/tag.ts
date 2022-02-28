@@ -15,40 +15,28 @@
 
 
 /**
- * 
+ * Tag
  * @export
- * @interface RecipeIngredient
+ * @interface Tag
  */
-export interface RecipeIngredient {
+export interface Tag {
     /**
      * 
      * @type {number}
-     * @memberof RecipeIngredient
+     * @memberof Tag
      */
-    'recipeIngredientId'?: number;
+    'tagId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof Tag
      */
-    'quantity'?: string | null;
+    'name'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof RecipeIngredient
+     * @type {Array<string>}
+     * @memberof Tag
      */
-    'unit'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'recipe'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'ingredient'?: string | null;
+    'recipe'?: Array<string>;
 }
 

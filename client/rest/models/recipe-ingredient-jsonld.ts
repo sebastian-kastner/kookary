@@ -43,13 +43,19 @@ export interface RecipeIngredientJsonld {
      * @type {number}
      * @memberof RecipeIngredientJsonld
      */
-    'ingredientId'?: number;
+    'recipeIngredientId'?: number;
     /**
      * 
      * @type {string}
      * @memberof RecipeIngredientJsonld
      */
-    'ingredient'?: string | null;
+    'quantity'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecipeIngredientJsonld
+     */
+    'unit'?: string | null;
     /**
      * 
      * @type {string}
@@ -61,12 +67,6 @@ export interface RecipeIngredientJsonld {
      * @type {string}
      * @memberof RecipeIngredientJsonld
      */
-    'amount'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredientJsonld
-     */
-    'unit'?: string;
+    'ingredient'?: string | null;
 }
 

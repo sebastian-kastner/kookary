@@ -1,18 +1,18 @@
 import { Recipe } from '../types'
 import { AxiosError } from 'axios'
-import { RecipesApi } from '../../rest/api'
+import { RecipeApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
 import { ToViewModelConverter } from './ToViewModelconverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 
 export class RecipesClient {
-    client = new RecipesApi(clientConfiguration);
+    client = new RecipeApi(clientConfiguration);
     toViewModelConverter = new ToViewModelConverter();
     toRestModelConverter = new ToRestModelConverter();
 
     public async getRecipes (): Promise<Recipe[]> {
-      const ret = await this.client.getRecipesCollection()
+      const ret = await this.client.getRecipeCollection()
       const apiRecipes = ret.data['hydra:member']
 
       const recipes: Recipe[] = []
@@ -27,7 +27,7 @@ export class RecipesClient {
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
       console.log("saving recipe", restRecipe);
       return new Promise<Recipe>((resolve, reject) => {
-        this.client.postRecipesCollection(restRecipe)
+        this.client.postRecipeCollection(restRecipe)
         .then((ret) => {
           resolve(this.toViewModelConverter.convertRecipe(ret['data']));
         })

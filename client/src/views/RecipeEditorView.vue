@@ -14,7 +14,7 @@
     <div class="form-group">
       <label>Zutaten</label>
       <div
-        v-for="ingredient in recipe.recipeIngredients"
+        v-for="ingredient in recipe.ingredients"
         v-bind="ingredient"
         v-bind:key="ingredient.uuid"
       >
@@ -54,7 +54,7 @@ export default class RecipeEditorView extends Vue {
 
   mounted(): void {
     this.recipe = {
-      recipeIngredients: [],
+      ingredients: [],
     };
     this.createNewIngredient();
 
@@ -71,22 +71,22 @@ export default class RecipeEditorView extends Vue {
   }
 
   updateName(): void {
-    if(this.recipe.recipeIngredients) {
-      if(this.recipe.recipeIngredients[this.recipe.recipeIngredients.length - 1].ingredient?.name) {
+    if(this.recipe.ingredients) {
+      if(this.recipe.ingredients[this.recipe.ingredients.length - 1].ingredient?.name) {
         this.createNewIngredient();
       }
     }
   }
 
   private createNewIngredient(): void {
-    this.recipe.recipeIngredients?.push({
+    this.recipe.ingredients?.push({
       uuid: uuid(),
     })
   }
 
   onDelete(ingredientToRemove: RecipeIngredient): void {
-    if (this.recipe.recipeIngredients) {
-      this.recipe.recipeIngredients.splice(this.recipe.recipeIngredients.indexOf(ingredientToRemove), 1);
+    if (this.recipe.ingredients) {
+      this.recipe.ingredients.splice(this.recipe.ingredients.indexOf(ingredientToRemove), 1);
     }
   }
 

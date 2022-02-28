@@ -15,40 +15,46 @@
 
 
 /**
- * 
+ * Tag
  * @export
- * @interface RecipeIngredient
+ * @interface TagJsonld
  */
-export interface RecipeIngredient {
+export interface TagJsonld {
+    /**
+     * 
+     * @type {string | any}
+     * @memberof TagJsonld
+     */
+    '@context'?: string | any;
+    /**
+     * 
+     * @type {string}
+     * @memberof TagJsonld
+     */
+    '@id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TagJsonld
+     */
+    '@type'?: string;
     /**
      * 
      * @type {number}
-     * @memberof RecipeIngredient
+     * @memberof TagJsonld
      */
-    'recipeIngredientId'?: number;
+    'tagId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof TagJsonld
      */
-    'quantity'?: string | null;
+    'name'?: string;
     /**
      * 
-     * @type {string}
-     * @memberof RecipeIngredient
+     * @type {Array<string>}
+     * @memberof TagJsonld
      */
-    'unit'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'recipe'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'ingredient'?: string | null;
+    'recipe'?: Array<string>;
 }
 

@@ -1,15 +1,15 @@
-import { RecipesJsonld, TagsJsonld, ImagesJsonld, IngredientsJsonld, RecipeIngredientJsonld } from '../../rest/models'
+import { RecipeJsonld, TagJsonld, ImageJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
 import { Recipe, Tag, Image, Ingredient, RecipeIngredient } from '../types'
 
 export class ToViewModelConverter {
-  public convertTag (apiTag: TagsJsonld): Tag {
+  public convertTag (apiTag: TagJsonld): Tag {
     return {
       tagId: apiTag.tagId,
       name: apiTag.name
     }
   }
   
-  public convertImage (apiImage: ImagesJsonld): Image {
+  public convertImage (apiImage: ImageJsonld): Image {
     return {
       imageId: apiImage.imageId,
       date: apiImage.date,
@@ -17,7 +17,7 @@ export class ToViewModelConverter {
     }
   }
   
-  public convertIngredient (apiIngredient: IngredientsJsonld): Ingredient {
+  public convertIngredient (apiIngredient: IngredientJsonld): Ingredient {
     return {
       ingredientId: apiIngredient.ingredientId,
       name: apiIngredient.name
@@ -26,12 +26,12 @@ export class ToViewModelConverter {
   
   public convertRecipeIngredient (apiIngredient: RecipeIngredientJsonld): RecipeIngredient {
     return {
-      ingredientId: apiIngredient.ingredientId,
+      recipeIngredientId: apiIngredient.recipeIngredientId,
       // FIXME does this work?
-      ingredient: this.convertIngredient(apiIngredient.ingredient as IngredientsJsonld),
-      recipeId: apiIngredient.recipe,
-      amount: apiIngredient.amount,
-      unit: apiIngredient.unit
+      ingredient: this.convertIngredient(apiIngredient.ingredient as IngredientJsonld),
+      quantity: apiIngredient.quantity,
+      unit: apiIngredient.unit,
+      uuid: ''
     }
   }
   
@@ -46,7 +46,7 @@ export class ToViewModelConverter {
     return ingredients
   }
   
-  public convertRecipe (apiRecipe: RecipesJsonld): Recipe {
+  public convertRecipe (apiRecipe: RecipeJsonld): Recipe {
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
@@ -54,11 +54,10 @@ export class ToViewModelConverter {
       servings: apiRecipe.servings,
       source: apiRecipe.source,
       rating: apiRecipe.rating,
-      timesCooked: apiRecipe.timesCooked,
       dateAdded: apiRecipe.dateAdded,
       // FIXME convert images
       images: [],
-      recipeIngredients: this.convertRecipeIngredients(apiRecipe.recipeIngredients),
+      ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       // FIXME convert tags
       tags: []
     }

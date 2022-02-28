@@ -15,40 +15,40 @@
 
 
 /**
- * 
+ * Ingredient
  * @export
- * @interface RecipeIngredient
+ * @interface IngredientJsonld
  */
-export interface RecipeIngredient {
+export interface IngredientJsonld {
+    /**
+     * 
+     * @type {string | any}
+     * @memberof IngredientJsonld
+     */
+    '@context'?: string | any;
+    /**
+     * 
+     * @type {string}
+     * @memberof IngredientJsonld
+     */
+    '@id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof IngredientJsonld
+     */
+    '@type'?: string;
     /**
      * 
      * @type {number}
-     * @memberof RecipeIngredient
+     * @memberof IngredientJsonld
      */
-    'recipeIngredientId'?: number;
+    'ingredientId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof RecipeIngredient
+     * @memberof IngredientJsonld
      */
-    'quantity'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'unit'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'recipe'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof RecipeIngredient
-     */
-    'ingredient'?: string | null;
+    'name'?: string;
 }
 
