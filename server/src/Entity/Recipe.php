@@ -6,16 +6,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-use Entity\RecipeIngredient;
+use DateTime;
 
 /**
- * Recipes
+ * Recipe
  *
- * @ORM\Table(name="recipes")
+ * @ORM\Table(name="recipe")
  * @ORM\Entity
  * @ApiResource()
  */
-class Recipes
+class Recipe
 {
     /**
      * @var int
@@ -34,66 +34,70 @@ class Recipes
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
      */
     private $description;
 
     /**
-     * @var int
+     * @var int|null
      *
-     * @ORM\Column(name="servings", type="integer", nullable=false)
+     * @ORM\Column(name="servings", type="integer", nullable=true)
      */
     private $servings;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="source", type="string", length=250, nullable=false)
+     * @ORM\Column(name="source", type="string", length=250, nullable=true)
      */
     private $source;
 
     /**
-     * @var int
+     * @var int|null
      *
-     * @ORM\Column(name="rating", type="integer", nullable=false)
+     * @ORM\Column(name="rating", type="integer", nullable=true)
      */
     private $rating;
 
     /**
-     * @var \DateTime
+     * @var \DateTime|null
      *
-     * @ORM\Column(name="date_added", type="datetime", nullable=false)
+     * @ORM\Column(name="date_added", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
      */
     private $dateAdded;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Images", mappedBy="recipe")
+     * @ORM\ManyToMany(targetEntity="Image", mappedBy="recipe")
      */
     private $image;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     * 
-     * @ORM\OneToMany(targetEntity="\App\Entity\RecipeIngredient", mappedBy="recipe")
-     */
-    private $recipeIngredients;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Tags", mappedBy="recipe")
+     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="recipe")
      */
     private $tag;
 
+    /**
+      * @var \App\Entity\RecipeIngredient
+      *
+      * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
+      */
+      private $ingredients;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->image = new ArrayCollection();
-        $this->recipeIngredients = new ArrayCollection();
-        $this->tag = new ArrayCollection();
+        $this->image = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tag = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ingredients = new ArrayCollection();
+        $this->dateAdded = new DateTime();
     }
 
     public function getRecipeId(): ?int
@@ -118,7 +122,7 @@ class Recipes
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
@@ -130,7 +134,7 @@ class Recipes
         return $this->servings;
     }
 
-    public function setServings(int $servings): self
+    public function setServings(?int $servings): self
     {
         $this->servings = $servings;
 
@@ -142,7 +146,7 @@ class Recipes
         return $this->source;
     }
 
-    public function setSource(string $source): self
+    public function setSource(?string $source): self
     {
         $this->source = $source;
 
@@ -154,7 +158,7 @@ class Recipes
         return $this->rating;
     }
 
-    public function setRating(int $rating): self
+    public function setRating(?int $rating): self
     {
         $this->rating = $rating;
 
@@ -166,7 +170,7 @@ class Recipes
         return $this->dateAdded;
     }
 
-    public function setDateAdded(\DateTimeInterface $dateAdded): self
+    public function setDateAdded(?\DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
 
@@ -174,14 +178,14 @@ class Recipes
     }
 
     /**
-     * @return Collection<int, Images>
+     * @return Collection<int, Image>
      */
     public function getImage(): Collection
     {
         return $this->image;
     }
 
-    public function addImage(Images $image): self
+    public function addImage(Image $image): self
     {
         if (!$this->image->contains($image)) {
             $this->image[] = $image;
@@ -191,7 +195,7 @@ class Recipes
         return $this;
     }
 
-    public function removeImage(Images $image): self
+    public function removeImage(Image $image): self
     {
         if ($this->image->removeElement($image)) {
             $image->removeRecipe($this);
@@ -201,44 +205,14 @@ class Recipes
     }
 
     /**
-     * @return Collection<int, RecipeIngredient>
-     */
-    public function getRecipeIngredients(): Collection
-    {
-        return $this->recipeIngredients;
-    }
-
-    public function addRecipeIngredient(\App\Entity\RecipeIngredient $recipeIngredient): self
-    {
-        if (!$this->recipeIngredients->contains($recipeIngredient)) {
-            $this->recipeIngredients[] = $recipeIngredient;
-            $recipeIngredient->setRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecipeIngredient(\App\Entity\RecipeIngredient $recipeIngredient): self
-    {
-        if ($this->recipeIngredients->removeElement($recipeIngredient)) {
-            // set the owning side to null (unless already changed)
-            if ($recipeIngredient->getRecipe() === $this) {
-                $recipeIngredient->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Tags>
+     * @return Collection<int, Tag>
      */
     public function getTag(): Collection
     {
         return $this->tag;
     }
 
-    public function addTag(Tags $tag): self
+    public function addTag(Tag $tag): self
     {
         if (!$this->tag->contains($tag)) {
             $this->tag[] = $tag;
@@ -248,7 +222,7 @@ class Recipes
         return $this;
     }
 
-    public function removeTag(Tags $tag): self
+    public function removeTag(Tag $tag): self
     {
         if ($this->tag->removeElement($tag)) {
             $tag->removeRecipe($this);
@@ -256,4 +230,35 @@ class Recipes
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, RecipeIngredient>
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    public function addIngredient(RecipeIngredient $ingredient): self
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+            $ingredient->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredient(RecipeIngredient $ingredient): self
+    {
+        if ($this->ingredients->removeElement($ingredient)) {
+            // set the owning side to null (unless already changed)
+            if ($ingredient->getRecipe() === $this) {
+                $ingredient->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

@@ -7,12 +7,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Images
+ * Image
  *
- * @ORM\Table(name="images")
+ * @ORM\Table(name="image")
  * @ORM\Entity
  */
-class Images
+class Image
 {
     /**
      * @var int
@@ -40,7 +40,7 @@ class Images
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Recipes", inversedBy="image")
+     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="image")
      * @ORM\JoinTable(name="image_to_recipe",
      *   joinColumns={
      *     @ORM\JoinColumn(name="image_id", referencedColumnName="image_id")
@@ -52,9 +52,12 @@ class Images
      */
     private $recipe;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->recipe = new ArrayCollection();
+        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getImageId(): ?int
@@ -87,14 +90,14 @@ class Images
     }
 
     /**
-     * @return Collection<int, Recipes>
+     * @return Collection<int, Recipe>
      */
     public function getRecipe(): Collection
     {
         return $this->recipe;
     }
 
-    public function addRecipe(Recipes $recipe): self
+    public function addRecipe(Recipe $recipe): self
     {
         if (!$this->recipe->contains($recipe)) {
             $this->recipe[] = $recipe;
@@ -103,7 +106,7 @@ class Images
         return $this;
     }
 
-    public function removeRecipe(Recipes $recipe): self
+    public function removeRecipe(Recipe $recipe): self
     {
         $this->recipe->removeElement($recipe);
 

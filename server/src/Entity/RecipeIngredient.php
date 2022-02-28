@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Ingredients
+ * RecipeIngredient
  *
- * @ORM\Table(name="ingredients_to_recipes")
+ * @ORM\Table(name="recipe_ingredient", indexes={@ORM\Index(name="recipe_ingredient_FK", columns={"recipe_id"}), @ORM\Index(name="recipe_ingredient_FK_1", columns={"ingredient_id"})})
  * @ORM\Entity
  */
 class RecipeIngredient
@@ -17,25 +15,30 @@ class RecipeIngredient
     /**
      * @var int
      *
-     * @ORM\Column(name="ingredient_id", type="integer", nullable=false)
+     * @ORM\Column(name="recipe_ingredient_id", type="integer", nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $ingredientId;
+    private $recipeIngredientId;
 
     /**
-     * @var \App\Entity\Ingredients
+     * @var string|null
      *
-     * @ORM\ManyToOne(targetEntity="Ingredients")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ingredient_id", referencedColumnName="ingredient_id")
-     * })
+     * @ORM\Column(name="quantity", type="string", length=10, nullable=true)
      */
-    private $ingredient;
+    private $quantity;
 
     /**
-     * @var \App\Entity\Recipes
+     * @var string|null
      *
-     * @ORM\ManyToOne(targetEntity="Recipes")
+     * @ORM\Column(name="unit", type="string", length=10, nullable=true)
+     */
+    private $unit;
+
+    /**
+     * @var \Recipe
+     *
+     * @ORM\ManyToOne(targetEntity="Recipe")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
      * })
@@ -43,32 +46,28 @@ class RecipeIngredient
     private $recipe;
 
     /**
-     * @var string
+     * @var \Ingredient
      *
-     * @ORM\Column(name="amount", type="string", length=50, nullable=false)
+     * @ORM\ManyToOne(targetEntity="Ingredient")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="ingredient_id", referencedColumnName="ingredient_id")
+     * })
      */
-    private $amount;
+    private $ingredient;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="unit", type="string", length=100, nullable=false)
-     */
-    private $unit;
-
-    public function getIngredientId(): ?int
+    public function getRecipeIngredientId(): ?int
     {
-        return $this->ingredientId;
+        return $this->recipeIngredientId;
     }
 
-    public function getAmount(): ?string
+    public function getQuantity(): ?string
     {
-        return $this->amount;
+        return $this->quantity;
     }
 
-    public function setAmount(string $amount): self
+    public function setQuantity(?string $quantity): self
     {
-        $this->amount = $amount;
+        $this->quantity = $quantity;
 
         return $this;
     }
@@ -78,35 +77,36 @@ class RecipeIngredient
         return $this->unit;
     }
 
-    public function setUnit(string $unit): self
+    public function setUnit(?string $unit): self
     {
         $this->unit = $unit;
 
         return $this;
     }
 
-    public function getIngredient(): ?Ingredients
+    public function getRecipe(): ?Recipe
+    {
+        return $this->recipe;
+    }
+
+    public function setRecipe(?Recipe $recipe): self
+    {
+        $this->recipe = $recipe;
+
+        return $this;
+    }
+
+    public function getIngredient(): ?Ingredient
     {
         return $this->ingredient;
     }
 
-    public function setIngredient(?Ingredients $ingredient): self
+    public function setIngredient(?Ingredient $ingredient): self
     {
         $this->ingredient = $ingredient;
 
         return $this;
     }
 
-    public function getRecipe(): ?Recipes
-    {
-        return $this->recipe;
-    }
-
-    public function setRecipe(?Recipes $recipe): self
-    {
-        $this->recipe = $recipe;
-
-        return $this;
-    }
 
 }

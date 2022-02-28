@@ -2,19 +2,17 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * Ingredients
+ * Ingredient
  *
- * @ORM\Table(name="ingredients")
+ * @ORM\Table(name="ingredient")
  * @ORM\Entity
  * @ApiResource()
  */
-class Ingredients
+class Ingredient
 {
     /**
      * @var int
@@ -48,4 +46,6 @@ class Ingredients
 
         return $this;
     }
+
+
 }

@@ -8,13 +8,13 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * Tags
+ * Tag
  *
- * @ORM\Table(name="tags")
+ * @ORM\Table(name="tag")
  * @ORM\Entity
  * @ApiResource()
  */
-class Tags
+class Tag
 {
     /**
      * @var int
@@ -35,8 +35,8 @@ class Tags
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Recipes", inversedBy="tag")
-     * @ORM\JoinTable(name="tags_to_recipe",
+     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="tag")
+     * @ORM\JoinTable(name="tag_to_recipe",
      *   joinColumns={
      *     @ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id")
      *   },
@@ -47,9 +47,12 @@ class Tags
      */
     private $recipe;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->recipe = new ArrayCollection();
+        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function getTagId(): ?int
@@ -70,14 +73,14 @@ class Tags
     }
 
     /**
-     * @return Collection<int, Recipes>
+     * @return Collection<int, Recipe>
      */
     public function getRecipe(): Collection
     {
         return $this->recipe;
     }
 
-    public function addRecipe(Recipes $recipe): self
+    public function addRecipe(Recipe $recipe): self
     {
         if (!$this->recipe->contains($recipe)) {
             $this->recipe[] = $recipe;
@@ -86,7 +89,7 @@ class Tags
         return $this;
     }
 
-    public function removeRecipe(Recipes $recipe): self
+    public function removeRecipe(Recipe $recipe): self
     {
         $this->recipe->removeElement($recipe);
 
