@@ -18,6 +18,7 @@
 - create database settings: ``cp .env .env.local`` 
   - edit .env.local
 - create entities from database: ``php bin/console doctrine:mapping:import "App\Entity" annotation --path=src/Entity``
+- install maker bundle: ``composer require symfony/maker-bundle --dev``
 - create getter/setter methods for everything: ``php bin/console make:entity --regenerate App``
   - or for specific entity: ``php bin/console make:entity --regenerate App\Entity\Country``
 
