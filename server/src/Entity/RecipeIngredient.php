@@ -36,7 +36,7 @@ class RecipeIngredient
     private $unit;
 
     /**
-     * @var \Recipe
+     * @var \App\Entity\Recipe
      *
      * @ORM\ManyToOne(targetEntity="Recipe")
      * @ORM\JoinColumns({
@@ -46,7 +46,7 @@ class RecipeIngredient
     private $recipe;
 
     /**
-     * @var \Ingredient
+     * @var \App\Entity\Ingredient
      *
      * @ORM\ManyToOne(targetEntity="Ingredient")
      * @ORM\JoinColumns({

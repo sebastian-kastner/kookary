@@ -64,7 +64,7 @@ class Recipe
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_added", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="date_added", type="datetime", nullable=true)
      */
     private $dateAdded;
 
@@ -94,8 +94,8 @@ class Recipe
      */
     public function __construct()
     {
-        $this->image = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tag = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->tag = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
         $this->dateAdded = new DateTime();
     }

@@ -52,7 +52,7 @@ class Tag
      */
     public function __construct()
     {
-        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recipe = new ArrayCollection();
     }
 
     public function getTagId(): ?int
