@@ -1,5 +1,6 @@
 <!-- 
     Styling and layout taken from https://codepen.io/itsjustluck/pen/rMgRqL 
+    When migrating to vue3, consider using: https://github.com/frikinside/vue3-simple-typeahead 
 -->
 <template>
   <div class="form-group typeahead">
@@ -10,6 +11,9 @@
       autocomplete="off"
       v-model="internalValue"
       :disabled=disabled
+      @keydown.down.prevent="onArrowDown"
+			@keydown.up.prevent="onArrowUp"
+			@keydown.enter.tab.prevent="selectCurrentSelection"
     />
     <div class="typeahead-dropdown list-group">
       <div v-if="showSuggestions && addNewHandler" v-on:click="addNewItem">
@@ -18,19 +22,28 @@
         </a>
       </div>
       <div
+        class="typeahead-suggestion"
         v-for="suggestion in suggestions"
-        v-bind:key="getId(suggestion)"
+        v-bind:key="suggestion.id"
+        :class="suggestion.isActive ? 'active' : ''"
         v-show="showSuggestions"
-        v-on:click="onSuggestionSelected(suggestion)"
+        v-on:click="onSuggestionSelected(suggestion.data)"
       >
-        <a class="list-group-item">{{ getLabel(suggestion) }}</a>
+        <a class="list-group-item">{{ suggestion.label }}</a>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+
+type Suggestion = {
+  label: string,
+  id: string,
+  isActive: boolean,
+  data: any,
+}
 
 @Component({
   components: {},
@@ -48,6 +61,7 @@ export default class TypeaheadInput extends Vue {
 
   internalValue = "";
   isSelected = false;
+  activeIndex = -1;
 
   mounted(): void {
     this.internalValue = this.value;
@@ -65,20 +79,26 @@ export default class TypeaheadInput extends Vue {
   }
 
   // eslint-disable-next-line
-  get suggestions(): any[] {
+  @Watch('isActive')
+  get suggestions(): Suggestion[] {
     // eslint-disable-next-line
     const suggestions: any[] = [];
     if (!this.showSuggestions) {
       return suggestions;
     }
 
-    this.data.forEach((suggestion) => {
-      const label = this.getLabel(suggestion);
-
+    for(let i=0; i < this.data.length; i++) {
+      const label = this.getLabel(this.data[0]);
       if (label.toLowerCase().startsWith(this.internalValue.toLowerCase())) {
+        const suggestion: Suggestion = {
+          isActive: false,
+          label,
+          id: this.getId(this.data[0]),
+          data: this.data[0]
+        }
         suggestions.push(suggestion);
       }
-    });
+    }
 
     return suggestions;
   }
@@ -89,6 +109,20 @@ export default class TypeaheadInput extends Vue {
 
   private getLabel(data: object): string {
     return this.labelProvider(data);
+  }
+
+  private onArrowDown(): void {
+    
+    this.activeIndex = 0;
+    console.log('down!');
+  }
+
+  private onArrowUp(): void {
+    console.log('up!');
+  }
+
+  private selectCurrentSelection(): void {
+    console.log('select!');
   }
 
   // eslint-disable-next-line
@@ -118,7 +152,7 @@ export default class TypeaheadInput extends Vue {
 <style lang="scss">
 @mixin show-dropdown {
   z-index: 101;
-  display: block;
+  display: block
 }
 
 a {
@@ -144,7 +178,7 @@ a {
     border-color: #eee;
     color: #333;
   }
-}
+} 
 .icon-plus {
   &:after {
     content: "➕";
@@ -155,12 +189,13 @@ a {
   position: relative;
   .input-group-addon {
     &:after {
-      content: ":";
+      content: ':';
       display: inline;
     }
   }
   &-dropdown {
     display: none;
+    // border-top: 1px solid #aaa;
     position: absolute;
     top: 100%;
     left: 0;
@@ -188,8 +223,8 @@ a {
     z-index: 1;
     position: relative;
     &.form-control {
-      //   border-top-right-radius: $input-border-radius !important;
-      //   border-bottom-right-radius: $input-border-radius !important;
+      // border-top-right-radius: $input-border-radius !important;
+      // border-bottom-right-radius: $input-border-radius !important;
     }
     &:focus {
       z-index: 3;
@@ -208,4 +243,5 @@ a {
     // @extend .input-group-addon ;
   }
 }
+
 </style>
