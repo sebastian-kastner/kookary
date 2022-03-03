@@ -1,5 +1,6 @@
 import { RecipeJsonld, TagJsonld, ImageJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
 import { Recipe, Tag, Image, Ingredient, RecipeIngredient } from '../types'
+import {v4 as uuid} from 'uuid';
 
 export class ToViewModelConverter {
   public convertTag (apiTag: TagJsonld): Tag {
@@ -31,7 +32,7 @@ export class ToViewModelConverter {
       ingredient: this.convertIngredient(apiIngredient.ingredient as IngredientJsonld),
       quantity: apiIngredient.quantity,
       unit: apiIngredient.unit,
-      uuid: ''
+      uuid: uuid(),
     }
   }
   

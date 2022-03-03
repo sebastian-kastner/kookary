@@ -11,7 +11,7 @@
       autocomplete="off"
       v-model="internalValue"
       v-on:keyup="onValueChange"
-      :disabled=disabled
+      :disabled=isDisabled
       @keydown.down.prevent="onArrowDown"
 			@keydown.up.prevent="onArrowUp"
 			@keydown.enter.tab.prevent="selectCurrentSelection"
@@ -54,6 +54,8 @@ export default class TypeaheadInput extends Vue {
   @Prop({ required: true }) data!: object[];
   @Prop({ required: false, default: "" }) value!: string;
 
+  @Prop({ required: false, default: false }) isDisabled!: false;
+
   // eslint-disable-next-line
   @Prop({ required: true }) labelProvider!: (suggestion: any) => string;
   // eslint-disable-next-line
@@ -65,7 +67,6 @@ export default class TypeaheadInput extends Vue {
   ADD_SUGGESTION_INDEX = -1;
 
   internalValue = "";
-  isSelected = false;
   activeIndex = this.DEFAULT_SUGGESTION_INDEX;
   suggestions: Suggestion[] = [];
   oldValue = "";
@@ -74,6 +75,7 @@ export default class TypeaheadInput extends Vue {
   mounted(): void {
     this.internalValue = this.value;
     this.oldValue = this.internalValue;
+    console.log(this.isDisabled)
   }
 
   private onValueChange(): void {
@@ -81,7 +83,7 @@ export default class TypeaheadInput extends Vue {
       return;
     }
     
-    if(!this.isSelected && this.internalValue.length > 1) {
+    if(!this.isDisabled && this.internalValue.length > 1) {
       const suggestions: Suggestion[] = [];
       for(let i=0; i < this.data.length; i++) {
         const label = this.getLabel(this.data[i]);
@@ -105,9 +107,6 @@ export default class TypeaheadInput extends Vue {
     this.oldValue = this.internalValue;
   }
 
-  get disabled(): boolean {
-      return this.isSelected;
-  }
 
   private getId(data: object): string {
     return this.idProvider(data);
@@ -147,7 +146,6 @@ export default class TypeaheadInput extends Vue {
   // eslint-disable-next-line
   private onSuggestionSelected(suggestion: any) {
     this.internalValue = this.getLabel(suggestion);
-    this.isSelected = true;
     this.$emit("onSuggestionSelected", suggestion);
   }
 
@@ -162,7 +160,7 @@ export default class TypeaheadInput extends Vue {
       }
       
       this.addNewHandler(this.internalValue).then(() => {
-          this.isSelected = true;
+          // do we need error handling here?
       })
   }
 }

@@ -18,7 +18,10 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <router-link class="nav-link" to="/add-recipe">Add recipe</router-link>
+            <router-link class="nav-link" to="/recipes">Recipes</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/recipe-editor">Add recipe</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/ingredients">Ingredients</router-link>

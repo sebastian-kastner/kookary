@@ -23,6 +23,11 @@ export class RecipesClient {
       return recipes
     }
 
+    public async getRecipe(recipeId: string | number): Promise<Recipe> {
+      const ret = await this.client.getRecipeItem(recipeId.toString());
+      return this.toViewModelConverter.convertRecipe(ret.data);
+    }
+
     public async saveRecipe(recipe: Recipe): Promise<Recipe> {
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
       console.log("saving recipe", restRecipe);

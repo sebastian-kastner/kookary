@@ -46,6 +46,7 @@ import {v4 as uuid} from 'uuid';
   components: { IngredientEditor },
 })
 export default class RecipeEditorView extends Vue {
+  recipeId?: string;
   recipe: Recipe = {};
   existingIngredients: Ingredient[] = [];
   recipesClient: RecipesClient = new RecipesClient();
@@ -53,10 +54,20 @@ export default class RecipeEditorView extends Vue {
   doValidate = false;
 
   mounted(): void {
-    this.recipe = {
-      ingredients: [],
-    };
-    this.createNewIngredient();
+    const routeRecipeId = this.$route.query['recipeId'];
+    if (routeRecipeId) {
+      this.recipeId = routeRecipeId.toString();
+      this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
+        this.recipe = recipe;
+        this.createNewIngredient();
+      });
+      
+    } else {
+      this.recipe = {
+        ingredients: [],
+      };
+      this.createNewIngredient();
+    }
 
     this.ingredientsClient.getIngredients().then((ingredients) => {
       this.existingIngredients = ingredients;

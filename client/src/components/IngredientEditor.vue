@@ -4,7 +4,8 @@
       <div class="col-sm-6">
         <typeahead-input
           :data="existingIngredients"
-          :value="ingredient.name"
+          :value="getIngredientLabel(ingredient.ingredient)"
+          :isDisabled="ingredientSelected"
           :labelProvider="getIngredientLabel"
           :idProvider="getIngredientId"
           :addNewHandler="addNewIngredient"
@@ -50,24 +51,30 @@ export default class IngredientEditor extends Vue {
   ingredientSelected = false;
   ingredientsClient = new IngredientsClient();
 
+  mounted(): void {
+    if(this.ingredient && this.ingredient.ingredient && this.ingredient.ingredient.ingredientId) {
+      this.ingredientSelected = true;
+    }
+  }
+
   setIngredient(ingredient: Ingredient): void {
     this.ingredient.ingredient = ingredient;
     this.ingredientSelected = true;
     this.$emit("onNameChanged");
   }
 
-  getIngredientLabel(ingredient: Ingredient): string {
-    if(ingredient.name) {
+  getIngredientLabel(ingredient: Ingredient | undefined): string {
+    if(ingredient && ingredient.name) {
       return ingredient.name;
     }
     return ''
   }
 
-  getIngredientId(ingredient: Ingredient): string {
-    if(ingredient.ingredientId) {
+  getIngredientId(ingredient: Ingredient | undefined): string | null {
+    if(ingredient && ingredient.ingredientId) {
       return ingredient.ingredientId.toString();
     }
-    return ''
+    return null;
   }
 
   removeIngredient(): void {
