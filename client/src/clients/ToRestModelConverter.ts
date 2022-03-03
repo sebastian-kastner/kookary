@@ -36,25 +36,24 @@ export class ToRestModelConverter {
         return prefix + "/" + id;
       }
       
-      public convertRecipeIngredient (viewModelIngredient: RecipeIngredient): RecipeIngredientJsonld {
+      public convertRecipeIngredient (viewModelIngredient: RecipeIngredient, recipeId?: string): RecipeIngredientJsonld {
         return {
           recipeIngredientId: viewModelIngredient.recipeIngredientId,
           ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
           unit: viewModelIngredient.unit,
           quantity: viewModelIngredient.quantity,
-          // FIXME: do i need to set the recipe here as well?
-          // recipe: what do i do??
+          recipe: (recipeId) ? ep.RECIPES_ENDPOINT + "/" + recipeId : undefined
         }
       }
       
-      public convertRecipeIngredients (viewModelIngredients?: RecipeIngredient[]): RecipeIngredientJsonld[] {
+      public convertRecipeIngredients (viewModelIngredients?: RecipeIngredient[], recipeId?: string): RecipeIngredientJsonld[] {
         if (!viewModelIngredients) {
           return []
         }
         const ingredients: RecipeIngredientJsonld[] = []
         viewModelIngredients.forEach((viewModelIngredient) => {
           if(viewModelIngredient.ingredient?.ingredientId) {
-            ingredients.push(this.convertRecipeIngredient(viewModelIngredient))
+            ingredients.push(this.convertRecipeIngredient(viewModelIngredient, recipeId))
           }
         })
         return ingredients
@@ -71,7 +70,7 @@ export class ToRestModelConverter {
           dateAdded: apiRecipe.dateAdded,
           // FIXME convert images
           image: [],
-          ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
+          ingredients: this.convertRecipeIngredients(apiRecipe.ingredients, apiRecipe.recipeId?.toString()),
           // FIXME convert tags
           tag: []
         }

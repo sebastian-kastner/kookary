@@ -75,7 +75,6 @@ export default class TypeaheadInput extends Vue {
   mounted(): void {
     this.internalValue = this.value;
     this.oldValue = this.internalValue;
-    console.log(this.isDisabled)
   }
 
   private onValueChange(): void {
