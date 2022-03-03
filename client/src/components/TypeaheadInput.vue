@@ -17,20 +17,21 @@
 			@keydown.enter.tab.prevent="selectCurrentSelection"
     />
     <div class="typeahead-dropdown list-group">
-      <div v-if="suggestions.length > 0 && addNewHandler" v-on:click="addNewItem">
-        <a class="list-group-item">
+      <div v-if="showSuggestions > 0 && addNewHandler" v-on:click="addNewItem">
+        <a class="list-group-item" :class="activeIndex === ADD_SUGGESTION_INDEX ? 'active' : ''">
           ➕ <span style="font-style: italic;">{{ internalValue }}</span>
         </a>
       </div>
       <div
         class="typeahead-suggestion"
-        v-for="suggestion in suggestions"
+        v-for="(suggestion, index) in suggestions"
         v-bind:key="suggestion.id"
-        :class="suggestion.isActive ? 'active' : ''"
         v-show="suggestions.length > 0"
         v-on:click="onSuggestionSelected(suggestion.data)"
       >
-        <a class="list-group-item">{{ suggestion.label }}</a>
+        <a class="list-group-item" :class="activeIndex === index ? 'active' : ''">
+          {{ suggestion.label }}
+        </a>
       </div>
     </div>
   </div>
@@ -42,7 +43,6 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 type Suggestion = {
   label: string,
   id: string,
-  isActive: boolean,
   // eslint-disable-next-line
   data: any,
 }
@@ -61,60 +61,53 @@ export default class TypeaheadInput extends Vue {
 
   @Prop({ required: false }) addNewHandler!: (name: string) => Promise<void>;
 
+  DEFAULT_SUGGESTION_INDEX = -2;
+  ADD_SUGGESTION_INDEX = -1;
+
   internalValue = "";
   isSelected = false;
-  activeIndex = -1;
+  activeIndex = this.DEFAULT_SUGGESTION_INDEX;
   suggestions: Suggestion[] = [];
+  oldValue = "";
+  showSuggestions = false;
 
   mounted(): void {
     this.internalValue = this.value;
+    this.oldValue = this.internalValue;
   }
 
   private onValueChange(): void {
-    if(!this.isSelected) {
+    if(this.oldValue == this.internalValue) {
+      return;
+    }
+    
+    if(!this.isSelected && this.internalValue.length > 1) {
       const suggestions: Suggestion[] = [];
       for(let i=0; i < this.data.length; i++) {
-        const label = this.getLabel(this.data[0]);
+        const label = this.getLabel(this.data[i]);
         if (label.toLowerCase().startsWith(this.internalValue.toLowerCase())) {
           const suggestion: Suggestion = {
-            isActive: false,
             label,
-            id: this.getId(this.data[0]),
-            data: this.data[0]
+            id: this.getId(this.data[i]),
+            data: this.data[i]
           }
           suggestions.push(suggestion);
         }
       }
       this.suggestions = suggestions;
+      this.showSuggestions = true;
     } else {
       this.suggestions = [];
+      this.showSuggestions = false;
     }
+
+    this.activeIndex = this.DEFAULT_SUGGESTION_INDEX;
+    this.oldValue = this.internalValue;
   }
 
   get disabled(): boolean {
       return this.isSelected;
   }
-
-  // eslint-disable-next-line
-  // get suggestions(): Suggestion[] {
-  //   // eslint-disable-next-line
-  //   const suggestions: any[] = [];
-  //   if (!this.showSuggestions) {
-  //     return suggestions;
-  //   }
-
-  //   for(let i=0; i < this.data.length; i++) {
-  //     const label = this.getLabel(this.data[0]);
-  //     if (label.toLowerCase().startsWith(this.internalValue.toLowerCase())) {
-  //       const suggestion: Suggestion = {
-  //         isActive: false,
-  //         label,
-  //         id: this.getId(this.data[0]),
-  //         data: this.data[0]
-  //       }
-  //       suggestions.push(suggestion);
-  //     }
-  //   }
 
   private getId(data: object): string {
     return this.idProvider(data);
@@ -125,17 +118,30 @@ export default class TypeaheadInput extends Vue {
   }
 
   private onArrowDown(): void {
-    
-    this.activeIndex = 0;
-    console.log('down!');
+    const oldIndex = this.activeIndex;
+    let newIndex = oldIndex + 1;
+    if (newIndex <= (this.suggestions.length - 1)) {
+      this.activeIndex = newIndex;
+    }
   }
 
   private onArrowUp(): void {
-    console.log('up!');
+    const oldIndex = this.activeIndex;
+    let newIndex = oldIndex -1;
+    if (newIndex >= this.DEFAULT_SUGGESTION_INDEX) {
+      this.activeIndex = newIndex
+    }
   }
 
   private selectCurrentSelection(): void {
-    console.log('select!');
+    if (this.activeIndex !== this.DEFAULT_SUGGESTION_INDEX) {
+      if(this.activeIndex === this.ADD_SUGGESTION_INDEX) {
+        this.addNewItem();
+      } else {
+        this.onSuggestionSelected(this.suggestions[this.activeIndex].data);
+      }
+      this.activeIndex = this.DEFAULT_SUGGESTION_INDEX;
+    }
   }
 
   // eslint-disable-next-line

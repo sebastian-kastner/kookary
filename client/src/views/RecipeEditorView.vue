@@ -20,7 +20,7 @@
       >
         <ingredient-editor
           :ingredient="ingredient"
-          :existingIngredients="availableIngredients"
+          :existingIngredients="existingIngredients"
           @onNameChanged="updateName"
           @onDelete="onDelete"
         />
@@ -47,7 +47,7 @@ import {v4 as uuid} from 'uuid';
 })
 export default class RecipeEditorView extends Vue {
   recipe: Recipe = {};
-  availableIngredients: Ingredient[] = [];
+  existingIngredients: Ingredient[] = [];
   recipesClient: RecipesClient = new RecipesClient();
   ingredientsClient: IngredientsClient = new IngredientsClient();
   doValidate = false;
@@ -59,7 +59,7 @@ export default class RecipeEditorView extends Vue {
     this.createNewIngredient();
 
     this.ingredientsClient.getIngredients().then((ingredients) => {
-      this.availableIngredients = ingredients;
+      this.existingIngredients = ingredients;
     });
   }
 
