@@ -1,4 +1,4 @@
-# client2
+# Kookary client
 
 ## Project setup
 ```
