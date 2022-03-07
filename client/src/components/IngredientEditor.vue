@@ -17,7 +17,7 @@
           type="text"
           class="form-control"
           placeholder="Menge"
-          v-model="ingredient.amount"
+          v-model="ingredient.quantity"
         />
       </div>
       <div class="col-sm">
