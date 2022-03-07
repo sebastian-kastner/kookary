@@ -29,7 +29,7 @@ export class ToRestModelConverter {
         }
       }
 
-      private toApiId(prefix: string, id: number | null | undefined): string {
+      private toApiId(prefix: string, id: number | string | null | undefined): string {
         if(!id) {
           return '';
         }
@@ -42,7 +42,7 @@ export class ToRestModelConverter {
           ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
           unit: viewModelIngredient.unit,
           quantity: viewModelIngredient.quantity,
-          recipe: (recipeId) ? ep.RECIPES_ENDPOINT + "/" + recipeId : undefined
+          recipe: (recipeId) ? this.toApiId(ep.RECIPES_ENDPOINT, recipeId) : undefined
         }
       }
       
