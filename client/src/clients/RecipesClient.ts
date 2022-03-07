@@ -49,7 +49,6 @@ export class RecipesClient {
     public async saveRecipe(recipe: Recipe): Promise<Recipe> {
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
       if(recipe.recipeId) {
-        console.log(restRecipe);
         return this.saveInternal(this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe));
       }
       return this.saveInternal(this.client.postRecipeCollection(restRecipe));

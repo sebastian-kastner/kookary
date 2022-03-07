@@ -106,13 +106,12 @@ export default class RecipeEditorView extends Vue {
       this.doValidate = true;
     } else {
       // create new recipe if no recipeId was given
-      this.recipesClient.saveRecipe(this.recipe).then((recipe) => {
-        console.log("recipe saved: ", recipe)
+      this.recipesClient.saveRecipe(this.recipe).then(() => {
+        this.$router.push({ path: '/recipes' });
       }).catch((err) => {
         console.error("failed to save recipe.", err);
       });
 
-      this.$router.push({ path: '/recipes' });
     }
   }
 }

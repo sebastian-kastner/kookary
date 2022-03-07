@@ -41,9 +41,10 @@ export class ToViewModelConverter {
       return []
     }
     const ingredients: RecipeIngredient[] = []
-    apiIngredients.forEach((apiIngredient) => {
-      ingredients.push(this.convertRecipeIngredient(apiIngredient))
-    })
+    // not using forEach here because in for some reason apiIngredients is an object after a save operation
+    for (const key in apiIngredients) {
+      ingredients.push(this.convertRecipeIngredient(apiIngredients[key]))
+    }
     return ingredients
   }
   
