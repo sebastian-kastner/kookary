@@ -6,8 +6,33 @@ export class ToViewModelConverter {
   public convertTag (apiTag: TagJsonld): Tag {
     return {
       tagId: apiTag.tagId,
-      name: apiTag.name
+      name: apiTag.name,
+      uuid: uuid(),
     }
+  }
+
+  public convertTags(apiTags: string[] | undefined): Tag[] {
+    const tags: Tag[] = [];
+    if(apiTags) {
+      apiTags.forEach((apiTag) => {
+        tags.push({
+          uuid: uuid(),
+          tagId: this.toId(apiTag)
+        });
+      });
+    }
+    return tags;
+  }
+
+  private toId(iri: string): number | undefined {
+    const stringId = iri.split("/").pop()?.toString();
+    if(stringId) {
+      const number = Number(stringId)
+      if(!isNaN(number)) {
+        return number;
+      }
+    }
+    return undefined;
   }
   
   public convertImage (apiImage: ImageJsonld): Image {
@@ -61,7 +86,7 @@ export class ToViewModelConverter {
       images: [],
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       // FIXME convert tags
-      tags: []
+      tags: this.convertTags(apiRecipe.tag)
     }
   }
 }

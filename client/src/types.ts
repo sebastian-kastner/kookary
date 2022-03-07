@@ -1,6 +1,7 @@
 export type Tag = {
     tagId?: number;
     name?: string;
+    uuid: string;
 }
 
 export type Image = {

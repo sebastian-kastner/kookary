@@ -29,7 +29,7 @@
         v-show="suggestions.length > 0"
         v-on:click="onSuggestionSelected(suggestion.data)"
       >
-        <a class="list-group-item" :class="activeIndex === index ? 'active' : ''">
+        <a class="list-group-item" :class="activeIndex === index ? 'active' : ''" v-on:click="onSuggestionSelected(suggestion.data)">
           {{ suggestion.label }}
         </a>
       </div>

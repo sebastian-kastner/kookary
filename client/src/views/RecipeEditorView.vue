@@ -12,6 +12,20 @@
       />
     </div>
     <div class="form-group">
+      <label>Tags</label>
+      <div>
+        <tag-component 
+          v-for="tag in recipe.tags"
+          v-bind="tag"
+          v-bind:key="tag.uuid"
+          :tag="tag"
+          :existingTags="existingTags"
+          @onTagSelected="onTagSelected"
+          @onDelete="onDeleteTag"
+        />
+      </div>
+    </div>
+    <div class="form-group">
       <label>Zutaten</label>
       <div
         v-for="ingredient in recipe.ingredients"
@@ -21,8 +35,8 @@
         <ingredient-editor
           :ingredient="ingredient"
           :existingIngredients="existingIngredients"
-          @onNameChanged="updateName"
-          @onDelete="onDelete"
+          @onNameChanged="updateIngredientName"
+          @onDelete="onDeleteIngredient"
         />
       </div>
     </div>
@@ -36,21 +50,28 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Ingredient, Recipe, RecipeIngredient } from "../types";
+import { Ingredient, Recipe, RecipeIngredient, Tag } from "../types";
 import { IngredientsClient } from "../clients/IngredientsClient";
 import { RecipesClient } from "../clients/RecipesClient";
+import { TagsClient } from "../clients/TagsClient"
 import IngredientEditor from "../components/IngredientEditor.vue";
+import TagComponent from "../components/TagComponent.vue"
 import {v4 as uuid} from 'uuid';
 
 @Component({
-  components: { IngredientEditor },
+  components: { IngredientEditor, TagComponent },
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
   recipe: Recipe = {};
-  existingIngredients: Ingredient[] = [];
+
   recipesClient: RecipesClient = new RecipesClient();
+
   ingredientsClient: IngredientsClient = new IngredientsClient();
+  existingIngredients: Ingredient[] = [];
+  tagsClient = new TagsClient();
+  existingTags: Tag[] = [];
+
   doValidate = false;
 
   mounted(): void {
@@ -59,18 +80,22 @@ export default class RecipeEditorView extends Vue {
       this.recipeId = routeRecipeId.toString();
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
-        this.createNewIngredient();
+        this.addNewIngredient();
+        this.addNewTag();
       });
-      
     } else {
       this.recipe = {
         ingredients: [],
       };
-      this.createNewIngredient();
+      this.addNewIngredient();
+      this.addNewTag();
     }
 
     this.ingredientsClient.getIngredients().then((ingredients) => {
       this.existingIngredients = ingredients;
+    });
+    this.tagsClient.getTags().then((tags) => {
+      this.existingTags = tags;
     });
   }
 
@@ -81,21 +106,37 @@ export default class RecipeEditorView extends Vue {
     return false;
   }
 
-  updateName(): void {
+  onTagSelected(): void {
+    this.addNewTag();
+  }
+
+  onDeleteTag(tagToDelete: Tag): void {
+    if (this.recipe.tags) {
+      this.recipe.tags.splice(this.recipe.tags.indexOf(tagToDelete), 1);
+    }
+  }
+
+  updateIngredientName(): void {
     if(this.recipe.ingredients) {
       if(this.recipe.ingredients[this.recipe.ingredients.length - 1].ingredient?.name) {
-        this.createNewIngredient();
+        this.addNewIngredient();
       }
     }
   }
 
-  private createNewIngredient(): void {
+  private addNewIngredient(): void {
     this.recipe.ingredients?.push({
       uuid: uuid(),
     })
   }
 
-  onDelete(ingredientToRemove: RecipeIngredient): void {
+  private addNewTag(): void {
+    this.recipe.tags?.push({
+      uuid: uuid(),
+    });
+  }
+
+  onDeleteIngredient(ingredientToRemove: RecipeIngredient): void {
     if (this.recipe.ingredients) {
       this.recipe.ingredients.splice(this.recipe.ingredients.indexOf(ingredientToRemove), 1);
     }

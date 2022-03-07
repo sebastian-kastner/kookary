@@ -54,6 +54,7 @@ export class RecipesClient {
       return this.saveInternal(this.client.postRecipeCollection(restRecipe));
     }
 
+    // eslint-disable-next-line
     private async saveInternal(savePromise: Promise<AxiosResponse<RecipeJsonld, any>>) {
       return new Promise<Recipe>((resolve, reject) => {
         savePromise
