@@ -1,6 +1,8 @@
 <?php
 namespace App\Filter;
 
+use Exception;
+
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 
@@ -17,16 +19,23 @@ final class RecipeWithIngredientFilter extends AbstractContextAwareFilter
 
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
     {
-        if($property != self::WITH_INGREDIENTS_PROPERTY) {
+        if($property != self::WITH_INGREDIENTS_PROPERTY || $value == "") {
             return;
         }
+
+        // get alias for recipe table
+        $aliases = $queryBuilder->getRootAliases();
+        if(count($aliases) != 1) {
+            throw new Exception("Expected exactly one root alias for recipe, cannot handle anything else!");
+        }
+        $recipeAlias = $aliases[0];
 
         $queryBuilder
             ->innerJoin(
                 RecipeIngredient::class,
                 "ri",
                 Join::WITH,
-                "o.recipeId = ri.recipe"
+                sprintf("%s.recipeId = ri.recipe", $recipeAlias)
             )
             ->where(sprintf("ri.ingredient = %d", $value));
     }
