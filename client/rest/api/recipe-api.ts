@@ -70,10 +70,12 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
          * Retrieves the collection of Recipe resources.
          * @summary Retrieves the collection of Recipe resources.
          * @param {number} [page] The collection page number
+         * @param {string} [name] 
+         * @param {number} [withIngredient] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection: async (page?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getRecipeCollection: async (page?: number, name?: string, withIngredient?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/recipes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -88,6 +90,14 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
+            }
+
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
+            }
+
+            if (withIngredient !== undefined) {
+                localVarQueryParameter['with_ingredient'] = withIngredient;
             }
 
 
@@ -276,11 +286,13 @@ export const RecipeApiFp = function(configuration?: Configuration) {
          * Retrieves the collection of Recipe resources.
          * @summary Retrieves the collection of Recipe resources.
          * @param {number} [page] The collection page number
+         * @param {string} [name] 
+         * @param {number} [withIngredient] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecipeCollection(page?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, options);
+        async getRecipeCollection(page?: number, name?: string, withIngredient?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, name, withIngredient, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -353,11 +365,13 @@ export const RecipeApiFactory = function (configuration?: Configuration, basePat
          * Retrieves the collection of Recipe resources.
          * @summary Retrieves the collection of Recipe resources.
          * @param {number} [page] The collection page number
+         * @param {string} [name] 
+         * @param {number} [withIngredient] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection(page?: number, options?: any): AxiosPromise<InlineResponse2001> {
-            return localVarFp.getRecipeCollection(page, options).then((request) => request(axios, basePath));
+        getRecipeCollection(page?: number, name?: string, withIngredient?: number, options?: any): AxiosPromise<InlineResponse2001> {
+            return localVarFp.getRecipeCollection(page, name, withIngredient, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Recipe resource.
@@ -427,12 +441,14 @@ export class RecipeApi extends BaseAPI {
      * Retrieves the collection of Recipe resources.
      * @summary Retrieves the collection of Recipe resources.
      * @param {number} [page] The collection page number
+     * @param {string} [name] 
+     * @param {number} [withIngredient] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RecipeApi
      */
-    public getRecipeCollection(page?: number, options?: AxiosRequestConfig) {
-        return RecipeApiFp(this.configuration).getRecipeCollection(page, options).then((request) => request(this.axios, this.basePath));
+    public getRecipeCollection(page?: number, name?: string, withIngredient?: number, options?: AxiosRequestConfig) {
+        return RecipeApiFp(this.configuration).getRecipeCollection(page, name, withIngredient, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -15,11 +15,11 @@ use App\Entity\RecipeIngredient;
 
 final class RecipeWithIngredientFilter extends AbstractContextAwareFilter
 {
-    const WITH_INGREDIENTS_PROPERTY = "with_ingredients";
+    const WITH_INGREDIENT_PROPERTY = "with_ingredient";
 
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
     {
-        if($property != self::WITH_INGREDIENTS_PROPERTY || $value == "") {
+        if($property != self::WITH_INGREDIENT_PROPERTY || $value == "") {
             return;
         }
 
@@ -49,13 +49,13 @@ final class RecipeWithIngredientFilter extends AbstractContextAwareFilter
 
         $description = [];
         foreach ($this->properties as $property => $strategy) {
-            $description[self::WITH_INGREDIENTS_PROPERTY] = [
+            $description[self::WITH_INGREDIENT_PROPERTY] = [
                 'property' => $property,
                 'type' => Type::BUILTIN_TYPE_INT,
                 'required' => false,
                 'swagger' => [
                     'description' => 'Filter for recipes with specific ingredients.',
-                    'name' => 'with_ingredients filter',
+                    'name' => 'with_ingredient filter',
                 ],
             ];
         }

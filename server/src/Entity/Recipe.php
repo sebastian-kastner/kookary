@@ -20,7 +20,7 @@ use App\Filter\RecipeWithIngredientFilter;
  * @ORM\Entity
  * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
- * @ApiFilter(RecipeWithIngredientFilter::class, properties={"with_ingredients": "with_ingredients"})
+ * @ApiFilter(RecipeWithIngredientFilter::class, properties={"with_ingredient": "with_ingredient"})
  */
 class Recipe
 {
