@@ -39,7 +39,6 @@ export default class TagComponent extends Vue {
   setTag(tag: Tag): void {
     this.tag.tagId = tag.tagId;
     this.tag.name = tag.name;
-    console.log("setter", this.tag.name);
     this.tagSelected = true;
     this.$emit("onTagSelected", this.tag);
   }

@@ -90,4 +90,6 @@ export type RecipeFilter = {
   page?: number,
   withIngredient?: number,
   nameContains?: string,
+  tags?: number[],
+  isSeasonal?: boolean,
 }

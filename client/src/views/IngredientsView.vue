@@ -2,6 +2,7 @@
   <div class="ingredients">
     <ul class="list-group">
       <li
+        class="list-group-item"
         v-for="ingredient in ingredients"
         v-bind:key="ingredient.ingredientId"
       >

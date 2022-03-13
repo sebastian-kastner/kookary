@@ -34,7 +34,10 @@
         <span
           class="simple-typeahead-list-item-text"
           :data-text="input"
-        >➕ {{ input }}</span>
+        >
+          <b-icon-plus-circle/>
+          {{ input }}
+        </span>
       </div>
 
       <div
@@ -75,9 +78,10 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { BIconPlusCircle } from 'bootstrap-vue'
 
 @Component({
-  components: {},
+  components: { BIconPlusCircle },
 })
 export default class TypeaheadInput extends Vue {
   @Prop({ required: false })

@@ -1,7 +1,7 @@
 <template>
   <div class="recipe-list">
     <ul class="list-group">
-      <li v-for="recipe in recipes" v-bind:key="recipe.recipeId">
+      <li class="list-group-item" v-for="recipe in recipes" v-bind:key="recipe.recipeId">
         <router-link
           v-bind:key="recipe.recipeId"
           :to="{ path: '/recipe-editor', query: { recipeId: recipe.recipeId } }"
