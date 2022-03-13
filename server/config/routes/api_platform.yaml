@@ -1,3 +1,4 @@
+# see: https://api-platform.com/docs/core/configuration/
 api_platform:
     defaults:
         pagination_client_enabled: true

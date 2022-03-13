@@ -19,8 +19,12 @@ export class RecipesClient {
      * 
      * @returns all recipes
      */
-    public async getRecipes (): Promise<Recipe[]> {
-      const ret = await this.client.getRecipeCollection()
+    public async getRecipes (filter?: RecipeFilter): Promise<Recipe[]> {
+      let page = 1;
+      if (filter?.page) {
+        page = filter.page;
+      }
+      const ret = await this.client.getRecipeCollection(page, filter?.nameContains, filter?.withIngredient);
       
       const apiRecipes = ret.data['hydra:member']
 
@@ -82,4 +86,10 @@ export class RecipesClient {
           });
       })
     }
+}
+
+export type RecipeFilter = {
+  page?: number,
+  withIngredient?: number,
+  nameContains?: string,
 }
