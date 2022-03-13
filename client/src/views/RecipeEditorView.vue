@@ -51,9 +51,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Ingredient, Recipe, RecipeIngredient, Tag } from "../types";
-import { IngredientsClient } from "../clients/IngredientsClient";
+import { ingredientStore, tagStore } from "../stores/rootStore"
 import { RecipesClient } from "../clients/RecipesClient";
-import { TagsClient } from "../clients/TagsClient"
 import IngredientEditor from "../components/IngredientEditor.vue";
 import TagComponent from "../components/TagComponent.vue"
 import {v4 as uuid} from 'uuid';
@@ -66,11 +65,6 @@ export default class RecipeEditorView extends Vue {
   recipe: Recipe = {};
 
   recipesClient: RecipesClient = new RecipesClient();
-
-  ingredientsClient: IngredientsClient = new IngredientsClient();
-  existingIngredients: Ingredient[] = [];
-  tagsClient = new TagsClient();
-  existingTags: Tag[] = [];
 
   doValidate = false;
 
@@ -90,13 +84,14 @@ export default class RecipeEditorView extends Vue {
       this.addNewIngredient();
       this.addNewTag();
     }
+  }
 
-    this.ingredientsClient.getIngredients().then((ingredients) => {
-      this.existingIngredients = ingredients;
-    });
-    this.tagsClient.getTags().then((tags) => {
-      this.existingTags = tags;
-    });
+  get existingIngredients(): Ingredient[] {
+    return ingredientStore.ingredients;
+  }
+
+  get existingTags(): Tag[] {
+    return tagStore.tags;
   }
 
   get hasValidName(): boolean {

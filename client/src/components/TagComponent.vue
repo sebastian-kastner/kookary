@@ -18,7 +18,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Tag } from "../types";
-import { TagsClient } from "../clients/TagsClient";
+import { tagStore } from "../stores/rootStore"
 import TypeaheadInput from "./TypeaheadInput.vue";
 
 @Component({
@@ -28,7 +28,6 @@ export default class TagComponent extends Vue {
   @Prop({ required: true }) tag!: Tag;
   @Prop({ required: true }) existingTags!: Tag[];
 
-  tagsClient = new TagsClient();
   tagSelected = false;
 
   mounted(): void {
@@ -40,6 +39,7 @@ export default class TagComponent extends Vue {
   setTag(tag: Tag): void {
     this.tag.tagId = tag.tagId;
     this.tag.name = tag.name;
+    console.log("setter", this.tag.name);
     this.tagSelected = true;
     this.$emit("onTagSelected", this.tag);
   }
@@ -63,14 +63,13 @@ export default class TagComponent extends Vue {
   }
 
   async addNewTag(tagName: string): Promise<void> {
-    this.tagsClient
-      .createTag(tagName)
+    tagStore.addTag(tagName)
       .then((tag) => {
         this.setTag(tag);
         this.existingTags.push(tag);
       })
       .catch((reason) => {
-        console.error("Failed to create ingredient", tagName, reason);
+        console.error("Failed to create tag", tagName, reason);
       });
   }
 }

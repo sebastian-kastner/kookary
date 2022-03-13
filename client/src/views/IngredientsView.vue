@@ -12,21 +12,15 @@
 </template>
 
 <script lang="ts">
+import { Ingredient } from '@/types';
 import { Component, Vue } from 'vue-property-decorator'
-import { IngredientsClient } from '../clients/IngredientsClient'
-import { Ingredient } from '../types'
-
+import { ingredientStore } from '../stores/rootStore'
 @Component({
   components: {}
 })
 export default class IngredientsView extends Vue {
-  ingredients: Ingredient[] = [];
-
-  mounted (): void {
-    const client = new IngredientsClient()
-    client.getIngredients().then((ret) => {
-      this.ingredients = ret
-    })
+  get ingredients(): Ingredient[] {
+    return ingredientStore.ingredients;
   }
 }
 </script>

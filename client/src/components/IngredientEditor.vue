@@ -51,8 +51,8 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { RecipeIngredient, Ingredient } from "../types";
-import { IngredientsClient } from "../clients/IngredientsClient";
 import TypeaheadInput from "./TypeaheadInput.vue";
+import { ingredientStore } from "../stores/rootStore"
 
 @Component({
   components: { TypeaheadInput },
@@ -62,7 +62,6 @@ export default class IngredientEditor extends Vue {
   @Prop({ required: true }) existingIngredients!: Ingredient[];
 
   ingredientSelected = false;
-  ingredientsClient = new IngredientsClient();
 
   mounted(): void {
     if (
@@ -99,8 +98,7 @@ export default class IngredientEditor extends Vue {
   }
 
   async addNewIngredient(ingredientName: string): Promise<void> {
-    this.ingredientsClient
-      .createIngredient(ingredientName)
+    ingredientStore.addIngredient(ingredientName)
       .then((ingredient) => {
         this.setIngredient(ingredient);
       })
