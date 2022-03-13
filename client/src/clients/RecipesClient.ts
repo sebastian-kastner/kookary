@@ -32,7 +32,7 @@ export class RecipesClient {
         recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
       })
 
-      return recipes
+      return recipes;
     }
 
     /**
@@ -41,7 +41,6 @@ export class RecipesClient {
      * @param recipeId the id of the recipe to be fetched
      * @returns the recipe with the given id
      */
-    // TODO what happens if the recipe does not exist?
     public async getRecipe(recipeId: string | number): Promise<Recipe> {
       const ret = await this.client.getRecipeItem(recipeId.toString());
       const recipe = this.toViewModelConverter.convertRecipe(ret.data);

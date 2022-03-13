@@ -86,13 +86,6 @@ export default class IngredientEditor extends Vue {
     return "";
   }
 
-  getIngredientId(ingredient: Ingredient | undefined): string | null {
-    if (ingredient && ingredient.ingredientId) {
-      return ingredient.ingredientId.toString();
-    }
-    return null;
-  }
-
   removeIngredient(): void {
     this.$emit("onDelete", this.ingredient);
   }
