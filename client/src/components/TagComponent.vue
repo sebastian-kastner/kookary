@@ -1,7 +1,7 @@
 <template>
   <div class="tag-component">
     <div v-if="tagSelected" class="tag">
-      {{ internalTagName }}
+      {{ tag.name }}
       <p class="tag-delete" v-on:click="deleteTag">x</p>
     </div>
     <typeahead-input
@@ -32,30 +32,10 @@ export default class TagComponent extends Vue {
   tagsClient = new TagsClient();
   tagSelected = false;
 
-  internalTagName = "";
-
   mounted(): void {
-    this.internalTagName = this.getInitialTagName();
     if (this.tag.tagId) {
       this.tagSelected = true;
     }
-  }
-
-  getInitialTagName(): string {
-    if(this.tag.name && this.tag.name !== "") {
-      return this.tag.name;
-    }
-    
-    // this is a weird hack because the api does not deliver the tag names with the initial result
-    if (!this.tag.name && this.tag.tagId) {
-      for (const key in this.existingTags) {
-        const tag = this.existingTags[key];
-        if (tag.tagId && tag.tagId === this.tag.tagId && tag.name) {
-          return tag.name;
-        }
-      }
-    }
-    return ""
   }
 
   setTag(tag: Tag): void {

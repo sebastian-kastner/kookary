@@ -6,9 +6,12 @@ import { ToViewModelConverter } from './ToViewModelconverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 import { RecipeJsonld } from 'rest/models'
+import { TagsClient } from './TagsClient'
 
 export class RecipesClient {
     client = new RecipeApi(clientConfiguration);
+    tagsClient = new TagsClient();
+
     toViewModelConverter = new ToViewModelConverter();
     toRestModelConverter = new ToRestModelConverter();
 
@@ -18,6 +21,7 @@ export class RecipesClient {
      */
     public async getRecipes (): Promise<Recipe[]> {
       const ret = await this.client.getRecipeCollection()
+      
       const apiRecipes = ret.data['hydra:member']
 
       const recipes: Recipe[] = []
@@ -37,7 +41,18 @@ export class RecipesClient {
     // TODO what happens if the recipe does not exist?
     public async getRecipe(recipeId: string | number): Promise<Recipe> {
       const ret = await this.client.getRecipeItem(recipeId.toString());
-      return this.toViewModelConverter.convertRecipe(ret.data);
+      const recipe = this.toViewModelConverter.convertRecipe(ret.data);
+      // manually resolve tag names
+      const tags = await this.tagsClient.getTagNameMap();
+      recipe.tags?.forEach((tag) => {
+        if(tag.tagId) {
+          const tagName = tags.get(tag.tagId);
+          if(tagName) {
+            tag.name = tagName;
+          }
+        }
+      });
+      return recipe;
     }
 
     /**
