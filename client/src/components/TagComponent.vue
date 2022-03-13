@@ -6,12 +6,11 @@
     </div>
     <typeahead-input
       v-else
-      :data="existingTags"
+      :items="existingTags"
       :value="getTagLabel(tag)"
-      :labelProvider="getTagLabel"
-      :idProvider="getTagId"
+      :itemProjection="getTagLabel"
       :addNewHandler="addNewTag"
-      @onSuggestionSelected="setTag"
+      @selectItem="setTag"
     />
   </div>
 </template>

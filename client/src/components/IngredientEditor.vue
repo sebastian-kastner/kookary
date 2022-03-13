@@ -2,14 +2,20 @@
   <div class="form-group">
     <div class="row g-3">
       <div class="col-sm-6">
+        <input
+          v-if="ingredient.ingredient && ingredient.ingredient.ingredientId"
+          class="form-control simple-typeahead-input"
+          type="text"
+          v-model="ingredient.ingredient.name"
+          disabled="true"
+        />
         <typeahead-input
-          :data="existingIngredients"
+          v-else
+          :items="existingIngredients"
           :value="getIngredientLabel(ingredient.ingredient)"
-          :isDisabled="ingredientSelected"
-          :labelProvider="getIngredientLabel"
-          :idProvider="getIngredientId"
+          :itemProjection="getIngredientLabel"
           :addNewHandler="addNewIngredient"
-          @onSuggestionSelected="setIngredient"
+          @selectItem="setIngredient"
         />
       </div>
       <div class="col-sm">
@@ -29,7 +35,14 @@
         />
       </div>
       <div class="col-sm">
-        <button type="button" class="btn btn-light" v-if="ingredientSelected" v-on:click="removeIngredient">X</button>
+        <button
+          type="button"
+          class="btn btn-light"
+          v-if="ingredientSelected"
+          v-on:click="removeIngredient"
+        >
+          X
+        </button>
       </div>
     </div>
   </div>
@@ -38,7 +51,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { RecipeIngredient, Ingredient } from "../types";
-import { IngredientsClient } from "../clients/IngredientsClient"
+import { IngredientsClient } from "../clients/IngredientsClient";
 import TypeaheadInput from "./TypeaheadInput.vue";
 
 @Component({
@@ -52,7 +65,11 @@ export default class IngredientEditor extends Vue {
   ingredientsClient = new IngredientsClient();
 
   mounted(): void {
-    if(this.ingredient && this.ingredient.ingredient && this.ingredient.ingredient.ingredientId) {
+    if (
+      this.ingredient &&
+      this.ingredient.ingredient &&
+      this.ingredient.ingredient.ingredientId
+    ) {
       this.ingredientSelected = true;
     }
   }
@@ -64,14 +81,14 @@ export default class IngredientEditor extends Vue {
   }
 
   getIngredientLabel(ingredient: Ingredient | undefined): string {
-    if(ingredient && ingredient.name) {
+    if (ingredient && ingredient.name) {
       return ingredient.name;
     }
-    return ''
+    return "";
   }
 
   getIngredientId(ingredient: Ingredient | undefined): string | null {
-    if(ingredient && ingredient.ingredientId) {
+    if (ingredient && ingredient.ingredientId) {
       return ingredient.ingredientId.toString();
     }
     return null;
@@ -82,11 +99,14 @@ export default class IngredientEditor extends Vue {
   }
 
   async addNewIngredient(ingredientName: string): Promise<void> {
-    this.ingredientsClient.createIngredient(ingredientName).then((ingredient) => {
-      this.setIngredient(ingredient);
-    }).catch((reason) => {
-      console.error("Failed to create ingredient", ingredientName, reason);
-    });
+    this.ingredientsClient
+      .createIngredient(ingredientName)
+      .then((ingredient) => {
+        this.setIngredient(ingredient);
+      })
+      .catch((reason) => {
+        console.error("Failed to create ingredient", ingredientName, reason);
+      });
   }
 }
 </script>
