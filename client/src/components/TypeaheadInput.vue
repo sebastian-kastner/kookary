@@ -210,11 +210,29 @@ export default class TypeaheadInput extends Vue {
   }
 
   selectItem(item: unknown) {
+    let itemToSelect = item;
+    let newItemAdded = false;
+
     if(this.currentSelectionIndex === -1 && this.addNewHandler !== undefined) {
-      this.addNewHandler(this.input);
-    } else {
-      this.input = this.itemProjection(item);
-      this.$emit("selectItem", item);
+      // dont add a new item if the current value already exists
+      let itemAlreadyExists = false;
+      for(let i in this.filteredItems) {
+        const suggestion = this.filteredItems[i];
+        if(this.itemProjection(suggestion) === this.input) {
+          itemToSelect = suggestion;
+          itemAlreadyExists = true;
+          break;
+        }
+      }
+      if(!itemAlreadyExists) {
+        this.addNewHandler(this.input);
+        newItemAdded = true;
+      }
+    } 
+    
+    if(!newItemAdded) {
+      this.input = this.itemProjection(itemToSelect);
+      this.$emit("selectItem", itemToSelect);
     }
 
     this.currentSelectionIndex = this.minSelectionIndex;
