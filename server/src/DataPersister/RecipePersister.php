@@ -5,7 +5,6 @@ namespace App\DataPersister;
 use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Doctrine\ORM\PersistentCollection;
 use App\Entity\Recipe;
-use Exception;
 use App\Entity\RecipeIngredient;
 use Doctrine\ORM\EntityManagerInterface;
 

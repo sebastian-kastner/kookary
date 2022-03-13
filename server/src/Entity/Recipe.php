@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTime;
+use ApiPlatform\Core\Annotation\ApiFilter;
+
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Filter\RecipeWithIngredientFilter;
 
 /**
  * Recipe
@@ -14,6 +19,8 @@ use DateTime;
  * @ORM\Table(name="recipe")
  * @ORM\Entity
  * @ApiResource()
+ * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
+ * @ApiFilter(RecipeWithIngredientFilter::class, properties={"with_ingredients": "with_ingredients"})
  */
 class Recipe
 {
