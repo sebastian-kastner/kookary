@@ -17,5 +17,10 @@ export const rootStore = new Vuex.Store({
 export const ingredientStore = createProxy(rootStore, IngredientStore);
 export const tagStore = createProxy(rootStore, TagStore);
 
-ingredientStore.init();
-tagStore.init();
+export async function initStores(): Promise<void> {
+  const ingredientInit = ingredientStore.init();
+  const tagsInit = tagStore.init();
+
+  await Promise.all([ingredientInit, tagsInit]);
+}
+

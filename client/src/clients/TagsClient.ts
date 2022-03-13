@@ -25,17 +25,6 @@ export class TagsClient {
         return tags
     }
 
-    public async getTagNameMap(): Promise<Map<number, string>> {
-      const tags = await this.getTags();
-      const tagNameMap = new Map<number, string>();
-      tags.forEach((tag) => {
-        if(tag.tagId && tag.name) {
-          tagNameMap.set(tag.tagId, tag.name);
-        }
-      });
-      return tagNameMap;
-    }
-
     /**
      * Creates a new tag
      * @param tagName the name of the tag to create

@@ -6,11 +6,10 @@ import { ToViewModelConverter } from './ToViewModelconverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 import { RecipeJsonld } from 'rest/models'
-import { TagsClient } from './TagsClient'
+import { tagStore } from '@/stores/rootStore'
 
 export class RecipesClient {
     client = new RecipeApi(clientConfiguration);
-    tagsClient = new TagsClient();
 
     toViewModelConverter = new ToViewModelConverter();
     toRestModelConverter = new ToRestModelConverter();
@@ -47,7 +46,7 @@ export class RecipesClient {
       const ret = await this.client.getRecipeItem(recipeId.toString());
       const recipe = this.toViewModelConverter.convertRecipe(ret.data);
       // manually resolve tag names
-      const tags = await this.tagsClient.getTagNameMap();
+      const tags = tagStore.tagMap;
       recipe.tags?.forEach((tag) => {
         if(tag.tagId) {
           const tagName = tags.get(tag.tagId);
