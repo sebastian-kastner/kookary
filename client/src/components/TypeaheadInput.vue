@@ -175,32 +175,35 @@ export default class TypeaheadInput extends Vue {
   }
 
   scrollSelectionIntoView() {
-    // setTimeout(() => {
-    //   const list_node = document.querySelector(
-    //     `#${this.wrapperId} .simple-typeahead-list`
-    //   );
-    //   const active_node = document.querySelector(
-    //     `#${this.wrapperId} .simple-typeahead-list-item.simple-typeahead-list-item-active`
-    //   );
-    //   if (active_node &&
-    //     !(
-    //       active_node.offsetTop >= list_node.scrollTop &&
-    //       active_node.offsetTop + active_node.offsetHeight <
-    //         list_node.scrollTop + list_node.offsetHeight
-    //     )
-    //   ) {
-    //     let scroll_to = 0;
-    //     if (active_node.offsetTop > list_node.scrollTop) {
-    //       scroll_to =
-    //         active_node.offsetTop +
-    //         active_node.offsetHeight -
-    //         list_node.offsetHeight;
-    //     } else if (active_node.offsetTop < list_node.scrollTop) {
-    //       scroll_to = active_node.offsetTop;
-    //     }
-    //     list_node.scrollTo(0, scroll_to);
-    //   }
-    // });
+    setTimeout(() => {
+      const list_node = document.querySelector(
+        `#${this.wrapperId} .simple-typeahead-list`
+      );
+      const active_node = document.querySelector(
+        `#${this.wrapperId} .simple-typeahead-list-item.simple-typeahead-list-item-active`
+      );
+
+      // nothing to do if active_node or list_node are no HTMLElements
+      if(!(active_node instanceof HTMLElement) || !(list_node instanceof HTMLElement)) {
+        return;
+      }
+      
+      if (!(active_node.offsetTop >= list_node.scrollTop &&
+          active_node.offsetTop + active_node.offsetHeight <
+            list_node.scrollTop + list_node.offsetHeight)
+      ) {
+        let scroll_to = 0;
+        if (active_node.offsetTop > list_node.scrollTop) {
+          scroll_to =
+            active_node.offsetTop +
+            active_node.offsetHeight -
+            list_node.offsetHeight;
+        } else if (active_node.offsetTop < list_node.scrollTop) {
+          scroll_to = active_node.offsetTop;
+        }
+        list_node.scrollTo(0, scroll_to);
+      }
+    });
   }
 
   selectCurrentSelection() {
@@ -228,7 +231,7 @@ export default class TypeaheadInput extends Vue {
         this.addNewHandler(this.input);
         newItemAdded = true;
       }
-    } 
+    }
     
     if(!newItemAdded) {
       this.input = this.itemProjection(itemToSelect);
