@@ -1,4 +1,4 @@
-import { Recipe } from '../types'
+import { Recipe, Tag } from '../types'
 import { AxiosError, AxiosResponse } from 'axios'
 import { RecipeApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
@@ -90,6 +90,6 @@ export type RecipeFilter = {
   page?: number,
   withIngredient?: number,
   nameContains?: string,
-  tags?: number[],
+  tags?: Tag[],
   isSeasonal?: boolean,
 }

@@ -25,7 +25,9 @@ export default class RecipesView extends Vue {
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
 
-  recipeFilter: RecipeFilter = {};
+  recipeFilter: RecipeFilter = {
+    tags: []
+  };
 
   mounted(): void {
     this.recipeClient.getRecipes().then((ret) => {

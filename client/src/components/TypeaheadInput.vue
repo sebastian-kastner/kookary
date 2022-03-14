@@ -93,17 +93,17 @@ export default class TypeaheadInput extends Vue {
   @Prop({ required: true })
   items!: object[];
 
-  @Prop({ required: false, default: "" })
-  value!: string;
-
   @Prop({required: false, default: ""})
   placeholder!: string;
 
   @Prop({ required: false, default: (item: unknown) => { return item; }})
   itemProjection!: (item: unknown) => string;
 
-  @Prop({ required: false }) addNewHandler!:
-  (name: string) => Promise<void>;
+  @Prop({ required: false, default: undefined })
+  addNewHandler?: (name: string) => Promise<void>;
+
+  @Prop({ required: false, default: false })
+  resetOnSelect!: boolean;
 
   input = "";
   isInputFocused = false;
@@ -130,7 +130,8 @@ export default class TypeaheadInput extends Vue {
 
   get filteredItems(): unknown[] {
     const regexp = new RegExp(this.escapeRegExp(this.input), "i");
-    return this.items.filter((item) => this.itemProjection(item).match(regexp));
+    const filtered = this.items.filter((item) => this.itemProjection(item).match(regexp));
+    return filtered;
   }
 
   get isListVisible() {
@@ -244,6 +245,9 @@ export default class TypeaheadInput extends Vue {
 
     this.currentSelectionIndex = this.minSelectionIndex;
     document.getElementById(this.inputId)?.blur();
+    if(this.resetOnSelect) {
+      this.input = "";
+    }
   }
 
   escapeRegExp(value: string) {
