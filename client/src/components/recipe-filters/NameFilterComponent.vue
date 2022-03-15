@@ -8,6 +8,7 @@
         v-model="internalValue"
         v-on:blur="updateFilter"
         @keydown.enter.tab.prevent="updateFilter"
+        @keydown.esc.prevent="resetFilter"
       />
     </div>
   </div>
@@ -37,6 +38,13 @@ export default class NameFilterComponent extends Vue {
   applyFilter(): void {
     this.$emit("applyFilter");
   }
+
+  resetFilter(): void {
+    this.internalValue = "";
+    this.recipeFilter.nameContains = "";
+    this.applyFilter();
+  }
+
 
 }
 </script>
