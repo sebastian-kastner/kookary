@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row filter-bar">
-      <div 
+      <div
         v-for="filter in filters"
         v-bind:key="filter.name"
         :class="isSelectedClass(filter.name)"
@@ -11,22 +11,25 @@
           <div class="col">
             <component :is="filter.icon" />
           </div>
-          <div class="col delete-filter" @click="filter.isActive() ? filter.resetFilter() : null">
-            <b-icon-x-circle v-if="filter.isActive()"/>
+          <div
+            class="col delete-filter"
+            @click="filter.isActive() ? filter.resetFilter() : null"
+          >
+            <b-icon-x-circle v-if="filter.isActive()" />
           </div>
         </div>
       </div>
     </div>
 
     <div v-for="filter in filters" v-bind:key="filter.name">
-      <component 
+      <component
         :is="filter.component"
         v-if="activeFilter == filter.name"
         class="filter-details"
         @applyFilter="applyFilter"
-        :recipeFilter="recipeFilter" />
+        :recipeFilter="recipeFilter"
+      />
     </div>
-
   </div>
 </template>
 
