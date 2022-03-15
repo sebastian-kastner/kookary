@@ -5,6 +5,8 @@
           :suggestItems="existingIngredients"
           :items="recipeFilter.ingredients"
           :provideId="getIngredientId"
+          @itemSelected="applyFilter"
+          @itemDeleted="applyFilter"
         />
     </div>
     <div class="col text-center">

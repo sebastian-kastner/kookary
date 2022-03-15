@@ -13,7 +13,7 @@
           </div>
           <div
             class="col delete-filter"
-            @click="filter.isActive() ? filter.resetFilter() : null"
+            @click="filter.isActive() ? resetFilter($event, filter.resetFilter) : null"
           >
             <b-icon-x-circle v-if="filter.isActive()" />
           </div>
@@ -110,6 +110,12 @@ export default class FilterComponent extends Vue {
     },
   ];
 
+  resetFilter(event: PointerEvent, resetFunction: () => void): void {
+    event.stopPropagation();
+    resetFunction();
+    this.applyFilter();
+  }
+
   showFilter(name: string) {
     this.activeFilter = name;
   }
@@ -122,7 +128,6 @@ export default class FilterComponent extends Vue {
   }
 
   applyFilter(): void {
-    this.activeFilter = null;
     this.$emit("applyFilter", this.recipeFilter);
   }
 }

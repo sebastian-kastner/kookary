@@ -6,7 +6,7 @@ import { ToViewModelConverter } from './ToViewModelconverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 import { RecipeJsonld } from 'rest/models'
-import { tagStore } from '@/stores/rootStore'
+import { tagStore } from '../stores/rootStore'
 
 export class RecipesClient {
     client = new RecipeApi(clientConfiguration);

@@ -63,6 +63,7 @@ export default class IsSeasonalFilterComponent extends Vue {
 
   setIsSeasonal(isSeasonal: boolean) {
     this.recipeFilter.isSeasonal = isSeasonal;
+    this.$emit("applyFilter");
   }
 }
 </script>

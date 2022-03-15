@@ -49,6 +49,7 @@ export default class InlineItemList extends Vue {
 
   deleteItem(item: unknown): void {
     this.items.splice(this.items.indexOf(item), 1);
+    this.$emit("itemDeleted", item);
   }
 
   selectItem(item: unknown): void {

@@ -4,6 +4,8 @@
       <inline-item-list
           :suggestItems="existingTags"
           :items="recipeFilter.tags"
+          @itemSelected="applyFilter"
+          @itemDeleted="applyFilter"
         />
     </div>
     <div class="col text-center">

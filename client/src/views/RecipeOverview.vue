@@ -31,7 +31,6 @@ export default class RecipesView extends Vue {
   }
 
   public async applyFilter(filter: RecipeFilter): Promise<void> {
-    console.log(filter);
     this.recipeClient.getRecipes(filter).then((ret) => {
       this.recipes = ret;
     });
