@@ -4,15 +4,10 @@
       <inline-item-list
           :suggestItems="existingTags"
           :items="recipeFilter.tags"
+          :inputPlaceholder="inputPlaceholder"
           @itemSelected="applyFilter"
           @itemDeleted="applyFilter"
         />
-    </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-primary" v-on:click="applyFilter">&check;</button>
-    </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-primary" v-on:click="resetFilter">&Cross;</button>
     </div>
   </div>
 </template>
@@ -30,16 +25,13 @@ import { Tag } from "../../types";
 export default class NameFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
+  inputPlaceholder = "Tag Name...";
+
   get existingTags(): Tag[] {
     return tagStore.tags;
   }
 
   applyFilter(): void {
-    this.$emit("applyFilter");
-  }
-
-  resetFilter(): void {
-    this.recipeFilter.tags = [];
     this.$emit("applyFilter");
   }
 }

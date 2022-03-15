@@ -28,16 +28,6 @@
         </label>
       </div>
     </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-primary" v-on:click="applyFilter">
-        &check;
-      </button>
-    </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-primary" v-on:click="resetFilter">
-        &Cross;
-      </button>
-    </div>
   </div>
 </template>
 
@@ -53,11 +43,6 @@ export default class IsSeasonalFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
   applyFilter(): void {
-    this.$emit("applyFilter");
-  }
-
-  resetFilter(): void {
-    this.recipeFilter.isSeasonal = false;
     this.$emit("applyFilter");
   }
 

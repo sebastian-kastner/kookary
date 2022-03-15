@@ -5,15 +5,10 @@
           :suggestItems="existingIngredients"
           :items="recipeFilter.ingredients"
           :provideId="getIngredientId"
+          :inputPlaceholder="inputPlaceholder"
           @itemSelected="applyFilter"
           @itemDeleted="applyFilter"
         />
-    </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-primary" v-on:click="applyFilter">&check;</button>
-    </div>
-    <div class="col text-center">
-      <button type="button" class="btn btn-primary" v-on:click="resetFilter">&Cross;</button>
     </div>
   </div>
 </template>
@@ -32,16 +27,13 @@ import {v4 as uuid} from 'uuid';
 export default class IngredientFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
+  inputPlaceholder = "Zutatenname..."
+
   get existingIngredients(): Ingredient[] {
     return ingredientStore.ingredients;
   }
 
   applyFilter(): void {
-    this.$emit("applyFilter");
-  }
-
-  resetFilter(): void {
-    this.recipeFilter.ingredients = [];
     this.$emit("applyFilter");
   }
 

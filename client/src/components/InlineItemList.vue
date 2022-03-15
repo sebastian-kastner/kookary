@@ -16,6 +16,7 @@
       :value="typeaheadValue"
       :v-model="typeaheadValue"
       :resetOnSelect="true"
+      :placeholder="inputPlaceholder"
       @selectItem="selectItem"
     />
   </div>
@@ -44,6 +45,9 @@ export default class InlineItemList extends Vue {
 
   @Prop({ required: false, default: undefined })
   addNewHandler?: (name: string) => Promise<void>;
+
+  @Prop({ required: false, default: "" })
+  inputPlaceholder!: string;
 
   typeaheadValue = "";
 

@@ -10,16 +10,6 @@
         @keydown.enter.tab.prevent="updateFilter"
       />
     </div>
-    <div class="col">
-      <button type="button" class="btn btn-primary" v-on:click="applyFilter">
-        &check;
-      </button>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-primary" v-on:click="resetFilter">
-        &Cross;
-      </button>
-    </div>
   </div>
 </template>
 
@@ -48,14 +38,5 @@ export default class NameFilterComponent extends Vue {
     this.$emit("applyFilter");
   }
 
-  resetFilter(): void {
-    if (
-      this.recipeFilter.nameContains &&
-      this.recipeFilter.nameContains != ""
-    ) {
-      this.recipeFilter.nameContains = "";
-    }
-    this.applyFilter();
-  }
 }
 </script>
