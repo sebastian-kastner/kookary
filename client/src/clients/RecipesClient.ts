@@ -1,4 +1,4 @@
-import { Recipe, Tag } from '../types'
+import { Ingredient, Recipe, Tag } from '../types'
 import { AxiosError, AxiosResponse } from 'axios'
 import { RecipeApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
@@ -23,7 +23,17 @@ export class RecipesClient {
       if (filter?.page) {
         page = filter.page;
       }
-      const ret = await this.client.getRecipeCollection(page, filter?.nameContains, filter?.withIngredient);
+
+      // FIXME this only works for a single ingredient now
+      let ingredientFilter;
+      if(filter?.ingredients) {
+        const ingredients = filter.ingredients;
+        if(ingredients.length > 0) {
+          ingredientFilter = ingredients[0].ingredientId;
+        }
+      }
+
+      const ret = await this.client.getRecipeCollection(page, filter?.nameContains, ingredientFilter);
       
       const apiRecipes = ret.data['hydra:member']
 
@@ -88,8 +98,8 @@ export class RecipesClient {
 
 export type RecipeFilter = {
   page?: number,
-  withIngredient?: number,
+  ingredients: Ingredient[],
   nameContains?: string,
-  tags?: Tag[],
+  tags: Tag[],
   isSeasonal?: boolean,
 }

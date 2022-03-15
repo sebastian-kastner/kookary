@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    
+
     <name-filter-component 
       v-if="activeFilter == 'name'"
       class="filter-details"
@@ -65,6 +65,12 @@
       @applyFilter="applyFilter"
       :recipeFilter="recipeFilter"
     />
+    <ingredient-filter-component
+      v-else-if="activeFilter == 'ingredients'"
+      class="filter-details"
+      @applyFilter="applyFilter"
+      :recipeFilter="recipeFilter"
+    />
   </div>
 </template>
 
@@ -76,18 +82,12 @@ import {
   BIconCalendarWeek,
   BIconXCircle,
 } from "bootstrap-vue";
+import { Component, Prop, Vue } from "vue-property-decorator"
+import { RecipeFilter } from "../../clients/RecipesClient"
 import NameFilterComponent from './NameFilterComponent.vue'
+import TagFilterComponent from './TagFilterComponent.vue'
 import IsSeasonalFilterComponent from './IsSeasonalFilterComponent.vue'
-import TagFilterComponent from './TagFilterComponent.vue';
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { RecipeFilter } from "../../clients/RecipesClient";
-
-enum RecipeUiFilters {
-  NAME = "name",
-  TAGS = "tags",
-  INGREDIENTS = "ingredients",
-  SEASONAL = "seasonal"
-}
+import IngredientFilterComponent from './IngredientFilterComponent.vue'
 
 @Component({
   components: {
@@ -97,12 +97,13 @@ enum RecipeUiFilters {
     BIconCalendarWeek,
     BIconXCircle,
     NameFilterComponent,
-    IsSeasonalFilterComponent,
     TagFilterComponent,
+    IngredientFilterComponent,
+    IsSeasonalFilterComponent,
   },
 })
 export default class FilterComponent extends Vue {
-  private activeFilter: string | null = RecipeUiFilters.NAME;
+  private activeFilter: string | null = 'name';
 
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 

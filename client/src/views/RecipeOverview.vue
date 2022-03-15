@@ -26,7 +26,8 @@ export default class RecipesView extends Vue {
   recipeClient = new RecipesClient();
 
   recipeFilter: RecipeFilter = {
-    tags: []
+    tags: [],
+    ingredients: [],
   };
 
   mounted(): void {
@@ -37,10 +38,9 @@ export default class RecipesView extends Vue {
 
   public async applyFilter(): Promise<void> {
     console.log(this.recipeFilter);
-    // this.recipeClient.getRecipes(this.recipeFilter).then((ret) => {
-    //   console.log(ret);
-    //   this.recipes = ret;
-    // });
+    this.recipeClient.getRecipes(this.recipeFilter).then((ret) => {
+      this.recipes = ret;
+    });
   }
 
   get existingIngredients(): Ingredient[] {
