@@ -202,12 +202,12 @@ export default class TypeaheadInput extends Vue {
 
   scrollSelectionIntoView() {
     setTimeout(() => {
-      const list_node = document.querySelector(
-        `#${this.wrapperId} .simple-typeahead-list`
-      );
-      const active_node = document.querySelector(
-        `#${this.wrapperId} .simple-typeahead-list-item.simple-typeahead-list-item-active`
-      );
+      const wrapper = document.getElementById(this.wrapperId);
+      if(!wrapper) {
+        return;
+      }
+      const list_node = wrapper.getElementsByClassName(`.simple-typeahead-list`);
+      const active_node = wrapper.querySelector(".simple-typeahead-list-item.simple-typeahead-list-item-active");
 
       // nothing to do if active_node or list_node are no HTMLElements
       if (
