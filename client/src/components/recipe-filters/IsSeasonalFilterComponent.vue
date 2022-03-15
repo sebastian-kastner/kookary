@@ -8,7 +8,7 @@
           name="isSeasonal"
           id="seasonal"
           v-on:change="setIsSeasonal(true)"
-          :checked="recipeFilter.isSeasonal === false"
+          :checked="recipeFilter.isSeasonal === true"
         />
         <label class="form-check-label" for="seasonal">
           Saisonal
@@ -57,12 +57,8 @@ export default class IsSeasonalFilterComponent extends Vue {
   }
 
   resetFilter(): void {
-    this.recipeFilter.isSeasonal = undefined;
+    this.recipeFilter.isSeasonal = false;
     this.$emit("applyFilter");
-  }
-
-  setSeasonal(isSeasonal: boolean): void {
-   this.recipeFilter.isSeasonal = isSeasonal;
   }
 
   setIsSeasonal(isSeasonal: boolean) {

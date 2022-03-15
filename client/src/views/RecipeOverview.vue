@@ -1,7 +1,6 @@
 <template>
   <div class="recipe-overview">
     <filter-component 
-      :recipeFilter="recipeFilter"
       @applyFilter="applyFilter"
     />
     <br />
@@ -25,20 +24,15 @@ export default class RecipesView extends Vue {
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
 
-  recipeFilter: RecipeFilter = {
-    tags: [],
-    ingredients: [],
-  };
-
   mounted(): void {
     this.recipeClient.getRecipes().then((ret) => {
       this.recipes = ret;
     });
   }
 
-  public async applyFilter(): Promise<void> {
-    console.log(this.recipeFilter);
-    this.recipeClient.getRecipes(this.recipeFilter).then((ret) => {
+  public async applyFilter(filter: RecipeFilter): Promise<void> {
+    console.log(filter);
+    this.recipeClient.getRecipes(filter).then((ret) => {
       this.recipes = ret;
     });
   }

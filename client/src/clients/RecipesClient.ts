@@ -99,7 +99,7 @@ export class RecipesClient {
 export type RecipeFilter = {
   page?: number,
   ingredients: Ingredient[],
-  nameContains?: string,
+  nameContains: string,
   tags: Tag[],
-  isSeasonal?: boolean,
+  isSeasonal: boolean,
 }

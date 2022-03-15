@@ -1,76 +1,32 @@
 <template>
   <div>
     <div class="row filter-bar">
-      <!-- name filter tab -->
-      <div class="col filter-icon" :class="getActiveClass('name')">
-        <div class="row" v-on:click="showFilter('name')">
+      <div 
+        v-for="filter in filters"
+        v-bind:key="filter.name"
+        :class="isSelectedClass(filter.name)"
+        class="col filter-icon"
+      >
+        <div class="row" v-on:click="showFilter(filter.name)">
           <div class="col">
-            <b-icon-input-cursor/>
+            <component :is="filter.icon" />
           </div>
-          <div class="col delete-filter" @click="activeFilter == 'name' ? deleteFilter('name') : null">
-            <b-icon-x-circle v-if="activeFilter == 'name'"/>
-          </div>
-        </div>
-      </div>
-      <!-- tags filter tab -->
-      <div class="col filter-icon" :class="getActiveClass('tags')">
-        <div class="row" v-on:click="showFilter('tags')">
-          <div class="col">
-            <b-icon-tags />
-          </div>
-          <div class="col delete-filter" @click="activeFilter == 'tags' ? deleteFilter('tags') : null">
-            <b-icon-x-circle v-if="activeFilter == 'tags'"/>
-          </div>
-        </div>
-      </div>
-      <!-- ingredients filter tab -->
-      <div class="col filter-icon" :class="getActiveClass('ingredients')">
-        <div class="row" v-on:click="showFilter('ingredients')">
-          <div class="col">
-            <b-icon-bag />
-          </div>
-          <div class="col delete-filter" @click="activeFilter == 'ingredients' ? deleteFilter('ingredients') : null">
-            <b-icon-x-circle v-if="activeFilter == 'ingredients'"/>
-          </div>
-        </div>
-      </div>
-      <!-- seasonal filter tab -->
-      <div class="col filter-icon" :class="getActiveClass('seasonal')">
-        <div class="row" v-on:click="showFilter('seasonal')">
-          <div class="col">
-            <b-icon-calendar-week />
-          </div>
-          <div class="col delete-filter" @click="activeFilter == 'seasonal' ? deleteFilter('seasonal') : null">
-            <b-icon-x-circle v-if="activeFilter == 'seasonal'"/>
+          <div class="col delete-filter" @click="filter.isActive() ? filter.resetFilter() : null">
+            <b-icon-x-circle v-if="filter.isActive()"/>
           </div>
         </div>
       </div>
     </div>
 
-    <name-filter-component 
-      v-if="activeFilter == 'name'"
-      class="filter-details"
-      @applyFilter="applyFilter"
-      :recipeFilter="recipeFilter"
-    />
-    <is-seasonal-filter-component
-      v-else-if="activeFilter == 'seasonal'"
-      class="filter-details"
-      @applyFilter="applyFilter"
-      :recipeFilter="recipeFilter"
-    />
-    <tag-filter-component
-      v-else-if="activeFilter == 'tags'"
-      class="filter-details"
-      @applyFilter="applyFilter"
-      :recipeFilter="recipeFilter"
-    />
-    <ingredient-filter-component
-      v-else-if="activeFilter == 'ingredients'"
-      class="filter-details"
-      @applyFilter="applyFilter"
-      :recipeFilter="recipeFilter"
-    />
+    <div v-for="filter in filters" v-bind:key="filter.name">
+      <component 
+        :is="filter.component"
+        v-if="activeFilter == filter.name"
+        class="filter-details"
+        @applyFilter="applyFilter"
+        :recipeFilter="recipeFilter" />
+    </div>
+
   </div>
 </template>
 
@@ -82,12 +38,20 @@ import {
   BIconCalendarWeek,
   BIconXCircle,
 } from "bootstrap-vue";
-import { Component, Prop, Vue } from "vue-property-decorator"
-import { RecipeFilter } from "../../clients/RecipesClient"
-import NameFilterComponent from './NameFilterComponent.vue'
-import TagFilterComponent from './TagFilterComponent.vue'
-import IsSeasonalFilterComponent from './IsSeasonalFilterComponent.vue'
-import IngredientFilterComponent from './IngredientFilterComponent.vue'
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { RecipeFilter } from "../../clients/RecipesClient";
+import NameFilterComponent from "./NameFilterComponent.vue";
+import TagFilterComponent from "./TagFilterComponent.vue";
+import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
+import IngredientFilterComponent from "./IngredientFilterComponent.vue";
+
+type UiFilter = {
+  name: string;
+  icon: unknown;
+  component: unknown;
+  isActive: () => boolean;
+  resetFilter: () => void;
+};
 
 @Component({
   components: {
@@ -103,24 +67,60 @@ import IngredientFilterComponent from './IngredientFilterComponent.vue'
   },
 })
 export default class FilterComponent extends Vue {
-  private activeFilter: string | null = 'name';
+  private activeFilter: string | null = "name";
 
-  @Prop({ required: true }) recipeFilter!: RecipeFilter;
+  recipeFilter: RecipeFilter = {
+    tags: [],
+    ingredients: [],
+    nameContains: "",
+    isSeasonal: false,
+  };
+
+  private filters: UiFilter[] = [
+    {
+      name: "name",
+      icon: BIconInputCursor,
+      component: NameFilterComponent,
+      isActive: () => this.recipeFilter.nameContains.length > 0,
+      resetFilter: () => (this.recipeFilter.nameContains = ""),
+    },
+    {
+      name: "tags",
+      icon: BIconTags,
+      component: TagFilterComponent,
+      isActive: () => this.recipeFilter.tags.length > 0,
+      resetFilter: () => (this.recipeFilter.tags = []),
+    },
+    {
+      name: "ingredients",
+      icon: BIconBag,
+      component: IngredientFilterComponent,
+      isActive: () => this.recipeFilter.ingredients.length > 0,
+      resetFilter: () => (this.recipeFilter.ingredients = []),
+    },
+    {
+      name: "seasonal",
+      icon: BIconCalendarWeek,
+      component: IsSeasonalFilterComponent,
+      isActive: () => this.recipeFilter.isSeasonal === true,
+      resetFilter: () => (this.recipeFilter.isSeasonal = false),
+    },
+  ];
 
   showFilter(name: string) {
     this.activeFilter = name;
   }
 
-  getActiveClass(name: string) {
-    if(this.activeFilter === name) {
-      return 'active-filter';
+  isSelectedClass(name: string) {
+    if (this.activeFilter === name) {
+      return "active-filter";
     }
-    return '';
+    return "";
   }
 
   applyFilter(): void {
     this.activeFilter = null;
-    this.$emit("applyFilter");
+    this.$emit("applyFilter", this.recipeFilter);
   }
 }
 </script>
