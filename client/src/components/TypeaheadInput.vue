@@ -22,7 +22,8 @@
         <slot name="list-header"></slot>
       </div>
 
-      <div v-if="addNewHandler !== undefined"
+      <div
+        v-if="addNewHandler !== undefined"
         class="simple-typeahead-list-item"
         :class="{
           'simple-typeahead-list-item-active': currentSelectionIndex == -1,
@@ -31,11 +32,8 @@
         @click="selectItem()"
         @mouseenter="currentSelectionIndex = -1"
       >
-        <span
-          class="simple-typeahead-list-item-text"
-          :data-text="input"
-        >
-          <b-icon-plus-circle/>
+        <span class="simple-typeahead-list-item-text" :data-text="input">
+          <b-icon-plus-circle />
           {{ input }}
         </span>
       </div>
@@ -78,7 +76,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { BIconPlusCircle } from 'bootstrap-vue'
+import { BIconPlusCircle } from "bootstrap-vue";
 
 @Component({
   components: { BIconPlusCircle },
@@ -93,10 +91,18 @@ export default class TypeaheadInput extends Vue {
   @Prop({ required: true })
   items!: object[];
 
-  @Prop({required: false, default: ""})
+  @Prop({ required: false })
+  excludedItems?: object[];
+
+  @Prop({ required: false, default: "" })
   placeholder!: string;
 
-  @Prop({ required: false, default: (item: unknown) => { return item; }})
+  @Prop({
+    required: false,
+    default: (item: unknown) => {
+      return item;
+    },
+  })
   itemProjection!: (item: unknown) => string;
 
   @Prop({ required: false, default: undefined })
@@ -111,7 +117,7 @@ export default class TypeaheadInput extends Vue {
   minSelectionIndex = 0;
 
   mounted(): void {
-    if(this.addNewHandler !== undefined) {
+    if (this.addNewHandler !== undefined) {
       this.minSelectionIndex = -1;
       this.currentSelectionIndex = -1;
     }
@@ -130,7 +136,19 @@ export default class TypeaheadInput extends Vue {
 
   get filteredItems(): unknown[] {
     const regexp = new RegExp(this.escapeRegExp(this.input), "i");
-    const filtered = this.items.filter((item) => this.itemProjection(item).match(regexp));
+
+    const excludedItemNames = new Set();
+    if (this.excludedItems) {
+      this.excludedItems.forEach((excludedItem) => {
+        excludedItemNames.add(this.itemProjection(excludedItem));
+      });
+    }
+
+    const filtered = this.items.filter(
+      (item) =>
+        this.itemProjection(item).match(regexp) &&
+        !excludedItemNames.has(this.itemProjection(item))
+    );
     return filtered;
   }
 
@@ -173,7 +191,10 @@ export default class TypeaheadInput extends Vue {
   }
 
   onArrowUp() {
-    if (this.isListVisible && this.currentSelectionIndex > this.minSelectionIndex) {
+    if (
+      this.isListVisible &&
+      this.currentSelectionIndex > this.minSelectionIndex
+    ) {
       this.currentSelectionIndex--;
     }
     this.scrollSelectionIntoView();
@@ -189,13 +210,19 @@ export default class TypeaheadInput extends Vue {
       );
 
       // nothing to do if active_node or list_node are no HTMLElements
-      if(!(active_node instanceof HTMLElement) || !(list_node instanceof HTMLElement)) {
+      if (
+        !(active_node instanceof HTMLElement) ||
+        !(list_node instanceof HTMLElement)
+      ) {
         return;
       }
-      
-      if (!(active_node.offsetTop >= list_node.scrollTop &&
+
+      if (
+        !(
+          active_node.offsetTop >= list_node.scrollTop &&
           active_node.offsetTop + active_node.offsetHeight <
-            list_node.scrollTop + list_node.offsetHeight)
+            list_node.scrollTop + list_node.offsetHeight
+        )
       ) {
         let scroll_to = 0;
         if (active_node.offsetTop > list_node.scrollTop) {
@@ -212,7 +239,10 @@ export default class TypeaheadInput extends Vue {
   }
 
   selectCurrentSelection() {
-    if(this.isListVisible && this.currentSelectionIndex < this.filteredItems.length) {
+    if (
+      this.isListVisible &&
+      this.currentSelectionIndex < this.filteredItems.length
+    ) {
       this.selectItem(this.filteredItems[this.currentSelectionIndex]);
     }
   }
@@ -221,31 +251,31 @@ export default class TypeaheadInput extends Vue {
     let itemToSelect = item;
     let newItemAdded = false;
 
-    if(this.currentSelectionIndex === -1 && this.addNewHandler !== undefined) {
+    if (this.currentSelectionIndex === -1 && this.addNewHandler !== undefined) {
       // dont add a new item if the current value already exists
       let itemAlreadyExists = false;
-      for(let i in this.filteredItems) {
+      for (let i in this.filteredItems) {
         const suggestion = this.filteredItems[i];
-        if(this.itemProjection(suggestion) === this.input) {
+        if (this.itemProjection(suggestion) === this.input) {
           itemToSelect = suggestion;
           itemAlreadyExists = true;
           break;
         }
       }
-      if(!itemAlreadyExists) {
+      if (!itemAlreadyExists) {
         this.addNewHandler(this.input);
         newItemAdded = true;
       }
     }
-    
-    if(!newItemAdded) {
+
+    if (!newItemAdded) {
       this.input = this.itemProjection(itemToSelect);
       this.$emit("selectItem", itemToSelect);
     }
 
     this.currentSelectionIndex = this.minSelectionIndex;
     document.getElementById(this.inputId)?.blur();
-    if(this.resetOnSelect) {
+    if (this.resetOnSelect) {
       this.input = "";
     }
   }
@@ -262,47 +292,51 @@ export default class TypeaheadInput extends Vue {
 </script>
 
 <style scoped>
-	.simple-typeahead {
-		position: relative;
-		width: 100%;
-	}
-	.simple-typeahead > input {
-		margin-bottom: 0;
-	}
-	.simple-typeahead .simple-typeahead-list {
-		position: absolute;
-		width: 100%;
-		border: none;
-		max-height: 400px;
-		overflow-y: auto;
-		border-bottom: 0.1rem solid #d1d1d1;
-		z-index: 9;
-	}
-	.simple-typeahead .simple-typeahead-list .simple-typeahead-list-header {
-		background-color: #fafafa;
-		padding: 0.6rem 1rem;
-		border-bottom: 0.1rem solid #d1d1d1;
-		border-left: 0.1rem solid #d1d1d1;
-		border-right: 0.1rem solid #d1d1d1;
-	}
-	.simple-typeahead .simple-typeahead-list .simple-typeahead-list-footer {
-		background-color: #fafafa;
-		padding: 0.6rem 1rem;
-		border-left: 0.1rem solid #d1d1d1;
-		border-right: 0.1rem solid #d1d1d1;
-	}
-	.simple-typeahead .simple-typeahead-list .simple-typeahead-list-item {
-		cursor: pointer;
-		background-color: #fafafa;
-		padding: 0.6rem 1rem;
-		border-bottom: 0.1rem solid #d1d1d1;
-		border-left: 0.1rem solid #d1d1d1;
-		border-right: 0.1rem solid #d1d1d1;
-	}
-	.simple-typeahead .simple-typeahead-list .simple-typeahead-list-item:last-child {
-		border-bottom: none;
-	}
-	.simple-typeahead .simple-typeahead-list .simple-typeahead-list-item.simple-typeahead-list-item-active {
-		background-color: #e1e1e1;
-	}
+.simple-typeahead {
+  position: relative;
+  width: 100%;
+}
+.simple-typeahead > input {
+  margin-bottom: 0;
+}
+.simple-typeahead .simple-typeahead-list {
+  position: absolute;
+  width: 100%;
+  border: none;
+  max-height: 400px;
+  overflow-y: auto;
+  border-bottom: 0.1rem solid #d1d1d1;
+  z-index: 9;
+}
+.simple-typeahead .simple-typeahead-list .simple-typeahead-list-header {
+  background-color: #fafafa;
+  padding: 0.6rem 1rem;
+  border-bottom: 0.1rem solid #d1d1d1;
+  border-left: 0.1rem solid #d1d1d1;
+  border-right: 0.1rem solid #d1d1d1;
+}
+.simple-typeahead .simple-typeahead-list .simple-typeahead-list-footer {
+  background-color: #fafafa;
+  padding: 0.6rem 1rem;
+  border-left: 0.1rem solid #d1d1d1;
+  border-right: 0.1rem solid #d1d1d1;
+}
+.simple-typeahead .simple-typeahead-list .simple-typeahead-list-item {
+  cursor: pointer;
+  background-color: #fafafa;
+  padding: 0.6rem 1rem;
+  border-bottom: 0.1rem solid #d1d1d1;
+  border-left: 0.1rem solid #d1d1d1;
+  border-right: 0.1rem solid #d1d1d1;
+}
+.simple-typeahead
+  .simple-typeahead-list
+  .simple-typeahead-list-item:last-child {
+  border-bottom: none;
+}
+.simple-typeahead
+  .simple-typeahead-list
+  .simple-typeahead-list-item.simple-typeahead-list-item-active {
+  background-color: #e1e1e1;
+}
 </style>

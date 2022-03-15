@@ -3,14 +3,15 @@
     <div
       v-for="item in items"
       class="inline-item-list-element"
-      v-bind:key="provideId(item)"
+      v-bind:key="getId(item)"
     >
-      {{ provideLabel(item) }}
+      {{ getLabel(item) }}
       <span class="item-delete" v-on:click="deleteItem">x</span>
     </div>
     <typeahead-input
       :items="suggestItems"
-      :itemProjection="provideLabel"
+      :excludedItems="items"
+      :itemProjection="getLabel"
       :addNewHandler="addNewHandler"
       :value="typeaheadValue"
       :v-model="typeaheadValue"
@@ -34,11 +35,12 @@ export default class InlineItemList extends Vue {
   @Prop({ required: true })
   items!: unknown[];
 
-  @Prop({ required: true })
-  provideLabel!: (item: unknown) => string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  @Prop({ required: false })
+  provideLabel?: (item: unknown) => string;
 
-  @Prop({ required: true })
-  provideId!: (item: unknown) => string;
+  @Prop({ required: false })
+  provideId?: (item: unknown) => string;
 
   @Prop({ required: false, default: undefined })
   addNewHandler?: (name: string) => Promise<void>;
@@ -53,6 +55,30 @@ export default class InlineItemList extends Vue {
     this.items.push(item);
     this.typeaheadValue = "";
     this.$emit("itemSelected", item);
+  }
+
+  getId(item: unknown): string {
+    if(this.provideId) {
+      return this.provideId(item);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const itemAsAny = item as any;
+    if(typeof itemAsAny['uuid'] === 'string') {
+      return itemAsAny['uuid'];
+    }
+    return '';
+  }
+
+  getLabel(item: unknown): string {
+    if(this.provideLabel) {
+      return this.provideLabel(item);
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const itemAsAny = item as any;
+    if(typeof itemAsAny['name'] === 'string') {
+      return itemAsAny['name'];
+    }
+    return '';
   }
 }
 </script>

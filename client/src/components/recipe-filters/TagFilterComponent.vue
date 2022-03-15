@@ -1,17 +1,15 @@
 <template>
-  <div class="row text-center">
+  <div class="row">
     <div class="col-8">
       <inline-item-list
           :suggestItems="existingTags"
           :items="recipeFilter.tags"
-          :provideLabel="getTagLabel"
-          :provideId="getTagId"
         />
     </div>
-    <div class="col">
+    <div class="col text-center">
       <button type="button" class="btn btn-primary" v-on:click="applyFilter">&check;</button>
     </div>
-    <div class="col">
+    <div class="col text-center">
       <button type="button" class="btn btn-primary" v-on:click="resetFilter">&Cross;</button>
     </div>
   </div>
@@ -32,17 +30,6 @@ export default class NameFilterComponent extends Vue {
 
   get existingTags(): Tag[] {
     return tagStore.tags;
-  }
-
-  getTagLabel(tag: Tag): string {
-    if(tag.name) {
-      return tag.name;
-    }
-    return "";
-  }
-
-  getTagId(tag: Tag): string {
-    return tag.uuid;
   }
 
   applyFilter(): void {

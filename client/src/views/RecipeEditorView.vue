@@ -14,14 +14,9 @@
     <div class="form-group">
       <label>Tags</label>
       <div>
-        <tag-component 
-          v-for="tag in recipe.tags"
-          v-bind="tag"
-          v-bind:key="tag.uuid"
-          :tag="tag"
-          :existingTags="existingTags"
-          @onTagSelected="onTagSelected"
-          @onDelete="onDeleteTag"
+        <inline-item-list
+          :suggestItems="existingTags"
+          :items="recipe.tags"
         />
       </div>
     </div>
@@ -54,11 +49,11 @@ import { Ingredient, Recipe, RecipeIngredient, Tag } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore"
 import { RecipesClient } from "../clients/RecipesClient";
 import IngredientEditor from "../components/IngredientEditor.vue";
-import TagComponent from "../components/TagComponent.vue"
+import InlineItemList from "../components/InlineItemList.vue"
 import {v4 as uuid} from 'uuid';
 
 @Component({
-  components: { IngredientEditor, TagComponent },
+  components: { IngredientEditor, InlineItemList },
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
@@ -75,14 +70,12 @@ export default class RecipeEditorView extends Vue {
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
         this.addNewIngredient();
-        this.addNewTag();
       });
     } else {
       this.recipe = {
         ingredients: [],
       };
       this.addNewIngredient();
-      this.addNewTag();
     }
   }
 
