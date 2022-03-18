@@ -25,24 +25,38 @@ export class RecipesClient {
       }
 
       // FIXME this only works for a single ingredient now
-      let ingredientFilter;
+      let ingredientFilter: string | undefined;
       if(filter?.ingredients) {
         const ingredients = filter.ingredients;
         if(ingredients.length > 0) {
-          ingredientFilter = ingredients[0].ingredientId;
+          ingredientFilter = ingredients[0].ingredientId?.toString();
+        }
+      }
+      let tagFilter: string | undefined;
+      if(filter?.tags) {
+        const tags = filter.tags;
+        if(tags.length > 0) {
+          tagFilter = tags[0].tagId?.toString();
         }
       }
 
-      const ret = await this.client.getRecipeCollection(page, filter?.nameContains, ingredientFilter);
-      
-      const apiRecipes = ret.data['hydra:member']
-
-      const recipes: Recipe[] = []
-      apiRecipes.forEach((apiRecipe) => {
-        recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
+      const getPromise = this.client.getRecipeCollection(page, filter?.nameContains, ingredientFilter, tagFilter);
+        
+      return new Promise<Recipe[]>((resolve, reject) => {
+        getPromise
+          .then((ret) => {
+            const apiRecipes = ret.data['hydra:member']
+            const recipes: Recipe[] = []
+            apiRecipes.forEach((apiRecipe) => {
+              recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
+            })
+            resolve(recipes);
+          })
+          .catch((e: AxiosError) => {
+            logAxiosError(e);
+            reject(e);
+          });
       })
-
-      return recipes;
     }
 
     /**

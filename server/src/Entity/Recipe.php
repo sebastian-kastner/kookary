@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 
+use App\Filter\RecipeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use App\Filter\RecipeWithIngredientFilter;
 
 /**
  * Recipe
@@ -19,8 +19,8 @@ use App\Filter\RecipeWithIngredientFilter;
  * @ORM\Table(name="recipe")
  * @ORM\Entity
  * @ApiResource()
+ * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
- * @ApiFilter(RecipeWithIngredientFilter::class, properties={"with_ingredient": "with_ingredient"})
  */
 class Recipe
 {

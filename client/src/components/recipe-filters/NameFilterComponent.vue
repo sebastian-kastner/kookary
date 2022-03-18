@@ -44,7 +44,5 @@ export default class NameFilterComponent extends Vue {
     this.recipeFilter.nameContains = "";
     this.applyFilter();
   }
-
-
 }
 </script>

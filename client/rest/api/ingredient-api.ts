@@ -70,10 +70,11 @@ export const IngredientApiAxiosParamCreator = function (configuration?: Configur
          * Retrieves the collection of Ingredient resources.
          * @summary Retrieves the collection of Ingredient resources.
          * @param {number} [page] The collection page number
+         * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getIngredientCollection: async (page?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getIngredientCollection: async (page?: number, name?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/ingredients`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -88,6 +89,10 @@ export const IngredientApiAxiosParamCreator = function (configuration?: Configur
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
+            }
+
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
             }
 
 
@@ -276,11 +281,12 @@ export const IngredientApiFp = function(configuration?: Configuration) {
          * Retrieves the collection of Ingredient resources.
          * @summary Retrieves the collection of Ingredient resources.
          * @param {number} [page] The collection page number
+         * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getIngredientCollection(page?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getIngredientCollection(page, options);
+        async getIngredientCollection(page?: number, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getIngredientCollection(page, name, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -353,11 +359,12 @@ export const IngredientApiFactory = function (configuration?: Configuration, bas
          * Retrieves the collection of Ingredient resources.
          * @summary Retrieves the collection of Ingredient resources.
          * @param {number} [page] The collection page number
+         * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getIngredientCollection(page?: number, options?: any): AxiosPromise<InlineResponse200> {
-            return localVarFp.getIngredientCollection(page, options).then((request) => request(axios, basePath));
+        getIngredientCollection(page?: number, name?: string, options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.getIngredientCollection(page, name, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Ingredient resource.
@@ -427,12 +434,13 @@ export class IngredientApi extends BaseAPI {
      * Retrieves the collection of Ingredient resources.
      * @summary Retrieves the collection of Ingredient resources.
      * @param {number} [page] The collection page number
+     * @param {string} [name] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof IngredientApi
      */
-    public getIngredientCollection(page?: number, options?: AxiosRequestConfig) {
-        return IngredientApiFp(this.configuration).getIngredientCollection(page, options).then((request) => request(this.axios, this.basePath));
+    public getIngredientCollection(page?: number, name?: string, options?: AxiosRequestConfig) {
+        return IngredientApiFp(this.configuration).getIngredientCollection(page, name, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Ingredient
@@ -11,6 +14,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * @ORM\Table(name="ingredient")
  * @ORM\Entity
  * @ApiResource()
+ * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
  */
 class Ingredient
 {
