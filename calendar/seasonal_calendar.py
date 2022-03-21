@@ -12,7 +12,10 @@ with open('seasonal_calendar.csv', 'r') as csv_file:
         data.append(row)
         
 # create sql statements
-sql =  "INSERT INTO table_name (name, season_start, season_end)\nVALUES"
+sql = """INSERT INTO
+ingredient (`name`, `season_start`, `season_end`)
+VALUES
+"""
 
 for ingredient in data:
   name = ingredient[0]
@@ -23,7 +26,10 @@ for ingredient in data:
     print("Could not resolve month for " + ingredient)
     exit(-1)
   
-  sql += "('%s', '%i', '%i')\n" % (name, start_season, end_season)
+  sql += "('%s', '%i', '%i'),\n" % (name, start_season, end_season)
+
+sql = sql[:-2] # remove trailing comma and trailing new line
+sql += ";" # append semi colon
 
 # write sql statement to file
 textfile = open("seasonal_calendar.sql", "w")
