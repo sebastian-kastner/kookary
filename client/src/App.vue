@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/">#kookary</a>
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="/">
+        <img src="logo.png"/>
+      </a>
 
       <button
         class="navbar-toggler"
@@ -45,6 +47,9 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
+
+@import "../main.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -52,15 +57,23 @@ export default class App extends Vue {}
   color: #2c3e50;
 }
 
+.navbar {
+  background-color: $medium-green;
+  img {
+    max-height: 30px;
+  }
+  margin-bottom: 20px;
+}
+
 nav {
   padding: 30px;
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: $gray !important;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: lighten($gray, 25%) !important;
     }
   }
 }

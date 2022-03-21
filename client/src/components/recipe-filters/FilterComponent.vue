@@ -134,18 +134,27 @@ export default class FilterComponent extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$base-color: lightgreen;
+
+@import "../../../main.scss";
+
+$base-color: $gray;
+$highlight-color: darken($gray, 15%);
 $bottom-border: 3px;
 
 .filter-bar {
   border-bottom: $bottom-border solid $base-color;
   margin-top: 10px;
+
+  svg {
+    fill: $dark-green;
+  }
 }
 
 .filter-details {
-  background-color: lightblue;
+  background-color: $highlight-color;
   padding-top: 15px;
   padding-bottom: 15px;
+  color: $dark-green;
 }
 
 .filter-icon {
@@ -158,13 +167,15 @@ $bottom-border: 3px;
   margin-right: 10px;
 
   &.active-filter {
-    background-color: lightblue;
+    background-color: $highlight-color;
     margin-bottom: -$bottom-border;
   }
 
   .delete-filter {
     font-size: 0.9rem;
     display: inline-block;
+    margin-top: 4px;
+    padding-left: 25px;
   }
 }
 </style>
