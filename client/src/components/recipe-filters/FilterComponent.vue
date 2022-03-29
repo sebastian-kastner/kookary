@@ -41,7 +41,7 @@ import {
   BIconCalendarWeek,
   BIconXCircle,
 } from "bootstrap-vue";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import NameFilterComponent from "./NameFilterComponent.vue";
 import TagFilterComponent from "./TagFilterComponent.vue";

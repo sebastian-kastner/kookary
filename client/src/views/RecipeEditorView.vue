@@ -17,6 +17,7 @@
         <inline-item-list
           :suggestItems="existingTags"
           :items="recipe.tags"
+          :addNewHandler="createTag"
         />
       </div>
     </div>
@@ -57,7 +58,11 @@ import {v4 as uuid} from 'uuid';
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
-  recipe: Recipe = {};
+  recipe: Recipe = {
+    ingredients: [],
+    tags: [],
+    images: [],
+  };
 
   recipesClient: RecipesClient = new RecipesClient();
 
@@ -70,10 +75,15 @@ export default class RecipeEditorView extends Vue {
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
         this.addNewIngredient();
+        if(this.recipe.tags === undefined) {
+          this.recipe.tags = [];
+        }
       });
     } else {
       this.recipe = {
         ingredients: [],
+        tags: [],
+        images: [],
       };
       this.addNewIngredient();
     }
@@ -94,10 +104,16 @@ export default class RecipeEditorView extends Vue {
     return false;
   }
 
-  onTagSelected(): void {
-    this.addNewTag();
+  async createTag(tagName: string): Promise<void> {
+    tagStore.addTag(tagName)
+      .then((tag) => {
+        this.recipe.tags?.push(tag);
+      })
+      .catch((reason) => {
+        console.error("Failed to create tag", tagName, reason);
+      });
   }
-
+  
   onDeleteTag(tagToDelete: Tag): void {
     if (this.recipe.tags) {
       this.recipe.tags.splice(this.recipe.tags.indexOf(tagToDelete), 1);
@@ -116,12 +132,6 @@ export default class RecipeEditorView extends Vue {
     this.recipe.ingredients?.push({
       uuid: uuid(),
     })
-  }
-
-  private addNewTag(): void {
-    this.recipe.tags?.push({
-      uuid: uuid(),
-    });
   }
 
   onDeleteIngredient(ingredientToRemove: RecipeIngredient): void {
