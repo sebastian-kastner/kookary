@@ -12,8 +12,8 @@ use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Component\PropertyInfo\Type;
 
 use App\Entity\RecipeIngredient;
-use Doctrine\DBAL\Query;
-use App\Entity\Tag;
+use App\Entity\Ingredient;
+use App\Entity\Recipe;
 
 final class RecipeFilter extends AbstractContextAwareFilter
 {
@@ -21,7 +21,18 @@ final class RecipeFilter extends AbstractContextAwareFilter
     const TAGS_FILTER_PROPERTY = "tags";
     const SEASONAL_FILTER_PROPERTY = "seasonal";
 
-    protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
+    // for some reason doctrine autogenerates the "_a2" suffix that we need to add here to make things work
+    const RECIPE_INGREDIENT_ALIAS = "ri_a2";
+    const INGREDIENT_ALIAS = "i";
+    const TAG_ALIAS = "t";
+
+    protected function filterProperty(
+        string $property, 
+        $value, 
+        QueryBuilder $queryBuilder, 
+        QueryNameGeneratorInterface $queryNameGenerator, 
+        string $resourceClass, 
+        string $operationName = null)
     {
         if ($value == "") {
             return;
@@ -40,15 +51,24 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     private function addIngredientFilter(string $value, QueryBuilder $queryBuilder)
     {
-        $recipeAlias = $this->getRecipeAlias($queryBuilder);
-        $queryBuilder
-            ->innerJoin(
-                RecipeIngredient::class,
-                "ri",
-                Join::WITH,
-                sprintf("%s.recipeId = ri.recipe", $recipeAlias)
-            )
-            ->andWhere(sprintf("ri.ingredient = %d", $value));
+        $this->joinRecipeIngredients($queryBuilder);
+        $queryBuilder->andWhere(sprintf("%s.ingredient = %d", self::RECIPE_INGREDIENT_ALIAS, $value));
+    }
+
+    private function joinRecipeIngredients(QueryBuilder $queryBuilder)
+    {
+        $aliases = $queryBuilder->getAllAliases();
+        if(!in_array(self::RECIPE_INGREDIENT_ALIAS, $aliases))
+        {
+            $recipeAlias = $this->getRecipeAlias($queryBuilder);
+            $queryBuilder
+                ->leftJoin(
+                    RecipeIngredient::class,
+                    self::RECIPE_INGREDIENT_ALIAS,
+                    Join::WITH,
+                    sprintf("%s.recipeId = %s.recipe", $recipeAlias, self::RECIPE_INGREDIENT_ALIAS)
+                );
+        }
     }
 
     private function addTagFilter(string $value, QueryBuilder $queryBuilder)
@@ -58,14 +78,34 @@ final class RecipeFilter extends AbstractContextAwareFilter
             ->addSelect("t")
             ->leftJoin(sprintf("%s.tag", $recipeAlias), "t")
             ->andWhere(sprintf("t = %s", $value));
-
-        $query = $queryBuilder->getQuery();
-        $query = null;
     }
 
     private function addSeasonalFilter(string $value, QueryBuilder $queryBuilder)
     {
-    // TBD
+        if($value == "true") {
+            $aliases = $queryBuilder->getAllAliases();
+
+            if(!in_array(self::INGREDIENT_ALIAS, $aliases))
+            {
+                $condition = str_replace("[alias]", self::INGREDIENT_ALIAS,
+                    "([alias].seasonStart < [alias].seasonEnd AND :currentMonth >= [alias].seasonStart AND :currentMonth <= [alias].seasonEnd) OR ([alias].seasonStart > [alias].seasonEnd AND (:currentMonth >= [alias].seasonStart OR :currentMonth <= [alias].seasonEnd))");
+                $this->joinRecipeIngredients($queryBuilder);
+                
+                // FIXME: this is the worst query in the world. The where is specified twice and I have no idea why this is necessary
+                // using a plain query builder without the filter mechanism this works with a single where, omitting the join condition
+                $queryBuilder
+                    ->leftJoin(
+                        Ingredient::class,
+                        self::INGREDIENT_ALIAS,
+                        Join::WITH,
+                        sprintf("%s.ingredient = %s AND (%s)", self::RECIPE_INGREDIENT_ALIAS, self::INGREDIENT_ALIAS, $condition)
+                    );
+                    
+                $currentMonth = (int) date('n');
+                $queryBuilder->setParameter("currentMonth", $currentMonth);
+                $queryBuilder->andWhere($condition);
+            }
+        }
     }
 
     private function getRecipeAlias(QueryBuilder $queryBuilder): string

@@ -39,9 +39,19 @@ export class RecipesClient {
           tagFilter = tags[0].tagId?.toString();
         }
       }
+      let isSeasonal = false;
+      if(filter?.isSeasonal === true) {
+        isSeasonal = true;
+      }
 
-      const getPromise = this.client.getRecipeCollection(page, filter?.nameContains, ingredientFilter, tagFilter);
-        
+      const getPromise = this.client.getRecipeCollection(
+        page, 
+        ingredientFilter, 
+        tagFilter,
+        isSeasonal,
+        filter?.nameContains
+        );
+
       return new Promise<Recipe[]>((resolve, reject) => {
         getPromise
           .then((ret) => {
