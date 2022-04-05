@@ -4,7 +4,7 @@
       <li class="list-group-item" v-for="recipe in recipes" v-bind:key="recipe.recipeId">
         <router-link
           v-bind:key="recipe.recipeId"
-          :to="{ path: '/recipe-editor', query: { recipeId: recipe.recipeId } }"
+          :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
         >
           {{ recipe.name }}
         </router-link>
