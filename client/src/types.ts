@@ -28,10 +28,19 @@ export type Recipe = {
     name?: string;
     description?: string | null;
     servings?: number | null;
-    source?: string | null;
+    source: string | null;
     rating?: number | null;
     dateAdded?: string | null;
     images: Image[];
     ingredients: RecipeIngredient[];
     tags: Tag[];
+}
+
+export function recipeFactory(): Recipe {
+    return {
+        ingredients: [],
+        tags: [],
+        images: [],
+        source: null,
+    }
 }

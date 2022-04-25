@@ -15,6 +15,17 @@
       </li>
     </ul>
     <div>
+      <h3>Quelle</h3>
+      <div>
+        <a :href="recipe.source" target="_blank" v-if="sourceIsLink">
+          {{ recipe.source }}
+        </a>
+        <p v-if="!sourceIsLink">
+          {{ recipe.source }}
+        </p>
+      </div>
+    </div>
+    <div>
       <h3>Zutaten</h3>
       <ul>
         <li
@@ -32,7 +43,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Recipe } from "../types";
+import { Recipe, recipeFactory } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { BIconPencil } from "bootstrap-vue";
 import { marked } from "marked"
@@ -42,16 +53,15 @@ import { marked } from "marked"
 })
 export default class RecipeView extends Vue {
   recipeId?: string;
-  recipe: Recipe = {
-    ingredients: [],
-    tags: [],
-    images: [],
-  };
+  recipe: Recipe = recipeFactory();
 
   recipesClient: RecipesClient = new RecipesClient();
 
   doValidate = false;
 
+  // poor man's regex for url validation
+  urlRegex = new RegExp(/^((http|https):\/\/)?([a-z0-9\-\_]+\.)?([a-z0-9\-\_]+\.)([a-z0-9]){2,5}((\/?)[a-z0-9\-_~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\ \,\;\%\=]*)?$/i);
+  
   mounted(): void {
     const routeRecipeId = this.$route.query['recipeId'];
     if (routeRecipeId) {
@@ -67,9 +77,18 @@ export default class RecipeView extends Vue {
     }
   }
 
+  get sourceIsLink(): boolean {
+    if(this.recipe.source) {
+      if(this.recipe.source.match(this.urlRegex)) {
+        console.log("is url!");
+        return true;
+      }
+    }
+    return false;
+  }
+
   get description(): string {
     if(this.recipe.description) {
-      const foo = marked.parse(this.recipe.description);
       return marked.parse(this.recipe.description);
     }
     return "";

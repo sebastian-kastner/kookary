@@ -79,7 +79,7 @@ export class ToViewModelConverter {
       name: apiRecipe.name,
       description: apiRecipe.description,
       servings: apiRecipe.servings,
-      source: apiRecipe.source,
+      source: this.getStringOrNull(apiRecipe.source),
       rating: apiRecipe.rating,
       dateAdded: apiRecipe.dateAdded,
       // FIXME convert images
@@ -89,4 +89,12 @@ export class ToViewModelConverter {
       tags: this.convertTags(apiRecipe.tag)
     }
   }
+
+  private getStringOrNull(value: string | null | undefined): string | null {
+    if(value) {
+      return value;
+    }
+    return null;
+  }
+
 }

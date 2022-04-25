@@ -22,6 +22,16 @@
       </div>
     </div>
     <div class="form-group">
+      <label>Quelle</label>
+      <input
+        autocomplete="off"
+        class="form-control"
+        id="recipe-source"
+        placeholder="Rezept Quelle"
+        v-model="recipe.source"
+      />
+    </div>
+    <div class="form-group">
       <label>Zutaten</label>
       <div
         v-for="ingredient in recipe.ingredients"
@@ -46,7 +56,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Ingredient, Recipe, RecipeIngredient, Tag } from "../types";
+import { Ingredient, Recipe, RecipeIngredient, Tag, recipeFactory } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore"
 import { RecipesClient } from "../clients/RecipesClient";
 import IngredientEditor from "../components/IngredientEditor.vue";
@@ -58,11 +68,7 @@ import {v4 as uuid} from 'uuid';
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
-  recipe: Recipe = {
-    ingredients: [],
-    tags: [],
-    images: [],
-  };
+  recipe: Recipe = recipeFactory();
 
   recipesClient: RecipesClient = new RecipesClient();
 
@@ -80,11 +86,7 @@ export default class RecipeEditorView extends Vue {
         }
       });
     } else {
-      this.recipe = {
-        ingredients: [],
-        tags: [],
-        images: [],
-      };
+      this.recipe = recipeFactory();
       this.addNewIngredient();
     }
   }
