@@ -45,7 +45,7 @@ export class RecipesClient {
       }
 
       let isMarked = undefined;
-      if(filter?.marked) {
+      if(filter?.marked !== null && filter?.marked !== undefined) {
         isMarked = filter.marked;
       }
 

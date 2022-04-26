@@ -40,6 +40,7 @@ import {
   BIconBag,
   BIconCalendarWeek,
   BIconXCircle,
+  BIconBellFill
 } from "bootstrap-vue";
 import { Component, Vue } from "vue-property-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
@@ -47,6 +48,7 @@ import NameFilterComponent from "./NameFilterComponent.vue";
 import TagFilterComponent from "./TagFilterComponent.vue";
 import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
 import IngredientFilterComponent from "./IngredientFilterComponent.vue";
+import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue"
 
 type UiFilter = {
   name: string;
@@ -67,6 +69,8 @@ type UiFilter = {
     TagFilterComponent,
     IngredientFilterComponent,
     IsSeasonalFilterComponent,
+    IsMarkedFilterComponent,
+    BIconBellFill
   },
 })
 export default class FilterComponent extends Vue {
@@ -108,6 +112,13 @@ export default class FilterComponent extends Vue {
       component: IsSeasonalFilterComponent,
       isActive: () => this.recipeFilter.isSeasonal === true,
       resetFilter: () => (this.recipeFilter.isSeasonal = false),
+    },
+    {
+      name: "marked",
+      icon: BIconBellFill,
+      component: IsMarkedFilterComponent,
+      isActive: () => this.recipeFilter.marked !== null,
+      resetFilter: () => (this.recipeFilter.marked = null),
     },
   ];
 
