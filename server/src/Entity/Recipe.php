@@ -12,6 +12,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 
 use App\Filter\RecipeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * Recipe
@@ -21,6 +22,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiResource()
  * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
+ * @ApiFilter(BooleanFilter::class, properties={"marked"})
  */
 class Recipe
 {
