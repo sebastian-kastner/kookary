@@ -69,6 +69,13 @@ class Recipe
     private $rating;
 
     /**
+     * @var boolean|null
+     * 
+     * @ORM\Column(name="marked", type="boolean", nullable=true)
+     */
+    private $marked;
+
+    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="date_added", type="datetime", nullable=true)
@@ -90,11 +97,11 @@ class Recipe
     private $tag;
 
     /**
-      * @var \App\Entity\RecipeIngredient
-      *
-      * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
-      */
-      private $ingredients;
+     * @var \App\Entity\RecipeIngredient
+     *
+     * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
+     */
+    private $ingredients;
 
     /**
      * Constructor
@@ -171,6 +178,19 @@ class Recipe
 
         return $this;
     }
+
+    public function getMarked(): ?bool
+    {
+        return $this->marked;
+    }
+
+    public function setMarked(?bool $marked): self
+    {
+        $this->marked = $marked;
+
+        return $this;
+    }
+
 
     public function getDateAdded(): ?\DateTimeInterface
     {
