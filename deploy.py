@@ -22,10 +22,10 @@ class DeploymentArgs():
 
 def os_exec(cmd: str):
     print("Executing: " + cmd)
-    # res = subprocess.call(cmd, shell = True)
-    # if res == -1:
-    #     print("Failed to execute: " + cmd)
-    #     exit(-1)
+    res = subprocess.call(cmd, shell = True)
+    if res == -1:
+        print("Failed to execute: " + cmd)
+        exit(-1)
     
 args = DeploymentArgs(sys.argv)
 
@@ -73,6 +73,8 @@ if args.cmd is None or args.cmd == "server":
     server_uploads = [ "config", "src", "templates", "public", "composer.json" ]
     if '--clean' in args.opts:
         server_uploads.append("vendor")
+    
+    os_exec("sshpass -p {} ssh {}@{} 'rm -rf {}/server/var/cache'".format(password, server_user, server_addr, server_home))
     
     for upload in server_uploads:
         is_dir = "-r" if (upload.find(".") < 0) else ""
