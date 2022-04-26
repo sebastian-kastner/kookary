@@ -86,7 +86,8 @@ export class ToViewModelConverter {
       images: [],
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       // FIXME convert tags
-      tags: this.convertTags(apiRecipe.tag)
+      tags: this.convertTags(apiRecipe.tag),
+      marked: this.getBoolean(apiRecipe.marked)
     }
   }
 
@@ -95,6 +96,13 @@ export class ToViewModelConverter {
       return value;
     }
     return null;
+  }
+
+  private getBoolean(value: boolean | null | undefined): boolean {
+    if (value) {
+      return value;
+    }
+    return false;
   }
 
 }

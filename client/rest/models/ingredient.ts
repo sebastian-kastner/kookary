@@ -32,5 +32,17 @@ export interface Ingredient {
      * @memberof Ingredient
      */
     'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Ingredient
+     */
+    'seasonStart'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof Ingredient
+     */
+    'seasonEnd'?: number | null;
 }
 

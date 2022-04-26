@@ -60,6 +60,12 @@ export interface Recipe {
     'rating'?: number | null;
     /**
      * 
+     * @type {boolean}
+     * @memberof Recipe
+     */
+    'marked'?: boolean | null;
+    /**
+     * 
      * @type {string}
      * @memberof Recipe
      */

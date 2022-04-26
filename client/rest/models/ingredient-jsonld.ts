@@ -50,5 +50,17 @@ export interface IngredientJsonld {
      * @memberof IngredientJsonld
      */
     'name'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof IngredientJsonld
+     */
+    'seasonStart'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof IngredientJsonld
+     */
+    'seasonEnd'?: number | null;
 }
 

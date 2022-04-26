@@ -69,11 +69,10 @@ export const TagApiAxiosParamCreator = function (configuration?: Configuration) 
         /**
          * Retrieves the collection of Tag resources.
          * @summary Retrieves the collection of Tag resources.
-         * @param {number} [page] The collection page number
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTagCollection: async (page?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getTagCollection: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/tags`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -85,10 +84,6 @@ export const TagApiAxiosParamCreator = function (configuration?: Configuration) 
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
 
 
     
@@ -275,12 +270,11 @@ export const TagApiFp = function(configuration?: Configuration) {
         /**
          * Retrieves the collection of Tag resources.
          * @summary Retrieves the collection of Tag resources.
-         * @param {number} [page] The collection page number
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getTagCollection(page?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getTagCollection(page, options);
+        async getTagCollection(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getTagCollection(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -352,12 +346,11 @@ export const TagApiFactory = function (configuration?: Configuration, basePath?:
         /**
          * Retrieves the collection of Tag resources.
          * @summary Retrieves the collection of Tag resources.
-         * @param {number} [page] The collection page number
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getTagCollection(page?: number, options?: any): AxiosPromise<InlineResponse2002> {
-            return localVarFp.getTagCollection(page, options).then((request) => request(axios, basePath));
+        getTagCollection(options?: any): AxiosPromise<InlineResponse2002> {
+            return localVarFp.getTagCollection(options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Tag resource.
@@ -426,13 +419,12 @@ export class TagApi extends BaseAPI {
     /**
      * Retrieves the collection of Tag resources.
      * @summary Retrieves the collection of Tag resources.
-     * @param {number} [page] The collection page number
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof TagApi
      */
-    public getTagCollection(page?: number, options?: AxiosRequestConfig) {
-        return TagApiFp(this.configuration).getTagCollection(page, options).then((request) => request(this.axios, this.basePath));
+    public getTagCollection(options?: AxiosRequestConfig) {
+        return TagApiFp(this.configuration).getTagCollection(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -32,6 +32,7 @@ export type Recipe = {
     rating?: number | null;
     dateAdded?: string | null;
     images: Image[];
+    marked: boolean;
     ingredients: RecipeIngredient[];
     tags: Tag[];
 }
@@ -42,5 +43,6 @@ export function recipeFactory(): Recipe {
         tags: [],
         images: [],
         source: null,
+        marked: false,
     }
 }
