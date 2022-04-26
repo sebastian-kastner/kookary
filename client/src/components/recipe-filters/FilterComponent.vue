@@ -77,6 +77,7 @@ export default class FilterComponent extends Vue {
     ingredients: [],
     nameContains: "",
     isSeasonal: false,
+    marked: null,
   };
 
   private filters: UiFilter[] = [

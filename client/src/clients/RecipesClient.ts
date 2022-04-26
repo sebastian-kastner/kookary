@@ -44,13 +44,19 @@ export class RecipesClient {
         isSeasonal = true;
       }
 
+      let isMarked = undefined;
+      if(filter?.marked) {
+        isMarked = filter.marked;
+      }
+
       const getPromise = this.client.getRecipeCollection(
-        page, 
-        ingredientFilter, 
+        page,
+        ingredientFilter,
         tagFilter,
         isSeasonal,
-        filter?.nameContains
-        );
+        filter?.nameContains,
+        isMarked
+      );
 
       return new Promise<Recipe[]>((resolve, reject) => {
         getPromise
@@ -105,6 +111,13 @@ export class RecipesClient {
       return this.saveInternal(this.client.postRecipeCollection(restRecipe));
     }
 
+    public async setMarked(recipeId: number, isMarked: boolean): Promise<Recipe> {
+      const restRecipe: RecipeJsonld = {
+        marked: isMarked
+      }
+      return this.saveInternal(this.client.patchRecipeItem(recipeId.toString(), restRecipe));
+    }
+
     // eslint-disable-next-line
     private async saveInternal(savePromise: Promise<AxiosResponse<RecipeJsonld, any>>) {
       return new Promise<Recipe>((resolve, reject) => {
@@ -126,4 +139,5 @@ export type RecipeFilter = {
   nameContains: string,
   tags: Tag[],
   isSeasonal: boolean,
+  marked: boolean | null,
 }

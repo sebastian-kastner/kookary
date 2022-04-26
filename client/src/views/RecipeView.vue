@@ -4,6 +4,9 @@
       <router-link :to="{ path: '/recipe-editor', query: { recipeId: recipe.recipeId } }">
         <b-icon-pencil />
       </router-link>
+
+      <b-icon-bell v-if="!isMarked" v-on:click="setIsMarked(true)" />
+      <b-icon-bell-fill v-if="isMarked" v-on:click="setIsMarked(false)" />
     </div>
     <h1>{{ recipe.name }}</h1>
     <ul class="list-inline">
@@ -45,11 +48,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Recipe, recipeFactory } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
-import { BIconPencil } from "bootstrap-vue";
+import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked"
 
 @Component({
-  components: { BIconPencil },
+  components: { BIconPencil, BIconBell, BIconBellFill },
 })
 export default class RecipeView extends Vue {
   recipeId?: string;
@@ -80,7 +83,6 @@ export default class RecipeView extends Vue {
   get sourceIsLink(): boolean {
     if(this.recipe.source) {
       if(this.recipe.source.match(this.urlRegex)) {
-        console.log("is url!");
         return true;
       }
     }
@@ -93,6 +95,21 @@ export default class RecipeView extends Vue {
     }
     return "";
   }
+
+  get isMarked(): boolean {
+    if(this.recipe.marked) {
+      return this.recipe.marked;
+    }
+    return false;
+  }
+
+  setIsMarked(isMarked: boolean): void {
+    if (!this.recipe?.recipeId) {
+      throw new Error("Cannot set marked value, no recipeId set!");
+    }
+    this.recipe.marked = isMarked;
+    this.recipesClient.setMarked(this.recipe.recipeId, isMarked);
+  }
 }
 </script>
 
@@ -103,6 +120,10 @@ export default class RecipeView extends Vue {
 .edit-icon {
   text-align: center;
   font-size: 1.5rem;
+
+  svg {
+    margin-left: 10px;
+  }
 }
 
 </style>
