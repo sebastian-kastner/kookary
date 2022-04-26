@@ -13,8 +13,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @ORM\Table(name="ingredient")
  * @ORM\Entity
- * @ApiResource()
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
+ * @ApiResource(attributes={"pagination_enabled"=false})
  */
 class Ingredient
 {

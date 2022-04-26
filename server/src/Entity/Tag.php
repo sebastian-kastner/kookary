@@ -12,7 +12,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *
  * @ORM\Table(name="tag")
  * @ORM\Entity
- * @ApiResource()
+ * @ApiResource(attributes={"pagination_enabled"=false})
  */
 class Tag
 {
