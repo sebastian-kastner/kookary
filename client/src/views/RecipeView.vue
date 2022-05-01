@@ -63,7 +63,7 @@ export default class RecipeView extends Vue {
   doValidate = false;
 
   // poor man's regex for url validation
-  urlRegex = new RegExp(/^((http|https):\/\/)?([a-z0-9\-\_]+\.)?([a-z0-9\-\_]+\.)([a-z0-9]){2,5}((\/?)[a-z0-9\-_~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\ \,\;\%\=]*)?$/i);
+  urlRegex = new RegExp(/^((http|https):\/\/)?([a-z0-9\-\_]+\.)?([a-z0-9\-\_]+\.)([a-z0-9]){2,5}((\/?)[a-z0-9\-_~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\,\;\%\=]*)?$/i);
   
   mounted(): void {
     const routeRecipeId = this.$route.query['recipeId'];
