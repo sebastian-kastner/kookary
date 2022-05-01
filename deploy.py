@@ -21,7 +21,6 @@ class DeploymentArgs():
                 self.cmd = arg
 
 def os_exec(cmd: str):
-    print("Executing: " + cmd)
     res = subprocess.call(cmd, shell = True)
     if res == -1:
         print("Failed to execute: " + cmd)
