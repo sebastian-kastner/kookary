@@ -35,17 +35,17 @@ class Ingredient
     private $name;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="season_start", type="integer", nullable=true)
      */
     private $seasonStart;
 
     /**
-    * @var int
-    *
-    * @ORM\Column(name="season_end", type="integer", nullable=true)
-    */
+     * @var int|null
+     *
+     * @ORM\Column(name="season_end", type="integer", nullable=true)
+     */
     private $seasonEnd;
 
     public function getIngredientId(): ?int

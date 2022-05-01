@@ -2,17 +2,15 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Image
+ * RecipeImage
  *
- * @ORM\Table(name="image")
+ * @ORM\Table(name="recipe_image", indexes={@ORM\Index(name="recipe_image_FK", columns={"recipe_id"})})
  * @ORM\Entity
  */
-class Image
+class RecipeImage
 {
     /**
      * @var int
@@ -38,27 +36,14 @@ class Image
     private $path;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Recipe
      *
-     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="image")
-     * @ORM\JoinTable(name="image_to_recipe",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="image_id", referencedColumnName="image_id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     *   }
-     * )
+     * @ORM\ManyToOne(targetEntity="Recipe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
+     * })
      */
     private $recipe;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->recipe = new ArrayCollection();
-    }
 
     public function getImageId(): ?int
     {
@@ -89,28 +74,17 @@ class Image
         return $this;
     }
 
-    /**
-     * @return Collection<int, Recipe>
-     */
-    public function getRecipe(): Collection
+    public function getRecipe(): ?Recipe
     {
         return $this->recipe;
     }
 
-    public function addRecipe(Recipe $recipe): self
+    public function setRecipe(?Recipe $recipe): self
     {
-        if (!$this->recipe->contains($recipe)) {
-            $this->recipe[] = $recipe;
-        }
+        $this->recipe = $recipe;
 
         return $this;
     }
 
-    public function removeRecipe(Recipe $recipe): self
-    {
-        $this->recipe->removeElement($recipe);
-
-        return $this;
-    }
 
 }

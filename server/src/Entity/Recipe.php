@@ -71,25 +71,18 @@ class Recipe
     private $rating;
 
     /**
-     * @var boolean|null
-     * 
-     * @ORM\Column(name="marked", type="boolean", nullable=true)
+     * @var bool
+     *
+     * @ORM\Column(name="marked", type="boolean", nullable=false)
      */
     private $marked;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="date_added", type="datetime", nullable=true)
+     * @ORM\Column(name="date_added", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $dateAdded;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Image", mappedBy="recipe")
-     */
-    private $image;
+    private $dateAdded = 'CURRENT_TIMESTAMP';
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -97,6 +90,13 @@ class Recipe
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="recipe")
      */
     private $tag;
+
+    /**
+     * @var \App\Entity\RecipeImage
+     *
+     * @ORM\OneToMany(targetEntity="RecipeImage", mappedBy="recipe")
+     */
+    private $recipe_images;
 
     /**
      * @var \App\Entity\RecipeIngredient
@@ -114,6 +114,7 @@ class Recipe
         $this->tag = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
         $this->dateAdded = new DateTime();
+        $this->recipe_images = new ArrayCollection();
     }
 
     public function getRecipeId(): ?int
@@ -207,33 +208,6 @@ class Recipe
     }
 
     /**
-     * @return Collection<int, Image>
-     */
-    public function getImage(): Collection
-    {
-        return $this->image;
-    }
-
-    public function addImage(Image $image): self
-    {
-        if (!$this->image->contains($image)) {
-            $this->image[] = $image;
-            $image->addRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->image->removeElement($image)) {
-            $image->removeRecipe($this);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Tag>
      */
     public function getTag(): Collection
@@ -284,6 +258,36 @@ class Recipe
             // set the owning side to null (unless already changed)
             if ($ingredient->getRecipe() === $this) {
                 $ingredient->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RecipeImage>
+     */
+    public function getRecipeImages(): Collection
+    {
+        return $this->recipe_images;
+    }
+
+    public function addRecipeImage(RecipeImage $recipeImage): self
+    {
+        if (!$this->recipe_images->contains($recipeImage)) {
+            $this->recipe_images[] = $recipeImage;
+            $recipeImage->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipeImage(RecipeImage $recipeImage): self
+    {
+        if ($this->recipe_images->removeElement($recipeImage)) {
+            // set the owning side to null (unless already changed)
+            if ($recipeImage->getRecipe() === $this) {
+                $recipeImage->setRecipe(null);
             }
         }
 
