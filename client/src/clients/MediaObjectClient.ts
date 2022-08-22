@@ -7,6 +7,12 @@ export class MediaObjectClient {
   client: MediaObjectApi = new MediaObjectApi(clientConfiguration);
   toViewModelConverter = new ToViewModelConverter();
 
+  public async getMediaObjects(): Promise<MediaObject[]> {
+    const ret = await this.client.getMediaObjectCollection();
+    const apiMediaObjects = ret.data['hydra:member']
+    return this.toViewModelConverter.convertMediaObjects(apiMediaObjects);
+  }
+
   public async createMediaObject(file: File): Promise<MediaObject> {
     const ret = await this.client.postMediaObjectCollection(file);
     return this.toViewModelConverter.convertMediaObject(ret.data);

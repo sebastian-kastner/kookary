@@ -9,6 +9,9 @@
       <b-icon-bell-fill v-if="isMarked" v-on:click="setIsMarked(false)" />
     </div>
     <h1>{{ recipe.name }}</h1>
+    <div v-if="recipeImgSrc">
+      <img :src="recipeImgSrc">
+    </div>
     <ul class="list-inline">
       <li class="list-inline-item" 
         v-for="tag in recipe.tags"
@@ -50,6 +53,7 @@ import { Recipe, recipeFactory } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked"
+import { mediaObjectStore } from "../stores/rootStore"
 
 @Component({
   components: { BIconPencil, BIconBell, BIconBellFill },
@@ -78,6 +82,17 @@ export default class RecipeView extends Vue {
     } else {
       console.log("No recipe ID given..");
     }
+  }
+
+  get recipeImgSrc(): string | null {
+    if (this.recipe.image.mediaObjectId) {
+      const url = mediaObjectStore.mediaObjectMap.get(this.recipe.image.mediaObjectId);
+      if (url) {
+        // FIXME fix for production env..
+        return "http://localhost:8000" + url;
+      }
+    }
+    return null;
   }
 
   get sourceIsLink(): boolean {

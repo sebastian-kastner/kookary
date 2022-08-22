@@ -51,7 +51,7 @@ export class ToViewModelConverter {
     for (const key in apiIngredients) {
       ingredients.push(this.convertRecipeIngredient(apiIngredients[key]))
     }
-    return ingredients
+    return ingredients;
   }
   
   public convertRecipe (apiRecipe: RecipeJsonld): Recipe {
@@ -62,7 +62,9 @@ export class ToViewModelConverter {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
       // TODO convert image
-      image: {},
+      image: {
+        mediaObjectId: apiRecipe.image
+      },
       description: apiRecipe.description,
       servings: apiRecipe.servings,
       source: this.getStringOrNull(apiRecipe.source),
@@ -79,6 +81,18 @@ export class ToViewModelConverter {
       mediaObjectId: this.getStringOrNull(apiMediaObject['@id']),
       url: this.getStringOrNull(apiMediaObject.contentUrl)
     }
+  }
+
+  public convertMediaObjects (apiMediaObjects?: MediaObjectJsonldMediaObjectRead[]): MediaObject[] {
+    if (!apiMediaObjects) {
+      return []
+    }
+    const mediaObjects: MediaObject[] = []
+    // not using forEach here because in for some reason apiIngredients is an object after a save operation
+    for (const key in apiMediaObjects) {
+      mediaObjects.push(this.convertMediaObject(apiMediaObjects[key]))
+    }
+    return mediaObjects;
   }
 
   private toId(iri: string | undefined): number | undefined {
