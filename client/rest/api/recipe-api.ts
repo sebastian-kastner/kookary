@@ -21,7 +21,7 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { InlineResponse2001 } from '../models';
+import { InlineResponse2002 } from '../models';
 // @ts-ignore
 import { Recipe } from '../models';
 // @ts-ignore
@@ -309,7 +309,7 @@ export const RecipeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
+        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, name, marked, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -391,7 +391,7 @@ export const RecipeApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: any): AxiosPromise<InlineResponse2001> {
+        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: any): AxiosPromise<InlineResponse2002> {
             return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, name, marked, options).then((request) => request(axios, basePath));
         },
         /**

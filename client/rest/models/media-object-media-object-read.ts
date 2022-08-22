@@ -14,8 +14,17 @@
 
 
 
-export * from './api/ingredient-api';
-export * from './api/media-object-api';
-export * from './api/recipe-api';
-export * from './api/tag-api';
+/**
+ * 
+ * @export
+ * @interface MediaObjectMediaObjectRead
+ */
+export interface MediaObjectMediaObjectRead {
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaObjectMediaObjectRead
+     */
+    'contentUrl'?: string | null;
+}
 

@@ -54,12 +54,6 @@ export interface Recipe {
     'source'?: string | null;
     /**
      * 
-     * @type {number}
-     * @memberof Recipe
-     */
-    'rating'?: number | null;
-    /**
-     * 
      * @type {boolean}
      * @memberof Recipe
      */

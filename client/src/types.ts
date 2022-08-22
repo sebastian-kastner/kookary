@@ -4,12 +4,6 @@ export type Tag = {
     uuid: string;
 }
 
-export type Image = {
-    imageId?: number;
-    date?: string;
-    path?: string;
-}
-
 export type Ingredient = {
     ingredientId?: number;
     name?: string;
@@ -31,7 +25,6 @@ export type Recipe = {
     source: string | null;
     rating?: number | null;
     dateAdded?: string | null;
-    images: Image[];
     marked: boolean;
     ingredients: RecipeIngredient[];
     tags: Tag[];
@@ -41,7 +34,6 @@ export function recipeFactory(): Recipe {
     return {
         ingredients: [],
         tags: [],
-        images: [],
         source: null,
         marked: false,
     }

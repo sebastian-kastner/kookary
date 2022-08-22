@@ -1,5 +1,5 @@
-import { RecipeJsonld, TagJsonld, ImageJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
-import { Recipe, Tag, Image, Ingredient, RecipeIngredient } from '../types'
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient } from '../types'
 import {v4 as uuid} from 'uuid';
 
 export class ToViewModelConverter {
@@ -33,14 +33,6 @@ export class ToViewModelConverter {
       }
     }
     return undefined;
-  }
-  
-  public convertImage (apiImage: ImageJsonld): Image {
-    return {
-      imageId: apiImage.imageId,
-      date: apiImage.date,
-      path: apiImage.path
-    }
   }
   
   public convertIngredient (apiIngredient: IngredientJsonld): Ingredient {
@@ -80,10 +72,7 @@ export class ToViewModelConverter {
       description: apiRecipe.description,
       servings: apiRecipe.servings,
       source: this.getStringOrNull(apiRecipe.source),
-      rating: apiRecipe.rating,
       dateAdded: apiRecipe.dateAdded,
-      // FIXME convert images
-      images: [],
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       // FIXME convert tags
       tags: this.convertTags(apiRecipe.tag),

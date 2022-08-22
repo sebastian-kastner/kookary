@@ -15,36 +15,36 @@
 
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
-import { MediaObjectJsonldMediaObjectRead } from './media-object-jsonld-media-object-read';
+import { TagJsonld } from './tag-jsonld';
 
 /**
  * 
  * @export
- * @interface InlineResponse2001
+ * @interface InlineResponse2003
  */
-export interface InlineResponse2001 {
+export interface InlineResponse2003 {
     /**
      * 
-     * @type {Array<MediaObjectJsonldMediaObjectRead>}
-     * @memberof InlineResponse2001
+     * @type {Array<TagJsonld>}
+     * @memberof InlineResponse2003
      */
-    'hydra:member': Array<MediaObjectJsonldMediaObjectRead>;
+    'hydra:member': Array<TagJsonld>;
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2001
+     * @memberof InlineResponse2003
      */
     'hydra:totalItems'?: number;
     /**
      * 
      * @type {InlineResponse200HydraView}
-     * @memberof InlineResponse2001
+     * @memberof InlineResponse2003
      */
     'hydra:view'?: InlineResponse200HydraView;
     /**
      * 
      * @type {InlineResponse200HydraSearch}
-     * @memberof InlineResponse2001
+     * @memberof InlineResponse2003
      */
     'hydra:search'?: InlineResponse200HydraSearch;
 }

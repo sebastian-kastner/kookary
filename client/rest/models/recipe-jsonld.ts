@@ -72,12 +72,6 @@ export interface RecipeJsonld {
     'source'?: string | null;
     /**
      * 
-     * @type {number}
-     * @memberof RecipeJsonld
-     */
-    'rating'?: number | null;
-    /**
-     * 
      * @type {boolean}
      * @memberof RecipeJsonld
      */
