@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use App\Filter\RecipeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -80,13 +84,6 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Image", mappedBy="recipe")
-     */
-    private $image;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
      * @ORM\ManyToMany(targetEntity="Tag", mappedBy="recipe")
      */
     private $tag;
@@ -99,11 +96,19 @@ class Recipe
     private $ingredients;
 
     /**
+     * @var MediaObject|null
+     *
+     * @ORM\ManyToOne(targetEntity=MediaObject::class)
+     * @ORM\JoinColumn(nullable=true)
+     * @ApiProperty(iri="http://schema.org/image")
+     */
+    public $image;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->image = new ArrayCollection();
         $this->tag = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
         $this->dateAdded = new DateTime();
@@ -183,33 +188,6 @@ class Recipe
     public function setDateAdded(?\DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Image>
-     */
-    public function getImage(): Collection
-    {
-        return $this->image;
-    }
-
-    public function addImage(Image $image): self
-    {
-        if (!$this->image->contains($image)) {
-            $this->image[] = $image;
-            $image->addRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(Image $image): self
-    {
-        if ($this->image->removeElement($image)) {
-            $image->removeRecipe($this);
-        }
 
         return $this;
     }
