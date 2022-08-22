@@ -88,8 +88,7 @@ export default class RecipeView extends Vue {
     if (this.recipe.image.mediaObjectId) {
       const url = mediaObjectStore.mediaObjectMap.get(this.recipe.image.mediaObjectId);
       if (url) {
-        // FIXME fix for production env..
-        return "http://localhost:8000" + url;
+        return url;
       }
     }
     return null;

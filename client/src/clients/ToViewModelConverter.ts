@@ -77,9 +77,13 @@ export class ToViewModelConverter {
   }
 
   public convertMediaObject (apiMediaObject: MediaObjectJsonldMediaObjectRead): MediaObject {
+    let url;
+    if (apiMediaObject.contentUrl) {
+      url = process.env.VUE_APP_ROOT_API + apiMediaObject.contentUrl;
+    }
     return {
       mediaObjectId: this.getStringOrNull(apiMediaObject['@id']),
-      url: this.getStringOrNull(apiMediaObject.contentUrl)
+      url: url,
     }
   }
 
