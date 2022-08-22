@@ -1,5 +1,3 @@
-export * from './image';
-export * from './image-jsonld';
 export * from './ingredient';
 export * from './ingredient-jsonld';
 export * from './inline-response200';

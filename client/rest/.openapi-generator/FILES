@@ -10,8 +10,6 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
-models/image-jsonld.ts
-models/image.ts
 models/index.ts
 models/ingredient-jsonld.ts
 models/ingredient.ts

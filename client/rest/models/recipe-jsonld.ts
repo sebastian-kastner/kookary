@@ -13,7 +13,6 @@
  */
 
 
-import { ImageJsonld } from './image-jsonld';
 import { RecipeIngredientJsonld } from './recipe-ingredient-jsonld';
 
 /**
@@ -84,12 +83,6 @@ export interface RecipeJsonld {
     'dateAdded'?: string | null;
     /**
      * 
-     * @type {Array<ImageJsonld>}
-     * @memberof RecipeJsonld
-     */
-    'image'?: Array<ImageJsonld>;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof RecipeJsonld
      */
@@ -100,5 +93,11 @@ export interface RecipeJsonld {
      * @memberof RecipeJsonld
      */
     'ingredients'?: Array<RecipeIngredientJsonld>;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecipeJsonld
+     */
+    'image'?: string | null;
 }
 

@@ -71,6 +71,7 @@ export class ToRestModelConverter {
       servings: apiRecipe.servings,
       source: apiRecipe.source,
       dateAdded: apiRecipe.dateAdded,
+      image: apiRecipe.image.mediaObjectId,
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients, apiRecipe.recipeId?.toString()),
       tag: this.convertTags(apiRecipe.tags)
     }

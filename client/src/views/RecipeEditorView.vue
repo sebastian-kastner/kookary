@@ -12,6 +12,10 @@
       />
     </div>
     <div class="form-group">
+      <label>Rezeptbild</label>
+      <input type="file" @change="onRecipeImageSelected" />
+    </div>
+    <div class="form-group">
       <label>Tags</label>
       <div>
         <inline-item-list
@@ -139,6 +143,14 @@ export default class RecipeEditorView extends Vue {
   onDeleteIngredient(ingredientToRemove: RecipeIngredient): void {
     if (this.recipe.ingredients) {
       this.recipe.ingredients.splice(this.recipe.ingredients.indexOf(ingredientToRemove), 1);
+    }
+  }
+
+  onRecipeImageSelected(event: Event): void {
+    /* eslint-disable */
+    const target = event.target as any;
+    if (target && "files" in target) {
+      this.recipe.image.file = target["files"][0];
     }
   }
 

@@ -13,7 +13,6 @@
  */
 
 
-import { Image } from './image';
 import { RecipeIngredient } from './recipe-ingredient';
 
 /**
@@ -66,12 +65,6 @@ export interface Recipe {
     'dateAdded'?: string | null;
     /**
      * 
-     * @type {Array<Image>}
-     * @memberof Recipe
-     */
-    'image'?: Array<Image>;
-    /**
-     * 
      * @type {Array<string>}
      * @memberof Recipe
      */
@@ -82,5 +75,11 @@ export interface Recipe {
      * @memberof Recipe
      */
     'ingredients'?: Array<RecipeIngredient>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recipe
+     */
+    'image'?: string | null;
 }
 

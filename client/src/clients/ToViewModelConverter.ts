@@ -55,9 +55,14 @@ export class ToViewModelConverter {
   }
   
   public convertRecipe (apiRecipe: RecipeJsonld): Recipe {
+    if(apiRecipe.image) {
+      console.log(apiRecipe.image);
+    }
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
+      // TODO convert image
+      image: {},
       description: apiRecipe.description,
       servings: apiRecipe.servings,
       source: this.getStringOrNull(apiRecipe.source),
@@ -65,13 +70,13 @@ export class ToViewModelConverter {
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       // FIXME convert tags
       tags: this.convertTags(apiRecipe.tag),
-      marked: this.getBoolean(apiRecipe.marked)
+      marked: this.getBoolean(apiRecipe.marked),
     }
   }
 
   public convertMediaObject (apiMediaObject: MediaObjectJsonldMediaObjectRead): MediaObject {
     return {
-      mediaObjectId: this.toId(apiMediaObject['@id']),
+      mediaObjectId: this.getStringOrNull(apiMediaObject['@id']),
       url: this.getStringOrNull(apiMediaObject.contentUrl)
     }
   }

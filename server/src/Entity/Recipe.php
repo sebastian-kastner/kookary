@@ -98,8 +98,8 @@ class Recipe
     /**
      * @var MediaObject|null
      *
-     * @ORM\ManyToOne(targetEntity=MediaObject::class)
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\ManyToOne(targetEntity="MediaObject")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
      * @ApiProperty(iri="http://schema.org/image")
      */
     public $image;

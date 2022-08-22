@@ -28,11 +28,12 @@ export type Recipe = {
     marked: boolean;
     ingredients: RecipeIngredient[];
     tags: Tag[];
+    image: MediaObject;
 }
 
 export type MediaObject = {
     file?: File; // only required for new uploads
-    mediaObjectId?: number; // only set for uploaded objects
+    mediaObjectId?: string | null; // only set for uploaded objects
     url?: string | null; // only set for uploaded objects
 }
 
@@ -42,5 +43,6 @@ export function recipeFactory(): Recipe {
         tags: [],
         source: null,
         marked: false,
+        image: {}
     }
 }
