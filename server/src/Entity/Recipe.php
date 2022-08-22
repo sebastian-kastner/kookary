@@ -64,13 +64,6 @@ class Recipe
     private $source;
 
     /**
-     * @var int|null
-     *
-     * @ORM\Column(name="rating", type="integer", nullable=true)
-     */
-    private $rating;
-
-    /**
      * @var boolean|null
      * 
      * @ORM\Column(name="marked", type="boolean", nullable=true)
@@ -165,18 +158,6 @@ class Recipe
     public function setSource(?string $source): self
     {
         $this->source = $source;
-
-        return $this;
-    }
-
-    public function getRating(): ?int
-    {
-        return $this->rating;
-    }
-
-    public function setRating(?int $rating): self
-    {
-        $this->rating = $rating;
 
         return $this;
     }
