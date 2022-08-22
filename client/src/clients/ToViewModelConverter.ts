@@ -1,5 +1,5 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient } from '../types'
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject } from '../types'
 import {v4 as uuid} from 'uuid';
 
 export class ToViewModelConverter {
@@ -24,17 +24,6 @@ export class ToViewModelConverter {
     return tags;
   }
 
-  private toId(iri: string): number | undefined {
-    const stringId = iri.split("/").pop()?.toString();
-    if(stringId) {
-      const number = Number(stringId)
-      if(!isNaN(number)) {
-        return number;
-      }
-    }
-    return undefined;
-  }
-  
   public convertIngredient (apiIngredient: IngredientJsonld): Ingredient {
     return {
       ingredientId: apiIngredient.ingredientId,
@@ -78,6 +67,27 @@ export class ToViewModelConverter {
       tags: this.convertTags(apiRecipe.tag),
       marked: this.getBoolean(apiRecipe.marked)
     }
+  }
+
+  public convertMediaObject (apiMediaObject: MediaObjectJsonldMediaObjectRead): MediaObject {
+    return {
+      mediaObjectId: this.toId(apiMediaObject['@id']),
+      url: this.getStringOrNull(apiMediaObject.contentUrl)
+    }
+  }
+
+  private toId(iri: string | undefined): number | undefined {
+    if (!iri) {
+      return undefined;
+    }
+    const stringId = iri.split("/").pop()?.toString();
+    if(stringId) {
+      const number = Number(stringId)
+      if(!isNaN(number)) {
+        return number;
+      }
+    }
+    return undefined;
   }
 
   private getStringOrNull(value: string | null | undefined): string | null {

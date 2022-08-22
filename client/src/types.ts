@@ -30,6 +30,12 @@ export type Recipe = {
     tags: Tag[];
 }
 
+export type MediaObject = {
+    file?: File; // only required for new uploads
+    mediaObjectId?: number; // only set for uploaded objects
+    url?: string | null; // only set for uploaded objects
+}
+
 export function recipeFactory(): Recipe {
     return {
         ingredients: [],
