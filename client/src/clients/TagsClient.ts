@@ -1,7 +1,7 @@
 import { Tag } from '../types'
 import { TagApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
-import { ToViewModelConverter } from './ToViewModelconverter'
+import { ToViewModelConverter } from './ToViewModelConverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 
 export class TagsClient {

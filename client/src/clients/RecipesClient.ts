@@ -2,7 +2,7 @@ import { Ingredient, Recipe, Tag } from '../types'
 import { AxiosError, AxiosResponse } from 'axios'
 import { RecipeApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
-import { ToViewModelConverter } from './ToViewModelconverter'
+import { ToViewModelConverter } from './ToViewModelConverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 import { RecipeJsonld } from 'rest/models'

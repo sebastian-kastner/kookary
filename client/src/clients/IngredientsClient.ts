@@ -1,7 +1,7 @@
 import { Ingredient } from '../types'
 import { IngredientApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
-import { ToViewModelConverter } from './ToViewModelconverter'
+import { ToViewModelConverter } from './ToViewModelConverter'
 
 export class IngredientsClient {
     client: IngredientApi = new IngredientApi(clientConfiguration);
