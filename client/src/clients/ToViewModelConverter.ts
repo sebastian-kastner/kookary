@@ -55,9 +55,6 @@ export class ToViewModelConverter {
   }
   
   public convertRecipe (apiRecipe: RecipeJsonld): Recipe {
-    if(apiRecipe.image) {
-      console.log(apiRecipe.image);
-    }
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,

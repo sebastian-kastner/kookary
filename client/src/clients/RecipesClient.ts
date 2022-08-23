@@ -114,8 +114,6 @@ export class RecipesClient {
 
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
 
-      console.log(restRecipe);
-
       if(recipe.recipeId) {
         return this.saveInternal(this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe));
       }

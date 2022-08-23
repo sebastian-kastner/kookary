@@ -80,7 +80,7 @@ export default class RecipeView extends Vue {
         }
       });
     } else {
-      console.log("No recipe ID given..");
+      console.error("No recipe ID given..");
     }
   }
 
