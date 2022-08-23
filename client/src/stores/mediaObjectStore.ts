@@ -7,6 +7,11 @@ const VuexModule = createModule({
   strict: false,
 })
 
+export type CreateMediaObjectRequest = {
+  file: File,
+  fileName?: string,
+}
+
 export class MediaObjectStore extends VuexModule {
   private mediaObjectClient = new MediaObjectClient();
 
@@ -29,8 +34,8 @@ export class MediaObjectStore extends VuexModule {
   }
 
   @action
-  async createMediaObject(file: File): Promise<MediaObject> {
-    const mediaObject = await this.mediaObjectClient.createMediaObject(file);
+  async createMediaObject(request: CreateMediaObjectRequest): Promise<MediaObject> {
+    const mediaObject = await this.mediaObjectClient.createMediaObject(request.file, request.fileName);
     this.ADD_MEDIA_OBJECT(mediaObject);
     return mediaObject;
   }

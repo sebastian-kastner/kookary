@@ -105,10 +105,11 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
          * Creates a MediaObject resource.
          * @summary Creates a MediaObject resource.
          * @param {any} [file] 
+         * @param {string} [fileName] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postMediaObjectCollection: async (file?: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postMediaObjectCollection: async (file?: any, fileName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/media_objects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -125,6 +126,10 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
 
             if (file !== undefined) { 
                 localVarFormParams.append('file', file as any);
+            }
+    
+            if (fileName !== undefined) { 
+                localVarFormParams.append('fileName', fileName as any);
             }
     
     
@@ -176,11 +181,12 @@ export const MediaObjectApiFp = function(configuration?: Configuration) {
          * Creates a MediaObject resource.
          * @summary Creates a MediaObject resource.
          * @param {any} [file] 
+         * @param {string} [fileName] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postMediaObjectCollection(file?: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaObjectJsonldMediaObjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postMediaObjectCollection(file, options);
+        async postMediaObjectCollection(file?: any, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaObjectJsonldMediaObjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postMediaObjectCollection(file, fileName, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -217,11 +223,12 @@ export const MediaObjectApiFactory = function (configuration?: Configuration, ba
          * Creates a MediaObject resource.
          * @summary Creates a MediaObject resource.
          * @param {any} [file] 
+         * @param {string} [fileName] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postMediaObjectCollection(file?: any, options?: any): AxiosPromise<MediaObjectJsonldMediaObjectRead> {
-            return localVarFp.postMediaObjectCollection(file, options).then((request) => request(axios, basePath));
+        postMediaObjectCollection(file?: any, fileName?: string, options?: any): AxiosPromise<MediaObjectJsonldMediaObjectRead> {
+            return localVarFp.postMediaObjectCollection(file, fileName, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -261,11 +268,12 @@ export class MediaObjectApi extends BaseAPI {
      * Creates a MediaObject resource.
      * @summary Creates a MediaObject resource.
      * @param {any} [file] 
+     * @param {string} [fileName] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MediaObjectApi
      */
-    public postMediaObjectCollection(file?: any, options?: AxiosRequestConfig) {
-        return MediaObjectApiFp(this.configuration).postMediaObjectCollection(file, options).then((request) => request(this.axios, this.basePath));
+    public postMediaObjectCollection(file?: any, fileName?: string, options?: AxiosRequestConfig) {
+        return MediaObjectApiFp(this.configuration).postMediaObjectCollection(file, fileName, options).then((request) => request(this.axios, this.basePath));
     }
 }

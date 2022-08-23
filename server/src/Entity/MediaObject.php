@@ -33,6 +33,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *                                     "file"={
  *                                         "type"="string",
  *                                         "format"="binary"
+ *                                     },
+ *                                      "fileName"={
+ *                                          "type"="string",
+ *                                          "format"="string"
  *                                     }
  *                                 }
  *                             }
@@ -67,6 +71,12 @@ class MediaObject
      * @Groups({"media_object_read"})
      */
     public $contentUrl;
+    
+    /**
+     * @var string|null
+     * @Groups({"media_object_post"})
+     */
+    public $fileName;
 
     /**
      * @var File|null

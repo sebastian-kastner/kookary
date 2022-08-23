@@ -13,8 +13,8 @@ export class MediaObjectClient {
     return this.toViewModelConverter.convertMediaObjects(apiMediaObjects);
   }
 
-  public async createMediaObject(file: File): Promise<MediaObject> {
-    const ret = await this.client.postMediaObjectCollection(file);
+  public async createMediaObject(file: File, fileName?: string): Promise<MediaObject> {
+    const ret = await this.client.postMediaObjectCollection(file, fileName);
     return this.toViewModelConverter.convertMediaObject(ret.data);
   }
 }

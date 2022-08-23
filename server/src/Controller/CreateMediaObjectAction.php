@@ -17,6 +17,10 @@ final class CreateMediaObjectAction
         }
 
         $mediaObject = new MediaObject();
+        $fileName = $request->get('fileName');
+        if($fileName != null) {
+            $mediaObject->fileName = $fileName;
+        }
         $mediaObject->file = $uploadedFile;
 
         return $mediaObject;

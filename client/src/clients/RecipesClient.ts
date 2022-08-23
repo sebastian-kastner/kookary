@@ -107,7 +107,10 @@ export class RecipesClient {
     public async saveRecipe(recipe: Recipe): Promise<Recipe> {
       // if a new file is set, upload the new file
       if(recipe.image.file) {
-        const uploadedFile = await mediaObjectStore.createMediaObject(recipe.image.file);
+        const uploadedFile = await mediaObjectStore.createMediaObject({
+          file: recipe.image.file,
+          fileName: recipe.name
+        });
         recipe.image = uploadedFile;
       }
 
