@@ -7,11 +7,10 @@ import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 import { RecipeJsonld } from 'rest/models'
 import { tagStore } from '../stores/rootStore'
-import { MediaObjectClient } from './MediaObjectClient'
+import { mediaObjectStore } from "../stores/rootStore"
 
 export class RecipesClient {
     client = new RecipeApi(clientConfiguration);
-    mediaObjectClient = new MediaObjectClient();
 
     toViewModelConverter = new ToViewModelConverter();
     toRestModelConverter = new ToRestModelConverter();
@@ -108,8 +107,8 @@ export class RecipesClient {
     public async saveRecipe(recipe: Recipe): Promise<Recipe> {
       // if a new file is set, upload the new file
       if(recipe.image.file) {
-        const uploadedFile = await this.mediaObjectClient.createMediaObject(recipe.image.file);
-        recipe.image = uploadedFile;  
+        const uploadedFile = await mediaObjectStore.createMediaObject(recipe.image.file);
+        recipe.image = uploadedFile;
       }
 
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);

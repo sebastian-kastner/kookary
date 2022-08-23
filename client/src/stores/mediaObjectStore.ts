@@ -28,6 +28,13 @@ export class MediaObjectStore extends VuexModule {
     this.SET_MEDIA_OBJECTS_MAP(mediaObjectMap);
   }
 
+  @action
+  async createMediaObject(file: File): Promise<MediaObject> {
+    const mediaObject = await this.mediaObjectClient.createMediaObject(file);
+    this.ADD_MEDIA_OBJECT(mediaObject);
+    return mediaObject;
+  }
+
   @mutation
   private SET_MEDIA_OBJECTS(mediaObjects: MediaObject[]): void {
     this.mediaObjects = mediaObjects;
@@ -36,6 +43,14 @@ export class MediaObjectStore extends VuexModule {
   @mutation
   private SET_MEDIA_OBJECTS_MAP(tagsMap: Map<string, string>): void {
     this.mediaObjectMap = tagsMap;
+  }
+
+  @mutation
+  private ADD_MEDIA_OBJECT(mediaObject: MediaObject): void {
+    if(mediaObject.mediaObjectId && mediaObject.url) {
+      this.mediaObjects.push(mediaObject);
+      this.mediaObjectMap.set(mediaObject.mediaObjectId, mediaObject.url);
+    }
   }
 }
 
