@@ -89,4 +89,9 @@ export default class ImageUpload extends Vue {
   margin-left: 10px;
 }
 
+.image-preview img {
+  max-height: 600px;
+  max-height: 400px;
+}
+
 </style>
