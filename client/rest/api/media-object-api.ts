@@ -33,6 +33,40 @@ import { MediaObjectMediaObjectRead } from '../models';
 export const MediaObjectApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
+         * Removes the MediaObject resource.
+         * @summary Removes the MediaObject resource.
+         * @param {string} id Resource identifier
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMediaObjectItem: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteMediaObjectItem', 'id', id)
+            const localVarPath = `/api/media_objects/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieves the collection of MediaObject resources.
          * @summary Retrieves the collection of MediaObject resources.
          * @param {number} [page] The collection page number
@@ -156,6 +190,17 @@ export const MediaObjectApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = MediaObjectApiAxiosParamCreator(configuration)
     return {
         /**
+         * Removes the MediaObject resource.
+         * @summary Removes the MediaObject resource.
+         * @param {string} id Resource identifier
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteMediaObjectItem(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteMediaObjectItem(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Retrieves the collection of MediaObject resources.
          * @summary Retrieves the collection of MediaObject resources.
          * @param {number} [page] The collection page number
@@ -200,6 +245,16 @@ export const MediaObjectApiFactory = function (configuration?: Configuration, ba
     const localVarFp = MediaObjectApiFp(configuration)
     return {
         /**
+         * Removes the MediaObject resource.
+         * @summary Removes the MediaObject resource.
+         * @param {string} id Resource identifier
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteMediaObjectItem(id: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteMediaObjectItem(id, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Retrieves the collection of MediaObject resources.
          * @summary Retrieves the collection of MediaObject resources.
          * @param {number} [page] The collection page number
@@ -240,6 +295,18 @@ export const MediaObjectApiFactory = function (configuration?: Configuration, ba
  * @extends {BaseAPI}
  */
 export class MediaObjectApi extends BaseAPI {
+    /**
+     * Removes the MediaObject resource.
+     * @summary Removes the MediaObject resource.
+     * @param {string} id Resource identifier
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MediaObjectApi
+     */
+    public deleteMediaObjectItem(id: string, options?: AxiosRequestConfig) {
+        return MediaObjectApiFp(this.configuration).deleteMediaObjectItem(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * Retrieves the collection of MediaObject resources.
      * @summary Retrieves the collection of MediaObject resources.
