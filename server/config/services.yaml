@@ -24,3 +24,7 @@ services:
     App\DataPersister\RecipePersister: ~
     App\Naming\OrignameNamer: 
         public: true
+
+    App\EventSubscriber\ResizeOnImageUploadListener:
+        tags:
+            - { name: kernel.event_listener, event: vich_uploader.post_upload }

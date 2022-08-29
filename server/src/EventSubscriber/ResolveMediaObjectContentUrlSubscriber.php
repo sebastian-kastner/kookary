@@ -12,6 +12,9 @@ use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
+/**
+ * Resolves the urls of media objects
+ */
 final class ResolveMediaObjectContentUrlSubscriber implements EventSubscriberInterface
 {
     private $storage;
