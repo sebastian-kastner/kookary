@@ -180,7 +180,7 @@ $bottom-border: 3px;
 
   &.active-filter {
     background-color: $highlight-color;
-    margin-bottom: -$bottom-border;
+    margin-bottom: -$bottom-border - 1;
   }
 
   .delete-filter {
