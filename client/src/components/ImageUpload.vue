@@ -2,8 +2,11 @@
   <div>
     <div class="container">
       <div class="image-preview" v-if="filePreview !== null">
-        <img :src="filePreview" alt="Preview Image" />
+        <img :src="filePreview" ref="filePreview" alt="Preview Image" />
         <b-icon-x-circle @click="removeImage" />
+        <div v-if="badDimensions" class="bad-dimension-hint">
+          Bilder im Querformat sind empfohlen!
+        </div>
       </div>
       <div v-else>
         <input
@@ -31,6 +34,7 @@ import { mediaObjectStore } from "@/stores/rootStore";
 })
 export default class ImageUpload extends Vue {
   filePreview: string | ArrayBuffer | null = null;
+  badDimensions = false;
 
   @Prop({ required: false }) inputFile!: MediaObject;
 
@@ -41,9 +45,11 @@ export default class ImageUpload extends Vue {
   @Watch("inputFile")
   public onInputFileChanged() {
     if (this.inputFile && this.inputFile.mediaObjectId) {
-      const resolvedMediaObjectUrl = mediaObjectStore.mediaObjectMap.get(this.inputFile.mediaObjectId);
+      const resolvedMediaObjectUrl = mediaObjectStore.mediaObjectMap.get(
+        this.inputFile.mediaObjectId
+      );
       if (resolvedMediaObjectUrl) {
-        this.filePreview = resolvedMediaObjectUrl;
+        this.setPreviewFileUrl(resolvedMediaObjectUrl);
       }
     }
   }
@@ -65,7 +71,7 @@ export default class ImageUpload extends Vue {
 
   public removeImage(): void {
     this.$emit("imageRemoved");
-    this.filePreview = null;
+    this.setPreviewFileUrl(null);
   }
 
   private setPreviewFile(file: File): void {
@@ -73,15 +79,34 @@ export default class ImageUpload extends Vue {
     reader.readAsDataURL(file);
     reader.onload = (e) => {
       if (e.target && e.target instanceof FileReader) {
-        this.filePreview = e.target.result;
+        this.setPreviewFileUrl(e.target.result);
       }
     };
   }
-  
+
+  private setPreviewFileUrl(url: string | ArrayBuffer | null = null): void {
+    this.filePreview = url;
+    // FIXME: hackish way of checking image dimensions
+    setTimeout(() => {
+      if (this.$refs.filePreview) {
+        const img = this.$refs.filePreview;
+        if (img instanceof Image) {
+          console.log(img.width / img.height);
+          if (img.width / img.height < 1.3) {
+            this.badDimensions = true;
+          } else {
+            this.badDimensions = false;
+          }
+        }
+      }
+    }, 50);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+
+@import "../../main.scss";
 
 .image-preview svg {
   vertical-align: top;
@@ -90,8 +115,15 @@ export default class ImageUpload extends Vue {
 }
 
 .image-preview img {
-  max-height: 600px;
-  max-height: 400px;
+  max-height: 300px;
+  max-height: 200px;
 }
 
+.bad-dimension-hint {
+  border: 1px solid $red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 300px;
+}
 </style>
