@@ -75,9 +75,6 @@ export default class RecipeView extends Vue {
       this.recipeId = routeRecipeId.toString();
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
-        if(this.recipe.tags === undefined) {
-          this.recipe.tags = [];
-        }
       });
     } else {
       console.error("No recipe ID given..");
