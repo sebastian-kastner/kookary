@@ -13,7 +13,11 @@
     </div>
     <div class="form-group">
       <label>Rezeptbild</label>
-      <input type="file" @change="onRecipeImageSelected" />
+      <!-- <input type="file" @change="onRecipeImageSelected" /> -->
+      <image-upload
+        :file="recipe.image.file"
+        @imageSelected="onRecipeImageSelected"
+      />
     </div>
     <div class="form-group">
       <label>Tags</label>
@@ -64,11 +68,12 @@ import { Ingredient, Recipe, RecipeIngredient, Tag, recipeFactory } from "../typ
 import { ingredientStore, tagStore } from "../stores/rootStore"
 import { RecipesClient } from "../clients/RecipesClient";
 import IngredientEditor from "../components/IngredientEditor.vue";
+import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue"
 import {v4 as uuid} from 'uuid';
 
 @Component({
-  components: { IngredientEditor, InlineItemList },
+  components: { IngredientEditor, InlineItemList, ImageUpload },
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
@@ -146,12 +151,10 @@ export default class RecipeEditorView extends Vue {
     }
   }
 
-  onRecipeImageSelected(event: Event): void {
-    /* eslint-disable */
-    const target = event.target as any;
-    if (target && "files" in target) {
-      this.recipe.image.file = target["files"][0];
-    }
+  onRecipeImageSelected(file: File): void {
+    console.log("File selected");
+    console.log(file);
+    this.recipe.image.file = file;
   }
 
   doSubmit(): void {
