@@ -9,6 +9,7 @@
           class="form-control form-control-lg"
           ref="fileInput"
           type="file"
+          accept="image/*"
           @input="selectImgFile"
         />
       </div>
