@@ -95,6 +95,7 @@ export class RecipesClient {
           }
         }
       });
+      // manually resolve uploaded images
       return recipe;
     }
 
@@ -117,7 +118,13 @@ export class RecipesClient {
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
 
       if(recipe.recipeId) {
-        return this.saveInternal(this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe));
+        const saveInternal = await this.saveInternal(this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe));
+        // FIXME this is fugly
+        // no need to wait for the deletions.. keep fingers crossed, hope for the best
+        recipe.imagesToDelete.forEach((mediaObjectId) => {
+          mediaObjectStore.deleteMediaObject(mediaObjectId);
+        });
+        return saveInternal;
       }
       return this.saveInternal(this.client.postRecipeCollection(restRecipe));
     }

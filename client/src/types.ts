@@ -29,11 +29,12 @@ export type Recipe = {
     ingredients: RecipeIngredient[];
     tags: Tag[];
     image: MediaObject;
+    imagesToDelete: number[];
 }
 
 export type MediaObject = {
     file?: File; // only required for new uploads
-    mediaObjectId?: string | null; // only set for uploaded objects
+    mediaObjectId?: number | null; // only set for uploaded objects
     url?: string | null; // only set for uploaded objects
 }
 
@@ -43,6 +44,8 @@ export function recipeFactory(): Recipe {
         tags: [],
         source: null,
         marked: false,
-        image: {}
+        image: {},
+        // FIXME this is fugly
+        imagesToDelete: [],
     }
 }

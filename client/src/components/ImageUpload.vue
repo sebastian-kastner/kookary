@@ -1,8 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <div v-if="filePreview !== null">
+      <div class="image-preview" v-if="filePreview !== null">
         <img :src="filePreview" alt="Preview Image" />
+        <b-icon-x-circle @click="removeImage" />
       </div>
       <div v-else>
         <input
@@ -18,21 +19,36 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { BIconXCircle } from "bootstrap-vue";
+import { MediaObject } from "../types";
+import { mediaObjectStore } from "@/stores/rootStore";
 
-@Component
+@Component({
+  components: {
+    BIconXCircle,
+  },
+})
 export default class ImageUpload extends Vue {
   filePreview: string | ArrayBuffer | null = null;
 
-  @Prop({ required: false }) file!: File;
+  @Prop({ required: false }) inputFile!: MediaObject;
 
-  mounted(): void {
-    if (this.file) {
-      this.setPreviewFile(this.file);
+  public mounted(): void {
+    this.onInputFileChanged();
+  }
+
+  @Watch("inputFile")
+  public onInputFileChanged() {
+    if (this.inputFile && this.inputFile.mediaObjectId) {
+      const resolvedMediaObjectUrl = mediaObjectStore.mediaObjectMap.get(this.inputFile.mediaObjectId);
+      if (resolvedMediaObjectUrl) {
+        this.filePreview = resolvedMediaObjectUrl;
+      }
     }
   }
 
-  private selectImgFile(): void {
+  public selectImgFile(): void {
     let fileInput = this.$refs.fileInput;
     if (fileInput) {
       /* eslint-disable */
@@ -47,6 +63,11 @@ export default class ImageUpload extends Vue {
     }
   }
 
+  public removeImage(): void {
+    this.$emit("imageRemoved");
+    this.filePreview = null;
+  }
+
   private setPreviewFile(file: File): void {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -56,5 +77,16 @@ export default class ImageUpload extends Vue {
       }
     };
   }
+  
 }
 </script>
+
+<style lang="scss" scoped>
+
+.image-preview svg {
+  vertical-align: top;
+  font-size: 30pt;
+  margin-left: 10px;
+}
+
+</style>

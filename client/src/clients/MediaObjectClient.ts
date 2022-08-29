@@ -17,4 +17,8 @@ export class MediaObjectClient {
     const ret = await this.client.postMediaObjectCollection(file, fileName);
     return this.toViewModelConverter.convertMediaObject(ret.data);
   }
+
+  public async deleteMediaObject(mediaObjectId: number): Promise<void> {
+    await this.client.deleteMediaObjectItem(mediaObjectId.toString());
+  }
 }

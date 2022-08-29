@@ -16,7 +16,10 @@ export class ToRestModelConverter {
     if(apiTags) {
       apiTags.forEach((tag) => {
         if(tag.tagId) {
-          tags.push(this.toApiId(ep.TAGS_ENDPOINT, tag.tagId));
+          const apiId = this.toApiId(ep.TAGS_ENDPOINT, tag.tagId);
+          if(apiId) {
+            tags.push(apiId);
+          }
         }
       });
     }
@@ -33,9 +36,9 @@ export class ToRestModelConverter {
     }
   }
 
-  private toApiId(prefix: string, id: number | string | null | undefined): string {
+  private toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
     if (!id) {
-      return '';
+      return undefined;
     }
     return prefix + "/" + id;
   }
@@ -71,7 +74,7 @@ export class ToRestModelConverter {
       servings: apiRecipe.servings,
       source: apiRecipe.source,
       dateAdded: apiRecipe.dateAdded,
-      image: apiRecipe.image.mediaObjectId,
+      image: this.toApiId(ep.MEDIA_OBJECTS_ENDPOINT, apiRecipe.image.mediaObjectId?.toString()),
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients, apiRecipe.recipeId?.toString()),
       tag: this.convertTags(apiRecipe.tags)
     }

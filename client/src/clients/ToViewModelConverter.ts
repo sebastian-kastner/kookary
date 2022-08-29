@@ -58,18 +58,17 @@ export class ToViewModelConverter {
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
-      // TODO convert image
       image: {
-        mediaObjectId: apiRecipe.image
+        mediaObjectId: this.toId(apiRecipe.image)
       },
       description: apiRecipe.description,
       servings: apiRecipe.servings,
       source: this.getStringOrNull(apiRecipe.source),
       dateAdded: apiRecipe.dateAdded,
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
-      // FIXME convert tags
       tags: this.convertTags(apiRecipe.tag),
       marked: this.getBoolean(apiRecipe.marked),
+      imagesToDelete: [],
     }
   }
 
@@ -79,7 +78,7 @@ export class ToViewModelConverter {
       url = process.env.VUE_APP_ROOT_API + apiMediaObject.contentUrl;
     }
     return {
-      mediaObjectId: this.getStringOrNull(apiMediaObject['@id']),
+      mediaObjectId: this.toId(apiMediaObject['@id']),
       url: url,
     }
   }
@@ -96,7 +95,7 @@ export class ToViewModelConverter {
     return mediaObjects;
   }
 
-  private toId(iri: string | undefined): number | undefined {
+  private toId(iri: string | null | undefined): number | undefined {
     if (!iri) {
       return undefined;
     }
