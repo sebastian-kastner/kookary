@@ -152,8 +152,6 @@ export default class RecipeEditorView extends Vue {
   }
 
   onRecipeImageSelected(file: File): void {
-    console.log("File selected");
-    console.log(file);
     this.recipe.image.file = file;
   }
 

@@ -21,9 +21,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class ImageUpload extends Vue {
-  filePreview: string | null = null;
-
-  @Prop({ required: false, default: true }) autoUpload!: boolean;
+  filePreview: string | ArrayBuffer | null = null;
 
   @Prop({ required: false }) file!: File;
 
@@ -53,7 +51,7 @@ export default class ImageUpload extends Vue {
     reader.readAsDataURL(file);
     reader.onload = (e) => {
       if (e.target && e.target instanceof FileReader) {
-        this.filePreview = String(e.target.result);
+        this.filePreview = e.target.result;
       }
     };
   }
