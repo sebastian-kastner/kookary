@@ -107,12 +107,12 @@ export class RecipesClient {
      */
     public async saveRecipe(recipe: Recipe): Promise<Recipe> {
       // if a new file is set, upload the new file
-      if(recipe.image.file) {
+      if(recipe.images.length > 0 && recipe.images[0].file) {
         const uploadedFile = await mediaObjectStore.createMediaObject({
-          file: recipe.image.file,
+          file: recipe.images[0].file,
           fileName: recipe.name
         });
-        recipe.image = uploadedFile;
+        recipe.images[0] = uploadedFile;
       }
 
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);

@@ -68,7 +68,7 @@ export interface Recipe {
      * @type {Array<string>}
      * @memberof Recipe
      */
-    'tag'?: Array<string>;
+    'tags'?: Array<string>;
     /**
      * 
      * @type {Array<RecipeIngredient>}
@@ -77,9 +77,9 @@ export interface Recipe {
     'ingredients'?: Array<RecipeIngredient>;
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof Recipe
      */
-    'image'?: string | null;
+    'images'?: Array<string>;
 }
 

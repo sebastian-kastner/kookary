@@ -82,8 +82,8 @@ export default class RecipeView extends Vue {
   }
 
   get recipeImgSrc(): string | null {
-    if (this.recipe.image.mediaObjectId) {
-      const url = mediaObjectStore.mediaObjectMap.get(this.recipe.image.mediaObjectId);
+    if (this.recipe.images.length > 0 && this.recipe.images[0].mediaObjectId) {
+      const url = mediaObjectStore.mediaObjectMap.get(this.recipe.images[0].mediaObjectId);
       if (url) {
         return url;
       }

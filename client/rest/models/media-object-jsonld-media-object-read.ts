@@ -15,7 +15,7 @@
 
 
 /**
- * 
+ * MediaObject
  * @export
  * @interface MediaObjectJsonldMediaObjectRead
  */

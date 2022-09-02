@@ -11,8 +11,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+
 /**
+ * MediaObject
+ * 
  * @ORM\Entity
+ * 
  * @ApiResource(
  *     iri="http://schema.org/MediaObject",
  *     normalizationContext={
@@ -57,13 +61,20 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class MediaObject
 {
     /**
-     * @var int|null
+     * @var int
      *
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue
+     * @ORM\Column(name="media_object_id", type="integer", nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $id;
+    protected $mediaObjectId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="file_path", type="string", length=300, nullable=true)
+     */
+    public $filePath;
 
     /**
      * @var string|null
@@ -87,17 +98,22 @@ class MediaObject
      */
     public $file;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(nullable=true)
-     */
-    public $filePath;
-
-    public function getId(): ?int
+    public function getMediaObjectId(): ?int
     {
-        return $this->id;
+        return $this->mediaObjectId;
     }
-}
 
-?>
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function setFilePath(?string $filePath): self
+    {
+        $this->filePath = $filePath;
+
+        return $this;
+    }
+
+
+}

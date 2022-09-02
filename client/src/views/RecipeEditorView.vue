@@ -170,13 +170,16 @@ export default class RecipeEditorView extends Vue {
   }
 
   onRecipeImageSelected(file: File): void {
-    this.recipe.image.file = file;
+    if (this.recipe.images.length == 0) {
+      this.recipe.images.push({});
+    }
+    this.recipe.images[0].file = file;
   }
 
   onRecipeImageRemoved(): void {
-    if (this.recipe.image.mediaObjectId) {
-      this.recipe.imagesToDelete.push(this.recipe.image.mediaObjectId);
-      this.recipe.image = {}
+    if (this.recipe.images[0].mediaObjectId) {
+      this.recipe.imagesToDelete.push(this.recipe.images[0].mediaObjectId);
+      this.recipe.images[0] = {}
     }
   }
 

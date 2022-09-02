@@ -61,12 +61,12 @@ export interface RecipeIngredientJsonld {
      * @type {string}
      * @memberof RecipeIngredientJsonld
      */
-    'recipe'?: string | null;
+    'ingredient'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof RecipeIngredientJsonld
      */
-    'ingredient'?: string | null;
+    'recipe'?: string | null;
 }
 

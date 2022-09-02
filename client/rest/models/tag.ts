@@ -37,6 +37,6 @@ export interface Tag {
      * @type {Array<string>}
      * @memberof Tag
      */
-    'recipe'?: Array<string>;
+    'recipes'?: Array<string>;
 }
 

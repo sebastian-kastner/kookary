@@ -43,12 +43,12 @@ export interface RecipeIngredient {
      * @type {string}
      * @memberof RecipeIngredient
      */
-    'recipe'?: string | null;
+    'ingredient'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof RecipeIngredient
      */
-    'ingredient'?: string | null;
+    'recipe'?: string | null;
 }
 

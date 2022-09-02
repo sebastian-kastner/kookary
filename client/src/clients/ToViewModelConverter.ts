@@ -55,18 +55,24 @@ export class ToViewModelConverter {
   }
   
   public convertRecipe (apiRecipe: RecipeJsonld): Recipe {
+    const images: MediaObject[] = [];
+    apiRecipe.images?.forEach((image) => {
+      if (image) {
+        images.push({
+          mediaObjectId: this.toId(image)
+        });
+      }
+    });
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
-      image: {
-        mediaObjectId: this.toId(apiRecipe.image)
-      },
+      images: images,
       description: apiRecipe.description,
       servings: apiRecipe.servings,
       source: this.getStringOrNull(apiRecipe.source),
       dateAdded: apiRecipe.dateAdded,
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
-      tags: this.convertTags(apiRecipe.tag),
+      tags: this.convertTags(apiRecipe.tags),
       marked: this.getBoolean(apiRecipe.marked),
       imagesToDelete: [],
     }

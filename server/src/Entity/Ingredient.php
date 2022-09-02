@@ -35,17 +35,17 @@ class Ingredient
     private $name;
 
     /**
-     * @var int
+     * @var int|null
      *
      * @ORM\Column(name="season_start", type="integer", nullable=true)
      */
     private $seasonStart;
 
     /**
-    * @var int
-    *
-    * @ORM\Column(name="season_end", type="integer", nullable=true)
-    */
+     * @var int|null
+     *
+     * @ORM\Column(name="season_end", type="integer", nullable=true)
+     */
     private $seasonEnd;
 
     public function getIngredientId(): ?int
@@ -65,20 +65,15 @@ class Ingredient
         return $this;
     }
 
-    public function setSeasonStart(int $seasonStart): self
-    {
-        $this->seasonStart = $seasonStart;
-        return $this;
-    }
-
     public function getSeasonStart(): ?int
     {
         return $this->seasonStart;
     }
 
-    public function setSeasonEnd(int $seasonEnd): self
+    public function setSeasonStart(?int $seasonStart): self
     {
-        $this->seasonEnd = $seasonEnd;
+        $this->seasonStart = $seasonStart;
+
         return $this;
     }
 
@@ -86,4 +81,13 @@ class Ingredient
     {
         return $this->seasonEnd;
     }
+
+    public function setSeasonEnd(?int $seasonEnd): self
+    {
+        $this->seasonEnd = $seasonEnd;
+
+        return $this;
+    }
+
+
 }

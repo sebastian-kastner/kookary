@@ -55,6 +55,6 @@ export interface TagJsonld {
      * @type {Array<string>}
      * @memberof TagJsonld
      */
-    'recipe'?: Array<string>;
+    'recipes'?: Array<string>;
 }
 

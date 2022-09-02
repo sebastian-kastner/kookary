@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * RecipeIngredient
  *
- * @ORM\Table(name="recipe_ingredient", indexes={@ORM\Index(name="recipe_ingredient_FK", columns={"recipe_id"}), @ORM\Index(name="recipe_ingredient_FK_1", columns={"ingredient_id"})})
+ * @ORM\Table(name="recipe_ingredient", indexes={@ORM\Index(name="FK_ingredient_recipe_ingredient", columns={"ingredient_id"}), @ORM\Index(name="FK_recipe_recipe_ingredient", columns={"recipe_id"})})
  * @ORM\Entity
  */
 class RecipeIngredient
@@ -36,16 +37,6 @@ class RecipeIngredient
     private $unit;
 
     /**
-     * @var \App\Entity\Recipe
-     *
-     * @ORM\ManyToOne(targetEntity="Recipe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     * })
-     */
-    private $recipe;
-
-    /**
      * @var \App\Entity\Ingredient
      *
      * @ORM\ManyToOne(targetEntity="Ingredient")
@@ -54,6 +45,16 @@ class RecipeIngredient
      * })
      */
     private $ingredient;
+
+    /**
+     * @var \App\Entity\Recipe
+     *
+     * @ORM\ManyToOne(targetEntity="Recipe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
+     * })
+     */
+    private $recipe;
 
     public function getRecipeIngredientId(): ?int
     {
@@ -84,18 +85,6 @@ class RecipeIngredient
         return $this;
     }
 
-    public function getRecipe(): ?Recipe
-    {
-        return $this->recipe;
-    }
-
-    public function setRecipe(?Recipe $recipe): self
-    {
-        $this->recipe = $recipe;
-
-        return $this;
-    }
-
     public function getIngredient(): ?Ingredient
     {
         return $this->ingredient;
@@ -108,5 +97,16 @@ class RecipeIngredient
         return $this;
     }
 
+    public function getRecipe(): ?Recipe
+    {
+        return $this->recipe;
+    }
+
+    public function setRecipe(?Recipe $recipe): self
+    {
+        $this->recipe = $recipe;
+
+        return $this;
+    }
 
 }

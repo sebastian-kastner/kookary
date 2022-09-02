@@ -86,7 +86,7 @@ export interface RecipeJsonld {
      * @type {Array<string>}
      * @memberof RecipeJsonld
      */
-    'tag'?: Array<string>;
+    'tags'?: Array<string>;
     /**
      * 
      * @type {Array<RecipeIngredientJsonld>}
@@ -95,9 +95,9 @@ export interface RecipeJsonld {
     'ingredients'?: Array<RecipeIngredientJsonld>;
     /**
      * 
-     * @type {string}
+     * @type {Array<string>}
      * @memberof RecipeJsonld
      */
-    'image'?: string | null;
+    'images'?: Array<string>;
 }
 

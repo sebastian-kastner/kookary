@@ -28,7 +28,7 @@ export type Recipe = {
     marked: boolean;
     ingredients: RecipeIngredient[];
     tags: Tag[];
-    image: MediaObject;
+    images: MediaObject[];
     imagesToDelete: number[];
 }
 
@@ -44,7 +44,7 @@ export function recipeFactory(): Recipe {
         tags: [],
         source: null,
         marked: false,
-        image: {},
+        images: [],
         // FIXME this is fugly
         imagesToDelete: [],
     }

@@ -76,7 +76,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
         $recipeAlias = $this->getRecipeAlias($queryBuilder);
         $queryBuilder
             ->addSelect("t")
-            ->leftJoin(sprintf("%s.tag", $recipeAlias), "t")
+            ->leftJoin(sprintf("%s.tags", $recipeAlias), "t")
             ->andWhere(sprintf("t = %s", $value));
     }
 

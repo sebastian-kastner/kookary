@@ -21,9 +21,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 /**
  * Recipe
  *
- * @ORM\Table(name="recipe")
- * @ORM\Entity
  * @ApiResource()
+ * 
+ * @ORM\Table(name="recipe", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Entity
+ * 
  * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
  * @ApiFilter(BooleanFilter::class, properties={"marked"})
@@ -68,11 +70,11 @@ class Recipe
     private $source;
 
     /**
-     * @var boolean|null
-     * 
+     * @var bool|null
+     *
      * @ORM\Column(name="marked", type="boolean", nullable=true)
      */
-    private $marked;
+    private $marked = false;
 
     /**
      * @var \DateTime|null
@@ -82,35 +84,49 @@ class Recipe
     private $dateAdded;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\Collection|Tag[]
      *
-     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="recipe")
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="recipe")
+     * @ORM\JoinTable(
+     *  name="tag_to_recipe",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id")
+     *  }
+     * )
      */
-    private $tag;
+    private $tags;
 
     /**
      * @var \App\Entity\RecipeIngredient
      *
-     * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"all"})
      */
     private $ingredients;
 
     /**
-     * @var MediaObject|null
+     * @var \Doctrine\Common\Collections\Collection|MediaObject[]
      *
-     * @ORM\ManyToOne(targetEntity="MediaObject")
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
-     * @ApiProperty(iri="http://schema.org/image")
+     * @ORM\ManyToMany(targetEntity="MediaObject", inversedBy="recipe")
+     * @ORM\JoinTable(
+     *  name="image_to_recipe",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
+     *  },
+     *  inverseJoinColumns={
+     *      @ORM\JoinColumn(name="media_object_id", referencedColumnName="media_object_id")
+     *  }
+     * )
      */
-    public $image;
+    public $images;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->tag = new ArrayCollection();
+        $this->tags = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
+        $this->images = new ArrayCollection();
         $this->dateAdded = new DateTime();
     }
 
@@ -167,7 +183,7 @@ class Recipe
         return $this;
     }
 
-    public function getMarked(): ?bool
+    public function isMarked(): ?bool
     {
         return $this->marked;
     }
@@ -178,7 +194,6 @@ class Recipe
 
         return $this;
     }
-
 
     public function getDateAdded(): ?\DateTimeInterface
     {
@@ -195,16 +210,15 @@ class Recipe
     /**
      * @return Collection<int, Tag>
      */
-    public function getTag(): Collection
+    public function getTags(): Collection
     {
-        return $this->tag;
+        return $this->tags;
     }
 
     public function addTag(Tag $tag): self
     {
-        if (!$this->tag->contains($tag)) {
-            $this->tag[] = $tag;
-            $tag->addRecipe($this);
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
         }
 
         return $this;
@@ -212,9 +226,7 @@ class Recipe
 
     public function removeTag(Tag $tag): self
     {
-        if ($this->tag->removeElement($tag)) {
-            $tag->removeRecipe($this);
-        }
+        $this->tags->removeElement($tag);
 
         return $this;
     }
@@ -245,6 +257,30 @@ class Recipe
                 $ingredient->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MediaObject>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(MediaObject $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
+        }
+
+        return $this;
+    }
+
+    public function removeImage(MediaObject $image): self
+    {
+        $this->images->removeElement($image);
 
         return $this;
     }

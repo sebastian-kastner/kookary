@@ -10,9 +10,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 /**
  * Tag
  *
- * @ORM\Table(name="tag")
- * @ORM\Entity
  * @ApiResource(attributes={"pagination_enabled"=false})
+ * 
+ * @ORM\Table(name="tag", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
+ * @ORM\Entity
  */
 class Tag
 {
@@ -33,26 +34,15 @@ class Tag
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\Collection|Recipe[]
      *
-     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="tag")
-     * @ORM\JoinTable(name="tag_to_recipe",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     *   }
-     * )
+     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="tags")
      */
-    private $recipe;
+    private $recipes;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->recipe = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getTagId(): ?int
@@ -75,15 +65,16 @@ class Tag
     /**
      * @return Collection<int, Recipe>
      */
-    public function getRecipe(): Collection
+    public function getRecipes(): Collection
     {
-        return $this->recipe;
+        return $this->recipes;
     }
 
     public function addRecipe(Recipe $recipe): self
     {
-        if (!$this->recipe->contains($recipe)) {
-            $this->recipe[] = $recipe;
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes[] = $recipe;
+            $recipe->addRecipe($this);
         }
 
         return $this;
@@ -91,7 +82,9 @@ class Tag
 
     public function removeRecipe(Recipe $recipe): self
     {
-        $this->recipe->removeElement($recipe);
+        if ($this->recipes->removeElement($recipe)) {
+            $recipe->removeRecipe($this);
+        }
 
         return $this;
     }
