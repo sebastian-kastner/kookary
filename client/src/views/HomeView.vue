@@ -1,14 +1,34 @@
 <template>
   <div class="home">
+    <recipe-card-list
+      title="SAISONAL"
+      :recipeFilter="seasonalRecipeFilter"
+    />
+
+    <recipe-card-list
+      title="MERKLISTE"
+      :recipeFilter="markedRecipeFilter"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { RecipeFilter } from "@/clients/RecipesClient";
+import { Component, Vue } from "vue-property-decorator";
+import RecipeCardList from "../components/cards/RecipeCardList.vue";
 
 @Component({
   components: {
-  }
+    RecipeCardList,
+  },
 })
-export default class HomeView extends Vue {}
+export default class HomeView extends Vue {
+  seasonalRecipeFilter: RecipeFilter = {
+    isSeasonal: true,
+  };
+
+  markedRecipeFilter: RecipeFilter = {
+    marked: true,
+  }
+}
 </script>
