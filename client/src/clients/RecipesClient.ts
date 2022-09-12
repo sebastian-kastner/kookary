@@ -153,9 +153,9 @@ export class RecipesClient {
 
 export type RecipeFilter = {
   page?: number,
-  ingredients: Ingredient[],
-  nameContains: string,
-  tags: Tag[],
-  isSeasonal: boolean,
-  marked: boolean | null,
+  ingredients?: Ingredient[],
+  nameContains?: string,
+  tags?: Tag[],
+  isSeasonal?: boolean,
+  marked?: boolean | null,
 }
