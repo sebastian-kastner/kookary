@@ -89,6 +89,8 @@ export default class InlineItemList extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import "../../main.scss";
+
 .inline-item-list {
   .simple-typeahead {
     display: inline-block;
@@ -104,7 +106,8 @@ export default class InlineItemList extends Vue {
       display: inline-block;
     }
     .item-delete:hover {
-      color: gray;
+      color: black;
+      cursor: pointer;
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="about">
+  <div id="recipe-editor-view">
     <div class="form-group">
       <label for="recipe-name">Rezeptname</label>
       <input
@@ -59,11 +59,11 @@
       <textarea
         class="form-control"
         id="exampleFormControlTextarea1"
-        rows="3"
+        rows="10"
         v-model="recipe.description"
       />
     </div>
-    <button class="btn btn-primary" v-on:click="doSubmit">Submit</button>
+    <button class="btn rounded-button" v-on:click="doSubmit">Submit</button>
   </div>
 </template>
 
@@ -200,3 +200,14 @@ export default class RecipeEditorView extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+@import "../../main.scss";
+
+#recipe-editor-view {
+  label {
+    font-weight: bold;
+  }
+}
+
+</style>

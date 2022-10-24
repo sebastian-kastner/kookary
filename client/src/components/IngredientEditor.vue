@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group">
+  <div id="ingredient-editor" class="form-group">
     <div class="row g-3">
       <div class="col-sm-6">
         <input
@@ -37,7 +37,7 @@
       <div class="col-sm">
         <button
           type="button"
-          class="btn btn-light"
+          class="btn rounded-button"
           v-if="ingredientSelected"
           v-on:click="removeIngredient"
         >
@@ -101,3 +101,20 @@ export default class IngredientEditor extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import "../../main.scss";
+
+#ingredient-editor {
+  .rounded-button {
+    font-size: 13px;
+    padding: 3px 8px 3px 9px;
+    border-radius: 40px;
+  }
+
+  input:disabled {
+    background-color: $background-color-highlight-1;
+  }
+}
+
+</style>

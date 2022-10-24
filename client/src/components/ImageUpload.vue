@@ -1,23 +1,31 @@
 <template>
   <div>
-    <div class="container">
-      <div class="image-preview" v-if="filePreview !== null">
-        <img :src="filePreview" ref="filePreview" alt="Preview Image" />
-        <b-icon-x-circle @click="removeImage" />
-        <div v-if="badDimensions" class="bad-dimension-hint">
-          Bilder im Querformat sind empfohlen!
-        </div>
+    <div class="image-preview" v-if="filePreview !== null">
+      <img :src="filePreview" ref="filePreview" alt="Preview Image" />
+      <b-icon-x-circle @click="removeImage" />
+      <div v-if="badDimensions" class="bad-dimension-hint">
+        Bilder im Querformat sind empfohlen!
       </div>
-      <div v-else>
-        <input
+    </div>
+    <div v-else class="custom-file" style="padding: 0; margin: 0">
+      <input
+        type="file"
+        id="inputGroupFile"
+        accept="image/*"
+        ref="fileInput"
+        @input="selectImgFile"
+      />
+      <label class="custom-file-label" for="inputGroupFile">Bild wählen</label>
+    </div>
+
+    <!-- <input
           class="form-control form-control-lg"
+          aria-describedby="inputGroupFileAddon01"
           ref="fileInput"
           type="file"
           accept="image/*"
           @input="selectImgFile"
-        />
-      </div>
-    </div>
+        /> -->
   </div>
 </template>
 
@@ -105,7 +113,6 @@ export default class ImageUpload extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
 @import "../../main.scss";
 
 .image-preview svg {
