@@ -170,10 +170,6 @@ $bottom-border: 3px;
 
   .filter-bar {
     border-bottom: $bottom-border solid $base-color;
-
-    svg {
-      fill: $dark-green;
-    }
   }
 
   .filter-details {

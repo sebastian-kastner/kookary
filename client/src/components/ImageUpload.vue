@@ -127,7 +127,7 @@ export default class ImageUpload extends Vue {
 }
 
 .bad-dimension-hint {
-  border: 1px solid $red;
+  border: 1px solid $button-color-main;
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;

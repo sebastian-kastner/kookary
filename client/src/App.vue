@@ -94,14 +94,14 @@ nav {
   padding: 30px;
 
   // can this be removed? this seems to be for the hamburger menu entries which does currently not exist
-  a {
-    font-weight: bold;
-    color: $gray !important;
+  // a {
+  //   font-weight: bold;
+  //   color: $gray !important;
 
-    &.router-link-exact-active {
-      color: lighten($gray, 25%) !important;
-    }
-  }
+  //   &.router-link-exact-active {
+  //     color: lighten($gray, 25%) !important;
+  //   }
+  // }
 }
 
 .top-wrapper {
