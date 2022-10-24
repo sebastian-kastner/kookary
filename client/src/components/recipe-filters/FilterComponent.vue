@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div id="filter-component" class="container">
     <div class="row filter-bar">
       <div
-        v-for="filter in filters"
+        v-for="(filter, index) in filters"
         v-bind:key="filter.name"
-        :class="isSelectedClass(filter.name)"
+        :class="[ isSelectedClass(filter.name), getFilterClass(index) ]"
         class="col filter-icon"
       >
         <div class="row" v-on:click="showFilter(filter.name)">
@@ -13,7 +13,9 @@
           </div>
           <div
             class="col delete-filter"
-            @click="filter.isActive() ? resetFilter($event, filter.resetFilter) : null"
+            @click="
+              filter.isActive() ? resetFilter($event, filter.resetFilter) : null
+            "
           >
             <b-icon-x-circle v-if="filter.isActive()" />
           </div>
@@ -40,7 +42,7 @@ import {
   BIconBag,
   BIconCalendarWeek,
   BIconXCircle,
-  BIconBellFill
+  BIconBellFill,
 } from "bootstrap-vue";
 import { Component, Vue } from "vue-property-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
@@ -48,7 +50,7 @@ import NameFilterComponent from "./NameFilterComponent.vue";
 import TagFilterComponent from "./TagFilterComponent.vue";
 import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
 import IngredientFilterComponent from "./IngredientFilterComponent.vue";
-import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue"
+import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
 
 type UiFilter = {
   name: string;
@@ -70,7 +72,7 @@ type UiFilter = {
     IngredientFilterComponent,
     IsSeasonalFilterComponent,
     IsMarkedFilterComponent,
-    BIconBellFill
+    BIconBellFill,
   },
 })
 export default class FilterComponent extends Vue {
@@ -89,21 +91,21 @@ export default class FilterComponent extends Vue {
       name: "name",
       icon: BIconInputCursor,
       component: NameFilterComponent,
-      isActive: () => this.recipeFilter.nameContains.length > 0,
+      isActive: () => this.hasElements(this.recipeFilter.nameContains),
       resetFilter: () => (this.recipeFilter.nameContains = ""),
     },
     {
       name: "tags",
       icon: BIconTags,
       component: TagFilterComponent,
-      isActive: () => this.recipeFilter.tags.length > 0,
+      isActive: () => this.hasElements(this.recipeFilter.tags),
       resetFilter: () => (this.recipeFilter.tags = []),
     },
     {
       name: "ingredients",
       icon: BIconBag,
       component: IngredientFilterComponent,
-      isActive: () => this.recipeFilter.ingredients.length > 0,
+      isActive: () => this.hasElements(this.recipeFilter.ingredients),
       resetFilter: () => (this.recipeFilter.ingredients = []),
     },
     {
@@ -122,6 +124,13 @@ export default class FilterComponent extends Vue {
     },
   ];
 
+  hasElements(list: Array<object> | string | undefined): boolean {
+    if (list) {
+      return list.length > 0;
+    }
+    return false;
+  }
+
   resetFilter(event: PointerEvent, resetFunction: () => void): void {
     event.stopPropagation();
     resetFunction();
@@ -139,6 +148,10 @@ export default class FilterComponent extends Vue {
     return "";
   }
 
+  getFilterClass(filterIndex: number): string {
+    return "filter-icon-" + (filterIndex + 1);
+  }
+
   applyFilter(): void {
     this.$emit("applyFilter", this.recipeFilter);
   }
@@ -146,48 +159,77 @@ export default class FilterComponent extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
 @import "../../../main.scss";
 
-$base-color: $gray;
-$highlight-color: darken($gray, 15%);
+$base-color: #534F63;
+$highlight-color: white;
 $bottom-border: 3px;
 
-.filter-bar {
-  border-bottom: $bottom-border solid $base-color;
-  margin-top: 10px;
-
-  svg {
-    fill: $dark-green;
-  }
-}
-
-.filter-details {
-  background-color: $highlight-color;
+#filter-component {
   padding-top: 15px;
-  padding-bottom: 15px;
-  color: $dark-green;
-}
 
-.filter-icon {
-  background-color: $base-color;
-  text-align: center;
-  font-size: 1.5rem;
-  border-top-left-radius: 1.1rem;
-  border-top-right-radius: 1.1rem;
-  margin-left: 10px;
-  margin-right: 10px;
+  .filter-bar {
+    border-bottom: $bottom-border solid $base-color;
 
-  &.active-filter {
-    background-color: $highlight-color;
-    margin-bottom: -$bottom-border - 1;
+    svg {
+      fill: $dark-green;
+    }
   }
 
-  .delete-filter {
-    font-size: 0.9rem;
-    display: inline-block;
-    margin-top: 4px;
-    padding-left: 25px;
+  .filter-details {
+    background-color: $highlight-color;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .filter-icon {
+    background-color: $base-color;
+    text-align: center;
+    font-size: 1.5rem;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+    svg {
+      fill: white;
+    }
+
+    &.active-filter {
+      background-color: $highlight-color;
+      margin-bottom: -$bottom-border - 1;
+
+      svg {
+        fill: $button-color-main;
+      }
+    }
+
+    .delete-filter {
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-top: 4px;
+      padding-left: 25px;
+    }
+  }
+
+  $lightening_factor: 12;
+
+  .filter-icon-1 {
+    background-color: lighten($base-color, ($lightening_factor * 0));
+  }
+
+  .filter-icon-2 {
+    background-color: lighten($base-color, ($lightening_factor * 1));
+  }
+
+  .filter-icon-3 {
+    background-color: lighten($base-color, ($lightening_factor * 2));
+  }
+
+  .filter-icon-4 {
+    background-color: lighten($base-color, ($lightening_factor * 3));
+  }
+
+  .filter-icon-5 {
+    background-color: lighten($base-color, ($lightening_factor * 4));
   }
 }
 </style>

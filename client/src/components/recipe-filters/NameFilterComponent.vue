@@ -1,6 +1,6 @@
 <template>
   <div class="row text-center">
-    <div class="col-8">
+    <div class="col-12">
       <input
         type="text"
         class="form-control"
@@ -27,7 +27,9 @@ export default class NameFilterComponent extends Vue {
   internalValue = "";
 
   mounted(): void {
-    this.internalValue = this.recipeFilter.nameContains;
+    if (this.recipeFilter.nameContains) {
+      this.internalValue = this.recipeFilter.nameContains;
+    }
   }
 
   updateFilter(): void {
