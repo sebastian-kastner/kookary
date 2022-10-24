@@ -27,15 +27,15 @@
               </div>
             </nav> -->
             <router-link class="navbar-brand" to="/">
-              <img src="logo.png" />
+              kookary.
             </router-link>
           </div>
 
           <div class="topbar-right">
-            <router-link class="btn nav-button-full" to="/recipes"
+            <router-link class="btn nav-button rounded-button" to="/recipes"
               >recipes</router-link
             >
-            <router-link class="btn nav-button-outer" to="/recipe-editor"
+            <router-link class="btn nav-button rounded-button" to="/recipe-editor"
               >+ add recipe</router-link
             >
           </div>
@@ -70,33 +70,30 @@ export default class App extends Vue {}
 }
 
 .topbar {
-  img {
-    max-height: 30px;
-  }
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 
-  .btn {
-    border: 2px solid $button-color-main;
-    border-radius: 20px;
-    min-width: 125px;
-    margin-right: 10px;
-    color: $button-color-main;
-  }
-
-  .btn:hover {
+  .navbar-brand {
+    font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
+    font-size: 20pt;
+    color: black;
+
+    a {
+      color: black;
+    }
   }
 
-  .btn.router-link-exact-active {
-    background-color: $button-color-main;
-    color: white;
+  .nav-button {
+    min-width: 125px;
+    margin-left: 10px;
   }
 }
 
 nav {
   padding: 30px;
 
+  // can this be removed? this seems to be for the hamburger menu entries which does currently not exist
   a {
     font-weight: bold;
     color: $gray !important;
@@ -113,5 +110,6 @@ nav {
 
 .main-wrapper {
   background-color: $background-color-main;
+  margin-bottom: 50px;
 }
 </style>

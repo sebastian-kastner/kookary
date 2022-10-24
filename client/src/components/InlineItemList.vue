@@ -96,17 +96,6 @@ export default class InlineItemList extends Vue {
   }
 
   .inline-item-list-element {
-    display: inline-block;
-    background-color: #17a2b8;
-    border-color: #17a2b8;
-    line-height: 2.3;
-    border-radius: 0.25rem;
-    color: white;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-
     .item-delete {
       padding-left: 5px;
       margin-top: 0;
