@@ -1,24 +1,20 @@
 <template>
-  <div class="recipe-list">
-    <ul class="list-group">
-      <li class="list-group-item" v-for="recipe in recipes" v-bind:key="recipe.recipeId">
-        <router-link
-          v-bind:key="recipe.recipeId"
-          :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
-        >
-          {{ recipe.name }}
-        </router-link>
-      </li>
-    </ul>
-  </div>
+  <div class="row d-flex justify-content-center">
+      <recipe-card
+        v-for="recipe in recipes"
+        v-bind:key="recipe.recipeId"
+        :recipe="recipe"
+      />
+    </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Recipe } from "../types";
+import RecipeCard from "./cards/RecipeCard.vue";
 
 @Component({
-  components: {},
+  components: { RecipeCard },
 })
 export default class RecipesView extends Vue {
   @Prop({ required: true }) recipes!: Recipe[];
