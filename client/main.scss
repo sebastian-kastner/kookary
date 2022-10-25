@@ -1,5 +1,4 @@
-$background-color-top: white;
-$background-color-main: #fbfcfd;
+$background-color-main: white;
 $background-color-highlight-1: #eef0f4;
 $button-color-main: #e35a27;
 $button-color-secondary: #828776;
@@ -15,7 +14,7 @@ $font-color-highlight: #8f9485;
 
 .rounded-button.router-link-exact-active, .rounded-button.active {
   background-color: $button-color-main;
-  color: white;
+  color: $background-color-main;
 }
 
 .inline-item-list-element {
@@ -24,7 +23,7 @@ $font-color-highlight: #8f9485;
   background-color: $button-color-secondary;
   line-height: 2.3;
   border-radius: 1rem;
-  color: white;
+  color: $background-color-main;
   padding-left: 10px;
   padding-right: 10px;
   margin-right: 10px;

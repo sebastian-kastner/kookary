@@ -162,11 +162,10 @@ export default class FilterComponent extends Vue {
 @import "../../../main.scss";
 
 $base-color: #534F63;
-$highlight-color: white;
+$highlight-color: $background-color-main;
 $bottom-border: 3px;
 
 #filter-component {
-  padding-top: 15px;
 
   .filter-bar {
     border-bottom: $bottom-border solid $base-color;
@@ -186,7 +185,7 @@ $bottom-border: 3px;
     padding-bottom: 3px;
 
     svg {
-      fill: white;
+      fill: $background-color-main;
     }
 
     &.active-filter {

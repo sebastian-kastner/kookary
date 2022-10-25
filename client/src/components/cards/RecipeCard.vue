@@ -52,7 +52,7 @@ export default class RecipeCardList extends Vue {
     height: 75px;
     text-align: center;
     padding: 10px;
-    background-color: white;
+    background-color: $background-color-main;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     color: $link-color-main;
     font-weight: bold;

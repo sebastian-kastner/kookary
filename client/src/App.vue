@@ -25,7 +25,7 @@
                 </ul>
               </div>
             </nav> -->
-          <router-link class="navbar-brand" to="/"> kookary. </router-link>
+          <router-link class="navbar-brand" to="/"> &#129348; kookary </router-link>
         </div>
 
         <div class="topbar-right">
@@ -70,9 +70,9 @@ export default class App extends Vue {}
 
   position: sticky;
   top: 0;
-  background-color: white;
+  background-color: $background-color-main;
   border-bottom: 2px solid $background-color-highlight-1;
-  box-shadow: 0 6px 2px $background-color-highlight-1;
+  box-shadow: 0 6px 10px $background-color-highlight-1;
   z-index: 10;
 
   .navbar-brand {
@@ -109,6 +109,7 @@ nav {
 .main {
   background-image: url("~@/../public/partial_bg.png");
   background-repeat: repeat-x;
+  padding-top: 15px;
 }
 .main-wrapper {
   margin-bottom: 50px;
