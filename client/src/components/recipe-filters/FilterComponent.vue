@@ -178,11 +178,11 @@ $bottom-border: 3px;
   }
 
   .filter-icon {
-    background-color: $base-color;
     text-align: center;
     font-size: 1.5rem;
     padding-top: 3px;
     padding-bottom: 3px;
+    margin-right: -1px;
 
     svg {
       fill: $background-color-main;

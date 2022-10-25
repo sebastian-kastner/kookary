@@ -25,7 +25,7 @@
                 </ul>
               </div>
             </nav> -->
-          <router-link class="navbar-brand" to="/"> &#129348; kookary </router-link>
+          <router-link class="navbar-brand" to="/">&#129348; kookary</router-link>
         </div>
 
         <div class="topbar-right">
