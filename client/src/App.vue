@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <div class="top-wrapper">
-      <div id="app" class="container">
-        <div class="topbar d-flex justify-content-between">
-          <div class="topbar-left">
-            <!-- <nav class="navbar navbar-expand-lg navbar-light">
+  <div id="app">
+    <div class="topbar">
+      <div class="d-flex justify-content-between container">
+        <div class="topbar-left">
+          <!-- <nav class="navbar navbar-expand-lg navbar-light">
               <button
                 class="navbar-toggler"
                 type="button"
@@ -26,26 +25,22 @@
                 </ul>
               </div>
             </nav> -->
-            <router-link class="navbar-brand" to="/">
-              kookary.
-            </router-link>
-          </div>
+          <router-link class="navbar-brand" to="/"> kookary. </router-link>
+        </div>
 
-          <div class="topbar-right">
-            <router-link class="btn nav-button rounded-button" to="/recipes"
-              >recipes</router-link
-            >
-            <router-link class="btn nav-button rounded-button" to="/recipe-editor"
-              >+ add recipe</router-link
-            >
-          </div>
+        <div class="topbar-right">
+          <router-link class="btn nav-button rounded-button" to="/recipes"
+            >recipes</router-link
+          >
+          <router-link class="btn nav-button rounded-button" to="/recipe-editor"
+            >+ add recipe</router-link
+          >
         </div>
       </div>
-      <div class="main-top-background" />
-      <div class="main-wrapper">
-        <div class="container">
-          <router-view />
-        </div>
+    </div>
+    <div class="main">
+      <div class="main-wrapper container">
+        <router-view />
       </div>
     </div>
   </div>
@@ -70,8 +65,15 @@ export default class App extends Vue {}
 }
 
 .topbar {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+
+  position: sticky;
+  top: 0;
+  background-color: white;
+  border-bottom: 2px solid $background-color-highlight-1;
+  box-shadow: 0 6px 2px $background-color-highlight-1;
+  z-index: 10;
 
   .navbar-brand {
     font-family: Helvetica, Arial, sans-serif;
@@ -104,12 +106,11 @@ nav {
   // }
 }
 
-.top-wrapper {
-  background-color: $background-color-top;
+.main {
+  background-image: url("~@/../public/partial_bg.png");
+  background-repeat: repeat-x;
 }
-
 .main-wrapper {
-  background-color: $background-color-main;
   margin-bottom: 50px;
 }
 </style>

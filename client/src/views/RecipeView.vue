@@ -177,7 +177,7 @@ export default class RecipeView extends Vue {
   width: 80%;
 
   .row {
-    margin-top: 15px;
+    padding-top: 15px;
   }
 
   h2 {
@@ -195,7 +195,6 @@ export default class RecipeView extends Vue {
       padding-left: 10px;
       padding-right: 10px;
       padding-bottom: 5px;
-      background-color: inherit;
     }
   }
 

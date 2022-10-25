@@ -17,15 +17,6 @@
       />
       <label class="custom-file-label" for="inputGroupFile">Bild wählen</label>
     </div>
-
-    <!-- <input
-          class="form-control form-control-lg"
-          aria-describedby="inputGroupFileAddon01"
-          ref="fileInput"
-          type="file"
-          accept="image/*"
-          @input="selectImgFile"
-        /> -->
   </div>
 </template>
 

@@ -45,6 +45,7 @@ export default class RecipeCardList extends Vue {
 
   img {
     width: 250px;
+    height: 190px;
   }
 
   .recipe-card-title {
