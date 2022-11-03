@@ -1,5 +1,5 @@
 <template>
-  <div class="ingredients">
+  <div id="ingredients" class="main-content">
     <ul class="list-group">
       <li
         class="list-group-item"
@@ -25,3 +25,12 @@ export default class IngredientsView extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import "../../main.scss";
+
+#ingredients {
+  padding: $content-padding;
+}
+
+</style>

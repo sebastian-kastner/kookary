@@ -6,6 +6,16 @@ $button-color-secondary: #828776;
 $link-color-main: #29243d;
 $font-color-highlight: #8f9485;
 
+$content-padding: 7px;
+
+.main-content {
+  background-color: $background-color-main;
+  color: $font-color-highlight;
+
+  border: 2px solid $background-color-highlight-1;
+  box-shadow: 5px 5px 5px $background-color-highlight-1;
+}
+
 .rounded-button {
   border: 2px solid $button-color-main;
   border-radius: 20px;

@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="home" class="main-content">
     <recipe-card-list
       title="SAISONAL"
       :recipeFilter="seasonalRecipeFilter"
@@ -32,3 +32,12 @@ export default class HomeView extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import "../../main.scss";
+
+#home {
+  padding: $content-padding;
+}
+
+</style>

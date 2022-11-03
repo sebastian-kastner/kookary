@@ -1,6 +1,6 @@
 <template>
-  <div class="recipe-view container">
-    <div class="top-icons row justify-content-end">
+  <div id="recipe-view" class="container main-content">
+    <div id="top-icons" class="row justify-content-end">
       <div>
         <router-link
           :to="{
@@ -36,52 +36,55 @@
       <img :src="recipeImgSrc" />
     </div>
 
-    <div class="tags row">
-      <div
-        v-for="item in recipe.tags"
-        class="inline-item-list-element"
-        v-bind:key="item.uuid"
-      >
-        {{ item.name }}
-      </div>
-    </div>
+    <div id="recipe-description">
 
-    <div class="row">
-      <h1>{{ recipe.name }}</h1>
-    </div>
-
-    <div class="row">
-      <h2>ZUTATEN</h2>
-    </div>
-
-    <div class="row">
-      <ul>
-        <li
-          v-for="ingredient in recipe.ingredients"
-          v-bind:key="ingredient.uuid"
+      <div class="tags row">
+        <div
+          v-for="item in recipe.tags"
+          class="inline-item-list-element"
+          v-bind:key="item.uuid"
         >
-          {{ ingredient.quantity }} {{ ingredient.unit }}
-          {{ ingredient.ingredient.name }}
-        </li>
-      </ul>
-    </div>
+          {{ item.name }}
+        </div>
+      </div>
 
-    <div class="row">
-      <h2>ZUBEREITUNG</h2>
-    </div>
+      <div class="row">
+        <h1>{{ recipe.name }}</h1>
+      </div>
 
-    <div class="row" v-html="description" />
+      <div class="row">
+        <h2>ZUTATEN</h2>
+      </div>
 
-    <div class="row">
-      <h2>QUELLE</h2>
-    </div>
-    <div class="row">
-      <a v-if="sourceLink !== null" :href="sourceLink" target="_blank">
-        {{ recipe.source }}
-      </a>
-      <p v-else>
-        {{ recipe.source }}
-      </p>
+      <div class="row">
+        <ul>
+          <li
+            v-for="ingredient in recipe.ingredients"
+            v-bind:key="ingredient.uuid"
+          >
+            {{ ingredient.quantity }} {{ ingredient.unit }}
+            {{ ingredient.ingredient.name }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="row">
+        <h2>ZUBEREITUNG</h2>
+      </div>
+
+      <div class="row" v-html="description" />
+
+      <div class="row">
+        <h2>QUELLE</h2>
+      </div>
+      <div class="row">
+        <a v-if="sourceLink !== null" :href="sourceLink" target="_blank">
+          {{ recipe.source }}
+        </a>
+        <p v-else>
+          {{ recipe.source }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -173,7 +176,7 @@ export default class RecipeView extends Vue {
 <style lang="scss" scoped>
 @import "../../main.scss";
 
-.recipe-view {
+#recipe-view {
   width: 80%;
 
   .row {
@@ -185,9 +188,10 @@ export default class RecipeView extends Vue {
     color: $font-color-highlight;
   }
 
-  .top-icons {
+  #top-icons {
+    padding-left: $content-padding;
+    padding-right: $content-padding;
     font-size: 1.5rem;
-    margin-bottom: 10px;
 
     button {
       border-radius: 30px; // this overwrites the border-radius in round-button
@@ -196,6 +200,10 @@ export default class RecipeView extends Vue {
       padding-right: 10px;
       padding-bottom: 5px;
     }
+  }
+
+  #recipe-description {
+    padding: 0 $content-padding $content-padding $content-padding;
   }
 
   .recipe-image {

@@ -1,5 +1,5 @@
 <template>
-  <div id="recipe-overview">
+  <div id="recipe-overview" class="main-content">
     <filter-component 
       @applyFilter="applyFilter"
     />
@@ -52,12 +52,5 @@ export default class RecipesView extends Vue {
 <style lang="scss" scoped>
 @import "../../main.scss";
 
-#recipe-overview {
-    background-color: $background-color-main;
-    color: $font-color-highlight;
-
-    border: 2px solid $background-color-highlight-1;
-    box-shadow: 5px 5px 5px $background-color-highlight-1;
-}
 </style>
 

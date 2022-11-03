@@ -1,5 +1,5 @@
 <template>
-  <div id="recipe-editor-view">
+  <div id="recipe-editor-view" class="main-content">
     <div class="form-group">
       <label for="recipe-name">Rezeptname</label>
       <input
@@ -205,6 +205,9 @@ export default class RecipeEditorView extends Vue {
 @import "../../main.scss";
 
 #recipe-editor-view {
+
+  padding: $content-padding;
+  
   label {
     font-weight: bold;
   }

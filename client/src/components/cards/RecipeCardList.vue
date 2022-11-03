@@ -30,7 +30,11 @@ export default class RecipeCardList extends Vue {
   public mounted() {
     this.recipes = [];
     this.recipesClient.getRecipes(this.recipeFilter).then((recipes) => {
-      for (let i = 0; i < 3; i++) {
+      let count = 3;
+      if (recipes.length < 3) {
+        count = recipes.length;
+      }
+      for (let i = 0; i < count; i++) {
         this.recipes.push(recipes[i]);
       }
     });
