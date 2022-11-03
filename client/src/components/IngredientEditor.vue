@@ -1,5 +1,8 @@
 <template>
-  <div id="ingredient-editor" class="form-group">
+  <div
+    id="ingredient-editor"
+    class="form-group"
+  >
     <div class="row g-3">
       <div class="col-sm-6">
         <input
@@ -52,7 +55,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { RecipeIngredient, Ingredient } from "../types";
 import TypeaheadInput from "./TypeaheadInput.vue";
-import { ingredientStore } from "../stores/rootStore"
+import { ingredientStore } from "../stores/rootStore";
 
 @Component({
   components: { TypeaheadInput },
@@ -91,7 +94,8 @@ export default class IngredientEditor extends Vue {
   }
 
   async addNewIngredient(ingredientName: string): Promise<void> {
-    ingredientStore.addIngredient(ingredientName)
+    ingredientStore
+      .addIngredient(ingredientName)
       .then((ingredient) => {
         this.setIngredient(ingredient);
       })
@@ -116,5 +120,4 @@ export default class IngredientEditor extends Vue {
     background-color: $background-color-highlight-1;
   }
 }
-
 </style>

@@ -52,6 +52,26 @@ export class ToViewModelConverter {
     for (const key in apiIngredients) {
       ingredients.push(this.convertRecipeIngredient(apiIngredients[key]))
     }
+
+    ingredients.sort((a, b) => {
+      let aPos = 0;
+      let bPos = 0;
+
+      if (a.position) {
+        aPos = a.position;
+      } else if (a.recipeIngredientId) {
+        aPos = a.recipeIngredientId;
+      }
+
+      if (b.position) {
+        bPos = b.position;
+      } else if (b.recipeIngredientId) {
+        bPos = b.recipeIngredientId;
+      }
+      
+      return aPos - bPos;
+    })
+
     return ingredients;
   }
   
