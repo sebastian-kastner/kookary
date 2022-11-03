@@ -45,9 +45,9 @@ export class ToViewModelConverter {
   
   public convertRecipeIngredients (apiIngredients?: RecipeIngredientJsonld[]): RecipeIngredient[] {
     if (!apiIngredients) {
-      return []
+      return [];
     }
-    const ingredients: RecipeIngredient[] = []
+    const ingredients: RecipeIngredient[] = [];
     // not using forEach here because in for some reason apiIngredients is an object after a save operation
     for (const key in apiIngredients) {
       ingredients.push(this.convertRecipeIngredient(apiIngredients[key]))

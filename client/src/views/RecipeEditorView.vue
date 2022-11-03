@@ -41,18 +41,10 @@
     </div>
     <div class="form-group">
       <label>Zutaten</label>
-      <div
-        v-for="ingredient in recipe.ingredients"
-        v-bind="ingredient"
-        v-bind:key="ingredient.uuid"
-      >
-        <ingredient-editor
-          :ingredient="ingredient"
-          :existingIngredients="existingIngredients"
-          @onNameChanged="updateIngredientName"
-          @onDelete="onDeleteIngredient"
-        />
-      </div>
+      <ingredients-editor
+        :ingredients="recipe.ingredients"
+        :existingIngredients="existingIngredients"
+      />
     </div>
     <div class="form-group">
       <label>Beschreibung</label>
@@ -69,22 +61,21 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { v4 as uuid } from "uuid";
 import {
   Ingredient,
   Recipe,
-  RecipeIngredient,
   Tag,
   recipeFactory,
 } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore";
 import { RecipesClient } from "../clients/RecipesClient";
-import IngredientEditor from "../components/IngredientEditor.vue";
+import IngredientsEditor from "../components/IngredientsEditor.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue";
-import { v4 as uuid } from "uuid";
 
 @Component({
-  components: { IngredientEditor, InlineItemList, ImageUpload },
+  components: { IngredientsEditor, InlineItemList, ImageUpload },
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
@@ -137,35 +128,15 @@ export default class RecipeEditorView extends Vue {
       });
   }
 
-  onDeleteTag(tagToDelete: Tag): void {
-    if (this.recipe.tags) {
-      this.recipe.tags.splice(this.recipe.tags.indexOf(tagToDelete), 1);
-    }
-  }
-
-  updateIngredientName(): void {
-    if (this.recipe.ingredients) {
-      if (
-        this.recipe.ingredients[this.recipe.ingredients.length - 1].ingredient
-          ?.name
-      ) {
-        this.addNewIngredient();
-      }
-    }
-  }
-
   private addNewIngredient(): void {
     this.recipe.ingredients?.push({
       uuid: uuid(),
     });
   }
 
-  onDeleteIngredient(ingredientToRemove: RecipeIngredient): void {
-    if (this.recipe.ingredients) {
-      this.recipe.ingredients.splice(
-        this.recipe.ingredients.indexOf(ingredientToRemove),
-        1
-      );
+  onDeleteTag(tagToDelete: Tag): void {
+    if (this.recipe.tags) {
+      this.recipe.tags.splice(this.recipe.tags.indexOf(tagToDelete), 1);
     }
   }
 
