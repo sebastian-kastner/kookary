@@ -38,6 +38,7 @@ export class ToViewModelConverter {
       ingredient: this.convertIngredient(apiIngredient.ingredient as IngredientJsonld),
       quantity: apiIngredient.quantity,
       unit: apiIngredient.unit,
+      order: apiIngredient.order,
       uuid: uuid(),
     }
   }

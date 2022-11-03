@@ -15,6 +15,7 @@ export type RecipeIngredient = {
     ingredient?: Ingredient | null;
     quantity?: string | null;
     unit?: string | null;
+    order?: number | null;
 }
 
 export type Recipe = {

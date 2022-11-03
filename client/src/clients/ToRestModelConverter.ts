@@ -49,6 +49,7 @@ export class ToRestModelConverter {
       ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
       unit: viewModelIngredient.unit,
       quantity: viewModelIngredient.quantity,
+      order: viewModelIngredient.order,
       recipe: (recipeId) ? this.toApiId(ep.RECIPES_ENDPOINT, recipeId) : undefined
     }
   }
