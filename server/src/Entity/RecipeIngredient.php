@@ -25,7 +25,7 @@ class RecipeIngredient
     /**
      * @var int|null
      *
-     * @ORM\Column(name="order", type="int", nullable=true)
+     * @ORM\Column(name="order", type="integer", nullable=true)
      */
     private $order;
 
