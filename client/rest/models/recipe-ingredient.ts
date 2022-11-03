@@ -31,7 +31,7 @@ export interface RecipeIngredient {
      * @type {number}
      * @memberof RecipeIngredient
      */
-    'order'?: number | null;
+    'position'?: number | null;
     /**
      * 
      * @type {string}

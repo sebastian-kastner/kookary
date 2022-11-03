@@ -142,7 +142,7 @@ CREATE TABLE `recipe_ingredient` (
   `ingredient_id` int NOT NULL,
   `quantity` varchar(10) DEFAULT NULL,
   `unit` varchar(10) DEFAULT NULL,
-  `order` int DEFAULT NULL,
+  `position` int DEFAULT NULL,
   PRIMARY KEY (`recipe_ingredient_id`),
   KEY `recipe_ingredient_FK` (`recipe_id`),
   KEY `recipe_ingredient_FK_1` (`ingredient_id`),

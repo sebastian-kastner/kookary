@@ -49,7 +49,7 @@ export interface RecipeIngredientJsonld {
      * @type {number}
      * @memberof RecipeIngredientJsonld
      */
-    'order'?: number | null;
+    'position'?: number | null;
     /**
      * 
      * @type {string}

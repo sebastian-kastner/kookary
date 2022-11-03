@@ -25,9 +25,9 @@ class RecipeIngredient
     /**
      * @var int|null
      *
-     * @ORM\Column(name="order", type="integer", nullable=true)
+     * @ORM\Column(name="position", type="integer", nullable=true)
      */
-    private $order;
+    private $position;
 
     /**
      * @var string|null
@@ -68,14 +68,14 @@ class RecipeIngredient
         return $this->recipeIngredientId;
     }
 
-    public function getOrder(): ?int
+    public function getPosition(): ?int
     {
-        return $this->order;
+        return $this->position;
     }
 
-    public function setOrder(?int $order): self
+    public function setPosition(?int $position): self
     {
-        $this->order = $order;
+        $this->position = $position;
 
         return $this;
     }
