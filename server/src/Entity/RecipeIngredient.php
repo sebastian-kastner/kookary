@@ -23,6 +23,13 @@ class RecipeIngredient
     private $recipeIngredientId;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="order", type="int", nullable=true)
+     */
+    private $order;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="quantity", type="string", length=10, nullable=true)
@@ -59,6 +66,18 @@ class RecipeIngredient
     public function getRecipeIngredientId(): ?int
     {
         return $this->recipeIngredientId;
+    }
+
+    public function getOrder(): ?int
+    {
+        return $this->order;
+    }
+
+    public function setOrder(?int $order): self
+    {
+        $this->order = $order;
+
+        return $this;
     }
 
     public function getQuantity(): ?string

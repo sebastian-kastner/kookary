@@ -28,6 +28,12 @@ export interface RecipeIngredient {
     'recipeIngredientId'?: number;
     /**
      * 
+     * @type {number}
+     * @memberof RecipeIngredient
+     */
+    'order'?: number | null;
+    /**
+     * 
      * @type {string}
      * @memberof RecipeIngredient
      */

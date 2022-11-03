@@ -46,6 +46,12 @@ export interface RecipeIngredientJsonld {
     'recipeIngredientId'?: number;
     /**
      * 
+     * @type {number}
+     * @memberof RecipeIngredientJsonld
+     */
+    'order'?: number | null;
+    /**
+     * 
      * @type {string}
      * @memberof RecipeIngredientJsonld
      */
