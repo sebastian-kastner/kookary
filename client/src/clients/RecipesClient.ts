@@ -89,9 +89,9 @@ export class RecipesClient {
       const tags = tagStore.tagMap;
       recipe.tags?.forEach((tag) => {
         if(tag.tagId) {
-          const tagName = tags.get(tag.tagId);
-          if(tagName) {
-            tag.name = tagName;
+          const resolvedTag = tags.get(tag.tagId);
+          if(resolvedTag) {
+            tag.name = resolvedTag.name;
           }
         }
       });
@@ -157,5 +157,5 @@ export type RecipeFilter = {
   nameContains?: string,
   tags?: Tag[],
   isSeasonal?: boolean,
-  marked?: boolean | null,
+  marked?: boolean,
 }

@@ -10,9 +10,7 @@
           v-on:change="setIsMarked(true)"
           :checked="internalValue === true"
         />
-        <label class="form-check-label" for="marked">
-          Auf Merkliste
-        </label>
+        <label class="form-check-label" for="marked"> Auf Merkliste </label>
       </div>
       <div class="form-check">
         <input
@@ -21,7 +19,7 @@
           name="isMarked"
           id="notMarked"
           v-on:change="setIsMarked(false)"
-          :checked="internalValue === false"
+          :checked="internalValue !== true"
         />
         <label class="form-check-label" for="notMarked">
           Nicht auf Merkliste
@@ -45,7 +43,11 @@ export default class IsMarkedFilterComponent extends Vue {
   internalValue: boolean | null = null;
 
   mounted(): void {
+    if (this.recipeFilter.marked) {
       this.internalValue = this.recipeFilter.marked;
+    } else {
+      this.internalValue = null;
+    }
   }
 
   applyFilter(): void {

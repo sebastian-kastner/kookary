@@ -4,7 +4,7 @@
       <div
         v-for="(filter, index) in filters"
         v-bind:key="filter.name"
-        :class="[ isSelectedClass(filter.name), getFilterClass(index) ]"
+        :class="[isSelectedClass(filter.name), getFilterClass(index)]"
         class="col filter-icon"
       >
         <div class="row" v-on:click="showFilter(filter.name)">
@@ -14,10 +14,12 @@
           <div
             class="col delete-filter"
             @click="
-              filter.isActive() ? resetFilter($event, filter.resetFilter) : null
+              filter.isActive(recipeFilter)
+                ? resetFilter($event, filter.resetFilter)
+                : null
             "
           >
-            <b-icon-x-circle v-if="filter.isActive()" />
+            <b-icon-x-circle v-if="filter.isActive(recipeFilter)" />
           </div>
         </div>
       </div>
@@ -44,8 +46,9 @@ import {
   BIconXCircle,
   BIconBellFill,
 } from "bootstrap-vue";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
+import { tagStore, ingredientStore } from "../../stores/rootStore";
 import NameFilterComponent from "./NameFilterComponent.vue";
 import TagFilterComponent from "./TagFilterComponent.vue";
 import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
@@ -56,16 +59,20 @@ type UiFilter = {
   name: string;
   icon: unknown;
   component: unknown;
-  isActive: () => boolean;
-  resetFilter: () => void;
+  applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
+  isActive: (filter: RecipeFilter) => boolean;
+  resetFilter: (filter: RecipeFilter) => void;
 };
+
+function listHasElements(list: Array<object> | string | undefined): boolean {
+  if (list) {
+    return list.length > 0;
+  }
+  return false;
+}
 
 @Component({
   components: {
-    BIconInputCursor,
-    BIconTags,
-    BIconBag,
-    BIconCalendarWeek,
     BIconXCircle,
     NameFilterComponent,
     TagFilterComponent,
@@ -76,64 +83,78 @@ type UiFilter = {
   },
 })
 export default class FilterComponent extends Vue {
+  @Prop({ required: true }) recipeFilter!: RecipeFilter;
+
   private activeFilter: string | null = "name";
 
-  recipeFilter: RecipeFilter = {
-    tags: [],
-    ingredients: [],
-    nameContains: "",
-    isSeasonal: false,
-    marked: null,
-  };
+  mounted(): void {
+    this.filters.forEach((filter) => {
+      const routeParam = this.$route.query[filter.name];
+      if (routeParam) {
+        filter.applyRouteFilter(routeParam.toString(), this.recipeFilter);
+      }
+    });
+  }
 
   private filters: UiFilter[] = [
     {
       name: "name",
       icon: BIconInputCursor,
       component: NameFilterComponent,
-      isActive: () => this.hasElements(this.recipeFilter.nameContains),
-      resetFilter: () => (this.recipeFilter.nameContains = ""),
+      applyRouteFilter: (val, filter) => {
+        filter.nameContains = val;
+      },
+      isActive: (filter) => listHasElements(filter.nameContains),
+      resetFilter: (filter) => (filter.nameContains = ""),
     },
     {
       name: "tags",
       icon: BIconTags,
       component: TagFilterComponent,
-      isActive: () => this.hasElements(this.recipeFilter.tags),
-      resetFilter: () => (this.recipeFilter.tags = []),
+      applyRouteFilter: (val, filter) => {
+        filter.tags = tagStore.getTags(val.split(";"));
+      },
+      isActive: (filter) => listHasElements(filter.tags),
+      resetFilter: (filter) => (filter.tags = []),
     },
     {
       name: "ingredients",
       icon: BIconBag,
       component: IngredientFilterComponent,
-      isActive: () => this.hasElements(this.recipeFilter.ingredients),
-      resetFilter: () => (this.recipeFilter.ingredients = []),
+      applyRouteFilter: (val, filter) => {
+        filter.ingredients = ingredientStore.getIngredients(val.split(";"));
+      },
+      isActive: (filter) => listHasElements(filter.ingredients),
+      resetFilter: (filter) => (filter.ingredients = []),
     },
     {
       name: "seasonal",
       icon: BIconCalendarWeek,
       component: IsSeasonalFilterComponent,
-      isActive: () => this.recipeFilter.isSeasonal === true,
-      resetFilter: () => (this.recipeFilter.isSeasonal = false),
+      applyRouteFilter: (val, filter) => {
+        filter.isSeasonal = true;
+      },
+      isActive: (filter) => filter.isSeasonal === true,
+      resetFilter: (filter) => (filter.isSeasonal = false),
     },
     {
       name: "marked",
       icon: BIconBellFill,
       component: IsMarkedFilterComponent,
-      isActive: () => this.recipeFilter.marked !== null,
-      resetFilter: () => (this.recipeFilter.marked = null),
+      applyRouteFilter: (val, filter) => {
+        filter.marked = true;
+      },
+      isActive: (filter) => filter.marked === true,
+      resetFilter: (filter) => (filter.marked = false),
     },
   ];
 
-  hasElements(list: Array<object> | string | undefined): boolean {
-    if (list) {
-      return list.length > 0;
-    }
-    return false;
-  }
-
-  resetFilter(event: PointerEvent, resetFunction: () => void): void {
+  resetFilter(
+    event: PointerEvent,
+    resetFunction: (filter: RecipeFilter) => void
+  ): void {
     event.stopPropagation();
-    resetFunction();
+    resetFunction(this.recipeFilter);
     this.applyFilter();
   }
 
@@ -161,12 +182,11 @@ export default class FilterComponent extends Vue {
 <style lang="scss" scoped>
 @import "../../../main.scss";
 
-$base-color: #534F63;
+$base-color: #534f63;
 $highlight-color: $background-color-main;
 $bottom-border: 3px;
 
 #filter-component {
-
   .filter-bar {
     border-bottom: $bottom-border solid $base-color;
   }

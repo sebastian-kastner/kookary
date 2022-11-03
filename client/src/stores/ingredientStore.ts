@@ -11,16 +11,31 @@ export class IngredientStore extends VuexModule {
   private ingredientClient = new IngredientsClient();
 
   public ingredients: Ingredient[] = [];
-  public ingredientMap: Map<number, string> = new Map<number, string>();
+  public ingredientMap: Map<number, Ingredient> = new Map<number, Ingredient>();
+  
+  getIngredients(ingredientIds: string[]): Ingredient[] {
+    const ingredients: Ingredient[] = [];
+    ingredientIds.forEach(stringId => {
+      if (stringId && Number.isInteger(stringId)) {
+        const id = Number.parseInt(stringId);
+        const ingredient = this.ingredientMap.get(id);
+        if (ingredient) {
+          ingredients.push(ingredient);
+        }
+
+      }
+    });
+    return ingredients;
+  }
 
   @action
   async init() {
     const ingredients = await this.ingredientClient.getIngredients();
 
-    const ingredientMap = new Map<number, string>();
+    const ingredientMap = new Map<number, Ingredient>();
     ingredients.forEach((ingredient) => {
       if(ingredient.ingredientId && ingredient.name) {
-        ingredientMap.set(ingredient.ingredientId, ingredient.name);
+        ingredientMap.set(ingredient.ingredientId, ingredient);
       }
     });
 
@@ -41,7 +56,7 @@ export class IngredientStore extends VuexModule {
   }
 
   @mutation
-  private SET_INGREDIENTS_MAP(ingredientsMap: Map<number, string>): void {
+  private SET_INGREDIENTS_MAP(ingredientsMap: Map<number, Ingredient>): void {
     this.ingredientMap = ingredientsMap;
   }
 
@@ -49,7 +64,7 @@ export class IngredientStore extends VuexModule {
   private ADD_INGREDIENT(ingredient: Ingredient): void {
     if(ingredient.ingredientId && ingredient.name) {
       this.ingredients.push(ingredient);
-      this.ingredientMap.set(ingredient.ingredientId, ingredient.name);
+      this.ingredientMap.set(ingredient.ingredientId, ingredient);
     }
   }
 }

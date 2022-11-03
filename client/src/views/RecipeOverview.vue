@@ -1,6 +1,7 @@
 <template>
   <div id="recipe-overview" class="main-content">
     <filter-component 
+      :recipeFilter="recipeFilter"
       @applyFilter="applyFilter"
     />
     <br />
@@ -21,6 +22,15 @@ import { ingredientStore } from "../stores/rootStore";
   components: { RecipeList, TypeaheadInput, FilterComponent },
 })
 export default class RecipesView extends Vue {
+  
+  recipeFilter: RecipeFilter = {
+    tags: [],
+    ingredients: [],
+    nameContains: "",
+    isSeasonal: false,
+    marked: false,
+  };
+
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
 
