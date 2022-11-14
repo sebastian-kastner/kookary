@@ -13,21 +13,6 @@ export class TagStore extends VuexModule {
   public tags: Tag[] = [];
   public tagMap: Map<number, Tag> = new Map<number, Tag>();
 
-  getTags(tagIds: string[]): Tag[] {
-    const tags: Tag[] = [];
-    tagIds.forEach(stringId => {
-      if (stringId && Number.isInteger(stringId)) {
-        const id = Number.parseInt(stringId);
-        const tag = this.tagMap.get(id);
-        if (tag) {
-          tags.push(tag);
-        }
-
-      }
-    });
-    return tags;
-  }
-
   @action
   async init() {
     const tags = await this.tagClient.getTags();

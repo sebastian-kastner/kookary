@@ -37,14 +37,15 @@
     </div>
 
     <div id="recipe-description">
-
       <div class="tags row">
         <div
           v-for="item in recipe.tags"
           class="inline-item-list-element"
           v-bind:key="item.uuid"
         >
-          {{ item.name }}
+          <router-link :to="{ path: '/recipes', query: { tags: item.tagId } }" >
+            {{ item.name }}
+          </router-link>
         </div>
       </div>
 
@@ -63,7 +64,10 @@
             v-bind:key="ingredient.uuid"
           >
             {{ ingredient.quantity }} {{ ingredient.unit }}
-            {{ ingredient.ingredient.name }}
+            <router-link :to="{ path: '/recipes', query: { ingredients: ingredient.ingredient.ingredientId } }"
+            >
+              {{ ingredient.ingredient.name }}
+            </router-link>
           </li>
         </ul>
       </div>
@@ -140,7 +144,10 @@ export default class RecipeView extends Vue {
   get sourceLink(): string | null {
     if (this.recipe.source) {
       if (this.recipe.source.match(this.urlRegex)) {
-        if (!this.recipe.source.startsWith("http") && !this.recipe.source.startsWith("https")) {
+        if (
+          !this.recipe.source.startsWith("http") &&
+          !this.recipe.source.startsWith("https")
+        ) {
           return "http://" + this.recipe.source;
         }
         return this.recipe.source;

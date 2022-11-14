@@ -13,21 +13,6 @@ export class IngredientStore extends VuexModule {
   public ingredients: Ingredient[] = [];
   public ingredientMap: Map<number, Ingredient> = new Map<number, Ingredient>();
   
-  getIngredients(ingredientIds: string[]): Ingredient[] {
-    const ingredients: Ingredient[] = [];
-    ingredientIds.forEach(stringId => {
-      if (stringId && Number.isInteger(stringId)) {
-        const id = Number.parseInt(stringId);
-        const ingredient = this.ingredientMap.get(id);
-        if (ingredient) {
-          ingredients.push(ingredient);
-        }
-
-      }
-    });
-    return ingredients;
-  }
-
   @action
   async init() {
     const ingredients = await this.ingredientClient.getIngredients();

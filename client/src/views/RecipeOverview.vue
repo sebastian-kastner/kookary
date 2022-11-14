@@ -2,6 +2,7 @@
   <div id="recipe-overview" class="main-content">
     <filter-component 
       :recipeFilter="recipeFilter"
+      :filters="uiFilters"
       @applyFilter="applyFilter"
     />
     <br />
@@ -13,10 +14,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
+import { ingredientStore } from "../stores/rootStore";
+import { filters } from '../components/recipe-filters/uiFilters'
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
 import FilterComponent from "../components/recipe-filters/FilterComponent.vue";
-import { ingredientStore } from "../stores/rootStore";
 
 @Component({
   components: { RecipeList, TypeaheadInput, FilterComponent },
@@ -31,13 +33,20 @@ export default class RecipesView extends Vue {
     marked: false,
   };
 
+  uiFilters = filters;
+
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
 
   mounted(): void {
-    this.recipeClient.getRecipes().then((ret) => {
-      this.recipes = ret;
+    this.uiFilters.forEach((filter) => {
+      const routeParam = this.$route.query[filter.name];
+      if (routeParam) {
+        filter.applyRouteFilter(routeParam.toString(), this.recipeFilter);
+      }
     });
+
+    this.applyFilter(this.recipeFilter);
   }
 
   public async applyFilter(filter: RecipeFilter): Promise<void> {

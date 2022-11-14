@@ -39,115 +39,25 @@
 
 <script lang="ts">
 import {
-  BIconInputCursor,
-  BIconTags,
-  BIconBag,
-  BIconCalendarWeek,
   BIconXCircle,
   BIconBellFill,
 } from "bootstrap-vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { tagStore, ingredientStore } from "../../stores/rootStore";
-import NameFilterComponent from "./NameFilterComponent.vue";
-import TagFilterComponent from "./TagFilterComponent.vue";
-import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
-import IngredientFilterComponent from "./IngredientFilterComponent.vue";
-import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
-
-type UiFilter = {
-  name: string;
-  icon: unknown;
-  component: unknown;
-  applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
-  isActive: (filter: RecipeFilter) => boolean;
-  resetFilter: (filter: RecipeFilter) => void;
-};
-
-function listHasElements(list: Array<object> | string | undefined): boolean {
-  if (list) {
-    return list.length > 0;
-  }
-  return false;
-}
+import { UiFilter } from './uiFilters'
 
 @Component({
   components: {
     BIconXCircle,
-    NameFilterComponent,
-    TagFilterComponent,
-    IngredientFilterComponent,
-    IsSeasonalFilterComponent,
-    IsMarkedFilterComponent,
     BIconBellFill,
   },
 })
 export default class FilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
+  @Prop({required: true }) filters!: UiFilter[];
+
   private activeFilter: string | null = "name";
-
-  mounted(): void {
-    this.filters.forEach((filter) => {
-      const routeParam = this.$route.query[filter.name];
-      if (routeParam) {
-        filter.applyRouteFilter(routeParam.toString(), this.recipeFilter);
-      }
-    });
-  }
-
-  private filters: UiFilter[] = [
-    {
-      name: "name",
-      icon: BIconInputCursor,
-      component: NameFilterComponent,
-      applyRouteFilter: (val, filter) => {
-        filter.nameContains = val;
-      },
-      isActive: (filter) => listHasElements(filter.nameContains),
-      resetFilter: (filter) => (filter.nameContains = ""),
-    },
-    {
-      name: "tags",
-      icon: BIconTags,
-      component: TagFilterComponent,
-      applyRouteFilter: (val, filter) => {
-        filter.tags = tagStore.getTags(val.split(";"));
-      },
-      isActive: (filter) => listHasElements(filter.tags),
-      resetFilter: (filter) => (filter.tags = []),
-    },
-    {
-      name: "ingredients",
-      icon: BIconBag,
-      component: IngredientFilterComponent,
-      applyRouteFilter: (val, filter) => {
-        filter.ingredients = ingredientStore.getIngredients(val.split(";"));
-      },
-      isActive: (filter) => listHasElements(filter.ingredients),
-      resetFilter: (filter) => (filter.ingredients = []),
-    },
-    {
-      name: "seasonal",
-      icon: BIconCalendarWeek,
-      component: IsSeasonalFilterComponent,
-      applyRouteFilter: (val, filter) => {
-        filter.isSeasonal = true;
-      },
-      isActive: (filter) => filter.isSeasonal === true,
-      resetFilter: (filter) => (filter.isSeasonal = false),
-    },
-    {
-      name: "marked",
-      icon: BIconBellFill,
-      component: IsMarkedFilterComponent,
-      applyRouteFilter: (val, filter) => {
-        filter.marked = true;
-      },
-      isActive: (filter) => filter.marked === true,
-      resetFilter: (filter) => (filter.marked = false),
-    },
-  ];
 
   resetFilter(
     event: PointerEvent,
