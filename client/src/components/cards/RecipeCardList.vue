@@ -8,6 +8,13 @@
         :recipe="recipe"
       />
     </div>
+    <div v-if="moreLink !== null" class="row d-flex justify-content-center">
+      <div class="inline-item-list-element">
+        <router-link :to="moreLink">
+        Mehr..
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,6 +23,7 @@ import { RecipeFilter, RecipesClient } from "../../clients/RecipesClient";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Recipe } from "../../types";
 import RecipeCard from "./RecipeCard.vue";
+import { RouterLinkProps } from "vue-router/types/router";
 
 @Component({
   components: { RecipeCard },
@@ -23,6 +31,7 @@ import RecipeCard from "./RecipeCard.vue";
 export default class RecipeCardList extends Vue {
   @Prop({ required: true }) title!: string;
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
+  @Prop({ required: false, default: null }) moreLink!: RouterLinkProps;
 
   recipesClient: RecipesClient = new RecipesClient();
   recipes: Recipe[] = [];

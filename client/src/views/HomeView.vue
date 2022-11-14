@@ -3,11 +3,13 @@
     <recipe-card-list
       title="SAISONAL"
       :recipeFilter="seasonalRecipeFilter"
+      :moreLink="{ path: '/recipes', query: { seasonal: null } }"
     />
 
     <recipe-card-list
       title="MERKLISTE"
       :recipeFilter="markedRecipeFilter"
+      :moreLink="{ path: '/recipes', query: { marked: null } }"
     />
   </div>
 </template>

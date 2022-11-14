@@ -41,8 +41,12 @@ export default class RecipesView extends Vue {
   mounted(): void {
     this.uiFilters.forEach((filter) => {
       const routeParam = this.$route.query[filter.name];
-      if (routeParam) {
-        filter.applyRouteFilter(routeParam.toString(), this.recipeFilter);
+      if (routeParam !== undefined) {
+        let val = '';
+        if (routeParam) {
+          val = routeParam.toString();
+        }
+        filter.applyRouteFilter(val, this.recipeFilter);
       }
     });
 

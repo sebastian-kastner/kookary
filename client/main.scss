@@ -13,7 +13,7 @@ $content-padding: 7px;
   color: $font-color-highlight;
 
   border: 2px solid $background-color-highlight-1;
-  box-shadow: 5px 5px 5px $background-color-highlight-1;
+  box-shadow: 5px 5px 5px darken($background-color-highlight-1, 8);
 }
 
 .rounded-button {
