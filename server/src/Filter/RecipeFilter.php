@@ -21,6 +21,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
     const TAGS_FILTER_PROPERTY = "tags";
     const SEASONAL_FILTER_PROPERTY = "seasonal";
 
+    const MARKED_FILTER_PROPERTY = "marked";
+
     // for some reason doctrine autogenerates the "_a2" suffix that we need to add here to make things work
     const RECIPE_INGREDIENT_ALIAS = "ri_a2";
     const INGREDIENT_ALIAS = "i";
@@ -46,6 +48,9 @@ final class RecipeFilter extends AbstractContextAwareFilter
         }
         else if ($property == self::SEASONAL_FILTER_PROPERTY) {
             $this->addSeasonalFilter($value, $queryBuilder);
+        }
+        else if ($property == self::MARKED_FILTER_PROPERTY) {
+            $this->addMarkedFilter($value, $queryBuilder);
         }
     }
 
@@ -78,6 +83,14 @@ final class RecipeFilter extends AbstractContextAwareFilter
             ->addSelect("t")
             ->leftJoin(sprintf("%s.tags", $recipeAlias), "t")
             ->andWhere(sprintf("t = %s", $value));
+    }
+
+    private function addMarkedFilter(string $value, QueryBuilder $queryBuilder)
+    {
+        if($value == "true") {
+            $recipeAlias = $this->getRecipeAlias($queryBuilder);
+            $queryBuilder->andWhere(sprintf("%s.marked = %d", $recipeAlias, '1'));
+        }
     }
 
     private function addSeasonalFilter(string $value, QueryBuilder $queryBuilder)

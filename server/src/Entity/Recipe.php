@@ -28,7 +28,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * 
  * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
- * @ApiFilter(BooleanFilter::class, properties={"marked"})
  */
 class Recipe
 {
