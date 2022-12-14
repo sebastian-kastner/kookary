@@ -7,9 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
  * 
  * @ORM\Entity()
  */
@@ -18,21 +22,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @Groups({"read", "write"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
+     * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
     /**
+     * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private $displayname;
 
     /**
+     * @Groups({"read", "write"})
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -40,6 +48,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups("write")
      */
     private $password;
 
@@ -60,13 +69,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getName(): ?string
+    public function getDisplayName(): ?string
     {
-        return $this->username;
+        return $this->displayname;
     }
-    public function setName(string $name): self
+    public function setDisplayName(string $displayname): self
     {
-        $this->username = $name;
+        $this->displayname = $displayname;
         return $this;
     }
 
