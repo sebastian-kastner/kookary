@@ -16,11 +16,11 @@ certs:
 
 # for more details about migrations, see: https://symfony.com/bundles/DoctrineMigrationsBundle/current/index.html
 .PHONY: migration-create
-migration-create:
 # Generate a migration by comparing your current database to your mapping information.
+migration-create:
 	php bin/console doctrine:migrations:diff
 
 .PHONY: migrate
-migrate:
 # Execute a migration to the latest available version.
+migrate:
 	php bin/console doctrine:migrations:migrate
