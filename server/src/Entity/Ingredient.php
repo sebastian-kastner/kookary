@@ -48,6 +48,13 @@ class Ingredient
      */
     private $seasonEnd;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     */
+    public $author;
+
     public function getIngredientId(): ?int
     {
         return $this->ingredientId;
@@ -89,5 +96,16 @@ class Ingredient
         return $this;
     }
 
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
 
 }

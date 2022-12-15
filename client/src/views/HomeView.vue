@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { RecipeFilter } from "@/clients/RecipesClient";
+import { RecipeFilter } from "../clients/RecipesClient";
 import { Component, Vue } from "vue-property-decorator";
 import RecipeCardList from "../components/cards/RecipeCardList.vue";
 

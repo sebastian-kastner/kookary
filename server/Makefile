@@ -20,7 +20,17 @@ certs:
 migration-create:
 	php bin/console doctrine:migrations:diff
 
-.PHONY: migrate
+.PHONY: migration-execute
 # Execute a migration to the latest available version.
-migrate:
+migration-execute:
 	php bin/console doctrine:migrations:migrate
+
+.PHONY: dump-db
+# Dumps the database to sql file (as root user, with password prompt)
+dump-db:
+	mysqldump -u root -p --databases kookary2 > dump_kookary2_$$(date +"%m_%d_%Y").sql
+
+.PHONY: getters-setters
+# Regenerates getters and setters for the entire App (where required)
+getters-setters:
+	php bin/console make:entity --regenerate App

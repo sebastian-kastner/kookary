@@ -1,4 +1,4 @@
-
+dump*.sql
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -8,6 +8,7 @@
 /public/bundles/
 /var/
 /vendor/
+
 ###< symfony/framework-bundle ###
 
 .htaccess

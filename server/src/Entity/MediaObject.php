@@ -83,7 +83,7 @@ class MediaObject
      * @Groups({"media_object_read"})
      */
     public $contentUrl;
-    
+
     /**
      * @var string|null
      * @Groups({"media_object_post"})
@@ -97,6 +97,13 @@ class MediaObject
      * @Vich\UploadableField(mapping="media_object", fileNameProperty="filePath")
      */
     public $file;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     */
+    public $author;
 
     public function getMediaObjectId(): ?int
     {
@@ -115,5 +122,16 @@ class MediaObject
         return $this;
     }
 
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
 
 }
