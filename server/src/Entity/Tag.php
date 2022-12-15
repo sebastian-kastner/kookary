@@ -33,16 +33,8 @@ class Tag
      */
     private $name;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection|Recipe[]
-     *
-     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="tags")
-     */
-    private $recipes;
-
     public function __construct()
     {
-        $this->recipes = new ArrayCollection();
     }
 
     public function getTagId(): ?int
@@ -61,32 +53,4 @@ class Tag
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Recipe>
-     */
-    public function getRecipes(): Collection
-    {
-        return $this->recipes;
-    }
-
-    public function addRecipe(Recipe $recipe): self
-    {
-        if (!$this->recipes->contains($recipe)) {
-            $this->recipes[] = $recipe;
-            $recipe->addRecipe($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecipe(Recipe $recipe): self
-    {
-        if ($this->recipes->removeElement($recipe)) {
-            $recipe->removeRecipe($this);
-        }
-
-        return $this;
-    }
-
 }

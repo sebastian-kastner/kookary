@@ -56,7 +56,7 @@ class RecipeIngredient
     /**
      * @var \App\Entity\Recipe
      *
-     * @ORM\ManyToOne(targetEntity="Recipe")
+     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients"))
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
      * })

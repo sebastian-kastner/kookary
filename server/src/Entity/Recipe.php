@@ -85,7 +85,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection|Tag[]
      *
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="recipe")
+     * @ORM\ManyToMany(targetEntity="Tag")
      * @ORM\JoinTable(
      *  name="tag_to_recipe",
      *  joinColumns={
@@ -99,7 +99,7 @@ class Recipe
     private $tags;
 
     /**
-     * @var \App\Entity\RecipeIngredient
+     * @var \Doctrine\Common\Collections\Collection|\App\Entity\RecipeIngredient[]
      *
      * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"all"})
      */
@@ -108,7 +108,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection|MediaObject[]
      *
-     * @ORM\ManyToMany(targetEntity="MediaObject", inversedBy="recipe")
+     * @ORM\ManyToMany(targetEntity="MediaObject")
      * @ORM\JoinTable(
      *  name="image_to_recipe",
      *  joinColumns={
