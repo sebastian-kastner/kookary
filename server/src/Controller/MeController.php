@@ -22,7 +22,7 @@ class MeController extends AbstractController
             return $this->json([
                 'userid' => $user->getId(),
                 'email' => $user->getEmail(),
-                'username' => $user->getName(),
+                'username' => $user->getDisplayName(),
                 'roles' => $user->getRoles(),
             ]);
         }

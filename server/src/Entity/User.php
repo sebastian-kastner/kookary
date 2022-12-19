@@ -11,8 +11,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *     attributes={"pagination_enabled"=false},
  *     normalizationContext={"groups"={"read"}},
- *     denormalizationContext={"groups"={"write"}}
+ *     denormalizationContext={"groups"={"write"}},
+ *     collectionOperations={
+ *         "get",
+ *         "post"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "put"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
+ *         "patch"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
+ *         "delete"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *     }
  * )
  * 
  * @ORM\Entity()

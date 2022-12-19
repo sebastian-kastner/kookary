@@ -28,7 +28,7 @@ migration-execute:
 .PHONY: dump-db
 # Dumps the database to sql file (as root user, with password prompt)
 dump-db:
-	mysqldump -u root -p --databases kookary2 > dump_kookary2_$$(date +"%m_%d_%Y").sql
+	mysqldump -u root -p --databases kookary > dump_kookary_$$(date +"%m_%d_%Y").sql
 
 .PHONY: getters-setters
 # Regenerates getters and setters for the entire App (where required)
