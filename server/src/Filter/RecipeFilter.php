@@ -157,6 +157,12 @@ final class RecipeFilter extends AbstractContextAwareFilter
                 Type::BUILTIN_TYPE_BOOL,
                 $property,
             );
+            $description[self::MARKED_FILTER_PROPERTY] = $this->createDescription(
+                self::MARKED_FILTER_PROPERTY,
+                'Filter for marked recipes',
+                Type::BUILTIN_TYPE_BOOL,
+                $property,
+            );
         }
 
         return $description;
