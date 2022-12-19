@@ -51,12 +51,12 @@ export class RecipesClient {
       }
 
       const getPromise = this.client.getRecipeCollection(
-        page,
+        page=page,
         ingredientFilter,
         tagFilter,
         isSeasonal,
-        filter?.nameContains,
-        isMarked
+        isMarked,
+        filter?.nameContains
       );
 
       return new Promise<Recipe[]>((resolve, reject) => {

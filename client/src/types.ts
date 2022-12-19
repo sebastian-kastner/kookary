@@ -1,12 +1,14 @@
 export type Tag = {
     tagId?: number;
     name?: string;
+    authorId?: number;
     uuid: string;
 }
 
 export type Ingredient = {
     ingredientId?: number;
     name?: string;
+    authorId?: number;
 }
 
 export type RecipeIngredient = {
@@ -31,12 +33,21 @@ export type Recipe = {
     tags: Tag[];
     images: MediaObject[];
     imagesToDelete: number[];
+    authorId: number | null;
+}
+
+export type User = {
+    id?: number;
+    email?: string;
+    displayName?: string;
+    roles?: string[];
 }
 
 export type MediaObject = {
     file?: File; // only required for new uploads
     mediaObjectId?: number | null; // only set for uploaded objects
     url?: string | null; // only set for uploaded objects
+    authorId?: number | null;
 }
 
 export function recipeFactory(): Recipe {
@@ -46,6 +57,7 @@ export function recipeFactory(): Recipe {
         source: null,
         marked: false,
         images: [],
+        authorId: null,
         // FIXME this is fugly
         imagesToDelete: [],
     }

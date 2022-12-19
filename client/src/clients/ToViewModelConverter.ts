@@ -7,6 +7,7 @@ export class ToViewModelConverter {
     return {
       tagId: apiTag.tagId,
       name: apiTag.name,
+      authorId: this.toId(apiTag.author),
       uuid: uuid(),
     }
   }
@@ -27,7 +28,8 @@ export class ToViewModelConverter {
   public convertIngredient (apiIngredient: IngredientJsonld): Ingredient {
     return {
       ingredientId: apiIngredient.ingredientId,
-      name: apiIngredient.name
+      name: apiIngredient.name,
+      authorId: this.toId(apiIngredient.author),
     }
   }
   
@@ -86,6 +88,8 @@ export class ToViewModelConverter {
         }
       });
     }
+    
+    const authorId = this.toId(apiRecipe.author);
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
@@ -98,6 +102,7 @@ export class ToViewModelConverter {
       tags: this.convertTags(apiRecipe.tags),
       marked: this.getBoolean(apiRecipe.marked),
       imagesToDelete: [],
+      authorId: (authorId ? authorId : null),
     }
   }
 
@@ -109,6 +114,7 @@ export class ToViewModelConverter {
     return {
       mediaObjectId: this.toId(apiMediaObject['@id']),
       url: url,
+      authorId: this.toId(apiMediaObject.author),
     }
   }
 

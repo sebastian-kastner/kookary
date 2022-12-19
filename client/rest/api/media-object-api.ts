@@ -55,6 +55,9 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -85,6 +88,9 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -124,6 +130,9 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -140,10 +149,11 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
          * @summary Creates a MediaObject resource.
          * @param {any} [file] 
          * @param {string} [fileName] 
+         * @param {number} [author] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postMediaObjectCollection: async (file?: any, fileName?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        postMediaObjectCollection: async (file?: any, fileName?: string, author?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/media_objects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -157,6 +167,9 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
             const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
 
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
 
             if (file !== undefined) { 
                 localVarFormParams.append('file', file as any);
@@ -164,6 +177,10 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
     
             if (fileName !== undefined) { 
                 localVarFormParams.append('fileName', fileName as any);
+            }
+    
+            if (author !== undefined) { 
+                localVarFormParams.append('author', author as any);
             }
     
     
@@ -227,11 +244,12 @@ export const MediaObjectApiFp = function(configuration?: Configuration) {
          * @summary Creates a MediaObject resource.
          * @param {any} [file] 
          * @param {string} [fileName] 
+         * @param {number} [author] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async postMediaObjectCollection(file?: any, fileName?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaObjectJsonldMediaObjectRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.postMediaObjectCollection(file, fileName, options);
+        async postMediaObjectCollection(file?: any, fileName?: string, author?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MediaObjectJsonldMediaObjectRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postMediaObjectCollection(file, fileName, author, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -279,11 +297,12 @@ export const MediaObjectApiFactory = function (configuration?: Configuration, ba
          * @summary Creates a MediaObject resource.
          * @param {any} [file] 
          * @param {string} [fileName] 
+         * @param {number} [author] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        postMediaObjectCollection(file?: any, fileName?: string, options?: any): AxiosPromise<MediaObjectJsonldMediaObjectRead> {
-            return localVarFp.postMediaObjectCollection(file, fileName, options).then((request) => request(axios, basePath));
+        postMediaObjectCollection(file?: any, fileName?: string, author?: number, options?: any): AxiosPromise<MediaObjectJsonldMediaObjectRead> {
+            return localVarFp.postMediaObjectCollection(file, fileName, author, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -336,11 +355,12 @@ export class MediaObjectApi extends BaseAPI {
      * @summary Creates a MediaObject resource.
      * @param {any} [file] 
      * @param {string} [fileName] 
+     * @param {number} [author] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MediaObjectApi
      */
-    public postMediaObjectCollection(file?: any, fileName?: string, options?: AxiosRequestConfig) {
-        return MediaObjectApiFp(this.configuration).postMediaObjectCollection(file, fileName, options).then((request) => request(this.axios, this.basePath));
+    public postMediaObjectCollection(file?: any, fileName?: string, author?: number, options?: AxiosRequestConfig) {
+        return MediaObjectApiFp(this.configuration).postMediaObjectCollection(file, fileName, author, options).then((request) => request(this.axios, this.basePath));
     }
 }

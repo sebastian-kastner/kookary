@@ -1,0 +1,117 @@
+import { createModule, mutation, action } from "vuex-class-component";
+import axios, { AxiosRequestConfig } from "axios"
+import { UserClient } from '../clients/UserClient'
+import { User } from '../types'
+
+const VuexModule = createModule({
+  namespaced: "user",
+  strict: false,
+})
+
+type UserLoginData = {
+  email: string;
+  password: string;
+  rememberUser: boolean;
+}
+
+const LOCAL_STORAGE_TOKEN_KEY = "token";
+
+export class UserStore extends VuexModule {
+
+  public token: string | null = null;
+  public user: User | null = null;
+
+  private userClient = new UserClient();
+
+  @action
+  async init(): Promise<void> {
+    // set axios interceptor
+    // TBD: find a more suitable location
+    axios.interceptors.request.use(
+      (config: AxiosRequestConfig) => {
+        if (this.token) {
+          if (!config.headers) {
+            config.headers = {}
+          }
+          config.headers['Authorization'] = `Bearer ${this.token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    // log in user using token in localStorage if token was found
+    const storedToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+    if (storedToken) {
+
+      this.SET_TOKEN(storedToken);
+
+      this.userClient.getLoggedInUser()
+        .then((user: User | null) => {
+          if(user === null) {
+            this.SET_TOKEN(null);
+            console.error("Failed to login user with stored token");
+          } else {
+            this.SET_USER(user);
+          }
+        })
+        .catch((reason) => {
+          this.SET_TOKEN(null);
+          console.error("Unknown error when trying to resolve logged in user: " + reason);
+        });
+    }
+  }
+
+  @action
+  async checkCredentials(userLoginData: UserLoginData): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
+      this.userClient.getUserToken(userLoginData.email, userLoginData.password)
+        .then((token: string) => {
+          // internally save token
+          // this needs to be done before obtaining the logged in user because the internal token will
+          // be used by the axios interceptor to set credentials
+          this.SET_TOKEN(token);
+
+          // save token in local storage if requested
+          if (userLoginData.rememberUser) {
+            localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
+          }
+
+          // query for details about logged in user
+          this.userClient.getLoggedInUser()
+            .then((user: User | null) => {
+              if (user === null) {
+                // reject with unknown error if no user was found
+                reject("Unbekannter Fehler: Nach dem Login wurde kein gültiger Benutzer gefunden.")
+              } else {
+                // resolve otherwise
+                this.SET_USER(user);
+                resolve(user);
+              }
+            })
+        })
+        .catch((reason) => {
+          reject(reason);
+        })
+    });
+  }
+
+  @action
+  async logout(): Promise<void> {
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+    this.SET_TOKEN(null);
+    this.SET_USER(null);
+  }
+
+  @mutation
+  private SET_TOKEN(token: string | null) {
+    this.token = token;
+  }
+
+  @mutation
+  private SET_USER(user: User | null) {
+    this.user = user;
+  }
+}

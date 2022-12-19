@@ -5,6 +5,7 @@ import RecipeEditorView from '../views/RecipeEditorView.vue'
 import RecipeView from '../views/RecipeView.vue'
 import IngredientsView from '../views/IngredientsView.vue'
 import RecipeOverview from '../views/RecipeOverview.vue'
+import LoginView from '../views/LoginView.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +14,8 @@ const routes: Array<RouteConfig> = [
   { path: '/recipe', name: 'recipe', component: RecipeView },
   { path: '/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },
   { path: '/ingredients', name: 'ingredients', component: IngredientsView },
-  { path: '/recipes', name: 'recipes', component: RecipeOverview }
+  { path: '/recipes', name: 'recipes', component: RecipeOverview },
+  { path: '/login', name: 'login', component: LoginView }
   // {
   //   path: '/about',
   //   name: 'about',

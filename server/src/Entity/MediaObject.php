@@ -39,9 +39,13 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *                                         "type"="string",
  *                                         "format"="binary"
  *                                     },
- *                                      "fileName"={
+ *                                     "fileName"={
  *                                          "type"="string",
  *                                          "format"="string"
+  *                                    },
+ *                                     "author"={
+ *                                          "type"="integer",
+ *                                          "format"="integer"
  *                                     }
  *                                 }
  *                             }
@@ -103,6 +107,7 @@ class MediaObject
      * @var User
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     * @Groups({"media_object_read"})
      */
     public $author;
 

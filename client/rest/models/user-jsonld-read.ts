@@ -15,40 +15,52 @@
 
 
 /**
- * MediaObject
+ * 
  * @export
- * @interface MediaObjectJsonldMediaObjectRead
+ * @interface UserJsonldRead
  */
-export interface MediaObjectJsonldMediaObjectRead {
-    /**
-     * 
-     * @type {string}
-     * @memberof MediaObjectJsonldMediaObjectRead
-     */
-    '@id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MediaObjectJsonldMediaObjectRead
-     */
-    '@type'?: string;
+export interface UserJsonldRead {
     /**
      * 
      * @type {string | any}
-     * @memberof MediaObjectJsonldMediaObjectRead
+     * @memberof UserJsonldRead
      */
     '@context'?: string | any;
     /**
      * 
      * @type {string}
-     * @memberof MediaObjectJsonldMediaObjectRead
+     * @memberof UserJsonldRead
      */
-    'contentUrl'?: string | null;
+    '@id'?: string;
     /**
      * 
      * @type {string}
-     * @memberof MediaObjectJsonldMediaObjectRead
+     * @memberof UserJsonldRead
      */
-    'author'?: string;
+    '@type'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserJsonldRead
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserJsonldRead
+     */
+    'email'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserJsonldRead
+     */
+    'displayname'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserJsonldRead
+     */
+    'roles'?: Array<string>;
 }
 

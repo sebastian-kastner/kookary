@@ -15,40 +15,40 @@
 
 
 /**
- * Ingredient
+ * 
  * @export
- * @interface Ingredient
+ * @interface UserWrite
  */
-export interface Ingredient {
+export interface UserWrite {
     /**
      * 
      * @type {number}
-     * @memberof Ingredient
+     * @memberof UserWrite
      */
-    'ingredientId'?: number;
+    'id'?: number;
     /**
      * 
      * @type {string}
-     * @memberof Ingredient
+     * @memberof UserWrite
      */
-    'name'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Ingredient
-     */
-    'seasonStart'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof Ingredient
-     */
-    'seasonEnd'?: number | null;
+    'email'?: string;
     /**
      * 
      * @type {string}
-     * @memberof Ingredient
+     * @memberof UserWrite
      */
-    'author'?: string;
+    'displayname'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserWrite
+     */
+    'roles'?: Array<string>;
+    /**
+     * The hashed password
+     * @type {string}
+     * @memberof UserWrite
+     */
+    'password'?: string;
 }
 

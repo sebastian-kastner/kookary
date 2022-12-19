@@ -5,6 +5,7 @@ api/ingredient-api.ts
 api/media-object-api.ts
 api/recipe-api.ts
 api/tag-api.ts
+api/user-api.ts
 base.ts
 common.ts
 configuration.ts
@@ -20,6 +21,7 @@ models/inline-response200.ts
 models/inline-response2001.ts
 models/inline-response2002.ts
 models/inline-response2003.ts
+models/inline-response2004.ts
 models/media-object-jsonld-media-object-read.ts
 models/media-object-media-object-read.ts
 models/recipe-ingredient-jsonld.ts
@@ -28,3 +30,7 @@ models/recipe-jsonld.ts
 models/recipe.ts
 models/tag-jsonld.ts
 models/tag.ts
+models/user-jsonld-read.ts
+models/user-jsonld-write.ts
+models/user-read.ts
+models/user-write.ts

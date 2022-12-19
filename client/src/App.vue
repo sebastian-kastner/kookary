@@ -35,6 +35,13 @@
           <router-link class="btn nav-button rounded-button" to="/recipe-editor"
             >+ add recipe</router-link
           >
+
+          <router-link v-if="user === null" class="btn icon-button" to="/login">
+              <b-icon-box-arrow-in-right /> Login
+          </router-link>
+          <div v-else class="btn icon-button" @click="userStore.logout">
+            <b-icon-person-circle /> {{ user.displayName }}
+          </div>
         </div>
       </div>
     </div>
@@ -47,12 +54,28 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
-
+import { Component, Vue } from "vue-property-decorator";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { BIconBoxArrowInRight, BIconPersonCircle } from "bootstrap-vue";
+import { userStore } from "./stores/rootStore"
+import { User } from "./types";
+import { UserStore } from "./stores/userStore";
 
-export default class App extends Vue {}
+@Component({
+  components: {
+    BIconBoxArrowInRight,
+    BIconPersonCircle
+  },
+})
+export default class App extends Vue {
+  get user(): User | null {
+    return userStore.user;
+  }
+  get userStore(): UserStore {
+    return userStore;
+  }
+}
 </script>
 
 <style lang="scss">
@@ -89,6 +112,10 @@ export default class App extends Vue {}
   .nav-button {
     min-width: 125px;
     margin-left: 10px;
+  }
+
+  .icon-button {
+    font-size: 1.5em;
   }
 }
 

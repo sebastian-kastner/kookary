@@ -26,5 +26,11 @@ export interface MediaObjectMediaObjectRead {
      * @memberof MediaObjectMediaObjectRead
      */
     'contentUrl'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaObjectMediaObjectRead
+     */
+    'author'?: string;
 }
 

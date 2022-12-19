@@ -15,40 +15,34 @@
 
 
 /**
- * Ingredient
+ * 
  * @export
- * @interface Ingredient
+ * @interface UserRead
  */
-export interface Ingredient {
+export interface UserRead {
     /**
      * 
      * @type {number}
-     * @memberof Ingredient
+     * @memberof UserRead
      */
-    'ingredientId'?: number;
+    'id'?: number;
     /**
      * 
      * @type {string}
-     * @memberof Ingredient
+     * @memberof UserRead
      */
-    'name'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof Ingredient
-     */
-    'seasonStart'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof Ingredient
-     */
-    'seasonEnd'?: number | null;
+    'email'?: string;
     /**
      * 
      * @type {string}
-     * @memberof Ingredient
+     * @memberof UserRead
      */
-    'author'?: string;
+    'displayname'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserRead
+     */
+    'roles'?: Array<string>;
 }
 

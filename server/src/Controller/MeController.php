@@ -19,12 +19,7 @@ class MeController extends AbstractController
 
         $user = $this->getUser();
         if ($user != null && $user instanceof User) {
-            return $this->json([
-                'userid' => $user->getId(),
-                'email' => $user->getEmail(),
-                'username' => $user->getDisplayName(),
-                'roles' => $user->getRoles(),
-            ]);
+            return $this->json($user);
         }
         return new Response();
     }

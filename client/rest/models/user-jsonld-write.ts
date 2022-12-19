@@ -15,46 +15,58 @@
 
 
 /**
- * Tag
+ * 
  * @export
- * @interface TagJsonld
+ * @interface UserJsonldWrite
  */
-export interface TagJsonld {
+export interface UserJsonldWrite {
     /**
      * 
      * @type {string | any}
-     * @memberof TagJsonld
+     * @memberof UserJsonldWrite
      */
     '@context'?: string | any;
     /**
      * 
      * @type {string}
-     * @memberof TagJsonld
+     * @memberof UserJsonldWrite
      */
     '@id'?: string;
     /**
      * 
      * @type {string}
-     * @memberof TagJsonld
+     * @memberof UserJsonldWrite
      */
     '@type'?: string;
     /**
      * 
      * @type {number}
-     * @memberof TagJsonld
+     * @memberof UserJsonldWrite
      */
-    'tagId'?: number;
+    'id'?: number;
     /**
      * 
      * @type {string}
-     * @memberof TagJsonld
+     * @memberof UserJsonldWrite
      */
-    'name'?: string;
+    'email'?: string;
     /**
      * 
      * @type {string}
-     * @memberof TagJsonld
+     * @memberof UserJsonldWrite
      */
-    'author'?: string;
+    'displayname'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof UserJsonldWrite
+     */
+    'roles'?: Array<string>;
+    /**
+     * The hashed password
+     * @type {string}
+     * @memberof UserJsonldWrite
+     */
+    'password'?: string;
 }
 

@@ -62,5 +62,11 @@ export interface IngredientJsonld {
      * @memberof IngredientJsonld
      */
     'seasonEnd'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof IngredientJsonld
+     */
+    'author'?: string;
 }
 

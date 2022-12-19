@@ -2,6 +2,7 @@ import { MediaObject } from '../types'
 import { MediaObjectApi } from '../../rest/api'
 import { clientConfiguration } from './clientConfiguration'
 import { ToViewModelConverter } from './ToViewModelConverter'
+import { userStore } from '../stores/rootStore'
 
 export class MediaObjectClient {
   client: MediaObjectApi = new MediaObjectApi(clientConfiguration);
@@ -14,7 +15,7 @@ export class MediaObjectClient {
   }
 
   public async createMediaObject(file: File, fileName?: string): Promise<MediaObject> {
-    const ret = await this.client.postMediaObjectCollection(file, fileName);
+    const ret = await this.client.postMediaObjectCollection(file, fileName, userStore.user?.id);
     return this.toViewModelConverter.convertMediaObject(ret.data);
   }
 

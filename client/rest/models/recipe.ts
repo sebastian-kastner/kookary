@@ -81,5 +81,11 @@ export interface Recipe {
      * @memberof Recipe
      */
     'images'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Recipe
+     */
+    'author'?: string;
 }
 

@@ -55,6 +55,9 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -73,12 +76,12 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} [ingredients] 
          * @param {string} [tags] 
          * @param {boolean} [seasonal] 
-         * @param {string} [name] 
          * @param {boolean} [marked] 
+         * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection: async (page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getRecipeCollection: async (page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/recipes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -90,6 +93,9 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -107,12 +113,12 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['seasonal'] = seasonal;
             }
 
-            if (name !== undefined) {
-                localVarQueryParameter['name'] = name;
-            }
-
             if (marked !== undefined) {
                 localVarQueryParameter['marked'] = marked;
+            }
+
+            if (name !== undefined) {
+                localVarQueryParameter['name'] = name;
             }
 
 
@@ -148,6 +154,9 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
 
 
     
@@ -186,6 +195,9 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
 
     
             localVarHeaderParameter['Content-Type'] = 'application/merge-patch+json';
@@ -221,6 +233,9 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
 
 
     
@@ -261,6 +276,9 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
 
 
     
@@ -304,13 +322,13 @@ export const RecipeApiFp = function(configuration?: Configuration) {
          * @param {string} [ingredients] 
          * @param {string} [tags] 
          * @param {boolean} [seasonal] 
-         * @param {string} [name] 
          * @param {boolean} [marked] 
+         * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, name, marked, options);
+        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, marked, name, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -386,13 +404,13 @@ export const RecipeApiFactory = function (configuration?: Configuration, basePat
          * @param {string} [ingredients] 
          * @param {string} [tags] 
          * @param {boolean} [seasonal] 
-         * @param {string} [name] 
          * @param {boolean} [marked] 
+         * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: any): AxiosPromise<InlineResponse2002> {
-            return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, name, marked, options).then((request) => request(axios, basePath));
+        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options?: any): AxiosPromise<InlineResponse2002> {
+            return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, marked, name, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Recipe resource.
@@ -465,14 +483,14 @@ export class RecipeApi extends BaseAPI {
      * @param {string} [ingredients] 
      * @param {string} [tags] 
      * @param {boolean} [seasonal] 
-     * @param {string} [name] 
      * @param {boolean} [marked] 
+     * @param {string} [name] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RecipeApi
      */
-    public getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, name?: string, marked?: boolean, options?: AxiosRequestConfig) {
-        return RecipeApiFp(this.configuration).getRecipeCollection(page, ingredients, tags, seasonal, name, marked, options).then((request) => request(this.axios, this.basePath));
+    public getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options?: AxiosRequestConfig) {
+        return RecipeApiFp(this.configuration).getRecipeCollection(page, ingredients, tags, seasonal, marked, name, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -1,5 +1,6 @@
 import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
 import { Recipe, Tag, Ingredient, RecipeIngredient } from '../types'
+import { userStore } from '../stores/rootStore'
 import * as ep from './endpoints'
 
 export class ToRestModelConverter {
@@ -7,17 +8,18 @@ export class ToRestModelConverter {
   public convertTag(apiTag: Tag): TagJsonld {
     return {
       tagId: apiTag.tagId,
-      name: apiTag.name
+      name: apiTag.name,
+      author: this.getAuthorId(apiTag.authorId),
     }
   }
 
   public convertTags(apiTags: Tag[] | undefined): string[] {
     const tags: string[] = [];
-    if(apiTags) {
+    if (apiTags) {
       apiTags.forEach((tag) => {
-        if(tag.tagId) {
+        if (tag.tagId) {
           const apiId = this.toApiId(ep.TAGS_ENDPOINT, tag.tagId);
-          if(apiId) {
+          if (apiId) {
             tags.push(apiId);
           }
         }
@@ -32,15 +34,9 @@ export class ToRestModelConverter {
     }
     return {
       ingredientId: apiIngredient.ingredientId,
-      name: apiIngredient.name
+      name: apiIngredient.name,
+      author: this.getAuthorId(apiIngredient.authorId),
     }
-  }
-
-  private toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
-    if (!id) {
-      return undefined;
-    }
-    return prefix + "/" + id;
   }
 
   public convertRecipeIngredient(viewModelIngredient: RecipeIngredient, recipeId?: string): RecipeIngredientJsonld {
@@ -71,7 +67,7 @@ export class ToRestModelConverter {
     const imageIds: string[] = [];
     apiRecipe.images.forEach((image) => {
       const apiId = this.toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
-      if(apiId) {
+      if (apiId) {
         imageIds.push(apiId);
       }
     });
@@ -85,8 +81,28 @@ export class ToRestModelConverter {
       dateAdded: apiRecipe.dateAdded,
       images: imageIds,
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients, apiRecipe.recipeId?.toString()),
-      tags: this.convertTags(apiRecipe.tags)
+      tags: this.convertTags(apiRecipe.tags),
+      author: this.getAuthorId(apiRecipe.authorId),
     }
   }
 
+  private toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
+    if (!id) {
+      return undefined;
+    }
+    return prefix + "/" + id;
+  }
+
+  private getAuthorId(authorId: number | undefined | null): string {
+    if (authorId) {
+      return ep.USER_ENDPOINT + "/" + authorId;
+    }
+
+    const user = userStore.user;
+    if (!user || !user.id) {
+      throw new Error("No authorId set and no logged in user found!")
+    }
+
+    return ep.USER_ENDPOINT + "/" + user.id;
+  }
 }

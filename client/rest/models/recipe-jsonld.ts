@@ -99,5 +99,11 @@ export interface RecipeJsonld {
      * @memberof RecipeJsonld
      */
     'images'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecipeJsonld
+     */
+    'author'?: string;
 }
 
