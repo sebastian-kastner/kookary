@@ -21,13 +21,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 /**
  * Recipe
  *
- * @ApiResource(
+  * @ApiResource(
  *     collectionOperations={
- *         "get",
- *         "post"={"access_control"="is_granted('ROLE_USER')}
+ *         "post"={"access_control"="is_granted('ROLE_USER')"}
  *     },
  *     itemOperations={
- *         "get",
  *         "put"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
  *         "patch"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
  *         "delete"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},

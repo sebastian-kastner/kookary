@@ -13,7 +13,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  *     attributes={"pagination_enabled"=false},      
  *     collectionOperations={
  *         "get",
- *         "post"={"access_control"="is_granted('ROLE_USER')}
+ *         "post"={"access_control"="is_granted('ROLE_USER')"}
  *     },
  *     itemOperations={
  *         "get",

@@ -18,7 +18,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     attributes={"pagination_enabled"=false},      
  *     collectionOperations={
  *         "get",
- *         "post"={"access_control"="is_granted('ROLE_USER')}
+ *         "post"={"access_control"="is_granted('ROLE_USER')"}
  *     },
  *     itemOperations={
  *         "get",
