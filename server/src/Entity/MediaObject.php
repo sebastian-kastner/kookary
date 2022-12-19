@@ -104,9 +104,8 @@ class MediaObject
     public $file;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     * @var integer
+     * @ORM\Column(name="author_id")
      * @Groups({"media_object_read"})
      */
     public $author;
@@ -128,12 +127,12 @@ class MediaObject
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
 
-    public function setAuthor(?User $author): self
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
 

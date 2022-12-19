@@ -21,6 +21,10 @@ final class CreateMediaObjectAction
         if($fileName != null) {
             $mediaObject->fileName = $fileName;
         }
+        $authorId = $request->get('author');
+        if($authorId != null) {
+            $mediaObject->author = $authorId;
+        }
         $mediaObject->file = $uploadedFile;
 
         return $mediaObject;
