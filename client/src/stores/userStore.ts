@@ -42,26 +42,35 @@ export class UserStore extends VuexModule {
       }
     );
 
-    // log in user using token in localStorage if token was found
-    const storedToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-    if (storedToken) {
+    return new Promise<void>((resolve) => {
+      // log in user using token in localStorage if token was found
+      const storedToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+      if (storedToken) {
 
-      this.SET_TOKEN(storedToken);
+        this.SET_TOKEN(storedToken);
 
-      this.userClient.getLoggedInUser()
-        .then((user: User | null) => {
-          if(user === null) {
+        this.userClient.getLoggedInUser()
+          .then((user: User | null) => {
+            if (user === null) {
+
+              this.SET_TOKEN(null);
+              localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+
+              console.log("Invalid token in local storage. Logged out user.");
+            } else {
+              this.SET_USER(user);
+            }
+            resolve();
+          })
+          .catch(() => {
             this.SET_TOKEN(null);
-            console.error("Failed to login user with stored token");
-          } else {
-            this.SET_USER(user);
-          }
-        })
-        .catch((reason) => {
-          this.SET_TOKEN(null);
-          console.error("Unknown error when trying to resolve logged in user: " + reason);
-        });
-    }
+            localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+
+            console.log("Invalid token in local storage. Logged out user.");
+            resolve()
+          });
+      }
+    });
   }
 
   @action
