@@ -24,7 +24,7 @@ export const mediaObjectStore = createProxy(rootStore, MediaObjectStore);
 export const userStore = createProxy(rootStore, UserStore); 
 
 export async function initStores(): Promise<void> {
-  await userStore.init()
+  await userStore.init();
 
   const ingredientInit = ingredientStore.init();
   const tagsInit = tagStore.init();
