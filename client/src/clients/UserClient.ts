@@ -12,7 +12,7 @@ export class UserClient {
         const data = response.data;
         resolve({
           id: data["id"],
-          roles: data["roles"],
+          roles: new Set(data["roles"]),
           email: data["email"],
           displayName: data["displayname"],
         });

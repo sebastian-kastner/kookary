@@ -20,6 +20,7 @@ export class UserStore extends VuexModule {
 
   public token: string | null = null;
   public user: User | null = null;
+  public userIsAdmin = false;
 
   private userClient = new UserClient();
 
@@ -124,5 +125,12 @@ export class UserStore extends VuexModule {
   @mutation
   private SET_USER(user: User | null) {
     this.user = user;
+    if (user) {
+      if (user.roles?.has("ROLE_ADMIN")) {
+        this.userIsAdmin = true;
+      }
+    } else {
+      this.userIsAdmin = false;
+    }
   }
 }

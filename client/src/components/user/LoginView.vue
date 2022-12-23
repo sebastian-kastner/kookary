@@ -1,5 +1,5 @@
 <template>
-  <div id="login" class="main-content form-group">
+  <div id="login" @click.stop class="form-group">
     <div class="alert alert-danger" role="alert" v-if="errorTxt != ''">
       Fehler beim Login: {{ errorTxt }}
     </div>
@@ -24,18 +24,18 @@
         v-model="password"
       />
     </div>
-    <div class="form-check">
+    <div class="form-group custom-control-lg custom-control custom-checkbox">
       <input
         type="checkbox"
-        class="form-check-input"
+        class="custom-control-input"
         id="remember-me"
         v-model="rememberMe"
       />
-      <label class="form-check-label" for="remember-me"
-        >Eingeloggt bleiben</label
-      >
+      <label class="custom-control-label" for="remember-me">
+        Eingeloggt bleiben
+      </label>
     </div>
-    <br />
+
     <button type="submit" class="btn btn-primary" @click="login">Submit</button>
     <br />
   </div>
@@ -43,17 +43,21 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { userStore } from "../stores/rootStore";
+import { userStore } from "../../stores/rootStore";
 
 @Component({})
-export default class HomeView extends Vue {
+export default class LoginView extends Vue {
   private email = "";
   private password = "";
   private rememberMe = false;
   private errorTxt = "";
 
-  login(): void {
-    userStore
+  async login(event: Event): Promise<void> {
+    // stop propagation. we want to keep the login dropdown open if the login fails
+    // if the login succeeds, we will close the dropdown manually
+    event.stopPropagation();
+
+    await userStore
       .checkCredentials({
         email: this.email,
         password: this.password,
@@ -61,30 +65,36 @@ export default class HomeView extends Vue {
       })
       .then(() => {
         this.errorTxt = "";
-        // TBD: do something more useful after login
-        console.log("welcome " + userStore.user?.displayName);
+        // randomly click body element to close dropdown (hacks ftw!)
+        document.getElementsByTagName("body")[0].click();
       })
       .catch((reason) => {
-        this.errorTxt = "Fehler beim Login: " + reason.toString();
+        this.errorTxt = reason.toString();
       });
-  }
-
-  // eslint-disable-next-line
-  getReturnCode(err: any): number | null {
-    if (err.response) {
-      if (err.response.status) {
-        return err.response.status;
-      }
-    }
-    return null;
   }
 }
 </script>
 
 <style lang="scss">
-@import "../../main.scss";
+@import "../../../main.scss";
 
 #login {
   padding: $content-padding;
+  margin: $content-padding;
+  width: 350px;
+
+  // fix to enlarge checkbox, see https://stackoverflow.com/questions/48293920/change-bootstrap-4-checkbox-size
+  .custom-control-lg .custom-control-label::before,
+  .custom-control-lg .custom-control-label::after {
+    top: 0rem !important;
+    left: -2rem !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .custom-control-lg .custom-control-label {
+    margin-left: 0.5rem !important;
+    font-size: 1rem !important;
+  }
 }
 </style>

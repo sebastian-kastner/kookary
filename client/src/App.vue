@@ -3,44 +3,44 @@
     <div class="topbar">
       <div class="d-flex justify-content-between container">
         <div class="topbar-left">
-          <!-- <nav class="navbar navbar-expand-lg navbar-light">
-              <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarText"
-                aria-controls="navbarText"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarText">
-                <ul class="navbar-nav mr-auto">
-                  <li class="nav-item">
-                    <router-link class="nav-link" to="/ingredients"
-                      >Ingredients</router-link
-                    >
-                  </li>
-                </ul>
-              </div>
-            </nav> -->
-          <router-link class="navbar-brand" to="/">&#129348; kookary</router-link>
+          <router-link class="navbar-brand" to="/"
+            >&#129348; kookary</router-link
+          >
         </div>
 
         <div class="topbar-right">
           <router-link class="btn nav-button rounded-button" to="/recipes"
             >recipes</router-link
           >
-          <router-link class="btn nav-button rounded-button" to="/recipe-editor"
+          <router-link
+            v-if="user"
+            class="btn nav-button rounded-button"
+            to="/recipe-editor"
             >+ add recipe</router-link
           >
 
-          <router-link v-if="user === null" class="btn icon-button" to="/login">
+          <!-- Login button and login form if user is not logged in -->
+          <span
+            class="btn dropdown-toggle"
+            type="button"
+            id="user-dropdown-button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span v-if="user === null">
               <b-icon-box-arrow-in-right /> Login
-          </router-link>
-          <div v-else class="btn icon-button" @click="userStore.logout">
-            <b-icon-person-circle /> {{ user.displayName }}
+            </span>
+            <span v-else>
+              <b-icon-person-circle /> {{ user.displayName }}
+            </span>
+          </span>
+          <div
+            class="dropdown-menu user-dropdown"
+            aria-labelledby="user-dropdown-button"
+          >
+            <login-view v-if="user === null" />
+            <user-menu v-else />
           </div>
         </div>
       </div>
@@ -57,21 +57,37 @@
 import { Component, Vue } from "vue-property-decorator";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BIconBoxArrowInRight, BIconPersonCircle } from "bootstrap-vue";
-import { userStore } from "./stores/rootStore"
+import {
+  BIconBoxArrowInRight,
+  BIconBoxArrowInLeft,
+  BIconPersonCircle,
+  BIconShieldLock,
+  BIconBasket,
+  BIconListTask,
+} from "bootstrap-vue";
+import { userStore } from "./stores/rootStore";
 import { User } from "./types";
 import { UserStore } from "./stores/userStore";
+import LoginView from "./components/user/LoginView.vue";
+import UserMenu from "./components/user/UserMenu.vue";
 
 @Component({
   components: {
+    LoginView,
+    UserMenu,
     BIconBoxArrowInRight,
-    BIconPersonCircle
+    BIconBoxArrowInLeft,
+    BIconPersonCircle,
+    BIconShieldLock,
+    BIconBasket,
+    BIconListTask,
   },
 })
 export default class App extends Vue {
   get user(): User | null {
     return userStore.user;
   }
+
   get userStore(): UserStore {
     return userStore;
   }
@@ -114,23 +130,26 @@ export default class App extends Vue {
     margin-left: 10px;
   }
 
-  .icon-button {
-    font-size: 1.5em;
+  .user-dropdown {
+    min-width: 250px;
+
+    a {
+      height: 3em;
+
+      svg {
+        font-size: 1.5em;
+        padding-bottom: 3px;
+        margin-right: 8px;
+      }
+    }
   }
-}
 
-nav {
-  padding: 30px;
-
-  // can this be removed? this seems to be for the hamburger menu entries which does currently not exist
-  // a {
-  //   font-weight: bold;
-  //   color: $gray !important;
-
-  //   &.router-link-exact-active {
-  //     color: lighten($gray, 25%) !important;
-  //   }
-  // }
+  #user-dropdown-button {
+    svg {
+      font-size: 1.5em;
+      padding-bottom: 3px;
+    }
+  }
 }
 
 .main {
@@ -138,6 +157,7 @@ nav {
   background-repeat: repeat-x;
   padding-top: 15px;
 }
+
 .main-wrapper {
   margin-bottom: 50px;
 }

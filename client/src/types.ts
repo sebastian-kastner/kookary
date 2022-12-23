@@ -40,7 +40,7 @@ export type User = {
     id?: number;
     email?: string;
     displayName?: string;
-    roles?: string[];
+    roles?: Set<string>;
 }
 
 export type MediaObject = {
