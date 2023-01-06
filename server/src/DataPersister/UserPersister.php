@@ -27,18 +27,20 @@ class UserPersister implements DataPersisterInterface
     }
 
     /**
-     * @param User $data
+     * @param User $user
      * @return object|void Void will not be supported in API Platform 3, an object should always be returned
      */
-    public function persist($data)
+    public function persist($user)
     {
-        if ($data->getPassword()) {
-            $data->setPassword(
-                $this->passwordHasher->hashPassword($data, $data->getPassword())
+        if ($user->getPassword()) {
+            $user->setPassword(
+                $this->passwordHasher->hashPassword($user, $user->getPassword())
             );
         }
-        $this->entityManager->persist($data);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        return $user;
     }
 
     /**

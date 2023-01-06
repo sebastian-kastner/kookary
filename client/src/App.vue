@@ -57,14 +57,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  BIconBoxArrowInRight,
-  BIconBoxArrowInLeft,
-  BIconPersonCircle,
-  BIconShieldLock,
-  BIconBasket,
-  BIconListTask,
-} from "bootstrap-vue";
 import { userStore } from "./stores/rootStore";
 import { User } from "./types";
 import { UserStore } from "./stores/userStore";
@@ -75,12 +67,6 @@ import UserMenu from "./components/user/UserMenu.vue";
   components: {
     LoginView,
     UserMenu,
-    BIconBoxArrowInRight,
-    BIconBoxArrowInLeft,
-    BIconPersonCircle,
-    BIconShieldLock,
-    BIconBasket,
-    BIconListTask,
   },
 })
 export default class App extends Vue {

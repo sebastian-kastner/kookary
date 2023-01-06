@@ -17,10 +17,15 @@
     </router-link>
 
     <div class="dropdown-divider"></div>
+    
+    <router-link class="dropdown-item d-flex align-items-center" to="/user/account">
+      <b-icon-person /> Benutzerkonto
+    </router-link>
+
     <a href="#" class="dropdown-item d-flex align-items-center" @click="logout">
       <b-icon-box-arrow-in-left /> Logout
     </a>
-    
+
   </div>
 </template>
 
@@ -36,6 +41,9 @@ export default class UserMenu extends Vue {
 
   logout(): void {
     userStore.logout();
+    if(this.$route.path.startsWith("/user")) {
+      this.$router.push({ path: "/" });
+    }
   }
 }
 </script>

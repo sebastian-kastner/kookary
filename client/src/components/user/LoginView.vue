@@ -1,11 +1,11 @@
 <template>
   <div id="login" @click.stop class="form-group">
     <div class="alert alert-danger" role="alert" v-if="errorTxt != ''">
-      Fehler beim Login: {{ errorTxt }}
+      {{ errorTxt }}
     </div>
 
     <div class="form-group">
-      <label for="exampleInputEmail1">Email adresse</label>
+      <label for="email">Email adresse</label>
       <input
         type="email"
         class="form-control"
@@ -36,7 +36,7 @@
       </label>
     </div>
 
-    <button type="submit" class="btn btn-primary" @click="login">Submit</button>
+    <button type="submit" class="btn btn-primary" @click="login">Login</button>
     <br />
   </div>
 </template>

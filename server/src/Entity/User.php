@@ -20,8 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={
  *         "get",
- *         "put"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *         "patch"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
+ *         "put"={"access_control"="is_granted('ROLE_ADMIN')"},
  *         "delete"={"access_control"="is_granted('ROLE_ADMIN')"},
  *     }
  * )
@@ -30,6 +29,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_USER = "ROLE_USER";
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -115,7 +117,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
@@ -125,6 +127,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function hasRole($role): bool {
+        return in_array($role, $this->roles);
     }
 
     /**

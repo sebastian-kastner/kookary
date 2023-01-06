@@ -144,49 +144,6 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Updates the User resource.
-         * @summary Updates the User resource.
-         * @param {string} id Resource identifier
-         * @param {UserWrite} userWrite The updated User resource
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        patchUserItem: async (id: string, userWrite: UserWrite, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('patchUserItem', 'id', id)
-            // verify required parameter 'userWrite' is not null or undefined
-            assertParamExists('patchUserItem', 'userWrite', userWrite)
-            const localVarPath = `/api/users/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication JWT required
-            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/merge-patch+json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(userWrite, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Creates a User resource.
          * @summary Creates a User resource.
          * @param {UserJsonldWrite} userJsonldWrite The new User resource
@@ -311,18 +268,6 @@ export const UserApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Updates the User resource.
-         * @summary Updates the User resource.
-         * @param {string} id Resource identifier
-         * @param {UserWrite} userWrite The updated User resource
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async patchUserItem(id: string, userWrite: UserWrite, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserJsonldRead>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.patchUserItem(id, userWrite, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          * Creates a User resource.
          * @summary Creates a User resource.
          * @param {UserJsonldWrite} userJsonldWrite The new User resource
@@ -383,17 +328,6 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         getUserItem(id: string, options?: any): AxiosPromise<UserJsonldRead> {
             return localVarFp.getUserItem(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Updates the User resource.
-         * @summary Updates the User resource.
-         * @param {string} id Resource identifier
-         * @param {UserWrite} userWrite The updated User resource
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        patchUserItem(id: string, userWrite: UserWrite, options?: any): AxiosPromise<UserJsonldRead> {
-            return localVarFp.patchUserItem(id, userWrite, options).then((request) => request(axios, basePath));
         },
         /**
          * Creates a User resource.
@@ -459,19 +393,6 @@ export class UserApi extends BaseAPI {
      */
     public getUserItem(id: string, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).getUserItem(id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Updates the User resource.
-     * @summary Updates the User resource.
-     * @param {string} id Resource identifier
-     * @param {UserWrite} userWrite The updated User resource
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserApi
-     */
-    public patchUserItem(id: string, userWrite: UserWrite, options?: AxiosRequestConfig) {
-        return UserApiFp(this.configuration).patchUserItem(id, userWrite, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
