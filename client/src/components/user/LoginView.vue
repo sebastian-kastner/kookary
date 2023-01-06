@@ -47,10 +47,10 @@ import { userStore } from "../../stores/rootStore";
 
 @Component({})
 export default class LoginView extends Vue {
-  private email = "";
-  private password = "";
-  private rememberMe = false;
-  private errorTxt = "";
+  email = "";
+  password = "";
+  rememberMe = false;
+  errorTxt = "";
 
   async login(event: Event): Promise<void> {
     // stop propagation. we want to keep the login dropdown open if the login fails

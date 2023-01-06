@@ -27,6 +27,24 @@ export class UserClient {
     })
   }
 
+  public async updateUser(user: User): Promise<void> {
+    const apiUser = this.toRestModelConverter.convertUserWrite(user);
+    return new Promise<void>((resolve, reject) => {
+      if (!user.id) {
+        reject("Benutzer ID muss gesetzt sein");
+        return;
+      }
+      const apiId = user.id.toString();
+
+      this.client.patchUserItem(apiId, apiUser)
+        .then(() => { resolve() })
+        .catch((err) => {
+          logAxiosError(err);
+          reject(err);
+        })
+    });
+  }
+
   public async getLoggedInUser(): Promise<User | null> {
     // the token is not required here because it will be set by an axios interceptor
     return new Promise<User | null>((resolve, reject) => {
@@ -81,7 +99,7 @@ export class UserClient {
     });
   }
 
-  public async changePassword(oldPassword: string, newPassword: string, userId: number): Promise<void> {
+  public async changePassword(userId: number, newPassword: string, oldPassword?: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       axios
         .post(process.env.VUE_APP_ROOT_API + "/api/change_password", {

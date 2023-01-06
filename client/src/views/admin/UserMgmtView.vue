@@ -8,6 +8,7 @@
           <th scope="col">Name</th>
           <th scope="col">eMail</th>
           <th scope="col">Roles</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -16,6 +17,11 @@
           <td>{{ user.displayName }}</td>
           <td>{{ user.email }}</td>
           <td>{{ rolesToString(user) }}</td>
+          <td>
+            <button @click="showEditDialog(user)" role="button" class="rounded-button">
+              <b-icon-pencil />
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -27,6 +33,7 @@
 import { User } from "../../types";
 import { Component, Vue } from "vue-property-decorator";
 import { UserClient } from "../../clients/UserClient"
+import UserEditor from "../../components/admin/UserEditor.vue"
 
 @Component({})
 export default class UserMgmtView extends Vue {
@@ -46,6 +53,14 @@ export default class UserMgmtView extends Vue {
     });
   }
 
+  showEditDialog(user: User) {
+    this.$modal.show(
+      UserEditor,
+      { user: user },
+      { height: 470 }
+    );
+  }
+
   rolesToString(user: User): string {
     if (user.roles) {
       const out: string[] = [];
@@ -56,7 +71,7 @@ export default class UserMgmtView extends Vue {
           out.push(role);
         }
       })
-      return out.join(', ');
+      return out.sort().join(', ');
     }
     return "";
   }

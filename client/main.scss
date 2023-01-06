@@ -48,3 +48,8 @@ $content-padding: 7px;
     text-decoration: underline;
   }
 }
+
+.vm--modal {
+  border: 1px solid gray;
+  padding-top: $content-padding;
+}

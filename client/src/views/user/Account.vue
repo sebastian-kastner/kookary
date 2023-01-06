@@ -104,7 +104,7 @@ export default class Account extends Vue {
     if (!userId) {
       throw new Error("No user logged in, cannot change password");
     }
-    this.userClient.changePassword(this.oldPassword, this.newPassword, userId)
+    this.userClient.changePassword(userId, this.newPassword, this.oldPassword)
       .then(() => {
         this.changed = true;
       })

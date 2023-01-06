@@ -1,8 +1,14 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient } from '../types'
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, UserWrite } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient, User } from '../types'
 import { userStore } from '../stores/rootStore'
 import * as ep from './endpoints'
 
+export function toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
+  if (!id) {
+    return undefined;
+  }
+  return prefix + "/" + id;
+}
 export class ToRestModelConverter {
 
   public convertTag(apiTag: Tag): TagJsonld {
@@ -18,7 +24,7 @@ export class ToRestModelConverter {
     if (apiTags) {
       apiTags.forEach((tag) => {
         if (tag.tagId) {
-          const apiId = this.toApiId(ep.TAGS_ENDPOINT, tag.tagId);
+          const apiId = toApiId(ep.TAGS_ENDPOINT, tag.tagId);
           if (apiId) {
             tags.push(apiId);
           }
@@ -42,11 +48,11 @@ export class ToRestModelConverter {
   public convertRecipeIngredient(viewModelIngredient: RecipeIngredient, recipeId?: string): RecipeIngredientJsonld {
     return {
       recipeIngredientId: viewModelIngredient.recipeIngredientId,
-      ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
+      ingredient: toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
       unit: viewModelIngredient.unit,
       quantity: viewModelIngredient.quantity,
       position: viewModelIngredient.position,
-      recipe: (recipeId) ? this.toApiId(ep.RECIPES_ENDPOINT, recipeId) : undefined
+      recipe: (recipeId) ? toApiId(ep.RECIPES_ENDPOINT, recipeId) : undefined
     }
   }
 
@@ -66,7 +72,7 @@ export class ToRestModelConverter {
   public convertRecipe(apiRecipe: Recipe): RecipeJsonld {
     const imageIds: string[] = [];
     apiRecipe.images.forEach((image) => {
-      const apiId = this.toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
+      const apiId = toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
       if (apiId) {
         imageIds.push(apiId);
       }
@@ -86,11 +92,17 @@ export class ToRestModelConverter {
     }
   }
 
-  private toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
-    if (!id) {
-      return undefined;
+  public convertUserWrite(apiUser: User): UserWrite {
+    let roles: string[] | undefined;
+    if (apiUser.roles) {
+      roles = Array.from(apiUser.roles);
     }
-    return prefix + "/" + id;
+    return {
+      id: apiUser.id,
+      displayname: apiUser.displayName,
+      email: apiUser.email,
+      roles: roles,
+    }
   }
 
   private getAuthorId(authorId: number | undefined | null): string {

@@ -56,29 +56,32 @@ class UserController extends AbstractController
         } else {
             $userId = (int) $data->userId;
         }
-        if ($data->oldPassword == null) {
-            throw new BadRequestException("oldPassword muss gesetzt sein!");
-        }
         if ($data->newPassword == null) {
             throw new BadRequestException("newPassword muss gesetzt sein!");
         }
 
-        // check if logged in user is allowed to change the password
-        if ($loggedInUser->getId() == $data->userId) {
-            // make sure that given old password is valid
-            $isValid = $this->passwordHasher->isPasswordValid($loggedInUser, $data->oldPassword);
+        // logged in user is admin and tries to change the password for another user: old password is not required
+        if ($loggedInUser->hasRole(User::ROLE_ADMIN) && $loggedInUser->getId() != $data->userId) {
+            return $this->saveUserPassword($userId, $data->newPassword);
+        } 
+        // logged in user tries to change its own password: old password is required
+        else if ($loggedInUser->getId() == $data->userId) {
+            if ($data->oldPassword == null) {
+                throw new BadRequestException("oldPassword muss gesetzt sein!");
+            }
 
+            // validate the sent password is correct
+            $isValid = $this->passwordHasher->isPasswordValid($loggedInUser, $data->oldPassword);
             if (!$isValid) {
                 throw new BadRequestException("Das angegebene aktuelle Passwort ist ungültig!");
             }
-        } else {
-            if($loggedInUser->hasRole((User::ROLE_ADMIN))) {
-                throw new AccessDeniedException("Fremde Passwörter können nicht geändert werden");
-            }
-        }
 
-        // change the password if the checks were successful
-        return $this->saveUserPassword($userId, $data->newPassword);
+            return $this->saveUserPassword($userId, $data->newPassword);
+        }
+        // non-admin tries to change another users password: error!
+        else {
+            throw new AccessDeniedException("Fremde Passwörter können nicht geändert werden");
+        }
     }
 
     private function saveUserPassword(int $userId, string $newPassword): Response {

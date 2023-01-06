@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     itemOperations={
  *         "get",
  *         "put"={"access_control"="is_granted('ROLE_ADMIN')"},
- *         "patch"={"access_control"="is_granted('ROLE_ADMIN)"},
+ *         "patch"={"access_control"="is_granted('ROLE_ADMIN')"},
  *         "delete"={"access_control"="is_granted('ROLE_ADMIN')"},
  *     }
  * )

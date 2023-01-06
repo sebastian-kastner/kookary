@@ -83,7 +83,7 @@ export default class App extends Vue {
 <style lang="scss">
 @import "../main.scss";
 
-#app {
+#app, .vm--modal {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
