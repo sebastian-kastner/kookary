@@ -1,6 +1,11 @@
 <template>
   <div id="user-mgt" class="container main-content padding-top">
     <h3>Benutzer</h3>
+    <div id="add-user-button" class="row justify-content-end">
+      <button @click="showAddUserModal" role="button" class="rounded-button">
+        <b-icon-plus /> Benutzer hinzufügen
+      </button>
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -8,6 +13,7 @@
           <th scope="col">Name</th>
           <th scope="col">eMail</th>
           <th scope="col">Roles</th>
+          <th scope="col"></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -17,6 +23,11 @@
           <td>{{ user.displayName }}</td>
           <td>{{ user.email }}</td>
           <td>{{ rolesToString(user) }}</td>
+          <td>
+            <button @click="deleteUser(user)" role="button" class="rounded-button">
+              <b-icon-trash />
+            </button>
+          </td>
           <td>
             <button @click="showEditDialog(user)" role="button" class="rounded-button">
               <b-icon-pencil />
@@ -34,6 +45,8 @@ import { User } from "../../types";
 import { Component, Vue } from "vue-property-decorator";
 import { UserClient } from "../../clients/UserClient"
 import UserEditor from "../../components/admin/UserEditor.vue"
+import AddUser from "../../components/admin/AddUser.vue"
+import DeleteModal from "../../components/modals/DeleteModal.vue";
 
 @Component({})
 export default class UserMgmtView extends Vue {
@@ -53,7 +66,7 @@ export default class UserMgmtView extends Vue {
     });
   }
 
-  showEditDialog(user: User) {
+  showEditDialog(user: User): void {
     this.$modal.show(
       UserEditor,
       { user: user },
@@ -61,31 +74,57 @@ export default class UserMgmtView extends Vue {
     );
   }
 
-  rolesToString(user: User): string {
-    if (user.roles) {
-      const out: string[] = [];
-      user.roles.forEach((role) => {
-        if (role.startsWith("ROLE_")) {
-          out.push(role.slice(5));
-        } else {
-          out.push(role);
-        }
-      })
-      return out.sort().join(', ');
-    }
-    return "";
+  showAddUserModal(): void {
+    this.$modal.show(
+      AddUser,
+      { userAddedCallback: (user: User) => { this.users.push(user) } },
+      { height: 550 }
+    );
   }
+
+  deleteUser(user: User): void {
+    if (!user.id) {
+      throw new Error("Zu löschender Benutzer hat keine ID!");
+    }
+    const userId = user.id;
+    const title = "Benutzer " + user.displayName + " löschen",
+    this.$modal.show(
+      DeleteModal,
+      {
+        title: title,
+        description: "Soll der Benutzer " + user.displayName + " wirklich gelöscht werden?",
+        confirmHandler: () => {
+          this.userClient.deleteUser(userId)
+            .then(() => {
+              this.users.splice(this.users.indexOf(user), 2);
+            });
+        }
+      }
+    );
+}
+
+rolesToString(user: User): string {
+  if (user.roles) {
+    const out: string[] = [];
+    const rolePrefix = "ROLE_"
+    user.roles.forEach((role) => {
+      if (role.startsWith(rolePrefix)) {
+        out.push(role.slice(rolePrefix.length));
+      } else {
+        out.push(role);
+      }
+    })
+    return out.sort().join(', ');
+  }
+  return "";
+}
 }
 </script>
 
 <style lang="scss">
 @import "../../../main.scss";
 
-#account {
-  padding: $content-padding;
-
-  #account-details {
-    margin-bottom: 2em;
-  }
+#add-user-button {
+  padding: $content-padding * 2;
 }
 </style>

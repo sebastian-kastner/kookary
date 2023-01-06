@@ -45,6 +45,36 @@ export class UserClient {
     });
   }
 
+  public async createUser(email: string, name: string, password: string): Promise<User> {
+    const user = this.toRestModelConverter.convertUserWrite({
+      email: email,
+      displayName: name,
+    });
+    user.password = password;
+
+    return new Promise<User>((resolve, reject) => {
+      this.client.postUserCollection(user)
+      .then((response) => {
+        resolve(this.toViewModelConverter.convertUser(response.data));
+      })
+      .catch((err) => {
+        logAxiosError(err);
+        reject(err);
+      })
+    });
+  }
+
+  public async deleteUser(userId: number): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.client.deleteUserItem(userId.toString())
+        .then(() => { resolve() })
+        .catch((err) => {
+          logAxiosError(err);
+          reject(err);
+        });
+    });
+  }
+
   public async getLoggedInUser(): Promise<User | null> {
     // the token is not required here because it will be set by an axios interceptor
     return new Promise<User | null>((resolve, reject) => {

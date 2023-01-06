@@ -15,7 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     normalizationContext={"groups"={"read"}},
  *     denormalizationContext={"groups"={"write"}},
  *     collectionOperations={
- *         "get"
+ *         "get",
+ *         "post"={"access_control"="is_granted('ROLE_ADMIN')"},
  *     },
  *     itemOperations={
  *         "get",

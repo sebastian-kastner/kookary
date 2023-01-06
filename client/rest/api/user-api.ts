@@ -187,6 +187,45 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Creates a User resource.
+         * @summary Creates a User resource.
+         * @param {UserJsonldWrite} userJsonldWrite The new User resource
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postUserCollection: async (userJsonldWrite: UserJsonldWrite, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userJsonldWrite' is not null or undefined
+            assertParamExists('postUserCollection', 'userJsonldWrite', userJsonldWrite)
+            const localVarPath = `/api/users`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/ld+json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(userJsonldWrite, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Replaces the User resource.
          * @summary Replaces the User resource.
          * @param {string} id Resource identifier
@@ -284,6 +323,17 @@ export const UserApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Creates a User resource.
+         * @summary Creates a User resource.
+         * @param {UserJsonldWrite} userJsonldWrite The new User resource
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async postUserCollection(userJsonldWrite: UserJsonldWrite, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserJsonldRead>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.postUserCollection(userJsonldWrite, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Replaces the User resource.
          * @summary Replaces the User resource.
          * @param {string} id Resource identifier
@@ -344,6 +394,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         patchUserItem(id: string, userWrite: UserWrite, options?: any): AxiosPromise<UserJsonldRead> {
             return localVarFp.patchUserItem(id, userWrite, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Creates a User resource.
+         * @summary Creates a User resource.
+         * @param {UserJsonldWrite} userJsonldWrite The new User resource
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        postUserCollection(userJsonldWrite: UserJsonldWrite, options?: any): AxiosPromise<UserJsonldRead> {
+            return localVarFp.postUserCollection(userJsonldWrite, options).then((request) => request(axios, basePath));
         },
         /**
          * Replaces the User resource.
@@ -412,6 +472,18 @@ export class UserApi extends BaseAPI {
      */
     public patchUserItem(id: string, userWrite: UserWrite, options?: AxiosRequestConfig) {
         return UserApiFp(this.configuration).patchUserItem(id, userWrite, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Creates a User resource.
+     * @summary Creates a User resource.
+     * @param {UserJsonldWrite} userJsonldWrite The new User resource
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public postUserCollection(userJsonldWrite: UserJsonldWrite, options?: AxiosRequestConfig) {
+        return UserApiFp(this.configuration).postUserCollection(userJsonldWrite, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

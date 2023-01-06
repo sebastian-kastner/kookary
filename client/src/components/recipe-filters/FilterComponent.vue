@@ -57,7 +57,7 @@ export default class FilterComponent extends Vue {
 
   @Prop({required: true }) filters!: UiFilter[];
 
-  private activeFilter: string | null = "name";
+  activeFilter: string | null = "name";
 
   resetFilter(
     event: PointerEvent,

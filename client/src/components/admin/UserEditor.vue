@@ -11,7 +11,7 @@
         <div class="col">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="ROLE_ADMIN" v-model="isAdmin"
-              :disabled="isAdminAndLoggedInUser()" @change="adminStateChanged">
+              :disabled="isLoggedInUser()" @change="adminStateChanged">
             <label class="form-check-label" for="ROLE_ADMIN">
               Admin
             </label>
@@ -31,20 +31,20 @@
       <div class="form-group">
         <label for="new-password">Neues Passwort</label>
         <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password"
-          placeholder="Neues Passwort" v-model="newPassword" :disabled="isAdminAndLoggedInUser()"/>
+          placeholder="Neues Passwort" v-model="newPassword" :disabled="isLoggedInUser()"/>
       </div>
 
       <div class="form-group">
         <label for="new-password-repeated">Neues Passwort wiederholen</label>
         <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password-repeated"
-          placeholder="Neues Passwort" v-model="newPasswordRepeated" :disabled="isAdminAndLoggedInUser()"/>
+          placeholder="Passwort Wiederholung" v-model="newPasswordRepeated" :disabled="isLoggedInUser()"/>
       </div>
 
       <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
         {{ warningTxt }}
       </div>
 
-      <button type="submit" class="btn btn-primary" :disabled="newPassword != newPasswordRepeated || isAdminAndLoggedInUser()"
+      <button type="submit" class="btn btn-primary" :disabled="newPassword != newPasswordRepeated || isLoggedInUser()"
         @click="changePassword">
         Passwort Ändern
       </button>
@@ -77,7 +77,7 @@ export default class UserEditor extends Vue {
     }
   }
 
-  isAdminAndLoggedInUser(): boolean {
+  isLoggedInUser(): boolean {
     // make sure that the logged in admin cannot change his own admin status..
     return userStore.user?.id === this.user.id;
   }
