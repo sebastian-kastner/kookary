@@ -8,15 +8,15 @@ export class IngredientsClient {
     toViewModelConverter = new ToViewModelConverter();
 
     public async getIngredients (): Promise<Ingredient[]> {
-      const ret = await this.client.getIngredientCollection()
-      const apiIngredients = ret.data['hydra:member']
+      const ret = await this.client.getIngredientCollection();
+      const apiIngredients = ret.data['hydra:member'];
 
-      const ingredients: Ingredient[] = []
+      const ingredients: Ingredient[] = [];
       apiIngredients.forEach((apiIngredient) => {
-        ingredients.push(this.toViewModelConverter.convertIngredient(apiIngredient))
+        ingredients.push(this.toViewModelConverter.convertIngredient(apiIngredient));
       })
 
-      return ingredients
+      return ingredients;
     }
 
     public async createIngredient(ingredientName: string): Promise<Ingredient> {

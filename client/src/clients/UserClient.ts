@@ -1,7 +1,31 @@
 import { User } from '../types'
 import axios from "axios";
+import { UserApi } from '../../rest/api/user-api';
+import { clientConfiguration } from './clientConfiguration'
+import { ToViewModelConverter } from './ToViewModelConverter'
+import { ToRestModelConverter } from './ToRestModelConverter'
+import { logAxiosError } from './axiosErrorLogger';
 
 export class UserClient {
+
+  client = new UserApi(clientConfiguration);
+
+  toViewModelConverter = new ToViewModelConverter();
+  toRestModelConverter = new ToRestModelConverter();
+
+  public async getUsers(): Promise<User[]> {
+    return new Promise<User[]>((resolve, reject) => {
+      this.client.getUserCollection()
+        .then((response) => {
+          const apiUsers = response.data["hydra:member"];
+          resolve(this.toViewModelConverter.convertUsers(apiUsers));
+        })
+        .catch((e) => {
+          logAxiosError(e)
+          reject(e);
+        });
+    })
+  }
 
   public async getLoggedInUser(): Promise<User | null> {
     // the token is not required here because it will be set by an axios interceptor
@@ -74,7 +98,7 @@ export class UserClient {
             reject("Unbekannter Fehler beim Ändern des Passworts");
           } else {
             reject(errorTxt);
-          } 
+          }
         });
     });
   }
@@ -92,10 +116,10 @@ export class UserClient {
   // eslint-disable-next-line
   private getErrorMessage(err: any): string | null {
     if (err.response && err.response.data) {
-        const data = err.response.data;
-        if (data.detail) {
-          return data.detail;
-        }
+      const data = err.response.data;
+      if (data.detail) {
+        return data.detail;
+      }
     }
     return null;
   }

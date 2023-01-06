@@ -22,12 +22,6 @@
 export interface UserJsonldRead {
     /**
      * 
-     * @type {string | any}
-     * @memberof UserJsonldRead
-     */
-    '@context'?: string | any;
-    /**
-     * 
      * @type {string}
      * @memberof UserJsonldRead
      */
@@ -38,6 +32,12 @@ export interface UserJsonldRead {
      * @memberof UserJsonldRead
      */
     '@type'?: string;
+    /**
+     * 
+     * @type {string | any}
+     * @memberof UserJsonldRead
+     */
+    '@context'?: string | any;
     /**
      * 
      * @type {number}

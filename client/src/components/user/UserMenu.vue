@@ -11,13 +11,13 @@
     <router-link
       v-if="isAdmin"
       class="dropdown-item d-flex align-items-center"
-      to="#"
+      to="/admin/users"
     >
       <b-icon-shield-lock /> Administration
     </router-link>
 
     <div class="dropdown-divider"></div>
-    
+
     <router-link class="dropdown-item d-flex align-items-center" to="/user/account">
       <b-icon-person /> Benutzerkonto
     </router-link>

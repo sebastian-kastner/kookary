@@ -1,9 +1,9 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject } from '../types'
-import {v4 as uuid} from 'uuid';
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead, UserJsonldRead } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User } from '../types'
+import { v4 as uuid } from 'uuid';
 
 export class ToViewModelConverter {
-  public convertTag (apiTag: TagJsonld): Tag {
+  public convertTag(apiTag: TagJsonld): Tag {
     return {
       tagId: apiTag.tagId,
       name: apiTag.name,
@@ -14,7 +14,7 @@ export class ToViewModelConverter {
 
   public convertTags(apiTags: string[] | undefined): Tag[] {
     const tags: Tag[] = [];
-    if(apiTags) {
+    if (apiTags) {
       apiTags.forEach((apiTag) => {
         tags.push({
           uuid: uuid(),
@@ -25,15 +25,15 @@ export class ToViewModelConverter {
     return tags;
   }
 
-  public convertIngredient (apiIngredient: IngredientJsonld): Ingredient {
+  public convertIngredient(apiIngredient: IngredientJsonld): Ingredient {
     return {
       ingredientId: apiIngredient.ingredientId,
       name: apiIngredient.name,
       authorId: this.toId(apiIngredient.author),
     }
   }
-  
-  public convertRecipeIngredient (apiIngredient: RecipeIngredientJsonld): RecipeIngredient {
+
+  public convertRecipeIngredient(apiIngredient: RecipeIngredientJsonld): RecipeIngredient {
     return {
       recipeIngredientId: apiIngredient.recipeIngredientId,
       // FIXME does this work?
@@ -44,8 +44,8 @@ export class ToViewModelConverter {
       uuid: uuid(),
     }
   }
-  
-  public convertRecipeIngredients (apiIngredients?: RecipeIngredientJsonld[]): RecipeIngredient[] {
+
+  public convertRecipeIngredients(apiIngredients?: RecipeIngredientJsonld[]): RecipeIngredient[] {
     if (!apiIngredients) {
       return [];
     }
@@ -70,14 +70,14 @@ export class ToViewModelConverter {
       } else if (b.recipeIngredientId) {
         bPos = b.recipeIngredientId;
       }
-      
+
       return aPos - bPos;
     })
 
     return ingredients;
   }
-  
-  public convertRecipe (apiRecipe: RecipeJsonld): Recipe {
+
+  public convertRecipe(apiRecipe: RecipeJsonld): Recipe {
     const images: MediaObject[] = [];
     if (apiRecipe.images) {
       apiRecipe.images.forEach((image) => {
@@ -88,7 +88,7 @@ export class ToViewModelConverter {
         }
       });
     }
-    
+
     const authorId = this.toId(apiRecipe.author);
     return {
       recipeId: apiRecipe.recipeId,
@@ -106,7 +106,7 @@ export class ToViewModelConverter {
     }
   }
 
-  public convertMediaObject (apiMediaObject: MediaObjectJsonldMediaObjectRead): MediaObject {
+  public convertMediaObject(apiMediaObject: MediaObjectJsonldMediaObjectRead): MediaObject {
     let url;
     if (apiMediaObject.contentUrl) {
       url = process.env.VUE_APP_ROOT_API + apiMediaObject.contentUrl;
@@ -118,26 +118,55 @@ export class ToViewModelConverter {
     }
   }
 
-  public convertMediaObjects (apiMediaObjects?: MediaObjectJsonldMediaObjectRead[]): MediaObject[] {
+  public convertMediaObjects(apiMediaObjects?: MediaObjectJsonldMediaObjectRead[]): MediaObject[] {
     if (!apiMediaObjects) {
       return []
     }
     const mediaObjects: MediaObject[] = []
-    // not using forEach here because in for some reason apiIngredients is an object after a save operation
+    // not using forEach here because for some reason apiIngredients is an object after a save operation
     for (const key in apiMediaObjects) {
       mediaObjects.push(this.convertMediaObject(apiMediaObjects[key]))
     }
     return mediaObjects;
   }
 
+  public convertUser(apiUser: UserJsonldRead): User {
+    const roles: Set<string> = new Set();
+    if (apiUser.roles) {
+      apiUser.roles.forEach((role) => {
+        roles.add(role);
+      });
+    }
+
+    return {
+      displayName: apiUser.displayname,
+      email: apiUser.email,
+      id: apiUser.id,
+      roles: roles,
+    }
+  }
+
+  public convertUsers(apiUsers?: UserJsonldRead[]): User[] {
+    if (!apiUsers) {
+      return [];
+    }
+
+    const users: User[] = [];
+    for (const key in apiUsers) {
+      users.push(this.convertUser(apiUsers[key]));
+    }
+    return users;
+  }
+
+
   private toId(iri: string | null | undefined): number | undefined {
     if (!iri) {
       return undefined;
     }
     const stringId = iri.split("/").pop()?.toString();
-    if(stringId) {
+    if (stringId) {
       const number = Number(stringId)
-      if(!isNaN(number)) {
+      if (!isNaN(number)) {
         return number;
       }
     }
@@ -145,7 +174,7 @@ export class ToViewModelConverter {
   }
 
   private getStringOrNull(value: string | null | undefined): string | null {
-    if(value) {
+    if (value) {
       return value;
     }
     return null;

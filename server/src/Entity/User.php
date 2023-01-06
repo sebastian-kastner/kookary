@@ -15,12 +15,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     normalizationContext={"groups"={"read"}},
  *     denormalizationContext={"groups"={"write"}},
  *     collectionOperations={
- *         "get",
- *         "post"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *         "get"
  *     },
  *     itemOperations={
  *         "get",
  *         "put"={"access_control"="is_granted('ROLE_ADMIN')"},
+ *         "patch"={"access_control"="is_granted('ROLE_ADMIN)"},
  *         "delete"={"access_control"="is_granted('ROLE_ADMIN')"},
  *     }
  * )
