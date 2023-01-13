@@ -12,16 +12,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class UserController extends AbstractController
 {
     private $passwordHasher;
     private $entityManager;
 
-    public function __construct(ManagerRegistry $managerRegistry, UserPasswordHasherInterface $passwordHasher)
+    private $jwtManager;
+
+    public function __construct(ManagerRegistry $managerRegistry, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $jwtManager)
     {
         $this->entityManager = $managerRegistry->getManager();
         $this->passwordHasher = $passwordHasher;
+        $this->jwtManager = $jwtManager;
     }
 
     /**
@@ -37,6 +42,18 @@ class UserController extends AbstractController
             return $this->json($user);
         }
         return new Response();
+    }
+
+    /**
+     * @Route("/api/refresh_token", name="refresh_token", methods={"GET"})
+     */
+    public function refreshToken(): Response
+    {
+        // return error if user is not authenticated
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $token = $this->jwtManager->create($this->getUser());
+
+        return new JsonResponse(['token' => $this->jwtManager->create($this->getUser())]);
     }
 
     /**

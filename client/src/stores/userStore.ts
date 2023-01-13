@@ -111,6 +111,19 @@ export class UserStore extends VuexModule {
   }
 
   @action
+  async refreshToken(): Promise<void> {
+    if (this.user != null) {
+      const newToken = await this.userClient.refreshUserToken();
+      this.SET_TOKEN(newToken);
+
+      const storedToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
+      if (storedToken) {
+        localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, newToken);
+      }
+    }
+  }
+
+  @action
   async logout(): Promise<void> {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
     this.SET_TOKEN(null);

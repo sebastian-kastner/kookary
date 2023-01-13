@@ -30,6 +30,11 @@ export async function initStores(): Promise<void> {
   const tagsInit = tagStore.init();
   const mediaObjectInit = mediaObjectStore.init();
 
+  userStore.refreshToken();
+  setInterval(() => {
+    userStore.refreshToken();
+  }, 180000);
+
   await Promise.all([ingredientInit, tagsInit, mediaObjectInit]);
 }
 

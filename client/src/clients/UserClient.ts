@@ -5,6 +5,7 @@ import { clientConfiguration } from './clientConfiguration'
 import { ToViewModelConverter } from './ToViewModelConverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
+import { AUTH_TOKEN_ENDPOINT, REFRESH_TOKEN_ENDPOINT, ME_ENDPOINT } from './endpoints'
 
 export class UserClient {
 
@@ -79,7 +80,7 @@ export class UserClient {
     // the token is not required here because it will be set by an axios interceptor
     return new Promise<User | null>((resolve, reject) => {
       axios
-        .get(process.env.VUE_APP_ROOT_API + "/api/me", {})
+        .get(process.env.VUE_APP_ROOT_API + ME_ENDPOINT, {})
         .then((response) => {
           const data = response.data;
           resolve({
@@ -90,14 +91,8 @@ export class UserClient {
           });
         })
         .catch((error) => {
-          const retCode = this.getReturnCode(error);
-          if (retCode == 401) {
-            reject("Ungültige Login Daten");
-          } else if (retCode == 404) {
-            reject("Login nicht verfügbar");
-          } else {
-            reject("Unbekannter Fehler");
-          }
+          const errorTxt = this.logAndGetErrorMessage(error);
+          reject(errorTxt);
         });
     });
   }
@@ -105,7 +100,7 @@ export class UserClient {
   public async getUserToken(email: string, password: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       axios
-        .post(process.env.VUE_APP_ROOT_API + "/api/auth_token", {
+        .post(process.env.VUE_APP_ROOT_API + AUTH_TOKEN_ENDPOINT, {
           email: email,
           password: password,
         })
@@ -117,15 +112,27 @@ export class UserClient {
           resolve(token);
         })
         .catch((error) => {
-          const retCode = this.getReturnCode(error);
-          if (retCode == 401) {
-            reject("Ungültige Login Daten");
-          } else if (retCode == 404) {
-            reject("Login nicht verfügbar");
-          } else {
-            reject("Unbekannter Fehler");
-          }
+          const errorTxt = this.logAndGetErrorMessage(error);
+          reject(errorTxt);
         });
+    });
+  }
+
+  public async refreshUserToken(): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      axios.get(process.env.VUE_APP_ROOT_API + REFRESH_TOKEN_ENDPOINT)
+        .then((response) => {
+          const token = response.data["token"];
+          if (!token) {
+            reject("Received unexpected return value from authorization endpoint.")
+          }
+          resolve(token);
+        })
+        .catch((error) => {
+          // do not pass on errors for refreshs
+          const errorTxt = this.logAndGetErrorMessage(error);
+          console.error(errorTxt);
+        })
     });
   }
 
@@ -141,12 +148,8 @@ export class UserClient {
           resolve();
         })
         .catch((error) => {
-          const errorTxt = this.getErrorMessage(error);
-          if (!errorTxt) {
-            reject("Unbekannter Fehler beim Ändern des Passworts");
-          } else {
-            reject(errorTxt);
-          }
+          const errorTxt = this.logAndGetErrorMessage(error);
+          reject(errorTxt);
         });
     });
   }
@@ -162,14 +165,23 @@ export class UserClient {
   }
 
   // eslint-disable-next-line
-  private getErrorMessage(err: any): string | null {
+  private logAndGetErrorMessage(err: any): string {
+    console.error(err);
+    
     if (err.response && err.response.data) {
       const data = err.response.data;
       if (data.detail) {
         return data.detail;
       }
     }
-    return null;
-  }
 
+    const retCode = this.getReturnCode(err);
+    if (retCode == 401) {
+      return "Ungültige Login Daten";
+    } else if (retCode == 404) {
+      return "Login nicht verfügbar";
+    }
+
+    return "Unerwarteter Fehler";
+  }
 }
