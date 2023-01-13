@@ -9,7 +9,7 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
-Vue.use(VModal);
+Vue.use(VModal, { dialog: true });
 
 initStores().then(() => {
   new Vue({

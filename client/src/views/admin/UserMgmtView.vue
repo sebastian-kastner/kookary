@@ -83,41 +83,51 @@ export default class UserMgmtView extends Vue {
   }
 
   deleteUser(user: User): void {
-    if (!user.id) {
+    const userId = user.id;
+
+    if (!userId) {
       throw new Error("Zu löschender Benutzer hat keine ID!");
     }
-    const userId = user.id;
-    const title = "Benutzer " + user.displayName + " löschen",
-    this.$modal.show(
-      DeleteModal,
-      {
-        title: title,
-        description: "Soll der Benutzer " + user.displayName + " wirklich gelöscht werden?",
-        confirmHandler: () => {
-          this.userClient.deleteUser(userId)
+
+    this.$modal.show('dialog', {
+      title: "Benutzer " + user.displayName + " löschen",
+      text: "Soll der Benutzer " + user.displayName + " wirklich gelöscht werden?",
+      buttons: [
+        {
+          title: 'Abbrechen',
+          handler: () => {
+            this.$modal.hide('dialog')
+          }
+        },
+        {
+          title: 'Löschen',
+          handler: () => {
+            this.userClient.deleteUser(userId)
             .then(() => {
               this.users.splice(this.users.indexOf(user), 2);
             });
+            this.$modal.hide('dialog');
+          }
         }
-      }
-    );
-}
-
-rolesToString(user: User): string {
-  if (user.roles) {
-    const out: string[] = [];
-    const rolePrefix = "ROLE_"
-    user.roles.forEach((role) => {
-      if (role.startsWith(rolePrefix)) {
-        out.push(role.slice(rolePrefix.length));
-      } else {
-        out.push(role);
-      }
-    })
-    return out.sort().join(', ');
+      ]
+    });
   }
-  return "";
-}
+
+  rolesToString(user: User): string {
+    if (user.roles) {
+      const out: string[] = [];
+      const rolePrefix = "ROLE_"
+      user.roles.forEach((role) => {
+        if (role.startsWith(rolePrefix)) {
+          out.push(role.slice(rolePrefix.length));
+        } else {
+          out.push(role);
+        }
+      })
+      return out.sort().join(', ');
+    }
+    return "";
+  }
 }
 </script>
 

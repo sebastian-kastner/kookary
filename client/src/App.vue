@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    
+    <v-dialog />
+
     <div class="topbar">
       <div class="d-flex justify-content-between container">
         <div class="topbar-left">
