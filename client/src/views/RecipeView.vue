@@ -50,11 +50,11 @@
       </div>
 
       <div class="row">
-        <h1>{{ recipe.name }}</h1>
+        <h2>{{ recipe.name }}</h2>
       </div>
 
       <div class="row">
-        <h2>ZUTATEN</h2>
+        <h4>ZUTATEN</h4>
       </div>
 
       <div class="row">
@@ -73,13 +73,13 @@
       </div>
 
       <div class="row">
-        <h2>ZUBEREITUNG</h2>
+        <h4>ZUBEREITUNG</h4>
       </div>
 
       <div class="row" v-html="description" />
 
       <div class="row">
-        <h2>QUELLE</h2>
+        <h4>QUELLE</h4>
       </div>
       <div class="row">
         <a v-if="sourceLink !== null" :href="sourceLink" target="_blank">

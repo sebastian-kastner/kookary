@@ -90,8 +90,8 @@ export default class App extends Vue {
 }
 
 .topbar {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   position: sticky;
   top: 0;

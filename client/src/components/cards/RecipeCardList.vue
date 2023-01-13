@@ -55,7 +55,7 @@ export default class RecipeCardList extends Vue {
 @import "../../../main.scss";
 
 .recipe-card-header {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: $font-color-highlight;
 }
 </style>
