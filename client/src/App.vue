@@ -1,36 +1,37 @@
 <template>
   <div id="app">
-    
+
     <v-dialog />
 
     <div class="topbar">
-      <div class="d-flex justify-content-between container">
+      <div class="d-flex justify-content-between align-items-center container">
         <div class="topbar-left">
-          <router-link class="navbar-brand" to="/"
-            >&#129348; kookary</router-link
-          >
+          <!-- burger menu; only visible on screens smaller than large -->
+          <div class="d-lg-none d-inline">
+            <span class="btn" id="burger-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <b-icon-list />
+            </span>
+            <div class="dropdown-menu" aria-labelledby="burger-menu">
+              <router-link v-for="navItem in navItems" v-bind:key="navItem.name"
+                class="dropdown-item d-flex align-items-center" :to="navItem.to">
+                <component :is="navItem.icon" />{{ navItem.name }}
+              </router-link>
+            </div>
+          </div>
+
+          <router-link class="navbar-brand" to="/">&#129348; kookary</router-link>
+        </div>
+
+        <!-- nav items in middle; only visible on large screens -->
+        <div class="d-none d-lg-block">
+          <router-link v-for="navItem in navItems" v-bind:key="navItem.name" :to="navItem.to"
+            class="nav-button">{{ navItem.name }}</router-link>
         </div>
 
         <div class="topbar-right">
-          <router-link class="btn nav-button rounded-button" to="/recipes"
-            >recipes</router-link
-          >
-          <router-link
-            v-if="user"
-            class="btn nav-button rounded-button"
-            to="/recipe-editor"
-            >+ add recipe</router-link
-          >
-
           <!-- Login button and login form if user is not logged in -->
-          <span
-            class="btn dropdown-toggle"
-            type="button"
-            id="user-dropdown-button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <span class="btn dropdown-toggle" type="button" id="user-dropdown-button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
             <span v-if="user === null">
               <b-icon-box-arrow-in-right /> Login
             </span>
@@ -38,14 +39,12 @@
               <b-icon-person-circle /> {{ user.displayName }}
             </span>
           </span>
-          <div
-            class="dropdown-menu user-dropdown"
-            aria-labelledby="user-dropdown-button"
-          >
+          <div class="dropdown-menu" aria-labelledby="user-dropdown-button">
             <login-view v-if="user === null" />
             <user-menu v-else />
           </div>
         </div>
+
       </div>
     </div>
     <div class="main">
@@ -65,6 +64,13 @@ import { User } from "./types";
 import { UserStore } from "./stores/userStore";
 import LoginView from "./components/user/LoginView.vue";
 import UserMenu from "./components/user/UserMenu.vue";
+import { BIconListOl, BIconPlusCircle } from "bootstrap-vue";
+
+export type NavItem = {
+  name: string;
+  to: string;
+  icon: unknown;
+};
 
 @Component({
   components: {
@@ -80,6 +86,23 @@ export default class App extends Vue {
   get userStore(): UserStore {
     return userStore;
   }
+
+  get navItems(): NavItem[] {
+    const items: NavItem[] = [];
+    items.push({
+      icon: BIconListOl,
+      name: "Rezepte",
+      to: "/recipes",
+    });
+    if (this.user) {
+      items.push({
+        icon: BIconPlusCircle,
+        name: "Neues Rezept",
+        to: "/recipe-editor",
+      });
+    }
+    return items;
+  }
 }
 </script>
 
@@ -90,6 +113,11 @@ export default class App extends Vue {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+// this prevents the layout from jumping if the scrollbar appears
+#app {
+  width: 100vw;
 }
 
 .topbar {
@@ -117,9 +145,19 @@ export default class App extends Vue {
   .nav-button {
     min-width: 125px;
     margin-left: 10px;
+    color: $link-color-main;
+    padding: 0 5px 10px 5px;
   }
 
-  .user-dropdown {
+  .nav-button:hover {
+    text-decoration: none;
+  }
+
+  .nav-button.router-link-active {
+    border-bottom: 2px solid $button-color-main;
+  }
+
+  .dropdown-menu {
     min-width: 250px;
 
     a {
@@ -133,7 +171,12 @@ export default class App extends Vue {
     }
   }
 
-  #user-dropdown-button {
+  #burger-menu {
+    padding-top: 0;
+  }
+
+  #user-dropdown-button,
+  #burger-menu {
     svg {
       font-size: 1.5em;
       padding-bottom: 3px;
