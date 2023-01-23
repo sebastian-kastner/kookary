@@ -80,13 +80,6 @@ class Recipe
     private $source;
 
     /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="marked", type="boolean", nullable=true)
-     */
-    private $marked = false;
-
-    /**
      * @var \DateTime|null
      *
      * @ORM\Column(name="date_added", type="datetime", nullable=true)
@@ -196,18 +189,6 @@ class Recipe
     public function setSource(?string $source): self
     {
         $this->source = $source;
-
-        return $this;
-    }
-
-    public function isMarked(): ?bool
-    {
-        return $this->marked;
-    }
-
-    public function setMarked(?bool $marked): self
-    {
-        $this->marked = $marked;
 
         return $this;
     }

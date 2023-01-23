@@ -82,9 +82,6 @@ export default class UserEditor extends Vue {
       .then((user) => {
         this.userAddedCallback(user);
         this.$modal.hideAll();
-      })
-      .catch((err) => {
-        // do something useful!
       });
   }
 }

@@ -28,7 +28,6 @@ export type Recipe = {
     source: string | null;
     rating?: number | null;
     dateAdded?: string | null;
-    marked: boolean;
     ingredients: RecipeIngredient[];
     tags: Tag[];
     images: MediaObject[];
@@ -55,7 +54,6 @@ export function recipeFactory(): Recipe {
         ingredients: [],
         tags: [],
         source: null,
-        marked: false,
         images: [],
         authorId: null,
         // FIXME this is fugly

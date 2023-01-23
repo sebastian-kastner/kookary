@@ -129,13 +129,6 @@ export class RecipesClient {
       return this.saveInternal(this.client.postRecipeCollection(restRecipe));
     }
 
-    public async setMarked(recipeId: number, isMarked: boolean): Promise<Recipe> {
-      const restRecipe: RecipeJsonld = {
-        marked: isMarked
-      }
-      return this.saveInternal(this.client.patchRecipeItem(recipeId.toString(), restRecipe));
-    }
-
     // eslint-disable-next-line
     private async saveInternal(savePromise: Promise<AxiosResponse<RecipeJsonld, any>>) {
       return new Promise<Recipe>((resolve, reject) => {

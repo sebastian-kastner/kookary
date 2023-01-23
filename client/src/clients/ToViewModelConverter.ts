@@ -114,7 +114,6 @@ export class ToViewModelConverter {
       dateAdded: apiRecipe.dateAdded,
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       tags: this.convertTags(apiRecipe.tags),
-      marked: this.getBoolean(apiRecipe.marked),
       imagesToDelete: [],
       authorId: (authorId ? authorId : null),
     }

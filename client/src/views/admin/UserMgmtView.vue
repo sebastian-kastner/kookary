@@ -46,7 +46,6 @@ import { Component, Vue } from "vue-property-decorator";
 import { UserClient } from "../../clients/UserClient"
 import UserEditor from "../../components/admin/UserEditor.vue"
 import AddUser from "../../components/admin/AddUser.vue"
-import DeleteModal from "../../components/modals/DeleteModal.vue";
 
 @Component({})
 export default class UserMgmtView extends Vue {

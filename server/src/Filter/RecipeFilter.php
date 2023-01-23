@@ -114,7 +114,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
         $condition = sprintf("%s.recipeId = %s.recipe AND %s.user = %s", $recipeAlias, self::FAVOURITE_RECIPE_ALIAS, self::FAVOURITE_RECIPE_ALIAS, $userId);
         $queryBuilder->innerJoin(
-            UserRecipeFavourites::class, 
+            UserRecipeFavourites::class,
             self::FAVOURITE_RECIPE_ALIAS,
             JOIN::WITH,
             $condition

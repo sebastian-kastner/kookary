@@ -53,12 +53,6 @@ export interface Recipe {
     'source'?: string | null;
     /**
      * 
-     * @type {boolean}
-     * @memberof Recipe
-     */
-    'marked'?: boolean | null;
-    /**
-     * 
      * @type {string}
      * @memberof Recipe
      */

@@ -71,12 +71,6 @@ export interface RecipeJsonld {
     'source'?: string | null;
     /**
      * 
-     * @type {boolean}
-     * @memberof RecipeJsonld
-     */
-    'marked'?: boolean | null;
-    /**
-     * 
      * @type {string}
      * @memberof RecipeJsonld
      */
