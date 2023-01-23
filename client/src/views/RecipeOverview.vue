@@ -1,10 +1,6 @@
 <template>
   <div id="recipe-overview" class="main-content">
-    <filter-component 
-      :recipeFilter="recipeFilter"
-      :filters="uiFilters"
-      @applyFilter="applyFilter"
-    />
+    <filter-component :recipeFilter="recipeFilter" :filters="filters" @applyFilter="applyFilter" />
     <br />
     <recipe-list :recipes="recipes" />
   </div>
@@ -15,7 +11,8 @@ import { Component, Vue } from "vue-property-decorator";
 import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
 import { ingredientStore } from "../stores/rootStore";
-import { filters } from '../components/recipe-filters/uiFilters'
+import { UiFilter, nameFilter, ingredientFilter, seasonalFilter, tagFilter, markedFilter } from '../components/recipe-filters/uiFilters'
+import { userStore } from '../stores/rootStore'
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
 import FilterComponent from "../components/recipe-filters/FilterComponent.vue";
@@ -24,7 +21,7 @@ import FilterComponent from "../components/recipe-filters/FilterComponent.vue";
   components: { RecipeList, TypeaheadInput, FilterComponent },
 })
 export default class RecipesView extends Vue {
-  
+
   recipeFilter: RecipeFilter = {
     tags: [],
     ingredients: [],
@@ -33,13 +30,11 @@ export default class RecipesView extends Vue {
     marked: false,
   };
 
-  uiFilters = filters;
-
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
 
   mounted(): void {
-    this.uiFilters.forEach((filter) => {
+    this.filters.forEach((filter) => {
       const routeParam = this.$route.query[filter.name];
       if (routeParam !== undefined) {
         let val = '';
@@ -51,6 +46,21 @@ export default class RecipesView extends Vue {
     });
 
     this.applyFilter(this.recipeFilter);
+  }
+
+  get filters(): UiFilter[] {
+    const filters: UiFilter[] = [
+      nameFilter,
+      tagFilter,
+      ingredientFilter,
+      seasonalFilter,
+    ];
+
+    if (userStore.user && userStore.user.id) {
+      filters.push(markedFilter);
+    }
+    
+    return filters;
   }
 
   public async applyFilter(filter: RecipeFilter): Promise<void> {
@@ -74,6 +84,5 @@ export default class RecipesView extends Vue {
 
 <style lang="scss" scoped>
 @import "../../main.scss";
-
 </style>
 

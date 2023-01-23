@@ -24,58 +24,60 @@ export type UiFilter = {
   resetFilter: (filter: RecipeFilter) => void;
 };
 
-export const filters: UiFilter[] = [
-  {
-    name: "name",
-    icon: BIconInputCursor,
-    component: NameFilterComponent,
-    applyRouteFilter: (val, filter) => {
-      filter.nameContains = val;
-    },
-    isActive: (filter) => listHasElements(filter.nameContains),
-    resetFilter: (filter) => (filter.nameContains = ""),
+export const nameFilter: UiFilter = {
+  name: "name",
+  icon: BIconInputCursor,
+  component: NameFilterComponent,
+  applyRouteFilter: (val, filter) => {
+    filter.nameContains = val;
   },
-  {
-    name: "tags",
-    icon: BIconTags,
-    component: TagFilterComponent,
-    applyRouteFilter: (val, filter) => {
-      filter.tags = getTags(val.split(";"));
-    },
-    isActive: (filter) => listHasElements(filter.tags),
-    resetFilter: (filter) => (filter.tags = []),
+  isActive: (filter) => listHasElements(filter.nameContains),
+  resetFilter: (filter) => (filter.nameContains = ""),
+};
+
+export const tagFilter: UiFilter = {
+  name: "tags",
+  icon: BIconTags,
+  component: TagFilterComponent,
+  applyRouteFilter: (val, filter) => {
+    filter.tags = getTags(val.split(";"));
   },
-  {
-    name: "ingredients",
-    icon: BIconBag,
-    component: IngredientFilterComponent,
-    applyRouteFilter: (val, filter) => {
-      filter.ingredients = getIngredients(val.split(";"));
-    },
-    isActive: (filter) => listHasElements(filter.ingredients),
-    resetFilter: (filter) => (filter.ingredients = []),
+  isActive: (filter) => listHasElements(filter.tags),
+  resetFilter: (filter) => (filter.tags = []),
+}
+
+export const ingredientFilter: UiFilter = {
+  name: "ingredients",
+  icon: BIconBag,
+  component: IngredientFilterComponent,
+  applyRouteFilter: (val, filter) => {
+    filter.ingredients = getIngredients(val.split(";"));
   },
-  {
-    name: "seasonal",
-    icon: BIconCalendarWeek,
-    component: IsSeasonalFilterComponent,
-    applyRouteFilter: (val, filter) => {
-      filter.isSeasonal = true;
-    },
-    isActive: (filter) => filter.isSeasonal === true,
-    resetFilter: (filter) => (filter.isSeasonal = false),
+  isActive: (filter) => listHasElements(filter.ingredients),
+  resetFilter: (filter) => (filter.ingredients = []),
+}
+
+export const seasonalFilter: UiFilter = {
+  name: "seasonal",
+  icon: BIconCalendarWeek,
+  component: IsSeasonalFilterComponent,
+  applyRouteFilter: (val, filter) => {
+    filter.isSeasonal = true;
   },
-  {
-    name: "marked",
-    icon: BIconBellFill,
-    component: IsMarkedFilterComponent,
-    applyRouteFilter: (val, filter) => {
-      filter.marked = true;
-    },
-    isActive: (filter) => filter.marked === true,
-    resetFilter: (filter) => (filter.marked = false),
+  isActive: (filter) => filter.isSeasonal === true,
+  resetFilter: (filter) => (filter.isSeasonal = false),
+}
+
+export const markedFilter: UiFilter = {
+  name: "marked",
+  icon: BIconBellFill,
+  component: IsMarkedFilterComponent,
+  applyRouteFilter: (val, filter) => {
+    filter.marked = true;
   },
-];
+  isActive: (filter) => filter.marked === true,
+  resetFilter: (filter) => (filter.marked = false),
+}
 
 function listHasElements(list: Array<object> | string | undefined): boolean {
   if (list) {

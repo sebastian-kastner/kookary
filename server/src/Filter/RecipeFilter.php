@@ -1,19 +1,24 @@
 <?php
 namespace App\Filter;
 
-use Exception;
-
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Join;
-
-use Symfony\Component\PropertyInfo\Type;
-
-use App\Entity\RecipeIngredient;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
+use App\Entity\RecipeIngredient;
+use App\Entity\User;
+use App\Entity\UserRecipeFavourites;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
+use Exception;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\PropertyInfo\Type;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Security\Core\Security as CoreSecurity;
+use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+
 
 final class RecipeFilter extends AbstractContextAwareFilter
 {
@@ -28,13 +33,24 @@ final class RecipeFilter extends AbstractContextAwareFilter
     const INGREDIENT_ALIAS = "i";
     const TAG_ALIAS = "t";
 
+    const FAVOURITE_RECIPE_ALIAS = "f";
+
+    private $security;
+
+    public function __construct(CoreSecurity $security, ManagerRegistry $managerRegistry, ?RequestStack $requestStack = null, LoggerInterface $logger = null, array $properties = null, NameConverterInterface $nameConverter = null)
+    {
+        parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
+        $this->security = $security;
+    }
+
     protected function filterProperty(
-        string $property, 
-        $value, 
-        QueryBuilder $queryBuilder, 
-        QueryNameGeneratorInterface $queryNameGenerator, 
-        string $resourceClass, 
-        string $operationName = null)
+        string $property,
+        $value,
+        QueryBuilder $queryBuilder,
+        QueryNameGeneratorInterface $queryNameGenerator,
+        string $resourceClass,
+        string $operationName = null
+    )
     {
         if ($value == "") {
             return;
@@ -42,14 +58,11 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
         if ($property == self::INGREDIENTS_FILTER_PROPERTY) {
             $this->addIngredientFilter($value, $queryBuilder);
-        }
-        else if ($property == self::TAGS_FILTER_PROPERTY) {
+        } else if ($property == self::TAGS_FILTER_PROPERTY) {
             $this->addTagFilter($value, $queryBuilder);
-        }
-        else if ($property == self::SEASONAL_FILTER_PROPERTY) {
+        } else if ($property == self::SEASONAL_FILTER_PROPERTY) {
             $this->addSeasonalFilter($value, $queryBuilder);
-        }
-        else if ($property == self::MARKED_FILTER_PROPERTY) {
+        } else if ($property == self::MARKED_FILTER_PROPERTY) {
             $this->addMarkedFilter($value, $queryBuilder);
         }
     }
@@ -63,8 +76,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
     private function joinRecipeIngredients(QueryBuilder $queryBuilder)
     {
         $aliases = $queryBuilder->getAllAliases();
-        if(!in_array(self::RECIPE_INGREDIENT_ALIAS, $aliases))
-        {
+        if (!in_array(self::RECIPE_INGREDIENT_ALIAS, $aliases)) {
             $recipeAlias = $this->getRecipeAlias($queryBuilder);
             $queryBuilder
                 ->leftJoin(
@@ -87,23 +99,40 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     private function addMarkedFilter(string $value, QueryBuilder $queryBuilder)
     {
-        if($value == "true") {
-            $recipeAlias = $this->getRecipeAlias($queryBuilder);
-            $queryBuilder->andWhere(sprintf("%s.marked = %d", $recipeAlias, '1'));
+        if ($value != "true") {
+            return;
         }
+
+        $user = $this->security->getUser();
+        // nothing to do if user is not logged in
+        if ($user == null || !($user instanceof User)) {
+            return;
+        }
+
+        $recipeAlias = $this->getRecipeAlias($queryBuilder);
+        $userId = $user->getId();
+
+        $condition = sprintf("%s.recipeId = %s.recipe AND %s.user = %s", $recipeAlias, self::FAVOURITE_RECIPE_ALIAS, self::FAVOURITE_RECIPE_ALIAS, $userId);
+        $queryBuilder->innerJoin(
+            UserRecipeFavourites::class, 
+            self::FAVOURITE_RECIPE_ALIAS,
+            JOIN::WITH,
+            $condition
+        );
     }
 
     private function addSeasonalFilter(string $value, QueryBuilder $queryBuilder)
     {
-        if($value == "true") {
+        if ($value == "true") {
             $aliases = $queryBuilder->getAllAliases();
 
-            if(!in_array(self::INGREDIENT_ALIAS, $aliases))
-            {
-                $condition = str_replace("[alias]", self::INGREDIENT_ALIAS,
-                    "([alias].seasonStart < [alias].seasonEnd AND :currentMonth >= [alias].seasonStart AND :currentMonth <= [alias].seasonEnd) OR ([alias].seasonStart > [alias].seasonEnd AND (:currentMonth >= [alias].seasonStart OR :currentMonth <= [alias].seasonEnd))");
+            if (!in_array(self::INGREDIENT_ALIAS, $aliases)) {
+                $condition = str_replace(
+                    "[alias]", self::INGREDIENT_ALIAS,
+                    "([alias].seasonStart < [alias].seasonEnd AND :currentMonth >= [alias].seasonStart AND :currentMonth <= [alias].seasonEnd) OR ([alias].seasonStart > [alias].seasonEnd AND (:currentMonth >= [alias].seasonStart OR :currentMonth <= [alias].seasonEnd))"
+                );
                 $this->joinRecipeIngredients($queryBuilder);
-                
+
                 // FIXME: this is the worst query in the world. The where is specified twice and I have no idea why this is necessary
                 // using a plain query builder without the filter mechanism this works with a single where, omitting the join condition
                 $queryBuilder
@@ -113,7 +142,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
                         Join::WITH,
                         sprintf("%s.ingredient = %s AND (%s)", self::RECIPE_INGREDIENT_ALIAS, self::INGREDIENT_ALIAS, $condition)
                     );
-                    
+
                 $currentMonth = (int) date('n');
                 $queryBuilder->setParameter("currentMonth", $currentMonth);
                 $queryBuilder->andWhere($condition);

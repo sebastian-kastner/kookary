@@ -110,7 +110,7 @@ export default class App extends Vue {
 @import "../main.scss";
 
 body {
-  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 #app, .vm--modal {
