@@ -1,28 +1,20 @@
 <template>
   <div id="recipe-view" class="container main-content">
     <div id="top-icons" class="row justify-content-end">
-      <div>
-        <router-link
-          :to="{
-            path: '/recipe-editor',
-            query: { recipeId: recipe.recipeId },
-          }"
-          custom
-          v-slot="{ navigate }"
-        >
+      <div v-if="isEditable">
+        <router-link :to="{
+          path: '/recipe-editor',
+          query: { recipeId: recipe.recipeId },
+        }" custom v-slot="{ navigate }">
           <button @click="navigate" role="link" class="rounded-button">
             <b-icon-pencil />
           </button>
         </router-link>
       </div>
 
-      <button
-        v-if="loggedInUserId"
-        :disabled="favouriteId === null"
-        class="rounded-button"
-        :class="{ 'active' : isMarked }"
-        v-on:click="toggleMarked">
-        <b-icon-bell-fill v-if="isMarked"/>
+      <button v-if="loggedInUserId" :disabled="favouriteId === null" class="rounded-button"
+        :class="{ 'active': isMarked }" v-on:click="toggleMarked">
+        <b-icon-bell-fill v-if="isMarked" />
         <b-icon-bell v-else />
       </button>
 
@@ -34,12 +26,8 @@
 
     <div id="recipe-description">
       <div class="tags row">
-        <div
-          v-for="item in recipe.tags"
-          class="inline-item-list-element"
-          v-bind:key="item.uuid"
-        >
-          <router-link :to="{ path: '/recipes', query: { tags: item.tagId } }" >
+        <div v-for="item in recipe.tags" class="inline-item-list-element" v-bind:key="item.uuid">
+          <router-link :to="{ path: '/recipes', query: { tags: item.tagId } }">
             {{ item.name }}
           </router-link>
         </div>
@@ -55,13 +43,9 @@
 
       <div class="row">
         <ul>
-          <li
-            v-for="ingredient in recipe.ingredients"
-            v-bind:key="ingredient.uuid"
-          >
+          <li v-for="ingredient in recipe.ingredients" v-bind:key="ingredient.uuid">
             {{ ingredient.quantity }} {{ ingredient.unit }}
-            <router-link :to="{ path: '/recipes', query: { ingredients: ingredient.ingredient.ingredientId } }"
-            >
+            <router-link :to="{ path: '/recipes', query: { ingredients: ingredient.ingredient.ingredientId } }">
               {{ ingredient.ingredient.name }}
             </router-link>
           </li>
@@ -90,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { Recipe, recipeFactory } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
@@ -125,29 +109,43 @@ export default class RecipeView extends Vue {
       this.recipeId = routeRecipeId.toString();
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
+        this.setRecipeFavouriteState();
       });
-
-      const recipeIdNr = parseInt(this.recipeId);
-
-      if (this.loggedInUserId && recipeIdNr) {
-        this.userRecipeFavouritesClient.getUserFavourite(this.loggedInUserId, recipeIdNr)
-          .then((favouriteId) => {
-            if(favouriteId === null) {
-              this.favouriteId = -1;
-            } else {
-              this.favouriteId = favouriteId;
-              this.isMarked = true;
-            }
-          })
-      }
     } else {
       console.error("No recipe ID given..");
     }
   }
 
+  @Watch("loggedInUserId")
+  setRecipeFavouriteState(): void {
+    const recipeId = this.recipe.recipeId;
+    if (recipeId && this.loggedInUserId) {
+      this.userRecipeFavouritesClient.getUserFavourite(this.loggedInUserId, recipeId)
+        .then((favouriteId) => {
+          if (favouriteId === null) {
+            this.favouriteId = -1;
+          } else {
+            this.favouriteId = favouriteId;
+            this.isMarked = true;
+          }
+        });
+    } else {
+      this.favouriteId = null;
+      this.isMarked = false;
+    }
+  }
+
+  get isEditable(): boolean {
+    const loggedInUserId = this.loggedInUserId;
+    if (loggedInUserId && loggedInUserId == this.recipe.authorId || userStore.userIsAdmin) {
+      return true;
+    }
+    return false;
+  }
+
   get loggedInUserId(): number | null {
     const user = userStore.user;
-    if(user && user.id) {
+    if (user && user.id) {
       return user.id;
     }
     return null;
@@ -192,13 +190,13 @@ export default class RecipeView extends Vue {
       return;
     }
 
-    const oldFavouriteId= this.favouriteId;
+    const oldFavouriteId = this.favouriteId;
 
     this.favouriteId = null;
     if (!oldFavouriteId || oldFavouriteId <= 0) {
       this.userRecipeFavouritesClient.createUserFavourite(this.loggedInUserId, this.recipe.recipeId)
         .then((favouriteId) => {
-          if(favouriteId) {
+          if (favouriteId) {
             this.favouriteId = favouriteId;
             this.isMarked = true;
           }
