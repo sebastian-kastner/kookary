@@ -14,7 +14,7 @@
     <div class="form-group">
       <label>Rezeptbild</label>
       <image-upload
-        :input-file="recipe.image"
+        :input-file="recipeImage"
         @imageSelected="onRecipeImageSelected"
         @imageRemoved="onRecipeImageRemoved"
       />
@@ -52,7 +52,7 @@
         class="form-control"
         id="exampleFormControlTextarea1"
         rows="10"
-        v-model="recipe.description"
+        v-model="recipeDescription"
       />
     </div>
     <button class="btn rounded-button" v-on:click="doSubmit">Submit</button>
@@ -67,6 +67,7 @@ import {
   Recipe,
   Tag,
   recipeFactory,
+  MediaObject
 } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore";
 import { RecipesClient } from "../clients/RecipesClient";
@@ -108,6 +109,20 @@ export default class RecipeEditorView extends Vue {
 
   get existingTags(): Tag[] {
     return tagStore.tags;
+  }
+
+  get recipeDescription(): string {
+    if (this.recipe.description) {
+      return this.recipe.description;
+    }
+    return "";
+  }
+
+  get recipeImage(): MediaObject | null {
+    if (this.recipe.images.length > 0) {
+      return this.recipe.images[0];
+    }
+    return null;
   }
 
   get hasValidName(): boolean {
