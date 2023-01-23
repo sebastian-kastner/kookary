@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Controller\CreateUserAction;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;

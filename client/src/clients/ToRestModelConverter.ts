@@ -3,10 +3,7 @@ import { Recipe, Tag, Ingredient, RecipeIngredient, User } from '../types'
 import { userStore } from '../stores/rootStore'
 import * as ep from './endpoints'
 
-export function toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
-  if (!id) {
-    return undefined;
-  }
+export function toIri(prefix: string, id: number | string): string {
   return prefix + "/" + id;
 }
 export class ToRestModelConverter {
@@ -24,7 +21,7 @@ export class ToRestModelConverter {
     if (apiTags) {
       apiTags.forEach((tag) => {
         if (tag.tagId) {
-          const apiId = toApiId(ep.TAGS_ENDPOINT, tag.tagId);
+          const apiId = this.toApiId(ep.TAGS_ENDPOINT, tag.tagId);
           if (apiId) {
             tags.push(apiId);
           }
@@ -48,11 +45,11 @@ export class ToRestModelConverter {
   public convertRecipeIngredient(viewModelIngredient: RecipeIngredient, recipeId?: string): RecipeIngredientJsonld {
     return {
       recipeIngredientId: viewModelIngredient.recipeIngredientId,
-      ingredient: toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
+      ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, viewModelIngredient.ingredient?.ingredientId),
       unit: viewModelIngredient.unit,
       quantity: viewModelIngredient.quantity,
       position: viewModelIngredient.position,
-      recipe: (recipeId) ? toApiId(ep.RECIPES_ENDPOINT, recipeId) : undefined
+      recipe: (recipeId) ? this.toApiId(ep.RECIPES_ENDPOINT, recipeId) : undefined
     }
   }
 
@@ -72,7 +69,7 @@ export class ToRestModelConverter {
   public convertRecipe(apiRecipe: Recipe): RecipeJsonld {
     const imageIds: string[] = [];
     apiRecipe.images.forEach((image) => {
-      const apiId = toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
+      const apiId = this.toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
       if (apiId) {
         imageIds.push(apiId);
       }
@@ -116,5 +113,12 @@ export class ToRestModelConverter {
     }
 
     return ep.USER_ENDPOINT + "/" + user.id;
+  }
+
+  private toApiId(prefix: string, id: number | string | null | undefined): string | undefined {
+    if (!id) {
+      return undefined;
+    }
+    return prefix + "/" + id;
   }
 }

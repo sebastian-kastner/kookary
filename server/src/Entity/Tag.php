@@ -10,7 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 /**
  * Tag
  * @ApiResource(
- *     attributes={"pagination_enabled"=false},      
+ *     attributes={"pagination_enabled"=false},
  *     collectionOperations={
  *         "get",
  *         "post"={"access_control"="is_granted('ROLE_USER')"}

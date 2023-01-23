@@ -109,6 +109,10 @@ export default class App extends Vue {
 <style lang="scss">
 @import "../main.scss";
 
+body {
+  overflow-y: hidden;
+}
+
 #app, .vm--modal {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

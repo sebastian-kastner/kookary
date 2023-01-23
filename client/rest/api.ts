@@ -19,4 +19,5 @@ export * from './api/media-object-api';
 export * from './api/recipe-api';
 export * from './api/tag-api';
 export * from './api/user-api';
+export * from './api/user-recipe-favourites-api';
 

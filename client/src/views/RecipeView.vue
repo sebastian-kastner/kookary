@@ -17,19 +17,15 @@
       </div>
 
       <button
-        v-if="!isMarked"
-        v-on:click="setIsMarked(true)"
+        v-if="loggedInUserId"
+        :disabled="favouriteId === null"
         class="rounded-button"
-      >
-        <b-icon-bell />
+        :class="{ 'active' : isMarked }"
+        v-on:click="toggleMarked">
+        <b-icon-bell-fill v-if="isMarked"/>
+        <b-icon-bell v-else />
       </button>
-      <button
-        v-if="isMarked"
-        v-on:click="setIsMarked(false)"
-        class="rounded-button active"
-      >
-        <b-icon-bell-fill />
-      </button>
+
     </div>
 
     <div class="recipe-image row" v-if="recipeImgSrc">
@@ -97,9 +93,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Recipe, recipeFactory } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
+import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
 import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
+import { userStore } from '../stores/rootStore'
 
 @Component({
   components: { BIconPencil, BIconBell, BIconBellFill },
@@ -109,6 +107,10 @@ export default class RecipeView extends Vue {
   recipe: Recipe = recipeFactory();
 
   recipesClient: RecipesClient = new RecipesClient();
+  userRecipeFavouritesClient: UserRecipeFavouritesClient = new UserRecipeFavouritesClient();
+
+  isMarked = false;
+  favouriteId: number | null = null;
 
   doValidate = false;
 
@@ -124,9 +126,31 @@ export default class RecipeView extends Vue {
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
       });
+
+      const recipeIdNr = parseInt(this.recipeId);
+
+      if (this.loggedInUserId && recipeIdNr) {
+        this.userRecipeFavouritesClient.getUserFavourite(this.loggedInUserId, recipeIdNr)
+          .then((favouriteId) => {
+            if(favouriteId === null) {
+              this.favouriteId = -1;
+            } else {
+              this.favouriteId = favouriteId;
+              this.isMarked = true;
+            }
+          })
+      }
     } else {
       console.error("No recipe ID given..");
     }
+  }
+
+  get loggedInUserId(): number | null {
+    const user = userStore.user;
+    if(user && user.id) {
+      return user.id;
+    }
+    return null;
   }
 
   get recipeImgSrc(): string | null {
@@ -163,19 +187,29 @@ export default class RecipeView extends Vue {
     return "";
   }
 
-  get isMarked(): boolean {
-    if (this.recipe.marked) {
-      return this.recipe.marked;
+  async toggleMarked(): Promise<void> {
+    if (!this.loggedInUserId || !this.recipe || !this.recipe.recipeId) {
+      return;
     }
-    return false;
-  }
 
-  setIsMarked(isMarked: boolean): void {
-    if (!this.recipe?.recipeId) {
-      throw new Error("Cannot set marked value, no recipeId set!");
+    const oldFavouriteId= this.favouriteId;
+
+    this.favouriteId = null;
+    if (!oldFavouriteId || oldFavouriteId <= 0) {
+      this.userRecipeFavouritesClient.createUserFavourite(this.loggedInUserId, this.recipe.recipeId)
+        .then((favouriteId) => {
+          if(favouriteId) {
+            this.favouriteId = favouriteId;
+            this.isMarked = true;
+          }
+        });
+    } else {
+      this.userRecipeFavouritesClient.deleteUserFavourite(oldFavouriteId)
+        .then(() => {
+          this.favouriteId = -1;
+          this.isMarked = false;
+        });
     }
-    this.recipe.marked = isMarked;
-    this.recipesClient.setMarked(this.recipe.recipeId, isMarked);
   }
 }
 </script>

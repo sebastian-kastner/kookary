@@ -2,12 +2,26 @@ import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, Medi
 import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User } from '../types'
 import { v4 as uuid } from 'uuid';
 
+export function toId(iri: string | null | undefined): number | undefined {
+  if (!iri) {
+    return undefined;
+  }
+  const stringId = iri.split("/").pop()?.toString();
+  if (stringId) {
+    const number = Number(stringId)
+    if (!isNaN(number)) {
+      return number;
+    }
+  }
+  return undefined;
+}
+
 export class ToViewModelConverter {
   public convertTag(apiTag: TagJsonld): Tag {
     return {
       tagId: apiTag.tagId,
       name: apiTag.name,
-      authorId: this.toId(apiTag.author),
+      authorId: toId(apiTag.author),
       uuid: uuid(),
     }
   }
@@ -18,7 +32,7 @@ export class ToViewModelConverter {
       apiTags.forEach((apiTag) => {
         tags.push({
           uuid: uuid(),
-          tagId: this.toId(apiTag)
+          tagId: toId(apiTag)
         });
       });
     }
@@ -29,7 +43,7 @@ export class ToViewModelConverter {
     return {
       ingredientId: apiIngredient.ingredientId,
       name: apiIngredient.name,
-      authorId: this.toId(apiIngredient.author),
+      authorId: toId(apiIngredient.author),
     }
   }
 
@@ -83,13 +97,13 @@ export class ToViewModelConverter {
       apiRecipe.images.forEach((image) => {
         if (image) {
           images.push({
-            mediaObjectId: this.toId(image)
+            mediaObjectId: toId(image)
           });
         }
       });
     }
 
-    const authorId = this.toId(apiRecipe.author);
+    const authorId = toId(apiRecipe.author);
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
@@ -112,9 +126,9 @@ export class ToViewModelConverter {
       url = process.env.VUE_APP_ROOT_API + apiMediaObject.contentUrl;
     }
     return {
-      mediaObjectId: this.toId(apiMediaObject['@id']),
+      mediaObjectId: toId(apiMediaObject['@id']),
       url: url,
-      authorId: this.toId(apiMediaObject.author),
+      authorId: toId(apiMediaObject.author),
     }
   }
 
@@ -156,21 +170,6 @@ export class ToViewModelConverter {
       users.push(this.convertUser(apiUsers[key]));
     }
     return users;
-  }
-
-
-  private toId(iri: string | null | undefined): number | undefined {
-    if (!iri) {
-      return undefined;
-    }
-    const stringId = iri.split("/").pop()?.toString();
-    if (stringId) {
-      const number = Number(stringId)
-      if (!isNaN(number)) {
-        return number;
-      }
-    }
-    return undefined;
   }
 
   private getStringOrNull(value: string | null | undefined): string | null {
