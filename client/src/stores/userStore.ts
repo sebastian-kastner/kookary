@@ -58,6 +58,7 @@ export class UserStore extends VuexModule {
           if (user === null) {
 
             this.SET_TOKEN(null);
+            this.user = null;
             localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
 
             console.log("Invalid token in local storage. Logged out user.");
@@ -69,6 +70,7 @@ export class UserStore extends VuexModule {
         .catch(() => {
           this.SET_TOKEN(null);
           localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+          this.user = null;
 
           console.log("Invalid token in local storage. Logged out user.");
           resolve()

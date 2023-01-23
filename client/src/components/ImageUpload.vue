@@ -90,7 +90,6 @@ export default class ImageUpload extends Vue {
       if (this.$refs.filePreview) {
         const img = this.$refs.filePreview;
         if (img instanceof Image) {
-          console.log(img.width / img.height);
           if (img.width / img.height < 1.3) {
             this.badDimensions = true;
           } else {
