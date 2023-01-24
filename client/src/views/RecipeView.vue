@@ -1,9 +1,13 @@
 <template>
   <div id="recipe-view" class="container main-content">
     <div id="top-icons" class="row justify-content-end">
+      <button v-if="isEditable" class="rounded-button" v-on:click="deleteRecipe">
+        <b-icon-trash />
+      </button>
+
       <div v-if="isEditable">
         <router-link :to="{
-          path: '/recipe-editor',
+          path: '/user/recipe-editor',
           query: { recipeId: recipe.recipeId },
         }" custom v-slot="{ navigate }">
           <button @click="navigate" role="link" class="rounded-button">
@@ -207,6 +211,15 @@ export default class RecipeView extends Vue {
           this.favouriteId = -1;
           this.isMarked = false;
         });
+    }
+  }
+
+  deleteRecipe(): void {
+    if (this.recipe.recipeId) {
+      this.recipesClient.deleteRecipe(this.recipe.recipeId)
+        .then(() => {
+          this.$router.push("/recipes");
+        })
     }
   }
 }

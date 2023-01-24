@@ -18,7 +18,7 @@ const routes: Array<RouteConfig> = [
   // general routes
   { path: '/', name: 'home', component: HomeView },
   { path: '/recipe', name: 'recipe', component: RecipeView },
-  { path: '/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },
+  { path: '/user/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },
   { path: '/ingredients', name: 'ingredients', component: IngredientsView },
   { path: '/recipes', name: 'recipes', component: RecipeOverview },
   // user routes

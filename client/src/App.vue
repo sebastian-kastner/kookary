@@ -98,7 +98,7 @@ export default class App extends Vue {
       items.push({
         icon: BIconPlusCircle,
         name: "Neues Rezept",
-        to: "/recipe-editor",
+        to: "/user/recipe-editor",
       });
     }
     return items;
