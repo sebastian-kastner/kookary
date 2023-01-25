@@ -8,7 +8,6 @@ use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use Doctrine\ORM\EntityManagerInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
-use Exception;
 
 final class RecipePersister implements ContextAwareDataPersisterInterface
 {
