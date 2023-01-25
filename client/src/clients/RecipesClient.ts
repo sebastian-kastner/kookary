@@ -129,6 +129,17 @@ export class RecipesClient {
       return this.saveInternal(this.client.postRecipeCollection(restRecipe));
     }
 
+    public async deleteRecipe(recipeId: number): Promise<void> {
+      return new Promise<void>((resolve, reject) => {
+        this.client.deleteRecipeItem(recipeId.toString())
+          .then(() => resolve())
+          .catch((e) => {
+            logAxiosError(e);
+            reject(e);
+          });
+      })
+    }
+
     // eslint-disable-next-line
     private async saveInternal(savePromise: Promise<AxiosResponse<RecipeJsonld, any>>) {
       return new Promise<Recipe>((resolve, reject) => {

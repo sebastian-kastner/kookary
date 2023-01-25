@@ -112,7 +112,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection|MediaObject[]
      *
-     * @ORM\ManyToMany(targetEntity="MediaObject")
+     * @ORM\ManyToMany(targetEntity="MediaObject", cascade={"remove"}))
      * @ORM\JoinTable(
      *  name="image_to_recipe",
      *  joinColumns={

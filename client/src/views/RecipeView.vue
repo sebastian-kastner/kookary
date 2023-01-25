@@ -215,12 +215,30 @@ export default class RecipeView extends Vue {
   }
 
   deleteRecipe(): void {
-    if (this.recipe.recipeId) {
-      this.recipesClient.deleteRecipe(this.recipe.recipeId)
-        .then(() => {
-          this.$router.push("/recipes");
-        })
-    }
+    this.$modal.show('dialog', {
+      title: "Rezept löschen",
+      text: "Soll das Rezept " + this.recipe.name + " wirklich gelöscht werden?",
+      buttons: [
+        {
+          title: 'Abbrechen',
+          handler: () => {
+            this.$modal.hide('dialog')
+          }
+        },
+        {
+          title: 'Löschen',
+          handler: () => {
+            if (this.recipe.recipeId) {
+              this.recipesClient.deleteRecipe(this.recipe.recipeId)
+                .then(() => {
+                  this.$router.push("/recipes");
+                })
+            }
+            this.$modal.hide('dialog');
+          }
+        }
+      ]
+    });
   }
 }
 </script>

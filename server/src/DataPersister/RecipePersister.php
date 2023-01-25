@@ -7,13 +7,19 @@ use Doctrine\ORM\PersistentCollection;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use Doctrine\ORM\EntityManagerInterface;
+use Vich\UploaderBundle\Handler\UploadHandler;
+use Exception;
 
 final class RecipePersister implements ContextAwareDataPersisterInterface
 {
     private $entityManager;
-    public function __construct(EntityManagerInterface $entityManager)
+
+    private $uploadHandler;
+
+    public function __construct(EntityManagerInterface $entityManager, UploadHandler $uploadHandler)
     {
         $this->entityManager = $entityManager;
+        $this->uploadHandler = $uploadHandler;
     }
 
     public function supports($data, array $context = []): bool
@@ -44,7 +50,15 @@ final class RecipePersister implements ContextAwareDataPersisterInterface
 
     public function remove($data, array $context = [])
     {
-        $this->entityManager->remove($data);
+        if ($data instanceof Recipe) {
+            $recipe = $data;
+            foreach($recipe->getImages() as $image) {
+                $this->uploadHandler->remove($image, "file");
+            }
+            
+            $this->entityManager->remove($data);
+            $this->entityManager->flush();
+        }
     }
 }
 
