@@ -48,16 +48,16 @@ final class RecipePersister implements ContextAwareDataPersisterInterface
         $this->entityManager->flush();
     }
 
-    public function remove($data, array $context = [])
+    public function remove($recipe, array $context = [])
     {
-        if ($data instanceof Recipe) {
-            $recipe = $data;
-            foreach($recipe->getImages() as $image) {
+        if ($recipe instanceof Recipe) {
+            $images = $recipe->getImages();
+            $this->entityManager->remove($recipe);
+            $this->entityManager->flush();
+
+            foreach($images as $image) {
                 $this->uploadHandler->remove($image, "file");
             }
-            
-            $this->entityManager->remove($data);
-            $this->entityManager->flush();
         }
     }
 }
