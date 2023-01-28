@@ -35,7 +35,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * )
  * 
  * @ORM\Table(name="recipe", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
- * @ORM\Entity
+ * @ORM\Entity()
  * 
  * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})

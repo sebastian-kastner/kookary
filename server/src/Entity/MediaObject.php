@@ -15,7 +15,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * MediaObject
  * 
- * @ORM\Entity
+ * @ORM\Entity()
  * 
  * @ApiResource(
  *     iri="http://schema.org/MediaObject",

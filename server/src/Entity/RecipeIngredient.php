@@ -9,7 +9,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * RecipeIngredient
  *
  * @ORM\Table(name="recipe_ingredient", indexes={@ORM\Index(name="FK_ingredient_recipe_ingredient", columns={"ingredient_id"}), @ORM\Index(name="FK_recipe_recipe_ingredient", columns={"recipe_id"})})
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class RecipeIngredient
 {

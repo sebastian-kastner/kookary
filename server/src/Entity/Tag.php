@@ -24,7 +24,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
  * )
  * 
  * @ORM\Table(name="tag", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
- * @ORM\Entity
+ * @ORM\Entity()
  */
 class Tag
 {

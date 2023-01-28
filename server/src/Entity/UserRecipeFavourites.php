@@ -14,7 +14,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * UserRecipeFavourites
  *
  * @ORM\Table(name="user_recipe_favourites", indexes={@ORM\Index(name="user_recipe_favourites_FK_1", columns={"recipe_id"}), @ORM\Index(name="user_recipe_favourites_FK", columns={"user_id"})})
- * @ORM\Entity
+ * @ORM\Entity()
  * 
  * @ApiResource(
  *     attributes={"pagination_enabled"=false},
@@ -52,8 +52,6 @@ class UserRecipeFavourites
     public $user;
 
     /**
-     * @var Recipe
-     *
      * @ORM\ManyToOne(targetEntity="Recipe")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
