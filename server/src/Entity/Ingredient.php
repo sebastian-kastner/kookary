@@ -13,21 +13,21 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @ORM\Table(name="ingredient")
  * @ORM\Entity()
- * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
- * @ApiResource(
- *     attributes={"pagination_enabled"=false},      
- *     collectionOperations={
- *         "get",
- *         "post"={"access_control"="is_granted('ROLE_USER')"}
- *     },
- *     itemOperations={
- *         "get",
- *         "put"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *         "patch"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *         "delete"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *     }
- * )
  */
+#[ApiResource(
+    attributes: [ "pagination_enabled" => false ],
+    collectionOperations: [
+        "get",
+        "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+    itemOperations: [
+        "get",
+        "put" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 class Ingredient
 {
     /**

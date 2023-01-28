@@ -9,24 +9,23 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     attributes={"pagination_enabled"=false},
- *     normalizationContext={"groups"={"read"}},
- *     denormalizationContext={"groups"={"write"}},
- *     collectionOperations={
- *         "get",
- *         "post"={"access_control"="is_granted('ROLE_ADMIN')"},
- *     },
- *     itemOperations={
- *         "get",
- *         "put"={"access_control"="is_granted('ROLE_ADMIN')"},
- *         "patch"={"access_control"="is_granted('ROLE_ADMIN')"},
- *         "delete"={"access_control"="is_granted('ROLE_ADMIN')"},
- *     }
- * )
- * 
  * @ORM\Entity()
  */
+#[ApiResource(
+    attributes: [ "pagination_enabled" => false ],
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+    collectionOperations: [
+        "get",
+        "post" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ],
+    itemOperations: [
+        "get",
+        "put" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN')"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN')"],
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";

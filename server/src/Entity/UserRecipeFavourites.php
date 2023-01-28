@@ -15,21 +15,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *
  * @ORM\Table(name="user_recipe_favourites", indexes={@ORM\Index(name="user_recipe_favourites_FK_1", columns={"recipe_id"}), @ORM\Index(name="user_recipe_favourites_FK", columns={"user_id"})})
  * @ORM\Entity()
- * 
- * @ApiResource(
- *     attributes={"pagination_enabled"=false},
- *     collectionOperations={
- *         "get"={"access_control"="is_granted('ROLE_USER')"},
- *         "post"={"access_control"="is_granted('ROLE_USER')"},
- *     },
- *     itemOperations={
- *         "get"={"access_control"="is_granted('ROLE_USER')"},
- *         "delete"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.user == user"},
- *     })
- * )
- * 
- * @ApiFilter(SearchFilter::class, properties={"user": "exact", "recipe": "exact"})
  */
+#[ApiResource(
+    attributes: [ "pagination_enabled" => false ],
+    collectionOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER')"],
+        "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+    itemOperations: [
+        "get" => ["security" => "is_granted('ROLE_USER')"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.user == user"],
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['user' => 'exact', 'recipe' => 'exact'])]
 class UserRecipeFavourites
 {
     /**

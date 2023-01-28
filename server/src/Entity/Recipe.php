@@ -5,42 +5,45 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
 use App\Filter\RecipeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 
 /**
  * Recipe
- *
-  * @ApiResource(
- *     collectionOperations={
- *         "get",
- *         "post"={"access_control"="is_granted('ROLE_USER')"}
- *     },
- *     itemOperations={
- *         "get",
- *         "put"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *         "patch"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *         "delete"={"access_control"="is_granted('ROLE_ADMIN') or previous_object.author == user"},
- *     }
- * )
- * 
  * @ORM\Table(name="recipe", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
  * @ORM\Entity()
- * 
- * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
- * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
  */
-#[ApiResource(attributes: ["pagination_items_per_page" => 24])]
+
+// FIXME: leaving annotation mappins for doctrine for now. changing this needs to be done for all entities
+// https://stackoverflow.com/questions/66769981/how-can-i-use-php8-attributes-instead-of-annotations-in-doctrine
+#[ApiResource(
+    attributes: [
+        "pagination_enabled" => true,
+        "pagination_items_per_page" => 24,
+
+    ],
+    collectionOperations: [
+        "get",
+        "post" => ["security" => "is_granted('ROLE_USER')"],
+    ],
+    itemOperations: [
+        "get",
+        "put" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
+        "patch" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
+        "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
+    ]
+)]
+#[ApiFilter(RecipeFilter::class)]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
+
 class Recipe
 {
     /**
@@ -50,6 +53,7 @@ class Recipe
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ApiProperty(identifier: true)]
     private $recipeId;
 
     /**
