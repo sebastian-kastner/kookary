@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * Tag
- * 
- * @ORM\Table(name="tag", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
- * @ORM\Entity()
  */
+#[ORM\Entity]
+#[ORM\Table(name: "tag")]
+#[UniqueConstraint(name: "name", columns: ["name"])]
 #[ApiResource(
     attributes: [ "pagination_enabled" => false ],
     collectionOperations: [
@@ -28,25 +30,24 @@ class Tag
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="tag_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "tag_id", type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ApiProperty(identifier: true)]
     private $tagId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
      */
+    #[ORM\Column(name: "name", type: "string", length: 100, nullable: false)]
     private $name;
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: "User")]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
     public $author;
 
     public function __construct()

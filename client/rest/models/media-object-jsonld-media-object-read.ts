@@ -22,6 +22,12 @@
 export interface MediaObjectJsonldMediaObjectRead {
     /**
      * 
+     * @type {string | any}
+     * @memberof MediaObjectJsonldMediaObjectRead
+     */
+    '@context'?: string | any;
+    /**
+     * 
      * @type {string}
      * @memberof MediaObjectJsonldMediaObjectRead
      */
@@ -34,16 +40,16 @@ export interface MediaObjectJsonldMediaObjectRead {
     '@type'?: string;
     /**
      * 
-     * @type {string | any}
+     * @type {string}
      * @memberof MediaObjectJsonldMediaObjectRead
      */
-    '@context'?: string | any;
+    'contentUrl'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof MediaObjectJsonldMediaObjectRead
      */
-    'contentUrl'?: string | null;
+    'fileName'?: string | null;
     /**
      * 
      * @type {string}

@@ -6,14 +6,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Ingredient
- *
- * @ORM\Table(name="ingredient")
- * @ORM\Entity()
  */
+#[ORM\Entity]
+#[ORM\Table(name: "ingredient")]
 #[ApiResource(
     attributes: [ "pagination_enabled" => false ],
     collectionOperations: [
@@ -32,39 +32,36 @@ class Ingredient
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="ingredient_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "ingredient_id", type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ApiProperty(identifier: true)]
     private $ingredientId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
+    #[ORM\Column(name: "name", type: "string", length: 50, nullable: false)]
     private $name;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="season_start", type="integer", nullable=true)
      */
+    #[ORM\Column(name: "season_start", type: "integer", nullable: true)]
     private $seasonStart;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="season_end", type="integer", nullable=true)
      */
+    #[ORM\Column(name: "season_end", type: "integer", nullable: true)]
     private $seasonEnd;
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: "User")]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
     public $author;
 
     public function getIngredientId(): ?int

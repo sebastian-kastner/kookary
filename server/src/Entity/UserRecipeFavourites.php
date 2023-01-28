@@ -4,18 +4,18 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
-
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
-// FIXME: setting individual operations here somehow randomly breaks the endpoint..
-
 /**
  * UserRecipeFavourites
- *
- * @ORM\Table(name="user_recipe_favourites", indexes={@ORM\Index(name="user_recipe_favourites_FK_1", columns={"recipe_id"}), @ORM\Index(name="user_recipe_favourites_FK", columns={"user_id"})})
- * @ORM\Entity()
  */
+#[ORM\Entity]
+#[ORM\Table(name: "user_recipe_favourites")]
+#[ORM\Index(name: "user_recipe_favourites_FK_1", columns: ["recipe_id"])]
+#[ORM\Index(name: "user_recipe_favourites_FK", columns: ["user_id"])]
+
 #[ApiResource(
     attributes: [ "pagination_enabled" => false ],
     collectionOperations: [
@@ -32,29 +32,22 @@ class UserRecipeFavourites
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="user_recipe_favourite_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "user_recipe_favourite_id", type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ApiProperty(identifier: true)]
     private $userRecipeFavouriteId;
 
     /**
      * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "User")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     public $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Recipe")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "Recipe")]
+    #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
     private $recipe;
 
     public function getUserRecipeFavouriteId(): ?int
@@ -85,6 +78,4 @@ class UserRecipeFavourites
 
         return $this;
     }
-
-
 }

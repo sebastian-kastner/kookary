@@ -15,7 +15,7 @@
 
 
 /**
- * 
+ * User
  * @export
  * @interface UserJsonldWrite
  */

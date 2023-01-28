@@ -4,13 +4,15 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity()
+ * User
  */
+#[ORM\Entity]
 #[ApiResource(
     attributes: [ "pagination_enabled" => false ],
     normalizationContext: ['groups' => ['read']],
@@ -31,37 +33,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_USER = "ROLE_USER";
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @Groups({"read", "write"})
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[Groups(['read', 'write'])]
+    #[ApiProperty(identifier: true)]
     private $id;
 
-    /**
-     * @Groups({"read", "write"})
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[Groups(['read', 'write'])]
     private $email;
 
-    /**
-     * @Groups({"read", "write"})
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[Groups(['read', 'write'])]
     private $displayname;
 
-    /**
-     * @Groups({"read", "write"})
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: "json")]
+    #[Groups(['read', 'write'])]
     private $roles = [];
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
-     * @Groups({"write"})
      */
+    #[ORM\Column(type: "string")]
+    #[Groups(['write'])]
     private $password;
 
     public function getId(): ?int

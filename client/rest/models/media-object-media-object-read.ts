@@ -31,6 +31,12 @@ export interface MediaObjectMediaObjectRead {
      * @type {string}
      * @memberof MediaObjectMediaObjectRead
      */
+    'fileName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MediaObjectMediaObjectRead
+     */
     'author'?: string;
 }
 

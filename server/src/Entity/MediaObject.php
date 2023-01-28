@@ -19,10 +19,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * MediaObject
  * 
- * @ORM\Entity()
- * 
  * @Vich\Uploadable
  */
+#[ORM\Entity]
 #[ApiResource(
     iri: 'https://schema.org/MediaObject',
     normalizationContext: ['groups' => ['media_object:read']],
@@ -69,18 +68,17 @@ class MediaObject
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="media_object_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "media_object_id", type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ApiProperty(identifier: true)]
     protected $mediaObjectId;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="file_path", type="string", length=300, nullable=true)
      */
+    #[ORM\Column(name: "file_path", type: "string", length: 300, nullable: true)]
     public $filePath;
 
     /**
@@ -106,9 +104,9 @@ class MediaObject
 
     /**
      * @var integer
-     * @ORM\Column(name="author_id")
-     * @Groups({"media_object_read"})
      */
+    #[ORM\Column(name: "author_id")]
+    #[Groups(['media_object:read'])]
     public $author;
 
     public function getMediaObjectId(): ?int

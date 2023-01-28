@@ -5,9 +5,8 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
@@ -18,17 +17,14 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Recipe
- * @ORM\Table(name="recipe", uniqueConstraints={@ORM\UniqueConstraint(name="name", columns={"name"})})
- * @ORM\Entity()
  */
-
-// FIXME: leaving annotation mappins for doctrine for now. changing this needs to be done for all entities
-// https://stackoverflow.com/questions/66769981/how-can-i-use-php8-attributes-instead-of-annotations-in-doctrine
+#[ORM\Entity]
+#[ORM\Table(name: "recipe")]
+#[UniqueConstraint(name: "name", columns: ["name"])]
 #[ApiResource(
     attributes: [
         "pagination_enabled" => true,
         "pagination_items_per_page" => 24,
-
     ],
     collectionOperations: [
         "get",
@@ -41,100 +37,79 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
         "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
     ]
 )]
-#[ApiFilter(RecipeFilter::class)]
+#[ApiFilter(RecipeFilter::class, properties: ['ingredients' => 'ingredients'])]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 
 class Recipe
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="recipe_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "recipe_id", type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     #[ApiProperty(identifier: true)]
     private $recipeId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
      */
+    #[ORM\Column(name: "name", type: "string", length: 100, nullable: false)]
     private $name;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=true)
      */
+    #[ORM\Column(name: "description", type: "text", length: 65535, nullable: true)]
     private $description;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="servings", type="integer", nullable=true)
      */
+    #[ORM\Column(name: "servings", type: "integer", nullable: true)]
     private $servings;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="source", type="string", length=250, nullable=true)
      */
+    #[ORM\Column(name: "source", type: "string", length: 250, nullable: true)]
     private $source;
 
     /**
      * @var \DateTime|null
-     *
-     * @ORM\Column(name="date_added", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "date_added", type: "datetime", nullable: true)]
     private $dateAdded;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|Tag[]
-     *
-     * @ORM\ManyToMany(targetEntity="Tag")
-     * @ORM\JoinTable(
-     *  name="tag_to_recipe",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     *  },
-     *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="tag_id", referencedColumnName="tag_id")
-     *  }
-     * )
      */
+    #[ORM\ManyToMany(targetEntity: "Tag")]
+    #[ORM\JoinTable(name: "tag_to_recipe")]
+    #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
+    #[ORM\InverseJoinColumn(name: "tag_id", referencedColumnName: "tag_id")]
     private $tags;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|\App\Entity\RecipeIngredient[]
-     *
-     * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe", cascade={"all"})
      */
+    #[ORM\OneToMany(targetEntity: "RecipeIngredient", mappedBy: "recipe", cascade: ["all"])]
     private $ingredients;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|MediaObject[]
-     *
-     * @ORM\ManyToMany(targetEntity="MediaObject", cascade={"remove"}))
-     * @ORM\JoinTable(
-     *  name="image_to_recipe",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     *  },
-     *  inverseJoinColumns={
-     *      @ORM\JoinColumn(name="media_object_id", referencedColumnName="media_object_id")
-     *  }
-     * )
      */
+    #[ORM\ManyToMany(targetEntity: "MediaObject", cascade: ["remove"])]
+    #[ORM\JoinTable(name: "image_to_recipe")]
+    #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
+    #[ORM\InverseJoinColumn(name: "media_object_id", referencedColumnName: "media_object_id")]
     public $images;
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
+    #[ORM\ManyToOne(targetEntity: "User")]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
     public $author;
 
     public function __construct()

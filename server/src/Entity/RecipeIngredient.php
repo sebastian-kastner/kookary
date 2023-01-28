@@ -3,63 +3,56 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiProperty;
 
 /**
  * RecipeIngredient
- *
- * @ORM\Table(name="recipe_ingredient", indexes={@ORM\Index(name="FK_ingredient_recipe_ingredient", columns={"ingredient_id"}), @ORM\Index(name="FK_recipe_recipe_ingredient", columns={"recipe_id"})})
- * @ORM\Entity()
  */
+#[ORM\Entity]
+#[ORM\Table(name: "recipe_ingredient")]
+#[ORM\Index(name: "FK_ingredient_recipe_ingredient", columns: ["ingredient_id"])]
+#[ORM\Index(name: "FK_recipe_recipe_ingredient", columns: ["recipe_id"])]
 class RecipeIngredient
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="recipe_ingredient_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(name: "recipe_ingredient_id", type: "integer", nullable: false)]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ApiProperty(identifier: true)]
     private $recipeIngredientId;
 
     /**
      * @var int|null
-     *
-     * @ORM\Column(name="position", type="integer", nullable=true)
      */
+    #[ORM\Column(name: "position", type: "integer", nullable: true)]
     private $position;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="quantity", type="string", length=10, nullable=true)
      */
+    #[ORM\Column(name: "quantity", type: "string", length: 10, nullable: true)]
     private $quantity;
 
     /**
      * @var string|null
-     *
-     * @ORM\Column(name="unit", type="string", length=10, nullable=true)
      */
+    #[ORM\Column(name: "unit", type: "string", length: 10, nullable: true)]
     private $unit;
 
     /**
      * @var \App\Entity\Ingredient
-     *
-     * @ORM\ManyToOne(targetEntity="Ingredient")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="ingredient_id", referencedColumnName="ingredient_id")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "Ingredient")]
+    #[ORM\JoinColumn(name: "ingredient_id", referencedColumnName: "ingredient_id")]
     private $ingredient;
 
     /**
      * @var \App\Entity\Recipe
-     *
-     * @ORM\ManyToOne(targetEntity="Recipe", inversedBy="ingredients"))
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="recipe_id")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "Recipe", inversedBy: "ingredients")]
+    #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
     private $recipe;
 
     public function getRecipeIngredientId(): ?int
