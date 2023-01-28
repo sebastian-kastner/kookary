@@ -27,10 +27,12 @@ import RecipeCardList from "../components/cards/RecipeCardList.vue";
 export default class HomeView extends Vue {
   seasonalRecipeFilter: RecipeFilter = {
     isSeasonal: true,
+    limit: 3,
   };
 
   markedRecipeFilter: RecipeFilter = {
     marked: true,
+    limit: 3,
   }
 }
 </script>

@@ -28,6 +28,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const MARKED_FILTER_PROPERTY = "marked";
 
+    const LIMIT_PROPERTY = "limit";
+
     // for some reason doctrine autogenerates the "_a2" suffix that we need to add here to make things work
     const RECIPE_INGREDIENT_ALIAS = "ri_a2";
     const INGREDIENT_ALIAS = "i";
@@ -64,6 +66,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $this->addSeasonalFilter($value, $queryBuilder);
         } else if ($property == self::MARKED_FILTER_PROPERTY) {
             $this->addMarkedFilter($value, $queryBuilder);
+        } else if ($property == self::LIMIT_PROPERTY) {
+            $queryBuilder->setMaxResults($value);
         }
     }
 
@@ -190,6 +194,12 @@ final class RecipeFilter extends AbstractContextAwareFilter
                 self::MARKED_FILTER_PROPERTY,
                 'Filter for marked recipes',
                 Type::BUILTIN_TYPE_BOOL,
+                $property,
+            );
+            $description[self::LIMIT_PROPERTY] = $this->createDescription(
+                self::LIMIT_PROPERTY,
+                'Limit number of returned recipes',
+                Type::BUILTIN_TYPE_INT,
                 $property,
             );
         }
