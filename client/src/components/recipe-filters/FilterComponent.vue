@@ -84,7 +84,7 @@ export default class FilterComponent extends Vue {
   }
 
   applyFilter(): void {
-    this.$emit("applyFilter", this.recipeFilter);
+    this.$emit("applyFilter");
   }
 }
 </script>
@@ -105,6 +105,7 @@ $bottom-border: 3px;
     background-color: $highlight-color;
     padding-top: 15px;
     padding-bottom: 15px;
+    min-height: 80px;
   }
 
   .filter-icon {

@@ -40,6 +40,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
  * @ApiFilter(RecipeFilter::class, properties={"ingredients":"ingredients"})
  * @ApiFilter(SearchFilter::class, properties={"name": "partial"})
  */
+#[ApiResource(attributes: ["pagination_items_per_page" => 24])]
 class Recipe
 {
     /**

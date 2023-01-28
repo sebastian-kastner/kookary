@@ -77,11 +77,12 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
          * @param {string} [tags] 
          * @param {boolean} [seasonal] 
          * @param {boolean} [marked] 
+         * @param {number} [limit] 
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection: async (page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getRecipeCollection: async (page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/recipes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -115,6 +116,10 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
 
             if (marked !== undefined) {
                 localVarQueryParameter['marked'] = marked;
+            }
+
+            if (limit !== undefined) {
+                localVarQueryParameter['limit'] = limit;
             }
 
             if (name !== undefined) {
@@ -323,12 +328,13 @@ export const RecipeApiFp = function(configuration?: Configuration) {
          * @param {string} [tags] 
          * @param {boolean} [seasonal] 
          * @param {boolean} [marked] 
+         * @param {number} [limit] 
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, marked, name, options);
+        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, marked, limit, name, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -405,12 +411,13 @@ export const RecipeApiFactory = function (configuration?: Configuration, basePat
          * @param {string} [tags] 
          * @param {boolean} [seasonal] 
          * @param {boolean} [marked] 
+         * @param {number} [limit] 
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options?: any): AxiosPromise<InlineResponse2002> {
-            return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, marked, name, options).then((request) => request(axios, basePath));
+        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: any): AxiosPromise<InlineResponse2002> {
+            return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, marked, limit, name, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Recipe resource.
@@ -484,13 +491,14 @@ export class RecipeApi extends BaseAPI {
      * @param {string} [tags] 
      * @param {boolean} [seasonal] 
      * @param {boolean} [marked] 
+     * @param {number} [limit] 
      * @param {string} [name] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RecipeApi
      */
-    public getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, name?: string, options?: AxiosRequestConfig) {
-        return RecipeApiFp(this.configuration).getRecipeCollection(page, ingredients, tags, seasonal, marked, name, options).then((request) => request(this.axios, this.basePath));
+    public getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: AxiosRequestConfig) {
+        return RecipeApiFp(this.configuration).getRecipeCollection(page, ingredients, tags, seasonal, marked, limit, name, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

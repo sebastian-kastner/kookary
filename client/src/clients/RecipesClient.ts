@@ -9,6 +9,23 @@ import { RecipeJsonld } from 'rest/models'
 import { tagStore } from '../stores/rootStore'
 import { mediaObjectStore } from "../stores/rootStore"
 
+export type RecipeFilter = {
+  page?: number,
+  ingredients?: Ingredient[],
+  nameContains?: string,
+  tags?: Tag[],
+  isSeasonal?: boolean,
+  marked?: boolean,
+  limit?: number,
+}
+
+export type RecipesList = {
+  recipes: Recipe[],
+  totalItems?: number,
+  hasMoreItems: boolean,
+}
+
+const recipesPerPage = 24;
 export class RecipesClient {
     client = new RecipeApi(clientConfiguration);
 
@@ -19,7 +36,7 @@ export class RecipesClient {
      * 
      * @returns all recipes
      */
-    public async getRecipes (filter?: RecipeFilter): Promise<Recipe[]> {
+    public async getRecipes (filter?: RecipeFilter): Promise<RecipesList> {
       let page = 1;
       if (filter?.page) {
         page = filter.page;
@@ -46,8 +63,13 @@ export class RecipesClient {
       }
 
       let isMarked = undefined;
-      if(filter?.marked !== null && filter?.marked !== undefined) {
+      if(filter?.marked) {
         isMarked = filter.marked;
+      }
+
+      let limit = undefined;
+      if(filter?.limit) {
+        limit = filter.limit;
       }
 
       const getPromise = this.client.getRecipeCollection(
@@ -56,18 +78,35 @@ export class RecipesClient {
         tagFilter,
         isSeasonal,
         isMarked,
+        limit,
         filter?.nameContains
       );
 
-      return new Promise<Recipe[]>((resolve, reject) => {
+      return new Promise<RecipesList>((resolve, reject) => {
         getPromise
           .then((ret) => {
-            const apiRecipes = ret.data['hydra:member']
+            const apiRecipes = ret.data['hydra:member'];
+            const totalItems = ret.data['hydra:totalItems'];
+            let hasMoreItems = false;
+            if(totalItems && filter?.page && filter.page * recipesPerPage < totalItems) {
+              hasMoreItems = true;
+            }
+
+            console.log("Returned items: ", apiRecipes.length);
+            console.log("Total Items: ", totalItems);
+            console.log("Has More: ", hasMoreItems);
+
             const recipes: Recipe[] = []
             apiRecipes.forEach((apiRecipe) => {
               recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
-            })
-            resolve(recipes);
+            });
+
+
+            resolve({
+              recipes: recipes,
+              totalItems: totalItems,
+              hasMoreItems: hasMoreItems,
+            });
           })
           .catch((e: AxiosError) => {
             logAxiosError(e);
@@ -155,11 +194,3 @@ export class RecipesClient {
     }
 }
 
-export type RecipeFilter = {
-  page?: number,
-  ingredients?: Ingredient[],
-  nameContains?: string,
-  tags?: Tag[],
-  isSeasonal?: boolean,
-  marked?: boolean,
-}

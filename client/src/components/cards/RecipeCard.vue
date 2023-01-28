@@ -20,7 +20,7 @@ import { mediaObjectStore } from "../../stores/rootStore"
 @Component({
   components: {},
 })
-export default class RecipeCardList extends Vue {
+export default class RecipeCard extends Vue {
   @Prop({ required: true }) recipe!: Recipe;
 
   get recipeImgSrc(): string | null {

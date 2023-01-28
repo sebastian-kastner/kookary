@@ -38,7 +38,9 @@ export default class RecipeCardList extends Vue {
 
   public mounted() {
     this.recipes = [];
-    this.recipesClient.getRecipes(this.recipeFilter).then((recipes) => {
+    this.recipesClient.getRecipes(this.recipeFilter).then((recipesList) => {
+      const recipes = recipesList.recipes;
+      
       let count = 3;
       if (recipes.length < 3) {
         count = recipes.length;
