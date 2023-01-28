@@ -92,10 +92,6 @@ export class RecipesClient {
               hasMoreItems = true;
             }
 
-            console.log("Returned items: ", apiRecipes.length);
-            console.log("Total Items: ", totalItems);
-            console.log("Has More: ", hasMoreItems);
-
             const recipes: Recipe[] = []
             apiRecipes.forEach((apiRecipe) => {
               recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
