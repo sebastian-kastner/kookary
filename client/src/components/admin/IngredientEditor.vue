@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td>{{ getUserName(ingredient.authorId) }}</td>
+    <td class="align-middle">{{ getUserName(ingredient.authorId) }}</td>
     <td>
       <input type="text" class="form-control" v-model="ingredient.name" v-on:focusout="updateIngredient"
         @keydown.enter="updateIngredient" />
