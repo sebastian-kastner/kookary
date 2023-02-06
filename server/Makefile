@@ -25,6 +25,11 @@ migration-create:
 migration-execute:
 	php bin/console doctrine:migrations:migrate
 
+.PHONY: migration-update-schema
+# Update schema of database table according to existing entities (e.g. create new tables)
+migration-update-schema:
+	php bin/console doctrine:schema:update --dump-sql
+
 .PHONY: dump-db
 # Dumps the database to sql file (as root user, with password prompt)
 dump-db:

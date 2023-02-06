@@ -64,6 +64,13 @@ class Ingredient
     #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
     public $author;
 
+    /**
+     * @var IngredientCategory
+     */
+    #[ORM\JoinColumn(name: "ingredient_category_id", referencedColumnName: "ingredient_category_id", nullable: true)]
+    #[ORM\ManyToOne(targetEntity: "IngredientCategory")]
+    public $category;
+
     public function getIngredientId(): ?int
     {
         return $this->ingredientId;
@@ -113,6 +120,18 @@ class Ingredient
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getCategory(): ?IngredientCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?IngredientCategory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

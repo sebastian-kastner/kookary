@@ -39,7 +39,6 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 )]
 #[ApiFilter(RecipeFilter::class, properties: ['ingredients' => 'ingredients'])]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
-
 class Recipe
 {
     /**
