@@ -15,36 +15,36 @@
 
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
-import { UserRecipeFavouritesJsonld } from './user-recipe-favourites-jsonld';
+import { UserJsonldRead } from './user-jsonld-read';
 
 /**
  * 
  * @export
- * @interface InlineResponse2005
+ * @interface InlineResponse2006
  */
-export interface InlineResponse2005 {
+export interface InlineResponse2006 {
     /**
      * 
-     * @type {Array<UserRecipeFavouritesJsonld>}
-     * @memberof InlineResponse2005
+     * @type {Array<UserJsonldRead>}
+     * @memberof InlineResponse2006
      */
-    'hydra:member': Array<UserRecipeFavouritesJsonld>;
+    'hydra:member': Array<UserJsonldRead>;
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2005
+     * @memberof InlineResponse2006
      */
     'hydra:totalItems'?: number;
     /**
      * 
      * @type {InlineResponse200HydraView}
-     * @memberof InlineResponse2005
+     * @memberof InlineResponse2006
      */
     'hydra:view'?: InlineResponse200HydraView;
     /**
      * 
      * @type {InlineResponse200HydraSearch}
-     * @memberof InlineResponse2005
+     * @memberof InlineResponse2006
      */
     'hydra:search'?: InlineResponse200HydraSearch;
 }

@@ -68,5 +68,11 @@ export interface IngredientJsonld {
      * @memberof IngredientJsonld
      */
     'author'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof IngredientJsonld
+     */
+    'category'?: string | null;
 }
 

@@ -5,10 +5,17 @@ export type Tag = {
     uuid: string;
 }
 
+export type IngredientCategory = {
+    ingredientCategoryId?: number;
+    name?: string;
+    order?: number;
+}
+
 export type Ingredient = {
     ingredientId?: number;
     name?: string;
     authorId?: number;
+    ingredientCategoryId?: number;
 }
 
 export type RecipeIngredient = {

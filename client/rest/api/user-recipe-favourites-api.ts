@@ -21,7 +21,7 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { InlineResponse2004 } from '../models';
+import { InlineResponse2005 } from '../models';
 // @ts-ignore
 import { UserRecipeFavourites } from '../models';
 // @ts-ignore
@@ -229,7 +229,7 @@ export const UserRecipeFavouritesApiFp = function(configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getUserRecipeFavouritesCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+        async getUserRecipeFavouritesCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2005>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUserRecipeFavouritesCollection(user, user2, recipe, recipe2, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -285,7 +285,7 @@ export const UserRecipeFavouritesApiFactory = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserRecipeFavouritesCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: any): AxiosPromise<InlineResponse2004> {
+        getUserRecipeFavouritesCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: any): AxiosPromise<InlineResponse2005> {
             return localVarFp.getUserRecipeFavouritesCollection(user, user2, recipe, recipe2, options).then((request) => request(axios, basePath));
         },
         /**

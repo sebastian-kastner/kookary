@@ -21,7 +21,7 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { InlineResponse2002 } from '../models';
+import { InlineResponse2003 } from '../models';
 // @ts-ignore
 import { Recipe } from '../models';
 // @ts-ignore
@@ -333,7 +333,7 @@ export const RecipeApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, marked, limit, name, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -416,7 +416,7 @@ export const RecipeApiFactory = function (configuration?: Configuration, basePat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: any): AxiosPromise<InlineResponse2002> {
+        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, limit?: number, name?: string, options?: any): AxiosPromise<InlineResponse2003> {
             return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, marked, limit, name, options).then((request) => request(axios, basePath));
         },
         /**

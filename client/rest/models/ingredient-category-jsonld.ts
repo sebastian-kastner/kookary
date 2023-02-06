@@ -15,46 +15,46 @@
 
 
 /**
- * Ingredient
+ * IngredientCategory
  * @export
- * @interface Ingredient
+ * @interface IngredientCategoryJsonld
  */
-export interface Ingredient {
+export interface IngredientCategoryJsonld {
     /**
      * 
-     * @type {number}
-     * @memberof Ingredient
+     * @type {string | any}
+     * @memberof IngredientCategoryJsonld
      */
-    'ingredientId'?: number;
+    '@context'?: string | any;
     /**
      * 
      * @type {string}
-     * @memberof Ingredient
+     * @memberof IngredientCategoryJsonld
+     */
+    '@id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof IngredientCategoryJsonld
+     */
+    '@type'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof IngredientCategoryJsonld
+     */
+    'categoryId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof IngredientCategoryJsonld
      */
     'name'?: string;
     /**
      * 
      * @type {number}
-     * @memberof Ingredient
+     * @memberof IngredientCategoryJsonld
      */
-    'seasonStart'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof Ingredient
-     */
-    'seasonEnd'?: number | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof Ingredient
-     */
-    'author'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof Ingredient
-     */
-    'category'?: string | null;
+    'order'?: number;
 }
 

@@ -13,9 +13,9 @@
  */
 
 
+import { IngredientJsonld } from './ingredient-jsonld';
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
-import { MediaObjectJsonldMediaObjectRead } from './media-object-jsonld-media-object-read';
 
 /**
  * 
@@ -25,10 +25,10 @@ import { MediaObjectJsonldMediaObjectRead } from './media-object-jsonld-media-ob
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {Array<MediaObjectJsonldMediaObjectRead>}
+     * @type {Array<IngredientJsonld>}
      * @memberof InlineResponse2001
      */
-    'hydra:member': Array<MediaObjectJsonldMediaObjectRead>;
+    'hydra:member': Array<IngredientJsonld>;
     /**
      * 
      * @type {number}

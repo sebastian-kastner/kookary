@@ -25,7 +25,7 @@ import { Ingredient } from '../models';
 // @ts-ignore
 import { IngredientJsonld } from '../models';
 // @ts-ignore
-import { InlineResponse200 } from '../models';
+import { InlineResponse2001 } from '../models';
 /**
  * IngredientApi - axios parameter creator
  * @export
@@ -297,7 +297,7 @@ export const IngredientApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getIngredientCollection(name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+        async getIngredientCollection(name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2001>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getIngredientCollection(name, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -374,7 +374,7 @@ export const IngredientApiFactory = function (configuration?: Configuration, bas
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getIngredientCollection(name?: string, options?: any): AxiosPromise<InlineResponse200> {
+        getIngredientCollection(name?: string, options?: any): AxiosPromise<InlineResponse2001> {
             return localVarFp.getIngredientCollection(name, options).then((request) => request(axios, basePath));
         },
         /**

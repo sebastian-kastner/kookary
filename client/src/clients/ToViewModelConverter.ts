@@ -1,5 +1,5 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead, UserJsonldRead } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User } from '../types'
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead, UserJsonldRead, IngredientCategoryJsonld } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory } from '../types'
 import { v4 as uuid } from 'uuid';
 
 export function toId(iri: string | null | undefined): number | undefined {
@@ -44,6 +44,15 @@ export class ToViewModelConverter {
       ingredientId: apiIngredient.ingredientId,
       name: apiIngredient.name,
       authorId: toId(apiIngredient.author),
+      ingredientCategoryId: toId(apiIngredient.category)
+    }
+  }
+
+  public convertIngredientCategory(apiCategory: IngredientCategoryJsonld): IngredientCategory {
+    return {
+      ingredientCategoryId: apiCategory.categoryId,
+      name: apiCategory.name,
+      order: apiCategory.order,
     }
   }
 
