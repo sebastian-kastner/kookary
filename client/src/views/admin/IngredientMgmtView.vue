@@ -30,6 +30,11 @@
             </select>
           </td>
           <td colspan="2">
+            <select name="seasonal" class="form-control" v-model="filter.seasonal" v-on:change="applyFilter">
+              <option value="">-</option>
+              <option value="seasonal">Saisonal</option>
+              <option value="nonseasonal">Nicht Saisonal</option>
+            </select>
           </td>
         </tr>
 
@@ -47,7 +52,6 @@
 <script lang="ts">
 import { Ingredient, User, IngredientCategory } from "../../types";
 import { Component, Vue } from "vue-property-decorator";
-import { IngredientsClient } from "../../clients/IngredientsClient";
 import { ingredientStore, userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import IngredientEditor from '../../components/admin/IngredientEditor.vue';
 
@@ -55,6 +59,7 @@ type IngredientFilter = {
   ingredientName: string | null;
   authorId: string;
   categoryId: string;
+  seasonal: string;
 }
 
 @Component({
@@ -63,14 +68,13 @@ type IngredientFilter = {
   },
 })
 export default class IngredientMgmtView extends Vue {
-  private ingredientClient = new IngredientsClient();
-
   ingredients: Ingredient[] = [];
 
   filter: IngredientFilter = {
     ingredientName: null,
     authorId: "-1",
     categoryId: "-1",
+    seasonal: "",
   }
 
   mounted(): void {
@@ -109,15 +113,22 @@ export default class IngredientMgmtView extends Vue {
       }
     }
 
+    let seasonal: null | boolean = null;
+    if (this.filter.seasonal === "seasonal") {
+      seasonal = true;
+    } else if (this.filter.seasonal === "nonseasonal") {
+      seasonal = false;
+    }
+
     ingredientStore.ingredients.forEach(ingredient => {
-      if (this.appliesToFilter(ingredient, ingredientName, categoryId, authorId)) {
+      if (this.appliesToFilter(ingredient, ingredientName, categoryId, authorId, seasonal)) {
         filteredIngredients.push(ingredient);
       }
     });
     this.ingredients = filteredIngredients;
   }
 
-  private appliesToFilter(ingredient: Ingredient, ingredientName: null | string, categoryId: number, authorId: number) {
+  private appliesToFilter(ingredient: Ingredient, ingredientName: null | string, categoryId: number, authorId: number, seasonal: null | boolean) {
     if (ingredientName && ingredientName !== "" && !ingredient.name?.toLowerCase().includes(ingredientName.toLowerCase())) {
       return false;
     }
@@ -129,6 +140,14 @@ export default class IngredientMgmtView extends Vue {
     }
     if (authorId > 0 && ingredient.authorId !== authorId) {
       return false;
+    }
+    if (seasonal !== null) {
+      if (seasonal && (!ingredient.seasonStart || !ingredient.seasonEnd)) {
+        return false;
+      }
+      if (!seasonal && (ingredient.seasonStart || ingredient.seasonEnd)) {
+        return false;
+      }
     }
     return true;
   }
