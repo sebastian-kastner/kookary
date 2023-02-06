@@ -1,14 +1,15 @@
-import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import RecipeEditorView from '../views/RecipeEditorView.vue'
-import RecipeView from '../views/RecipeView.vue'
-import IngredientsView from '../views/IngredientsView.vue'
-import RecipeOverview from '../views/RecipeOverview.vue'
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import RecipeEditorView from '../views/RecipeEditorView.vue';
+import RecipeView from '../views/RecipeView.vue';
+import IngredientsView from '../views/IngredientsView.vue';
+import RecipeOverview from '../views/RecipeOverview.vue';
 // user views
-import Account from '../views/user/Account.vue'
+import Account from '../views/user/Account.vue';
 // admin views
-import UserMgtmView from '../views/admin/UserMgmtView.vue'
+import UserMgtmView from '../views/admin/UserMgmtView.vue';
+import IngredientMgmtView from '../views/admin/IngredientMgmtView.vue'
 
 import { userStore } from '../stores/rootStore';
 
@@ -24,7 +25,8 @@ const routes: Array<RouteConfig> = [
   // user routes
   { path: '/user/account', name: 'account', component: Account },
   // admin routes
-  { path: '/admin/users', name: 'user-mgmt', component: UserMgtmView }
+  { path: '/admin/users', name: 'user-mgmt', component: UserMgtmView },
+  { path: '/admin/ingredients', name: 'ingredient-mgmt', component: IngredientMgmtView },
 ]
 
 const router = new VueRouter({

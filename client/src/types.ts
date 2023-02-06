@@ -15,6 +15,8 @@ export type Ingredient = {
     ingredientId?: number;
     name?: string;
     authorId?: number;
+    seasonStart?: null | number;
+    seasonEnd?: null | number;
     ingredientCategoryId?: number;
 }
 

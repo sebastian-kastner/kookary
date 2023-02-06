@@ -2,6 +2,7 @@ import { createModule, mutation, action } from "vuex-class-component";
 import axios, { AxiosRequestConfig } from "axios"
 import { UserClient } from '../clients/UserClient'
 import { User } from '../types'
+import { logAxiosError } from "@/clients/axiosErrorLogger";
 
 const VuexModule = createModule({
   namespaced: "user",
@@ -21,11 +22,13 @@ export class UserStore extends VuexModule {
   public token: string | null = null;
   public user: User | null = null;
   public userIsAdmin = false;
+  public users: User[] = [];
+  public userMap: Map<number, User> = new Map<number, User>();
 
   private userClient = new UserClient();
 
   @action
-  async init(): Promise<void> {
+  async initUserLogin(): Promise<void> {
     // set axios interceptor
     // TBD: find a more suitable location
     axios.interceptors.request.use(
@@ -76,6 +79,29 @@ export class UserStore extends VuexModule {
           resolve()
         });
     });
+  }
+
+  @action
+  async initUsers(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.userClient.getUsers()
+        .then((users) => {
+          const userMap = new Map<number, User>();
+          users.forEach((user) => {
+            if(user.id && user.displayName) {
+              userMap.set(user.id, user);
+            }
+          });
+
+          this.SET_USERMAP(userMap);
+          this.SET_USERS(users);
+          resolve();
+        })
+        .catch((error) => {
+          logAxiosError(error);
+          reject(error);
+        })
+    })
   }
 
   @action
@@ -147,5 +173,15 @@ export class UserStore extends VuexModule {
     } else {
       this.userIsAdmin = false;
     }
+  }
+
+  @mutation
+  private SET_USERS(users: User[]) {
+    this.users = users;
+  }
+
+  @mutation
+  private SET_USERMAP(userMap: Map<number, User>) {
+    this.userMap = userMap;
   }
 }

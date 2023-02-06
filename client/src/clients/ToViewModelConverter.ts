@@ -1,4 +1,6 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead, UserJsonldRead, IngredientCategoryJsonld } from '../../rest/models'
+import {
+  RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead, UserJsonldRead, IngredientCategoryJsonld
+} from '../../rest/models'
 import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory } from '../types'
 import { v4 as uuid } from 'uuid';
 
@@ -44,6 +46,8 @@ export class ToViewModelConverter {
       ingredientId: apiIngredient.ingredientId,
       name: apiIngredient.name,
       authorId: toId(apiIngredient.author),
+      seasonStart: apiIngredient.seasonStart,
+      seasonEnd: apiIngredient.seasonEnd,
       ingredientCategoryId: toId(apiIngredient.category)
     }
   }

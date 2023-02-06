@@ -27,18 +27,19 @@ export const userStore = createProxy(rootStore, UserStore);
 export const ingredientCategoryStore = createProxy(rootStore, IngredientCategoryStore);
 
 export async function initStores(): Promise<void> {
-  await userStore.init();
+  await userStore.initUserLogin();
 
   const ingredientInit = ingredientStore.init();
   const tagsInit = tagStore.init();
   const mediaObjectInit = mediaObjectStore.init();
   const categoryStoreInit = ingredientCategoryStore.init();
+  const usersInit = userStore.initUsers();
 
   userStore.refreshToken();
   setInterval(() => {
     userStore.refreshToken();
   }, 180000);
 
-  await Promise.all([ingredientInit, tagsInit, mediaObjectInit, categoryStoreInit]);
+  await Promise.all([ingredientInit, tagsInit, mediaObjectInit, categoryStoreInit, usersInit]);
 }
 

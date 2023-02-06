@@ -8,13 +8,17 @@
       <b-icon-list-task /> Merkliste
     </router-link>
 
-    <router-link
-      v-if="isAdmin"
-      class="dropdown-item d-flex align-items-center"
-      to="/admin/users"
-    >
-      <b-icon-shield-lock /> Administration
-    </router-link>
+    <div class="dropdown-divider"></div>
+
+    <div v-if="isAdmin">
+      <router-link v-if="isAdmin" class="dropdown-item d-flex align-items-center" to="/admin/users">
+        <b-icon-people /> Benutzerverwaltung
+      </router-link>
+
+      <router-link v-if="isAdmin" class="dropdown-item d-flex align-items-center" to="/admin/ingredients">
+        <b-icon-bag /> Zutatenverwaltung
+      </router-link>
+    </div>
 
     <div class="dropdown-divider"></div>
 
@@ -41,7 +45,7 @@ export default class UserMenu extends Vue {
 
   logout(): void {
     userStore.logout();
-    if(this.$route.path.startsWith("/user")) {
+    if (this.$route.path.startsWith("/user")) {
       this.$router.push({ path: "/" });
     }
   }

@@ -39,6 +39,8 @@ export class ToRestModelConverter {
       ingredientId: apiIngredient.ingredientId,
       name: apiIngredient.name,
       author: this.getAuthorId(apiIngredient.authorId),
+      seasonStart: apiIngredient.seasonStart,
+      seasonEnd: apiIngredient.seasonEnd,
       category: this.toApiId(ep.INGREDIENT_CATEGORY_ENDPOINT, apiIngredient.ingredientCategoryId),
     }
   }
