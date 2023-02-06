@@ -41,7 +41,7 @@
     </div>
     <div class="form-group">
       <label>Zutaten</label>
-      <ingredients-editor
+      <recipe-ingredients-editor
         :ingredients="recipe.ingredients"
         :existingIngredients="existingIngredients"
       />
@@ -71,12 +71,12 @@ import {
 } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore";
 import { RecipesClient } from "../clients/RecipesClient";
-import IngredientsEditor from "../components/IngredientsEditor.vue";
+import RecipeIngredientsEditor from "../components/RecipeIngredientsEditor.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue";
 
 @Component({
-  components: { IngredientsEditor, InlineItemList, ImageUpload },
+  components: { RecipeIngredientsEditor, InlineItemList, ImageUpload },
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;

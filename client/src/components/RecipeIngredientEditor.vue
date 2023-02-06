@@ -60,7 +60,7 @@ import { ingredientStore } from "../stores/rootStore";
 @Component({
   components: { TypeaheadInput },
 })
-export default class IngredientEditor extends Vue {
+export default class RecipeIngredientEditor extends Vue {
   @Prop({ required: true }) ingredient!: RecipeIngredient;
   @Prop({ required: true }) existingIngredients!: Ingredient[];
 
@@ -82,7 +82,7 @@ export default class IngredientEditor extends Vue {
     this.$emit("onNameChanged");
   }
 
-  getIngredientLabel(ingredient: Ingredient | undefined): string {
+  getIngredientLabel(ingredient: Ingredient | null | undefined): string {
     if (ingredient && ingredient.name) {
       return ingredient.name;
     }

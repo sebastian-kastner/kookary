@@ -10,7 +10,7 @@
         v-bind="ingredient"
         v-bind:key="ingredient.uuid"
       >
-        <ingredient-editor
+        <recipe-ingredient-editor
           :ingredient="ingredient"
           :existingIngredients="existingIngredients"
           @onNameChanged="updateIngredientName"
@@ -25,13 +25,13 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import draggable from "vuedraggable";
 import { RecipeIngredient, Ingredient } from "../types";
-import IngredientEditor from "./IngredientEditor.vue";
+import RecipeIngredientEditor from "./RecipeIngredientEditor.vue";
 import { v4 as uuid } from "uuid";
 
 @Component({
-  components: { IngredientEditor, draggable },
+  components: { RecipeIngredientEditor, draggable },
 })
-export default class IngredientsEditor extends Vue {
+export default class RecipeIngredientsEditor extends Vue {
   @Prop({ required: true }) ingredients!: RecipeIngredient[];
   @Prop({ required: true }) existingIngredients!: Ingredient[];
 
