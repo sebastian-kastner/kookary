@@ -1,5 +1,5 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, UserWrite } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, User } from '../types'
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, UserWrite, CookupJsonld } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient, User, Cookup } from '../types'
 import { userStore } from '../stores/rootStore'
 import * as ep from './endpoints'
 
@@ -102,6 +102,23 @@ export class ToRestModelConverter {
       displayname: apiUser.displayName,
       email: apiUser.email,
       roles: roles,
+    }
+  }
+
+  public convertCookup(cookup: Cookup): CookupJsonld {
+    let cookupId: number | undefined = undefined;
+    if (cookup.cookupId) {
+      cookupId = cookup.cookupId;
+    }
+    let date: string | undefined = undefined;
+    if (cookup.date) {
+      date = cookup.date;
+    }
+    return {
+      cookupId: cookupId,
+      user: this.toApiId(ep.USER_ENDPOINT, cookup.userId),
+      recipe: this.toApiId(ep.RECIPES_ENDPOINT, cookup.recipeId),
+      date: date,
     }
   }
 

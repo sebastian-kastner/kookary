@@ -29,6 +29,13 @@ export type RecipeIngredient = {
     position?: number | null;
 }
 
+export type Cookup = {
+    cookupId?: number | null;
+    userId?: number | null;
+    recipeId?: number | null;
+    date?: string | null;
+}
+
 export type Recipe = {
     recipeId?: number;
     name?: string;

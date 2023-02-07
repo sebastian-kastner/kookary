@@ -1,7 +1,8 @@
 import {
-  RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead, UserJsonldRead, IngredientCategoryJsonld
+  RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead,
+  UserJsonldRead, IngredientCategoryJsonld, CookupJsonld
 } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory } from '../types'
+import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory, Cookup } from '../types'
 import { v4 as uuid } from 'uuid';
 
 export function toId(iri: string | null | undefined): number | undefined {
@@ -182,6 +183,23 @@ export class ToViewModelConverter {
       users.push(this.convertUser(apiUsers[key]));
     }
     return users;
+  }
+
+  public convertCookup(cookup: CookupJsonld): Cookup {
+    return {
+      cookupId: cookup.cookupId,
+      userId: toId(cookup.user),
+      recipeId: toId(cookup.recipe),
+      date: cookup.date,
+    }
+  }
+
+  public convertCookups(apiCookups: CookupJsonld[]): Cookup[] {
+    const cookups: Cookup[] = [];
+    apiCookups.forEach(cookup => {
+      cookups.push(this.convertCookup(cookup));
+    });
+    return cookups;
   }
 
   private getStringOrNull(value: string | null | undefined): string | null {
