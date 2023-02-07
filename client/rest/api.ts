@@ -14,6 +14,7 @@
 
 
 
+export * from './api/cookup-api';
 export * from './api/ingredient-api';
 export * from './api/ingredient-category-api';
 export * from './api/media-object-api';

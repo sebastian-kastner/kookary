@@ -1,6 +1,7 @@
 .gitignore
 .npmignore
 api.ts
+api/cookup-api.ts
 api/ingredient-api.ts
 api/ingredient-category-api.ts
 api/media-object-api.ts
@@ -13,6 +14,8 @@ common.ts
 configuration.ts
 git_push.sh
 index.ts
+models/cookup-jsonld.ts
+models/cookup.ts
 models/index.ts
 models/ingredient-category-jsonld.ts
 models/ingredient-category.ts
@@ -28,6 +31,7 @@ models/inline-response2003.ts
 models/inline-response2004.ts
 models/inline-response2005.ts
 models/inline-response2006.ts
+models/inline-response2007.ts
 models/media-object-jsonld-media-object-read.ts
 models/media-object-media-object-read.ts
 models/recipe-ingredient-jsonld.ts

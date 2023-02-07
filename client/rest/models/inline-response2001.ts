@@ -13,7 +13,7 @@
  */
 
 
-import { IngredientJsonld } from './ingredient-jsonld';
+import { IngredientCategoryJsonld } from './ingredient-category-jsonld';
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
 
@@ -25,10 +25,10 @@ import { InlineResponse200HydraView } from './inline-response200-hydra-view';
 export interface InlineResponse2001 {
     /**
      * 
-     * @type {Array<IngredientJsonld>}
+     * @type {Array<IngredientCategoryJsonld>}
      * @memberof InlineResponse2001
      */
-    'hydra:member': Array<IngredientJsonld>;
+    'hydra:member': Array<IngredientCategoryJsonld>;
     /**
      * 
      * @type {number}

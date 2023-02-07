@@ -13,38 +13,38 @@
  */
 
 
-import { CookupJsonld } from './cookup-jsonld';
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
+import { UserJsonldRead } from './user-jsonld-read';
 
 /**
  * 
  * @export
- * @interface InlineResponse200
+ * @interface InlineResponse2007
  */
-export interface InlineResponse200 {
+export interface InlineResponse2007 {
     /**
      * 
-     * @type {Array<CookupJsonld>}
-     * @memberof InlineResponse200
+     * @type {Array<UserJsonldRead>}
+     * @memberof InlineResponse2007
      */
-    'hydra:member': Array<CookupJsonld>;
+    'hydra:member': Array<UserJsonldRead>;
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse200
+     * @memberof InlineResponse2007
      */
     'hydra:totalItems'?: number;
     /**
      * 
      * @type {InlineResponse200HydraView}
-     * @memberof InlineResponse200
+     * @memberof InlineResponse2007
      */
     'hydra:view'?: InlineResponse200HydraView;
     /**
      * 
      * @type {InlineResponse200HydraSearch}
-     * @memberof InlineResponse200
+     * @memberof InlineResponse2007
      */
     'hydra:search'?: InlineResponse200HydraSearch;
 }

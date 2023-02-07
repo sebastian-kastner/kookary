@@ -5,9 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Cookup
@@ -97,7 +95,7 @@ class Cookup
     public function setRecipe(?Recipe $recipe): self
     {
         $this->recipe = $recipe;
-        
+
         return $this;
     }
 

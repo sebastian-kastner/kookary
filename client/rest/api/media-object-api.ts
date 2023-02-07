@@ -21,7 +21,7 @@ import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObj
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 // @ts-ignore
-import { InlineResponse2002 } from '../models';
+import { InlineResponse2003 } from '../models';
 // @ts-ignore
 import { MediaObjectJsonldMediaObjectRead } from '../models';
 // @ts-ignore
@@ -224,7 +224,7 @@ export const MediaObjectApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMediaObjectCollection(page?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2002>> {
+        async getMediaObjectCollection(page?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getMediaObjectCollection(page, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -279,7 +279,7 @@ export const MediaObjectApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMediaObjectCollection(page?: number, options?: any): AxiosPromise<InlineResponse2002> {
+        getMediaObjectCollection(page?: number, options?: any): AxiosPromise<InlineResponse2003> {
             return localVarFp.getMediaObjectCollection(page, options).then((request) => request(axios, basePath));
         },
         /**

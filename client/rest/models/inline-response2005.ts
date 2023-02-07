@@ -15,7 +15,7 @@
 
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
-import { UserRecipeFavouritesJsonld } from './user-recipe-favourites-jsonld';
+import { TagJsonld } from './tag-jsonld';
 
 /**
  * 
@@ -25,10 +25,10 @@ import { UserRecipeFavouritesJsonld } from './user-recipe-favourites-jsonld';
 export interface InlineResponse2005 {
     /**
      * 
-     * @type {Array<UserRecipeFavouritesJsonld>}
+     * @type {Array<TagJsonld>}
      * @memberof InlineResponse2005
      */
-    'hydra:member': Array<UserRecipeFavouritesJsonld>;
+    'hydra:member': Array<TagJsonld>;
     /**
      * 
      * @type {number}
