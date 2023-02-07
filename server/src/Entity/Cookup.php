@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * Cookup
@@ -27,6 +29,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
         "delete" => ["security" => "is_granted('ROLE_ADMIN') or object.author == user"],
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['user' => 'exact', 'recipe' => 'exact'])]
 class Cookup
 {
     /**

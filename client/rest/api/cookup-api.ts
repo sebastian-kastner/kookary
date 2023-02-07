@@ -72,10 +72,14 @@ export const CookupApiAxiosParamCreator = function (configuration?: Configuratio
         /**
          * Retrieves the collection of Cookup resources.
          * @summary Retrieves the collection of Cookup resources.
+         * @param {string} [user] 
+         * @param {Array<string>} [user2] 
+         * @param {string} [recipe] 
+         * @param {Array<string>} [recipe2] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCookupCollection: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getCookupCollection: async (user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/cookups`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -90,6 +94,22 @@ export const CookupApiAxiosParamCreator = function (configuration?: Configuratio
 
             // authentication JWT required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
+
+            if (user !== undefined) {
+                localVarQueryParameter['user'] = user;
+            }
+
+            if (user2) {
+                localVarQueryParameter['user[]'] = user2;
+            }
+
+            if (recipe !== undefined) {
+                localVarQueryParameter['recipe'] = recipe;
+            }
+
+            if (recipe2) {
+                localVarQueryParameter['recipe[]'] = recipe2;
+            }
 
 
     
@@ -288,11 +308,15 @@ export const CookupApiFp = function(configuration?: Configuration) {
         /**
          * Retrieves the collection of Cookup resources.
          * @summary Retrieves the collection of Cookup resources.
+         * @param {string} [user] 
+         * @param {Array<string>} [user2] 
+         * @param {string} [recipe] 
+         * @param {Array<string>} [recipe2] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getCookupCollection(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getCookupCollection(options);
+        async getCookupCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse200>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getCookupCollection(user, user2, recipe, recipe2, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -364,11 +388,15 @@ export const CookupApiFactory = function (configuration?: Configuration, basePat
         /**
          * Retrieves the collection of Cookup resources.
          * @summary Retrieves the collection of Cookup resources.
+         * @param {string} [user] 
+         * @param {Array<string>} [user2] 
+         * @param {string} [recipe] 
+         * @param {Array<string>} [recipe2] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCookupCollection(options?: any): AxiosPromise<InlineResponse200> {
-            return localVarFp.getCookupCollection(options).then((request) => request(axios, basePath));
+        getCookupCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: any): AxiosPromise<InlineResponse200> {
+            return localVarFp.getCookupCollection(user, user2, recipe, recipe2, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Cookup resource.
@@ -437,12 +465,16 @@ export class CookupApi extends BaseAPI {
     /**
      * Retrieves the collection of Cookup resources.
      * @summary Retrieves the collection of Cookup resources.
+     * @param {string} [user] 
+     * @param {Array<string>} [user2] 
+     * @param {string} [recipe] 
+     * @param {Array<string>} [recipe2] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CookupApi
      */
-    public getCookupCollection(options?: AxiosRequestConfig) {
-        return CookupApiFp(this.configuration).getCookupCollection(options).then((request) => request(this.axios, this.basePath));
+    public getCookupCollection(user?: string, user2?: Array<string>, recipe?: string, recipe2?: Array<string>, options?: AxiosRequestConfig) {
+        return CookupApiFp(this.configuration).getCookupCollection(user, user2, recipe, recipe2, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
