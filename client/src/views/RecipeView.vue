@@ -197,8 +197,8 @@ export default class RecipeView extends Vue {
   async addCookup(): Promise<Cookup | void> {
     this.$modal.show(
       AddCookupView,
-      { recipe: this.recipe },
-      { height: 470 }
+      { recipe: this.recipe, cookupAddedCallback: () => this.$modal.hideAll() },
+      { height: 200, width: 350 }
     );
   }
 
