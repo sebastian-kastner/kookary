@@ -45,7 +45,7 @@ class ShoppingItem
      */
     #[ORM\ManyToOne(targetEntity: "User")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
-    public $user;
+    private $user;
 
     /**
      * @var \App\Entity\Ingredient
@@ -55,10 +55,22 @@ class ShoppingItem
     private $ingredient;
 
     /**
+     * @var string|null
+     */
+    #[ORM\Column(name: "unit", type: "string", length: 10, nullable: true)]
+    private $unit;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(name: "quantity", type: "string", length: 10, nullable: true)]
+    private $quantity;
+
+    /**
      * @var boolean
      */
     #[ORM\Column(name: "done", type: "boolean", nullable: false)]
-    public $done;
+    private $done;
 
 
     public function getShoppingItemId(): ?int
@@ -98,6 +110,30 @@ class ShoppingItem
     public function setIngredient(?Ingredient $ingredient): self
     {
         $this->ingredient = $ingredient;
+
+        return $this;
+    }
+
+    public function getUnit(): ?string
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(?string $unit): self
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?string
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(?string $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
