@@ -19,7 +19,10 @@
             </div>
           </div>
 
-          <router-link class="navbar-brand" to="/">&#129348; kookary</router-link>
+          <router-link class="navbar-brand" to="/">
+            <img src="icon.svg" height="80"/>
+            kookary
+          </router-link>
         </div>
 
         <!-- nav items in middle; only visible on large screens -->
