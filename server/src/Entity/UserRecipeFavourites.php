@@ -46,6 +46,9 @@ class UserRecipeFavourites
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id")]
     public $user;
 
+    /**
+     * @var Recipe
+     */
     #[ORM\ManyToOne(targetEntity: "Recipe")]
     #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
     private $recipe;

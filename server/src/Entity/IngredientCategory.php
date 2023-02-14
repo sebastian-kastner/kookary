@@ -44,7 +44,7 @@ class IngredientCategory
     private $name;
 
     /**
-     * @var string
+     * @var int
      */
     #[ORM\Column(name: "order", type: "integer", length: 2, nullable: false)]
     private $order;
