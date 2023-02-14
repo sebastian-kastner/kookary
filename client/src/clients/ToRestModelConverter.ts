@@ -1,5 +1,5 @@
-import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, UserWrite, CookupJsonld } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, User, Cookup } from '../types'
+import { RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, UserWrite, CookupJsonld, ShoppingItemJsonld } from '../../rest/models'
+import { Recipe, Tag, Ingredient, RecipeIngredient, User, Cookup, ShoppingItem } from '../types'
 import { userStore } from '../stores/rootStore'
 import * as ep from './endpoints'
 
@@ -119,6 +119,17 @@ export class ToRestModelConverter {
       user: this.toApiId(ep.USER_ENDPOINT, cookup.userId),
       recipe: this.toApiId(ep.RECIPES_ENDPOINT, cookup.recipeId),
       date: date,
+    }
+  }
+
+  public convertShoppingItem(shoppingItem: ShoppingItem): ShoppingItemJsonld {
+    return {
+      shoppingItemId: shoppingItem.shoppingItemId,
+      done: shoppingItem.done,
+      ingredient: shoppingItem.ingredient,
+      quantity: shoppingItem.quantity,
+      unit: shoppingItem.unit,
+      user: this.toApiId(ep.USER_ENDPOINT, shoppingItem.user),
     }
   }
 

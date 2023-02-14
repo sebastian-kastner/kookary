@@ -26,11 +26,6 @@ export class CookupClient {
     });
   }
 
-  /**
-   * Creates a new tag
-   * @param tagName the name of the tag to create
-   * @returns the newly created tag
-   */
   public async createCookup(userId: number, recipeId: number, date: Date): Promise<Cookup> {
     const datetimeDate = date.toISOString().slice(0, 19).replace('T', ' ');
     

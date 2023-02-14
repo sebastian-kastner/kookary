@@ -31,11 +31,6 @@ export class UserRecipeFavouritesClient {
     });
   }
 
-  /**
-   * Creates a new tag
-   * @param tagName the name of the tag to create
-   * @returns the newly created tag
-   */
   public async createUserFavourite(userId: number, recipeId: number): Promise<null | number> {
     return new Promise<null | number>((resolve, reject) => {
       this.client.postUserRecipeFavouritesCollection({

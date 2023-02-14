@@ -15,36 +15,36 @@
 
 import { InlineResponse200HydraSearch } from './inline-response200-hydra-search';
 import { InlineResponse200HydraView } from './inline-response200-hydra-view';
-import { TagJsonld } from './tag-jsonld';
+import { UserJsonldRead } from './user-jsonld-read';
 
 /**
  * 
  * @export
- * @interface InlineResponse2006
+ * @interface InlineResponse2008
  */
-export interface InlineResponse2006 {
+export interface InlineResponse2008 {
     /**
      * 
-     * @type {Array<TagJsonld>}
-     * @memberof InlineResponse2006
+     * @type {Array<UserJsonldRead>}
+     * @memberof InlineResponse2008
      */
-    'hydra:member': Array<TagJsonld>;
+    'hydra:member': Array<UserJsonldRead>;
     /**
      * 
      * @type {number}
-     * @memberof InlineResponse2006
+     * @memberof InlineResponse2008
      */
     'hydra:totalItems'?: number;
     /**
      * 
      * @type {InlineResponse200HydraView}
-     * @memberof InlineResponse2006
+     * @memberof InlineResponse2008
      */
     'hydra:view'?: InlineResponse200HydraView;
     /**
      * 
      * @type {InlineResponse200HydraSearch}
-     * @memberof InlineResponse2006
+     * @memberof InlineResponse2008
      */
     'hydra:search'?: InlineResponse200HydraSearch;
 }

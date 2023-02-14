@@ -1,8 +1,8 @@
 import {
   RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead,
-  UserJsonldRead, IngredientCategoryJsonld, CookupJsonld
+  UserJsonldRead, IngredientCategoryJsonld, CookupJsonld, ShoppingItemJsonld
 } from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory, Cookup } from '../types'
+import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory, Cookup, ShoppingItem } from '../types'
 import { v4 as uuid } from 'uuid';
 
 export function toId(iri: string | null | undefined): number | undefined {
@@ -64,7 +64,6 @@ export class ToViewModelConverter {
   public convertRecipeIngredient(apiIngredient: RecipeIngredientJsonld): RecipeIngredient {
     return {
       recipeIngredientId: apiIngredient.recipeIngredientId,
-      // FIXME does this work?
       ingredient: this.convertIngredient(apiIngredient.ingredient as IngredientJsonld),
       quantity: apiIngredient.quantity,
       unit: apiIngredient.unit,
@@ -183,6 +182,25 @@ export class ToViewModelConverter {
       users.push(this.convertUser(apiUsers[key]));
     }
     return users;
+  }
+
+  public convertShoppingItem(shoppingItem: ShoppingItemJsonld): ShoppingItem {
+    return {
+      shoppingItemId: shoppingItem.shoppingItemId,
+      user: toId(shoppingItem.user),
+      done: shoppingItem.done,
+      ingredient: shoppingItem.ingredient,
+      quantity: shoppingItem.quantity,
+      unit: shoppingItem.unit,
+    }
+  }
+
+  public convertShoppingItems(apiItems: ShoppingItemJsonld[]): ShoppingItem[] {
+    const items: ShoppingItem[] = [];
+    apiItems.forEach(cookup => {
+      items.push(this.convertShoppingItem(cookup));
+    });
+    return items;
   }
 
   public convertCookup(cookup: CookupJsonld): Cookup {

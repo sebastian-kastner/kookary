@@ -6,6 +6,7 @@ api/ingredient-api.ts
 api/ingredient-category-api.ts
 api/media-object-api.ts
 api/recipe-api.ts
+api/shopping-item-api.ts
 api/tag-api.ts
 api/user-api.ts
 api/user-recipe-favourites-api.ts
@@ -32,12 +33,15 @@ models/inline-response2004.ts
 models/inline-response2005.ts
 models/inline-response2006.ts
 models/inline-response2007.ts
+models/inline-response2008.ts
 models/media-object-jsonld-media-object-read.ts
 models/media-object-media-object-read.ts
 models/recipe-ingredient-jsonld.ts
 models/recipe-ingredient.ts
 models/recipe-jsonld.ts
 models/recipe.ts
+models/shopping-item-jsonld.ts
+models/shopping-item.ts
 models/tag-jsonld.ts
 models/tag.ts
 models/user-jsonld-read.ts
