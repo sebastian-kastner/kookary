@@ -16,6 +16,10 @@
         </router-link>
       </div>
 
+      <button v-if="loggedInUserId" class="rounded-button" v-on:click="addCookup">
+        <b-icon-calendar-week />
+      </button>
+
       <button v-if="loggedInUserId" :disabled="favouriteId === null" class="rounded-button"
         :class="{ 'active': isMarked }" v-on:click="toggleMarked">
         <b-icon-bell-fill v-if="isMarked" />
@@ -79,13 +83,14 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Recipe, recipeFactory } from "../types";
+import { Recipe, recipeFactory, Cookup } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
 import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
-import { userStore } from '../stores/rootStore'
+import { userStore } from '../stores/rootStore';
+import AddCookupView from '../components/user/AddCookupView.vue';
 
 @Component({
   components: { BIconPencil, BIconBell, BIconBellFill },
@@ -95,7 +100,7 @@ export default class RecipeView extends Vue {
   recipe: Recipe = recipeFactory();
 
   recipesClient: RecipesClient = new RecipesClient();
-  userRecipeFavouritesClient: UserRecipeFavouritesClient = new UserRecipeFavouritesClient();
+  userRecipeFavouritesClient = new UserRecipeFavouritesClient();
 
   isMarked = false;
   favouriteId: number | null = null;
@@ -187,6 +192,14 @@ export default class RecipeView extends Vue {
       return marked.parse(this.recipe.description);
     }
     return "";
+  }
+
+  async addCookup(): Promise<Cookup | void> {
+    this.$modal.show(
+      AddCookupView,
+      { recipe: this.recipe },
+      { height: 470 }
+    );
   }
 
   async toggleMarked(): Promise<void> {

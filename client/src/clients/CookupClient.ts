@@ -31,12 +31,14 @@ export class CookupClient {
    * @param tagName the name of the tag to create
    * @returns the newly created tag
    */
-  public async createCookup(userId: number, recipeId: number, date: string): Promise<Cookup> {
+  public async createCookup(userId: number, recipeId: number, date: Date): Promise<Cookup> {
+    const datetimeDate = date.toISOString().slice(0, 19).replace('T', ' ');
+    
     return new Promise<Cookup>((resolve, reject) => {
       this.client.postCookupCollection({
         user: toIri(ep.USER_ENDPOINT, userId),
         recipe: toIri(ep.RECIPES_ENDPOINT, recipeId),
-        date: date,
+        date: datetimeDate,
       })
         .then((response) => {
           const cookup = this.viewModelConverter.convertCookup(response.data);
