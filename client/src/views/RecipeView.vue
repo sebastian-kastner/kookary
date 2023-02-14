@@ -53,8 +53,8 @@
         <ul>
           <li v-for="ingredient in recipe.ingredients" v-bind:key="ingredient.uuid">
             {{ ingredient.quantity }} {{ ingredient.unit }}
-            <router-link :to="{ path: '/recipes', query: { ingredients: ingredient.ingredient.ingredientId } }">
-              {{ ingredient.ingredient.name }}
+            <router-link :to="{ path: '/recipes', query: { ingredients: getIngredientId(ingredient) } }">
+              {{ getIngredientName(ingredient) }}
             </router-link>
           </li>
         </ul>
@@ -83,7 +83,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Recipe, recipeFactory, Cookup } from "../types";
+import { Recipe, recipeFactory, Cookup, RecipeIngredient } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
 import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
@@ -225,6 +225,14 @@ export default class RecipeView extends Vue {
           this.isMarked = false;
         });
     }
+  }
+
+  getIngredientId(ingredient: RecipeIngredient): number | undefined {
+    return ingredient.ingredient?.ingredientId;
+  }
+
+  getIngredientName(ingredient: RecipeIngredient): string | undefined {
+    return ingredient.ingredient?.name;
   }
 
   deleteRecipe(): void {
