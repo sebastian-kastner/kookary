@@ -3,7 +3,6 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import RecipeEditorView from '../views/RecipeEditorView.vue';
 import RecipeView from '../views/RecipeView.vue';
-import IngredientsView from '../views/IngredientsView.vue';
 import RecipeOverview from '../views/RecipeOverview.vue';
 // user views
 import Account from '../views/user/Account.vue';
@@ -19,11 +18,10 @@ const routes: Array<RouteConfig> = [
   // general routes
   { path: '/', name: 'home', component: HomeView },
   { path: '/recipe', name: 'recipe', component: RecipeView },
-  { path: '/user/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },
-  { path: '/ingredients', name: 'ingredients', component: IngredientsView },
   { path: '/recipes', name: 'recipes', component: RecipeOverview },
   // user routes
   { path: '/user/account', name: 'account', component: Account },
+  { path: '/user/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },
   // admin routes
   { path: '/admin/users', name: 'user-mgmt', component: UserMgtmView },
   { path: '/admin/ingredients', name: 'ingredient-mgmt', component: IngredientMgmtView },
