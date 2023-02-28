@@ -123,10 +123,19 @@ export class ToRestModelConverter {
   }
 
   public convertShoppingItem(shoppingItem: ShoppingItem): ShoppingItemJsonld {
+    let name = undefined;
+    if (shoppingItem.name) {
+      name = shoppingItem.name;
+    }
+    let id = undefined;
+    if (shoppingItem.shoppingItemId) {
+      id = shoppingItem.shoppingItemId;
+    }
     return {
-      shoppingItemId: shoppingItem.shoppingItemId,
+      shoppingItemId: id,
+      name: name,
       done: shoppingItem.done,
-      ingredient: shoppingItem.ingredient,
+      ingredient: this.toApiId(ep.INGREDIENTS_ENDPOINT, shoppingItem.ingredientId),
       quantity: shoppingItem.quantity,
       unit: shoppingItem.unit,
       user: this.toApiId(ep.USER_ENDPOINT, shoppingItem.user),

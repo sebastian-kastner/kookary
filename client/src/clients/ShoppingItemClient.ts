@@ -5,7 +5,7 @@ import { clientConfiguration } from './clientConfiguration';
 import { ToRestModelConverter } from './ToRestModelConverter';
 import { ToViewModelConverter } from './ToViewModelConverter';
 
-export class CookupClient {
+export class ShoppingListClient {
   client = new ShoppingItemApi(clientConfiguration);
 
   viewModelConverter = new ToViewModelConverter();
@@ -35,9 +35,9 @@ export class CookupClient {
     return new Promise<number>((resolve, reject) => {
       this.client.postShoppingItemCollection(apiItem)
         .then((response) => {
-          const storedItem = this.viewModelConverter.convertCookup(response.data);
-          if(storedItem.cookupId) {
-            resolve(storedItem.cookupId);
+          const storedItem = this.viewModelConverter.convertShoppingItem(response.data);
+          if(storedItem.shoppingItemId) {
+            resolve(storedItem.shoppingItemId);
           } else {
             reject("No shopping item id returned!");
           }
@@ -45,6 +45,19 @@ export class CookupClient {
         .catch((e) => {
           logAxiosError(e);
           reject(e)
+        });
+    });
+  }
+
+  public async updateShoppingItem(shoppingItemId: number, shoppingItem: ShoppingItem): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.client.patchShoppingItemItem(shoppingItemId.toString(), this.restModelConverter.convertShoppingItem(shoppingItem))
+        .then(() => {
+          resolve();
+        })
+        .catch((err) => {
+          logAxiosError(err);
+          reject(err);
         });
     });
   }

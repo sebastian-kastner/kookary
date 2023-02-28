@@ -187,9 +187,10 @@ export class ToViewModelConverter {
   public convertShoppingItem(shoppingItem: ShoppingItemJsonld): ShoppingItem {
     return {
       shoppingItemId: shoppingItem.shoppingItemId,
+      name: shoppingItem.name,
       user: toId(shoppingItem.user),
       done: shoppingItem.done,
-      ingredient: shoppingItem.ingredient,
+      ingredientId: toId(shoppingItem.ingredient), // TODO: use real ingredient here..
       quantity: shoppingItem.quantity,
       unit: shoppingItem.unit,
     }

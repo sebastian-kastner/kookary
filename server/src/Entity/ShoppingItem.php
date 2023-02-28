@@ -40,6 +40,9 @@ class ShoppingItem
     #[ApiProperty(identifier: true)]
     private $shoppingItemId;
 
+    #[ORM\Column(name: "name", type: "string", length: 50, nullable: false)]
+    private $name;
+
     /**
      * @var \App\Entity\User
      */
@@ -134,6 +137,18 @@ class ShoppingItem
     public function setQuantity(?string $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

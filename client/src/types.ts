@@ -37,9 +37,10 @@ export type Cookup = {
 }
 
 export type ShoppingItem = {
-    shoppingItemId?: number;
-    user?: number;
-    ingredient?: string | null;
+    shoppingItemId?: number | null;
+    name?: string | null;
+    user?: number | null;
+    ingredientId?: number | null;
     unit?: string | null;
     quantity?: string | null;
     done?: boolean;

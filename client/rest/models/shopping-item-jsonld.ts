@@ -49,6 +49,12 @@ export interface ShoppingItemJsonld {
      * @type {string}
      * @memberof ShoppingItemJsonld
      */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShoppingItemJsonld
+     */
     'user'?: string;
     /**
      * 

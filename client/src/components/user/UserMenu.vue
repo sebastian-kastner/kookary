@@ -1,6 +1,6 @@
 <template>
   <div id="user-menu">
-    <router-link class="dropdown-item d-flex align-items-center" to="#">
+    <router-link class="dropdown-item d-flex align-items-center" to="/user/shopping-list">
       <b-icon-basket /> Einkaufsliste
     </router-link>
 

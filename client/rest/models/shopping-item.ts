@@ -31,6 +31,12 @@ export interface ShoppingItem {
      * @type {string}
      * @memberof ShoppingItem
      */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ShoppingItem
+     */
     'user'?: string;
     /**
      * 

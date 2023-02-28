@@ -29,7 +29,7 @@
           'simple-typeahead-list-item-active': currentSelectionIndex == -1,
         }"
         @mousedown.prevent
-        @click="selectItem()"
+        @click="selectItem"
         @mouseenter="currentSelectionIndex = -1"
       >
         <span class="simple-typeahead-list-item-text" :data-text="input">
