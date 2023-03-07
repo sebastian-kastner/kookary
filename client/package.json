@@ -13,7 +13,7 @@
     "@vuesimple/vs-datepicker": "^1.4.13",
     "axios": "^0.26.1",
     "bootstrap": "^4.6.2",
-    "bootstrap-vue": "^2.22.0",
+    "bootstrap-vue": "^2.23.0",
     "core-js": "^3.25.0",
     "jquery": "^3.6.1",
     "lodash.debounce": "^4.0.8",
