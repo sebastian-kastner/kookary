@@ -47,6 +47,11 @@
 
       <div class="row">
         <h4>ZUTATEN</h4>
+        <div class="col">
+          <button v-if="loggedInUserId" class="rounded-button" v-on:click="addIngredientsToShoppingList">
+            <b-icon-bag />
+          </button>
+        </div>
       </div>
 
       <div class="row">
@@ -83,14 +88,16 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Recipe, recipeFactory, Cookup, RecipeIngredient } from "../types";
+import { Recipe, recipeFactory, Cookup, RecipeIngredient, User } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
 import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
 import { userStore } from '../stores/rootStore';
+import { getScreenWidth } from "../utils";
 import AddCookupView from '../components/user/AddCookupView.vue';
+import AddToShoppingListModal from '../components/user/AddToShoppingListModal.vue';
 
 @Component({
   components: { BIconPencil, BIconBell, BIconBellFill },
@@ -152,10 +159,13 @@ export default class RecipeView extends Vue {
     return false;
   }
 
+  get loggedInUser(): User | null {
+    return userStore.user;
+  }
+
   get loggedInUserId(): number | null {
-    const user = userStore.user;
-    if (user && user.id) {
-      return user.id;
+    if (this.loggedInUser && this.loggedInUser.id) {
+      return this.loggedInUser.id;
     }
     return null;
   }
@@ -198,7 +208,7 @@ export default class RecipeView extends Vue {
     this.$modal.show(
       AddCookupView,
       { recipe: this.recipe, cookupAddedCallback: () => this.$modal.hideAll() },
-      { height: 200, width: 350 }
+      { height: "auto", width: 350 }
     );
   }
 
@@ -261,14 +271,29 @@ export default class RecipeView extends Vue {
       ]
     });
   }
+
+  addIngredientsToShoppingList(): void {
+    this.$modal.show(
+      AddToShoppingListModal,
+      { 
+        user: this.loggedInUser,
+        ingredients: Array.from(this.recipe.ingredients),
+        doneHandler: () => this.$modal.hideAll(),
+      },
+      { height: "auto", width: getScreenWidth(350) }
+    );
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../../main.scss";
+@import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 #recipe-view {
-  width: 80%;
+  @include media-breakpoint-up(sm) {
+    width: 80%;
+  }
 
   .row {
     padding-top: 15px;

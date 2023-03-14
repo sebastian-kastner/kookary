@@ -49,6 +49,19 @@ export class ShoppingListClient {
     });
   }
 
+  public async createShoppingItems(userId: number, shoppingItems: ShoppingItem[]): Promise<void> {
+    const promises: Promise<number>[] = [];
+    shoppingItems.forEach(item => {
+      promises.push(this.createShoppingItem(item));
+    });
+
+    return new Promise<void>((resolve, reject) => {
+      Promise.all(promises)
+        .then(() => resolve())
+        .catch(() => reject());
+    });
+  }
+
   public async updateShoppingItem(shoppingItemId: number, shoppingItem: ShoppingItem): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.client.patchShoppingItemItem(shoppingItemId.toString(), this.restModelConverter.convertShoppingItem(shoppingItem))
