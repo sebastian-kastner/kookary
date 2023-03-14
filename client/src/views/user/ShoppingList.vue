@@ -1,5 +1,5 @@
 <template>
-  <div id="home" class="main-content">
+  <div class="main-content">
     <h2>Einkaufsliste</h2>
 
     <div class="form-group">
@@ -55,7 +55,6 @@ export default class ShoppingList extends Vue {
     if (!this.user || !this.user.id) {
       throw new Error("No user logged in!");
     }
-
     this.shoppingListClient.getUserItems(this.user.id).then(items => {
       this.shoppingItems = items;
     });
@@ -159,7 +158,7 @@ export default class ShoppingList extends Vue {
 <style lang="scss">
 @import "../../../main.scss";
 
-#home {
+.main-content {
   padding: $content-padding;
 }
 </style>

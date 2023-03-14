@@ -1,6 +1,6 @@
 <template>
   <div class="row shopping-list-item">
-    <div class="col-auto mr-auto shopping-list-item-main" @click="toggle">
+    <div class="col-auto mr-auto shopping-list-item-main item-name" @click="toggle">
       <b-icon-check-circle v-if="isChecked" @click="toggle"/>
       <b-icon-circle v-else @click="toggle"/>
 
@@ -72,6 +72,10 @@ export default class ShoppingListItem extends Vue {
   border-radius: 15px;
   margin-bottom: 4px;
   padding: 4px 0 5px 0;
+
+  .item-name {
+    min-width: 70%;
+  }
 
   svg {
     font-size: 1.6rem;
