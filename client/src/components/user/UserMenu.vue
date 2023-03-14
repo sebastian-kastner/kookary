@@ -4,9 +4,9 @@
       <b-icon-basket /> Einkaufsliste
     </router-link>
 
-    <router-link class="dropdown-item d-flex align-items-center" to="#">
+    <!-- <router-link class="dropdown-item d-flex align-items-center" to="#">
       <b-icon-list-task /> Merkliste
-    </router-link>
+    </router-link> -->
 
     <div class="dropdown-divider"></div>
 
