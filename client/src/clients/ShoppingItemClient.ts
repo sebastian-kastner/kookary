@@ -83,8 +83,20 @@ export class ShoppingListClient {
         .then(() => resolve())
         .catch((e) => {
           logAxiosError(e);
-          reject(e)
+          reject(e);
         });
+    });
+  }
+
+  public async deleteShoppingItems(shoppingItemIds: number[]): Promise<void> {
+    const promises: Promise<void>[] = [];
+    shoppingItemIds.forEach(id => {
+      promises.push(this.deleteShoppingItem(id));
+    });
+    return new Promise<void>((resolve, reject) => {
+      Promise.all(promises)
+        .then(() => resolve())
+        .catch(() => reject());
     });
   }
 }
