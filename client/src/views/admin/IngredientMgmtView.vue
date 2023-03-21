@@ -73,12 +73,13 @@ export default class IngredientMgmtView extends Vue {
   filter: IngredientFilter = {
     ingredientName: null,
     authorId: "-1",
-    categoryId: "-1",
+    categoryId: "0",
     seasonal: "",
   }
 
   mounted(): void {
     this.ingredients = [...ingredientStore.ingredients];
+    this.applyFilter();
   }
 
   get users(): User[] {
