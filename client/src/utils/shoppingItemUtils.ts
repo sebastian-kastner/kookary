@@ -65,3 +65,13 @@ export function getShoppingItemsByCategory(shoppingItems: ShoppingItem[]): Map<n
   });
   return sortedItemsByCategory;
 }
+
+export function getCategoryName(categoryId: number): string {
+  if (categoryId) {
+    const category = ingredientCategoryStore.categoriesMap.get(categoryId);
+    if (category && category.name) {
+      return category.name;
+    }
+  }
+  return "Sonstiges";
+}

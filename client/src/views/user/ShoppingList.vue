@@ -18,7 +18,7 @@
       <div v-for="entry in itemsByCategory" :key="entry[0]">
         {{ getCategoryName(entry[0]) }}
         <div v-for="shoppingItem in entry[1]" v-bind="shoppingItem" v-bind:key="getShoppingItemId(shoppingItem)">
-          <shopping-list-item :shoppingItem="shoppingItem" @onItemDelete="deleteItem" />
+          <shopping-list-item :shoppingItem="shoppingItem" :removeItemHandler="deleteItem" :toggleItemHandler="toggleItem" />
         </div>
       </div>
       
@@ -35,11 +35,11 @@
 <script lang="ts">
 import { Ingredient, ShoppingItem, User } from "../../types";
 import { Component, Vue } from "vue-property-decorator";
-import { ingredientStore, userStore, ingredientCategoryStore } from "../../stores/rootStore";
+import { ingredientStore, userStore } from "../../stores/rootStore";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 import TypeaheadInput from "../../components/TypeaheadInput.vue"
-import { getShoppingItemsByCategory } from "../../utils/shoppingItemUtils";
+import { getShoppingItemsByCategory, getCategoryName } from "../../utils/shoppingItemUtils";
 
 type AmountAndUnit = {
   amount?: string,
@@ -56,6 +56,8 @@ export default class ShoppingList extends Vue {
   shoppingListClient = new ShoppingListClient();
 
   shoppingItems: ShoppingItem[] = [];
+
+  getCategoryName = getCategoryName;
 
   // fields for new item editor
   amountAndUnit = "";
@@ -99,6 +101,15 @@ export default class ShoppingList extends Vue {
           resolve();
         })
         .catch((err) => { reject(err); })
+    });
+  }
+
+  async toggleItem(shoppingItem: ShoppingItem, newState: boolean): Promise<void> {
+    if (!shoppingItem.shoppingItemId) {
+      throw new Error("No ShoppingItem Id set, cannot set done state!");
+    }
+    this.shoppingListClient.setDoneState(shoppingItem.shoppingItemId, newState).then(() => {
+      shoppingItem.done = newState;
     });
   }
 
@@ -178,16 +189,6 @@ export default class ShoppingList extends Vue {
       amount: amount,
       unit: unit,
     }
-  }
-
-  getCategoryName(categoryId: number): string {
-    if (categoryId) {
-      const category = ingredientCategoryStore.categoriesMap.get(categoryId);
-      if (category && category.name) {
-        return category.name;
-      }
-    }
-    return "Sonstiges";
   }
 
   getIngredientName(item: Ingredient): string {

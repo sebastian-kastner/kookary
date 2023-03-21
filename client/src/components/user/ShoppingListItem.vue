@@ -4,10 +4,10 @@
       <b-icon-check-circle v-if="isChecked" @click="toggle"/>
       <b-icon-circle v-else @click="toggle"/>
 
-      {{getItemLabel()}}
+      <span class="shopping-list-item-label" :class="isChecked ? 'checked-shopping-list-item' : ''">{{getItemLabel()}}</span>
       
     </div>
-    <div class="col-auto" @click="removeItem">
+    <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
       <b-icon-trash />
     </div>
   </div>
@@ -16,15 +16,19 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { ShoppingItem } from "../../types";
-import { ShoppingListClient } from "../../clients/ShoppingItemClient";
-import { getIngredientLabel } from "../../utils/ingredientUtils"
+import { getIngredientLabel } from "../../utils/ingredientUtils";
 
 @Component({
 })
 export default class ShoppingListItem extends Vue {
-  @Prop({ required: true }) shoppingItem!: ShoppingItem;
+  @Prop({ required: true })
+  shoppingItem!: ShoppingItem;
 
-  client = new ShoppingListClient();
+  @Prop({ required: false, default: null })
+  removeItemHandler?: (shoppingItem: ShoppingItem) => Promise<void>;
+
+  @Prop({ required: false, default: null })
+  toggleItemHandler?: (shoppingItem: ShoppingItem, newState: boolean) => Promise<void>;
 
   get isChecked(): boolean {
     if(this.shoppingItem.done) {
@@ -38,21 +42,48 @@ export default class ShoppingListItem extends Vue {
   }
 
   async toggle(): Promise<void> {
-    if (!this.shoppingItem.shoppingItemId) {
-      throw new Error("No ShoppingItem Id set, cannot set done state!");
-    }
     const newDoneState = !this.isChecked;
-    this.client.setDoneState(this.shoppingItem.shoppingItemId, newDoneState).then(() => {
+    if (this.toggleItemHandler) {
+      this.toggleItemHandler(this.shoppingItem, newDoneState);
+    } else {
       this.shoppingItem.done = newDoneState;
-    });
+    }
   }
 
   removeItem(): void {
-    this.$emit("onItemDelete", this.shoppingItem);
+    if(this.removeItemHandler) {
+      this.removeItemHandler(this.shoppingItem);
+    }
   }
 }
 </script>
 
 <style lang="scss">
-@import "../../../scss/shopping-list.scss";
+@import "../../../main.scss";
+
+.shopping-list-item {
+  color: $link-color-main;
+  border: 1px solid $button-color-main;
+  border-radius: 15px;
+  margin-bottom: 4px;
+  padding: 4px 0 5px 0;
+
+  .shopping-list-item-main {
+    min-width: 70%;
+  }
+
+  .shopping-list-item-label {
+    padding-left: 6px;
+  }
+
+  .checked-shopping-list-item {
+    text-decoration: line-through;
+  }
+
+  svg {
+    font-size: 1.6rem;
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
 </style>

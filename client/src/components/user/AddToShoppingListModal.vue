@@ -4,14 +4,8 @@
       <div class="vue-dialog-content-title">Zu Einkaufsliste hinzufügen</div>
 
       <div class="container">
-        <div class="row shopping-list-item" v-for="ingredient in ingredients" v-bind="ingredient"
-          v-bind:key="getIngredientId(ingredient)">
-          <div class="col">
-            {{ getLabel(ingredient) }}
-          </div>
-          <div class="col-auto" @click="removeIngredient(ingredient)">
-            <b-icon-trash />
-          </div>
+        <div v-for="shoppingItem in shoppingItems" v-bind="shoppingItem" v-bind:key="getIngredientId(shoppingItem)">
+          <shopping-list-item :shoppingItem="shoppingItem" />
         </div>
       </div>
     </div>
@@ -27,27 +21,28 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { RecipeIngredient, ShoppingItem, User } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
-import { ShoppingListClient } from "../../clients/ShoppingItemClient"
+import { ShoppingListClient } from "../../clients/ShoppingItemClient";
+import { getShoppingItemsByCategory, getCategoryName } from "../../utils/shoppingItemUtils";
+import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 
-@Component({})
+@Component({
+  components: {
+    ShoppingListItem,
+  },
+})
 export default class AddToShoppingListModal extends Vue {
   @Prop({ required: true }) user!: User;
   @Prop({ required: true }) ingredients!: RecipeIngredient[];
   @Prop({ required: true }) doneHandler!: () => void;
 
   client = new ShoppingListClient();
+  shoppingItems: ShoppingItem[] = [];
 
-  removeIngredient(ingredient: RecipeIngredient): void {
-    this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
-  }
+  getCategoryName = getCategoryName;
 
-  async addToCart(): Promise<void> {
-    if (!this.user.id) {
-      throw new Error("No logged in user!");
-    }
-    const shoppingItems: ShoppingItem[] = [];
-    this.ingredients.forEach((ingredient) => {
-      shoppingItems.push({
+  mounted(): void {
+    this.ingredients.forEach(ingredient => {
+      this.shoppingItems.push({
         done: false,
         ingredientId: ingredient.ingredient?.ingredientId,
         name: ingredient.ingredient?.name,
@@ -56,30 +51,44 @@ export default class AddToShoppingListModal extends Vue {
         user: this.user.id
       })
     });
+  }
 
-    this.client.createShoppingItems(this.user.id, shoppingItems)
+  get itemsByCategory(): Map<number, ShoppingItem[]> {
+    return getShoppingItemsByCategory(this.shoppingItems);
+  }
+
+  async addToCart(): Promise<void> {
+    if (!this.user.id) {
+      throw new Error("No logged in user!");
+    }
+    const shoppingItemsToAdd: ShoppingItem[] = [];
+    this.shoppingItems.forEach(shoppingItem => {
+      if(!shoppingItem.done) {
+        shoppingItemsToAdd.push(shoppingItem);
+      }
+    });
+
+    this.client.createShoppingItems(this.user.id, shoppingItemsToAdd)
       .finally(() => {
         this.doneHandler();
       });
   }
 
-  getIngredientId(ingredient: RecipeIngredient): number {
-    if (ingredient.ingredient?.ingredientId) {
-      return ingredient.ingredient.ingredientId;
+  getIngredientId(shoppingItem: ShoppingItem): number {
+    if (shoppingItem.ingredientId) {
+      return shoppingItem.ingredientId;
     }
     return -1;
   }
 
-  getLabel(ingredient: RecipeIngredient): string {
-    return getIngredientLabel(ingredient.ingredient?.name, ingredient.unit, ingredient.quantity);
+  getLabel(shoppingItem: ShoppingItem): string {
+    return getIngredientLabel(shoppingItem.name, shoppingItem.unit, shoppingItem.quantity);
   }
 
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../../scss/shopping-list.scss";
-
 .vue-dialog-button {
   flex: 1 1 50%;
 }
