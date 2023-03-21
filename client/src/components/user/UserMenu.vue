@@ -8,9 +8,9 @@
       <b-icon-list-task /> Merkliste
     </router-link> -->
 
-    <div class="dropdown-divider"></div>
-
+    
     <div v-if="isAdmin">
+      <div class="dropdown-divider"></div>
       <router-link v-if="isAdmin" class="dropdown-item d-flex align-items-center" to="/admin/users">
         <b-icon-people /> Benutzerverwaltung
       </router-link>
