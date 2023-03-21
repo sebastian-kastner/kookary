@@ -1,10 +1,7 @@
 <template>
-  <div
-    id="ingredient-editor"
-    class="form-group"
-  >
-    <div class="row g-3">
-      <div class="col-sm-6">
+  <div id="ingredient-editor" class="form-group">
+    <div class="form-row">
+      <div class="col-5">
         <input
           v-if="ingredient.ingredient && ingredient.ingredient.ingredientId"
           class="form-control simple-typeahead-input"
@@ -21,7 +18,7 @@
           @selectItem="setIngredient"
         />
       </div>
-      <div class="col-sm">
+      <div class="col-3">
         <input
           type="text"
           class="form-control"
@@ -29,7 +26,7 @@
           v-model="ingredient.quantity"
         />
       </div>
-      <div class="col-sm">
+      <div class="col-3">
         <input
           type="text"
           class="form-control"
@@ -37,17 +34,13 @@
           v-model="ingredient.unit"
         />
       </div>
-      <div class="col-sm">
-        <button
-          type="button"
-          class="btn rounded-button"
-          v-if="ingredientSelected"
-          v-on:click="removeIngredient"
-        >
-          X
-        </button>
+
+      <div class="col-1 d-flex align-items-center delete-ingredient-col" v-if="ingredientSelected" v-on:click="removeIngredient">
+        <b-icon-trash />
       </div>
+      <div class="col-1" v-else />
     </div>
+
   </div>
 </template>
 
@@ -118,6 +111,12 @@ export default class RecipeIngredientEditor extends Vue {
 
   input:disabled {
     background-color: $background-color-highlight-1;
+  }
+
+  .delete-ingredient-col {
+    svg {
+      font-size: 1.5rem;
+    }
   }
 }
 </style>

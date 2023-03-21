@@ -3,10 +3,9 @@
     <div class="col-auto mr-auto shopping-list-item-main item-name" @click="toggle">
       <b-icon-check-circle v-if="isChecked" @click="toggle"/>
       <b-icon-circle v-else @click="toggle"/>
-
       <span class="shopping-list-item-label" :class="isChecked ? 'checked-shopping-list-item' : ''">{{getItemLabel()}}</span>
-      
     </div>
+
     <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
       <b-icon-trash />
     </div>
