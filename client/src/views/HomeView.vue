@@ -39,9 +39,12 @@ export default class HomeView extends Vue {
 
 <style lang="scss">
 @import "../../main.scss";
+@import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 #home {
-  padding: $content-padding;
+  @include media-breakpoint-up(sm) {
+    padding: $content-padding;
+  }
 }
 
 </style>

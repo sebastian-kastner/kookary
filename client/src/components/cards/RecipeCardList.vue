@@ -59,5 +59,6 @@ export default class RecipeCardList extends Vue {
 .recipe-card-header {
     font-size: 1.2rem;
     color: $font-color-highlight;
+    padding-left: 5px;
 }
 </style>
