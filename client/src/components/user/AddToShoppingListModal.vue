@@ -26,7 +26,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { RecipeIngredient, ShoppingItem, User } from "../../types";
-import { getIngredientLabel } from "../../utils";
+import { getIngredientLabel } from "../../utils/ingredientUtils";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient"
 
 @Component({})

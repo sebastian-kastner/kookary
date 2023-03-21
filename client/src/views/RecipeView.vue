@@ -95,7 +95,7 @@ import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
 import { userStore } from '../stores/rootStore';
-import { getScreenWidth } from "../utils";
+import { getScreenWidth } from "../utils/screenUtils";
 import AddCookupView from '../components/user/AddCookupView.vue';
 import AddToShoppingListModal from '../components/user/AddToShoppingListModal.vue';
 

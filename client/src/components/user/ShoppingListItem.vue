@@ -17,7 +17,7 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { ShoppingItem } from "../../types";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
-import { getIngredientLabel } from "../../utils"
+import { getIngredientLabel } from "../../utils/ingredientUtils"
 
 @Component({
 })

@@ -15,10 +15,13 @@
     </div>
 
     <div class="container">
-      <div v-for="shoppingItem in shoppingItems" v-bind="shoppingItem" v-bind:key="getShoppingItemId(shoppingItem)">
-        <shopping-list-item :shoppingItem="shoppingItem" @onItemDelete="deleteItem" />
+      <div v-for="entry in itemsByCategory" :key="entry[0]">
+        {{ getCategoryName(entry[0]) }}
+        <div v-for="shoppingItem in entry[1]" v-bind="shoppingItem" v-bind:key="getShoppingItemId(shoppingItem)">
+          <shopping-list-item :shoppingItem="shoppingItem" @onItemDelete="deleteItem" />
+        </div>
       </div>
-
+      
       <div class="row justify-content-end">
         <button type="button" class="btn rounded-button apply-button" v-on:click="applyChanges">
           Fertig
@@ -32,10 +35,11 @@
 <script lang="ts">
 import { Ingredient, ShoppingItem, User } from "../../types";
 import { Component, Vue } from "vue-property-decorator";
-import { ingredientStore, userStore } from "../../stores/rootStore";
+import { ingredientStore, userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 import TypeaheadInput from "../../components/TypeaheadInput.vue"
+import { getShoppingItemsByCategory } from "../../utils/shoppingItemUtils";
 
 type AmountAndUnit = {
   amount?: string,
@@ -68,6 +72,10 @@ export default class ShoppingList extends Vue {
     this.shoppingListClient.getUserItems(this.user.id).then(items => {
       this.shoppingItems = items;
     });
+  }
+
+  get itemsByCategory(): Map<number, ShoppingItem[]> {
+    return getShoppingItemsByCategory(this.shoppingItems);
   }
 
   get user(): User | null {
@@ -135,7 +143,7 @@ export default class ShoppingList extends Vue {
     const idsToDelete: number[] = [];
     const remainingItems: ShoppingItem[] = [];
     this.shoppingItems.forEach((item) => {
-      if(item.done && item.shoppingItemId) {
+      if (item.done && item.shoppingItemId) {
         idsToDelete.push(item.shoppingItemId);
       } else {
         remainingItems.push(item);
@@ -170,6 +178,16 @@ export default class ShoppingList extends Vue {
       amount: amount,
       unit: unit,
     }
+  }
+
+  getCategoryName(categoryId: number): string {
+    if (categoryId) {
+      const category = ingredientCategoryStore.categoriesMap.get(categoryId);
+      if (category && category.name) {
+        return category.name;
+      }
+    }
+    return "Sonstiges";
   }
 
   getIngredientName(item: Ingredient): string {
