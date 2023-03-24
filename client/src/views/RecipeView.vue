@@ -29,7 +29,9 @@
     </div>
 
     <div class="recipe-image row" v-if="recipeImgSrc">
-      <img :src="recipeImgSrc" />
+      <div>
+        <img :src="recipeImgSrc" />
+      </div>
     </div>
 
     <div id="recipe-description">
@@ -323,10 +325,14 @@ export default class RecipeView extends Vue {
   }
 
   .recipe-image {
-    text-align: center;
+    div {
+      width: 100%;
+      text-align: center;
+    }
+
 
     img {
-      width: 100%;
+      max-width: 100%;
       max-height: 600px;
     }
   }

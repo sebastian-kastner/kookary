@@ -1,7 +1,9 @@
 <template>
   <div class="recipe-card">
     <router-link v-bind:key="recipe.recipeId" :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }">
-      <img :src="recipeImgSrc" />
+      <div class="recipe-card-image">
+        <img :src="recipeImgSrc" />
+      </div>
       <div class="recipe-card-title">
         {{ recipe.name }}
       </div>
@@ -20,14 +22,14 @@ import { mediaObjectStore } from "../../stores/rootStore"
 export default class RecipeCard extends Vue {
   @Prop({ required: true }) recipe!: Recipe;
 
-  get recipeImgSrc(): string | null {
+  get recipeImgSrc(): string {
     if (this.recipe.images.length > 0 && this.recipe.images[0].mediaObjectId) {
       const url = mediaObjectStore.mediaObjectMap.get(this.recipe.images[0].mediaObjectId);
       if (url) {
         return url;
       }
     }
-    return null;
+    return "";
   }
 }
 </script>
@@ -37,18 +39,23 @@ export default class RecipeCard extends Vue {
 @import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 .recipe-card {
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 
   width: 150px;
   margin: 20px;
 
   img {
-    width: 150px;
-    height: 90px;
+    max-width: 150px;
+    max-height: 113px;
   }
 
   .recipe-card-title {
     min-height: 55px;
     padding: 5px;
+  }
+
+  .recipe-card-image {
+    text-align: center;
   }
 
   // size on small
@@ -57,8 +64,8 @@ export default class RecipeCard extends Vue {
     margin: 20px;
 
     img {
-      width: 180px;
-      height: 120px;
+      max-width: 180px;
+      max-height: 135px;
     }
 
     .recipe-card-title {
@@ -73,8 +80,8 @@ export default class RecipeCard extends Vue {
     margin: 20px;
 
     img {
-      width: 250px;
-      min-height: 190px;
+      max-width: 250px;
+      max-height: 190px;
     }
 
     .recipe-card-title {
@@ -87,7 +94,6 @@ export default class RecipeCard extends Vue {
   .recipe-card-title {
     text-align: center;
     background-color: $background-color-main;
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     color: $link-color-main;
     font-weight: bold;
   }
