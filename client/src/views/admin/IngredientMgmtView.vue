@@ -4,16 +4,16 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Author</th>
+          <th scope="col" class="d-none d-sm-table-cell">Author</th>
           <th scope="col">Name</th>
           <th scope="col">Category</th>
-          <th scope="col">Saison von</th>
-          <th scope="col">Saison bis</th>
+          <th scope="col" class="d-none d-sm-table-cell">Saison von</th>
+          <th scope="col" class="d-none d-sm-table-cell">Saison bis</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
+          <td class="d-none d-sm-table-cell">
             <select name="author" class="form-control" v-model="filter.authorId" v-on:change="applyFilter">
               <option value="-1">-</option>
               <option v-for="user in users" v-bind:key="user.id" :value="user.id">{{ user.displayName }}</option>
@@ -29,7 +29,7 @@
                 :value="category.ingredientCategoryId">{{ category.name }}</option>
             </select>
           </td>
-          <td colspan="2">
+          <td colspan="2" class="d-none d-sm-table-cell">
             <select name="seasonal" class="form-control" v-model="filter.seasonal" v-on:change="applyFilter">
               <option value="">-</option>
               <option value="seasonal">Saisonal</option>
@@ -157,4 +157,5 @@ export default class IngredientMgmtView extends Vue {
 
 <style lang="scss">
 @import "../../../main.scss";
+
 </style>

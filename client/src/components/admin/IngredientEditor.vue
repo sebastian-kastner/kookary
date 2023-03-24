@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td class="align-middle">{{ getUserName(ingredient.authorId) }}</td>
+    <td class="align-middle d-none d-sm-table-cell">{{ getUserName(ingredient.authorId) }}</td>
     <td>
       <input type="text" class="form-control" v-model="ingredient.name" v-on:focusout="updateIngredient"
         @keydown.enter="updateIngredient" />
@@ -12,13 +12,13 @@
           :value="category.ingredientCategoryId">{{ category.name }}</option>
       </select>
     </td>
-    <td>
+    <td class="d-none d-sm-table-cell">
       <select name="seasonStart" class="form-control" v-model="ingredient.seasonStart" v-on:change="updateIngredient">
         <option value="">-</option>
         <option v-for="i in monthIndexes" v-bind:key="i" :value="i">{{ getMonthName(i) }}</option>
       </select>
     </td>
-    <td>
+    <td class="d-none d-sm-table-cell">
       <select name="seasonEnd" class="form-control" v-model="ingredient.seasonEnd" v-on:change="updateIngredient">
         <option value="">-</option>
         <option v-for="i in monthIndexes" v-bind:key="i" :value="i">{{ getMonthName(i) }}</option>

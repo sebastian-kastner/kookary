@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>Benutzer {{ user.displayName }} bearbeiten</h3>
-
+    <span>{{ user.email }}</span>
     <div class="container">
       <hr />
       <div class="row">

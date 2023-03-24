@@ -11,7 +11,7 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
-          <th scope="col" class="d-none d-sm-block">eMail</th>
+          <th scope="col" class="d-sm-none d-md-table-cell">eMail</th>
           <th scope="col">Roles</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -21,7 +21,7 @@
         <tr v-for="user in users" v-bind:key="user.id">
           <th scope="row">{{ user.id }}</th>
           <td>{{ user.displayName }}</td>
-          <td class="d-none d-sm-block">{{ user.email }}</td>
+          <td class="d-sm-none d-md-table-cell">{{ user.email }}</td>
           <td>{{ rolesToString(user) }}</td>
           <td>
             <button @click="deleteUser(user)" role="button" class="rounded-button">
