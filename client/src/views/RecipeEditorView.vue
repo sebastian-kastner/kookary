@@ -118,6 +118,14 @@ export default class RecipeEditorView extends Vue {
     return "";
   }
 
+  set recipeDescription(description: string) {
+    if(description) {
+      this.recipe.description = description;
+    } else {
+      this.recipe.description = "";
+    }
+  }
+
   get recipeImage(): MediaObject | null {
     if (this.recipe.images.length > 0) {
       return this.recipe.images[0];
