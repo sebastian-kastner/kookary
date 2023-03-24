@@ -50,7 +50,7 @@ if args.cmd is None or args.cmd == "client":
     
     print(">>> Building client")
     os.chdir(os.path.join(invocation_dir, "client"))
-    os_exec("npm run build")
+    os_exec("make build")
     
     print(">>> Removing old client..")
     
@@ -65,7 +65,7 @@ if args.cmd is None or args.cmd == "client":
 if args.cmd is None or args.cmd == "server":
     # build and upload client
     os.chdir(os.path.join(invocation_dir, "server"))
-    os_exec("composer dump-autoload --optimize --no-dev --classmap-authoritative")
+    os_exec("make build")
     
     print(">>> Uploading server files..")
     

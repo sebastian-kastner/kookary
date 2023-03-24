@@ -9,6 +9,12 @@ server:
 	php bin/console cache:clear
 	symfony server:start
 
+.PHONY: build
+# build for production
+build:
+	composer dump-autoload --optimize --no-dev --classmap-authoritative
+	APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+
 .PHONY: certs
 # create certificates
 certs:
