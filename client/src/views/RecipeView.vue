@@ -210,7 +210,7 @@ export default class RecipeView extends Vue {
     this.$modal.show(
       AddCookupView,
       { recipe: this.recipe, cookupAddedCallback: () => this.$modal.hideAll() },
-      { height: "auto", width: 350 }
+      { height: "auto", width: getScreenWidth(400) }
     );
   }
 
@@ -329,7 +329,6 @@ export default class RecipeView extends Vue {
       width: 100%;
       text-align: center;
     }
-
 
     img {
       max-width: 100%;

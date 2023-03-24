@@ -46,6 +46,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { UserClient } from "../../clients/UserClient"
 import UserEditor from "../../components/admin/UserEditor.vue"
 import AddUser from "../../components/admin/AddUser.vue"
+import { getScreenWidth } from "../../utils/screenUtils";
 
 @Component({})
 export default class UserMgmtView extends Vue {
@@ -77,7 +78,7 @@ export default class UserMgmtView extends Vue {
     this.$modal.show(
       AddUser,
       { userAddedCallback: (user: User) => { this.users.push(user) } },
-      { height: 550 }
+      { height: "auto", width: getScreenWidth(400) }
     );
   }
 
