@@ -35,7 +35,7 @@ export class IngredientsClient {
           author: toIri(USER_ENDPOINT, user.id),
         })
           .then((response) => {
-            resolve(this.toViewModelConverter.convertTag(response.data));
+            resolve(this.toViewModelConverter.convertIngredient(response.data));
           })
           .catch((e) => reject(e));
       } else {
