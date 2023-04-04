@@ -61,4 +61,12 @@ export class IngredientsClient {
         })
     });
   }
+
+  public async deleteIngredient(ingredientId: number): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.client.deleteIngredientItem(ingredientId.toString())
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    });
+  }
 }

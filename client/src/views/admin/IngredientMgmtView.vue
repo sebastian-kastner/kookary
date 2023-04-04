@@ -4,16 +4,17 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col" class="d-none d-sm-table-cell">Author</th>
+          <th scope="col" class="d-none d-ml-table-cell">Author</th>
           <th scope="col">Name</th>
           <th scope="col">Category</th>
           <th scope="col" class="d-none d-sm-table-cell">Saison von</th>
           <th scope="col" class="d-none d-sm-table-cell">Saison bis</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="d-none d-sm-table-cell">
+          <td class="d-none d-ml-table-cell">
             <select name="author" class="form-control" v-model="filter.authorId" v-on:change="applyFilter">
               <option value="-1">-</option>
               <option v-for="user in users" v-bind:key="user.id" :value="user.id">{{ user.displayName }}</option>
@@ -36,11 +37,13 @@
               <option value="nonseasonal">Nicht Saisonal</option>
             </select>
           </td>
+          <td></td>
         </tr>
 
         <ingredient-editor v-for="ingredient in ingredients" 
           v-bind:key="ingredient.ingredientId" 
           :ingredient="ingredient"
+          @onIngredientDelete="removeIngredient"
         />
 
       </tbody>
@@ -127,6 +130,38 @@ export default class IngredientMgmtView extends Vue {
       }
     });
     this.ingredients = filteredIngredients;
+  }
+
+  removeIngredient(ingredient: Ingredient): void {
+    this.$modal.show('dialog', {
+      title: "Zutat löschen",
+      text: "Soll die Zutat " + ingredient.name + " wirklich gelöscht werden?",
+      buttons: [
+        {
+          title: 'Abbrechen',
+          handler: () => {
+            this.$modal.hide('dialog')
+          }
+        },
+        {
+          title: 'Löschen',
+          handler: () => {
+            if (ingredient.ingredientId) {
+              ingredientStore.removeIngredient(ingredient.ingredientId)
+                .then(() => {
+                  // remove ingredient from view
+                  this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
+                })
+                .catch((err) => {
+                  // TODO improve error handling
+                  console.error(err);
+                })
+            }
+            this.$modal.hide('dialog');
+          }
+        }
+      ]
+    });
   }
 
   private appliesToFilter(ingredient: Ingredient, ingredientName: null | string, categoryId: number, authorId: number, seasonal: null | boolean) {

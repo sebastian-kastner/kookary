@@ -1,10 +1,10 @@
 <template>
   <div>
-    <draggable
+    <!-- <draggable
       :list="ingredients"
       class="list-group"
       @end="updatePositions"
-    >
+    > -->
       <div
         v-for="ingredient in ingredients"
         v-bind="ingredient"
@@ -17,7 +17,7 @@
           @onDelete="onDeleteIngredient"
         />
       </div>
-    </draggable>
+    <!-- </draggable> -->
   </div>
 </template>
 

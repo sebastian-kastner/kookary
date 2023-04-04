@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <td class="align-middle d-none d-sm-table-cell">{{ getUserName(ingredient.authorId) }}</td>
+    <td class="align-middle d-none d-ml-table-cell">{{ getUserName(ingredient.authorId) }}</td>
     <td>
       <input type="text" class="form-control" v-model="ingredient.name" v-on:focusout="updateIngredient"
         @keydown.enter="updateIngredient" />
@@ -23,6 +23,11 @@
         <option value="">-</option>
         <option v-for="i in monthIndexes" v-bind:key="i" :value="i">{{ getMonthName(i) }}</option>
       </select>
+    </td>
+    <td class="align-middle">
+      <div @click="removeIngredient(ingredient)">
+        <b-icon-trash />
+      </div>
     </td>
   </tr>
 </template>
@@ -86,6 +91,10 @@ export default class IngredientEditor extends Vue {
       return MONTHS[monthNr - 1];
     }
     return null;
+  }
+
+  removeIngredient(ingredient: Ingredient): void {
+    this.$emit("onIngredientDelete", ingredient);
   }
 
 }

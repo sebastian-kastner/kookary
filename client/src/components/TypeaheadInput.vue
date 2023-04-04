@@ -9,7 +9,7 @@
       type="text"
       :placeholder="placeholder"
       v-model="input"
-      @input="onInput"
+      @v-on:input="onInput"
       @focus="onFocus"
       @blur="onBlur"
       @keydown.down.prevent="onArrowDown"

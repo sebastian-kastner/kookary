@@ -35,6 +35,18 @@ export class IngredientStore extends VuexModule {
     return ingredient;
   }
 
+  @action
+  async removeIngredient(ingredientId: number): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.ingredientClient.deleteIngredient(ingredientId)
+      .then(() => {
+        this.REMOVE_INGREDIENT(ingredientId);
+        resolve();
+      })
+      .catch((err) => reject(err));
+    });
+  }
+
   @mutation
   private SET_INGREDIENTS(ingredients: Ingredient[]): void {
     this.ingredients = ingredients;
@@ -50,6 +62,15 @@ export class IngredientStore extends VuexModule {
     if(ingredient.ingredientId && ingredient.name) {
       this.ingredients.push(ingredient);
       this.ingredientMap.set(ingredient.ingredientId, ingredient);
+    }
+  }
+
+  @mutation
+  private REMOVE_INGREDIENT(ingredientId: number): void {
+    const ingredientToRemove = this.ingredientMap.get(ingredientId);
+    if(ingredientToRemove) {
+      this.ingredientMap.delete(ingredientId);
+      this.ingredients.splice(this.ingredients.indexOf(ingredientToRemove), 1);
     }
   }
 }
