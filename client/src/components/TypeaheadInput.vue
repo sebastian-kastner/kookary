@@ -9,7 +9,8 @@
       type="text"
       :placeholder="placeholder"
       v-model="input"
-      @v-on:input="onInput"
+      @input="onInput"
+      @compositionupdate="onCompositionUpdate($event)"
       @focus="onFocus"
       @blur="onBlur"
       @keydown.down.prevent="onArrowDown"
@@ -168,6 +169,13 @@ export default class TypeaheadInput extends Vue {
       this.currentSelectionIndex = (this.filteredItems.length || 1) - 1;
     }
     this.$emit("onInput", { input: this.input, items: this.filteredItems });
+  }
+
+  onCompositionUpdate(event: CompositionEvent) {
+    if (event.data && this.input !== event.data) {
+      this.input = event.data;
+      this.onInput();
+    }
   }
 
   onFocus() {
