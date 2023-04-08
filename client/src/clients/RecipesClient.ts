@@ -17,6 +17,7 @@ export type RecipeFilter = {
   isSeasonal?: boolean,
   marked?: boolean,
   limit?: number,
+  orderByRand?: boolean,
 }
 
 export type RecipesList = {
@@ -72,13 +73,16 @@ export class RecipesClient {
         limit = filter.limit;
       }
 
+      const orderByRand = filter?.orderByRand;
+
       const getPromise = this.client.getRecipeCollection(
-        page=page,
+        page,
         ingredientFilter,
         tagFilter,
         isSeasonal,
         isMarked,
         limit,
+        orderByRand,
         filter?.nameContains
       );
 

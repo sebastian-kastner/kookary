@@ -4,6 +4,7 @@ api.ts
 api/cookup-api.ts
 api/ingredient-api.ts
 api/ingredient-category-api.ts
+api/login-check-api.ts
 api/media-object-api.ts
 api/recipe-api.ts
 api/shopping-item-api.ts
@@ -22,6 +23,7 @@ models/ingredient-category-jsonld.ts
 models/ingredient-category.ts
 models/ingredient-jsonld.ts
 models/ingredient.ts
+models/inline-object1.ts
 models/inline-response200-hydra-search-hydra-mapping.ts
 models/inline-response200-hydra-search.ts
 models/inline-response200-hydra-view.ts
@@ -34,6 +36,7 @@ models/inline-response2005.ts
 models/inline-response2006.ts
 models/inline-response2007.ts
 models/inline-response2008.ts
+models/inline-response2009.ts
 models/media-object-jsonld-media-object-read.ts
 models/media-object-media-object-read.ts
 models/recipe-ingredient-jsonld.ts

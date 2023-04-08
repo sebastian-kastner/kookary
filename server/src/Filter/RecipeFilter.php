@@ -30,6 +30,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const LIMIT_PROPERTY = "limit";
 
+    const ORDER_BY_RAND_PROPERTY = "order_by_rand";
+
     // for some reason doctrine autogenerates the "_a2" suffix that we need to add here to make things work
     const RECIPE_INGREDIENT_ALIAS = "ri_a2";
     const INGREDIENT_ALIAS = "i";
@@ -39,10 +41,25 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     private $security;
 
+    private $query_limit = "";
+
     public function __construct(CoreSecurity $security, ManagerRegistry $managerRegistry, ?RequestStack $requestStack = null, LoggerInterface $logger = null, array $properties = null, NameConverterInterface $nameConverter = null)
     {
         parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
         $this->security = $security;
+    }
+
+    public function apply(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
+    {
+        // locally store limit property..
+        $this->query_limit = "";
+        foreach ($context['filters'] as $property => $value) {
+            if($value != "" && $this->denormalizePropertyName($property) == self::LIMIT_PROPERTY) {
+                $this->query_limit = $value;
+            }
+        }
+
+        parent::apply($queryBuilder, $queryNameGenerator, $resourceClass, $operationName, $context);
     }
 
     protected function filterProperty(
@@ -68,6 +85,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $this->addMarkedFilter($value, $queryBuilder);
         } else if ($property == self::LIMIT_PROPERTY) {
             $queryBuilder->setMaxResults($value);
+        } else if ($property == self::ORDER_BY_RAND_PROPERTY) {
+            $this->orderByRand($value, $queryBuilder);
         }
     }
 
@@ -154,6 +173,17 @@ final class RecipeFilter extends AbstractContextAwareFilter
         }
     }
 
+    private function orderByRand(string $value, QueryBuilder $queryBuilder) {
+        // nothing to do if random ordering is set to false or no limit was set
+        if ($value != "true") {
+            return;
+        }
+        if ($this->query_limit == "") {
+            throw new Exception("A limit needs to be set when ordering by rand");
+        }
+        $queryBuilder->orderBy("RAND()");
+    }
+
     private function getRecipeAlias(QueryBuilder $queryBuilder): string
     {
         $aliases = $queryBuilder->getRootAliases();
@@ -200,6 +230,12 @@ final class RecipeFilter extends AbstractContextAwareFilter
                 self::LIMIT_PROPERTY,
                 'Limit number of returned recipes',
                 Type::BUILTIN_TYPE_INT,
+                $property,
+            );
+            $description[self::ORDER_BY_RAND_PROPERTY] = $this->createDescription(
+                self::ORDER_BY_RAND_PROPERTY,
+                'Randomly order recipes to be returned. Does not have an effect if '.self::LIMIT_PROPERTY.' is not set',
+                Type::BUILTIN_TYPE_BOOL,
                 $property,
             );
         }

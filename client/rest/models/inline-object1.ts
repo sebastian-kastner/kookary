@@ -14,14 +14,23 @@
 
 
 
-export * from './api/cookup-api';
-export * from './api/ingredient-api';
-export * from './api/ingredient-category-api';
-export * from './api/login-check-api';
-export * from './api/media-object-api';
-export * from './api/recipe-api';
-export * from './api/shopping-item-api';
-export * from './api/tag-api';
-export * from './api/user-api';
-export * from './api/user-recipe-favourites-api';
+/**
+ * 
+ * @export
+ * @interface InlineObject1
+ */
+export interface InlineObject1 {
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    'email': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineObject1
+     */
+    'password': string;
+}
 

@@ -1,6 +1,11 @@
 <template>
   <div id="home" class="main-content">
     <recipe-card-list
+      title="ZUFÄLLIG"
+      :recipeFilter="randRecipeFilter"
+    />
+
+    <recipe-card-list
       title="SAISONAL"
       :recipeFilter="seasonalRecipeFilter"
       :moreLink="{ path: '/recipes', query: { seasonal: null } }"
@@ -11,6 +16,7 @@
       :recipeFilter="markedRecipeFilter"
       :moreLink="{ path: '/recipes', query: { marked: null } }"
     />
+
   </div>
 </template>
 
@@ -32,6 +38,11 @@ export default class HomeView extends Vue {
 
   markedRecipeFilter: RecipeFilter = {
     marked: true,
+    limit: 3,
+  }
+
+  randRecipeFilter: RecipeFilter = {
+    orderByRand: true,
     limit: 3,
   }
 }

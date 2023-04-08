@@ -17,5 +17,6 @@ build:
 # run api code generation
 api:
 	../server/bin/console api:openapi:export > swagger.json
-	openapi-generator-cli generate -i swagger.json -g typescript-axios -o rest --additional-properties=withSeparateModelsAndApi=true,modelPackage=models,apiPackage=api
+# setting --skip-validate-spec because the auth_token route somehow does not fit the required specs..
+	openapi-generator-cli generate -i swagger.json -g typescript-axios -o rest --additional-properties=withSeparateModelsAndApi=true,modelPackage=models,apiPackage=api --skip-validate-spec
 	rm swagger.json

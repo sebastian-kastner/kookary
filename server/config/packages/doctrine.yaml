@@ -18,6 +18,9 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
                 type: attribute
+        dql:
+             numeric_functions:
+                 rand: DoctrineExtension\Query\Mysql\Rand
 
 when@test:
     doctrine:
