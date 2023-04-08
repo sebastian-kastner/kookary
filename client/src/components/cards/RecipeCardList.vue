@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-card-list">
+  <div v-if="recipes.length > 0" class="recipe-card-list">
     <div class="recipe-card-header">{{ title }}</div>
     <div class="row d-flex justify-content-center">
       <recipe-card
