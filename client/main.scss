@@ -52,4 +52,6 @@ $content-padding: 7px;
 .vm--modal {
   border: 1px solid gray;
   padding-top: $content-padding;
+  max-height: 90%;
+  overflow-y: auto !important;
 }
