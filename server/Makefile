@@ -9,6 +9,10 @@ server:
 	php bin/console cache:clear
 	symfony server:start
 
+.PHONY: install
+install:
+	composer install
+
 .PHONY: build
 # build for production
 build:
