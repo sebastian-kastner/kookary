@@ -39,8 +39,6 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     private $security;
 
-    private $query_limit = "";
-
     public function __construct(CoreSecurity $security, ManagerRegistry $managerRegistry, ?RequestStack $requestStack = null, LoggerInterface $logger = null, array $properties = null, NameConverterInterface $nameConverter = null)
     {
         parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
@@ -160,9 +158,6 @@ final class RecipeFilter extends AbstractContextAwareFilter
         // nothing to do if random ordering is set to false or no limit was set
         if ($value != "true") {
             return;
-        }
-        if ($this->query_limit == "") {
-            throw new Exception("A limit needs to be set when ordering by rand");
         }
         $queryBuilder->orderBy("RAND()");
     }

@@ -27,7 +27,8 @@ export type RecipesList = {
   hasMoreItems: boolean,
 }
 
-const recipesPerPage = 24;
+// FIXME: is it possible to get this parameter from the return set? like this it is duplicated in client and server
+const recipesPerPage = 18;
 export class RecipesClient {
     client = new RecipeApi(clientConfiguration);
 
