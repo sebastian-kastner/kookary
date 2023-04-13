@@ -1,6 +1,6 @@
 <?php
 
-namespace DoctrineExtension\Query\Mysql;
+namespace App\DoctrineExtension\Query\Mysql;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\SimpleArithmeticExpression;
