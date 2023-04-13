@@ -38,17 +38,17 @@ export default class HomeView extends Vue {
   }
   seasonalRecipeFilter: RecipeFilter = {
     isSeasonal: true,
-    limit: 3,
+    limit: 6,
   };
 
   markedRecipeFilter: RecipeFilter = {
     marked: true,
-    limit: 3,
+    limit: 6,
   }
 
   randRecipeFilter: RecipeFilter = {
     orderByRand: true,
-    limit: 3,
+    limit: 6,
   }
 }
 </script>

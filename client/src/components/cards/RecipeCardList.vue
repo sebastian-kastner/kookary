@@ -40,9 +40,8 @@ export default class RecipeCardList extends Vue {
     this.recipes = [];
     this.recipesClient.getRecipes(this.recipeFilter).then((recipesList) => {
       const recipes = recipesList.recipes;
-      
-      let count = 3;
-      if (recipes.length < 3) {
+      let count = this.recipeFilter.limit;
+      if (recipes.length < 3 || !count) {
         count = recipes.length;
       }
       for (let i = 0; i < count; i++) {
@@ -55,10 +54,19 @@ export default class RecipeCardList extends Vue {
 
 <style lang="scss" scoped>
 @import "../../../main.scss";
+@import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 .recipe-card-header {
     font-size: 1.2rem;
     color: $font-color-highlight;
     padding-left: 5px;
 }
+
+// hide children above child count 4 on small
+@include media-breakpoint-down(sm) {
+  .recipe-card:nth-child(1n+5) {
+    display: none;
+  }
+}
+
 </style>

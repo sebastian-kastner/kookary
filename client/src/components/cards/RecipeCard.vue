@@ -41,6 +41,14 @@ export default class RecipeCard extends Vue {
 .recipe-card {
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 
+  .recipe-card-title {
+    text-align: center;
+    background-color: $background-color-main;
+    color: $link-color-main;
+    font-weight: bold;
+    overflow-x: hidden;
+  }
+
   $widthOnXs: 143px;
 
   // width on xs
@@ -112,13 +120,5 @@ export default class RecipeCard extends Vue {
     }
   }
 
-
-  .recipe-card-title {
-    text-align: center;
-    background-color: $background-color-main;
-    color: $link-color-main;
-    font-weight: bold;
-    overflow-x: hidden;
-  }
 }
 </style>

@@ -83,11 +83,13 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $this->addSeasonalFilter($value, $queryBuilder);
         } else if ($property == self::MARKED_FILTER_PROPERTY) {
             $this->addMarkedFilter($value, $queryBuilder);
-        } else if ($property == self::LIMIT_PROPERTY) {
-            $queryBuilder->setMaxResults($value);
         } else if ($property == self::ORDER_BY_RAND_PROPERTY) {
             $this->orderByRand($value, $queryBuilder);
+        } else if ($property == self::LIMIT_PROPERTY) {
+            $queryBuilder->getQuery()->setFirstResult(1);
+            $queryBuilder->getQuery()->setMaxResults($value);
         }
+
     }
 
     private function addIngredientFilter(string $value, QueryBuilder $queryBuilder)
