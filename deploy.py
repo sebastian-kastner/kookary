@@ -33,7 +33,12 @@ class CmdExecutor():
     def exec(self, cmd: str):
         self.__print_cmd(cmd)
         if not self.simulate:
-            subprocess.run(cmd, cwd=self.cwd, capture_output=False, check=True, shell=True)
+            try:
+                subprocess.run(cmd, cwd=self.cwd, capture_output=False, check=True, shell=True)
+            except:
+                print("----------")
+                print("Failure during deployment. See messages above. Exiting.")
+                exit(-1)
             
     def exec_and_get(self, cmd: str) -> str:
         result = subprocess.run(cmd, cwd=self.cwd, stdout=subprocess.PIPE, check=True, shell=True)
@@ -42,8 +47,8 @@ class CmdExecutor():
     def ssh_exec(self, cmd: str):
         self.exec("sshpass -p {} ssh {}@{} '{}'".format(self.pw, self.user, self.addr, cmd))
         
-    def ssh_cp(self, localFrm: str, serverTo: str):
-        self.exec("sshpass -p {} scp -r {} {}@{}:{}".format(self.pw, localFrm, self.user, self.addr, serverTo))
+    def ssh_cp(self, localFrom: str, serverTo: str):
+        self.exec("sshpass -p {} scp -r {} {}@{}:{}".format(self.pw, localFrom, self.user, self.addr, serverTo))
         
     def prompt_pw(self):
         # no need to prompt for password when simulating
@@ -58,7 +63,7 @@ class CmdExecutor():
     def __print_cmd(self, cmd: str):
         # replace password of sshpass in output
         # prints all groups, except for the password
-        print(re.sub(r"(sshpass\s+-p\s+)(.+)\s+((?:\bssh\b)|(?:\bscp\b))(.+)", r"\1 *** \3\4", cmd))
+        print("> " + re.sub(r"(sshpass\s+-p\s+)(.+)\s+((?:\bssh\b)|(?:\bscp\b))(.+)", r"\1 *** \3\4", cmd))
         
 def get_env_var(var_name: str, default: str = None):
     if var_name in os.environ:
@@ -85,37 +90,37 @@ revision = cmd.exec_and_get("git rev-parse HEAD")
 cmd.prompt_pw()
 
 if args.target == "all" or args.target == "client":
-    print(">>> Write current git revision to .client_version file..")
+    print("### Write current git revision to .client_version file..")
     cmd.ssh_exec("echo " + revision + " > " + server_home + "/.client_version")
     
     # build and upload client
-    print(">>> Building client")
+    print("### Building client")
     cmd.chdir(os.path.join(invocation_dir, "client"))
     cmd.exec("make build")
     
-    print(">>> Removing old client..")
+    print("### Removing old client..")
     cmd.ssh_exec("rm -rf " + server_home + "/css/")
     cmd.ssh_exec("rm -rf " + server_home + "/js/")
     # this only removes the index.html file. if there are others files, they might need cleanup from time to time
     cmd.ssh_exec("rm -rf " + server_home + "/index.html")
 
-    print(">>> Uploading new client..")
+    print("### Uploading new client..")
     cmd.ssh_cp("dist/*", server_home)
 
 # build and upload server
 if args.target == "all" or args.target == "server":
-    print(">>> Write current git revision to .server_version file..")
+    print("### Write current git revision to .server_version file..")
     cmd.ssh_exec("echo " + revision + " > " + server_home + "/server/.server_version")
     
     cmd.chdir(os.path.join(invocation_dir, "server"))
-    # TODO: check if "public/bundles" needs to be included here (might be created when running composer install)
-    server_uploads = [ "config", "src", "templates", "public/bundles", "public/index.php", "public/.htaccess", "composer.json" ]
+    server_uploads = [ "config", "src", "templates", "migrations",
+                       "public/index.php", "public/.htaccess", "composer.json", "composer.lock", "symfony.lock" ]
     
-    print(">>> Removing php files on server..")
+    print("### Removing php files on server..")
     for upload in server_uploads:
         cmd.ssh_exec("rm -rf " + server_home + "/server/" + upload)
     
-    print(">>> Uploading php files to server..");
+    print("### Uploading php files to server..");
     for upload in server_uploads:
         cmd.ssh_cp(upload, server_home + "/server/" + upload)
         
@@ -123,11 +128,11 @@ if args.target == "all" or args.target == "server":
     composer_cmd = get_env_var("KOOKARY_COMPOSER_CMD", "composer")
     
     if args.clean:
-        print(">>> Optimizing php sources on server..")
+        print("### Optimizing php sources on server..")
         cmd.ssh_exec("cd " + server_home + "/server/ && " + composer_cmd + " dump-autoload --optimize --no-dev --classmap-authoritative")
-        print(">>> Installing php dependencies...")
+        print("### Installing php dependencies...")
         cmd.ssh_exec("cd " + server_home + "/server/ && " + composer_cmd + " install")
-        print(">>> Cleaning php cache on server")
+        print("### Cleaning php cache on server")
         cmd.ssh_exec("cd " + server_home + "/server/ && APP_ENV=prod APP_DEBUG=0 " + php_cmd + " bin/console cache:clear")
 
-print(">>> Done")
+print("### Done")
