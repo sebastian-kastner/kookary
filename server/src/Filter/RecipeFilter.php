@@ -28,8 +28,6 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const MARKED_FILTER_PROPERTY = "marked";
 
-    const LIMIT_PROPERTY = "limit";
-
     const ORDER_BY_RAND_PROPERTY = "order_by_rand";
 
     // for some reason doctrine autogenerates the "_a2" suffix that we need to add here to make things work
@@ -47,19 +45,6 @@ final class RecipeFilter extends AbstractContextAwareFilter
     {
         parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
         $this->security = $security;
-    }
-
-    public function apply(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
-    {
-        // locally store limit property..
-        $this->query_limit = "";
-        foreach ($context['filters'] as $property => $value) {
-            if($value != "" && $this->denormalizePropertyName($property) == self::LIMIT_PROPERTY) {
-                $this->query_limit = $value;
-            }
-        }
-
-        parent::apply($queryBuilder, $queryNameGenerator, $resourceClass, $operationName, $context);
     }
 
     protected function filterProperty(
@@ -85,11 +70,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $this->addMarkedFilter($value, $queryBuilder);
         } else if ($property == self::ORDER_BY_RAND_PROPERTY) {
             $this->orderByRand($value, $queryBuilder);
-        } else if ($property == self::LIMIT_PROPERTY) {
-            $queryBuilder->getQuery()->setFirstResult(1);
-            $queryBuilder->getQuery()->setMaxResults($value);
         }
-
     }
 
     private function addIngredientFilter(string $value, QueryBuilder $queryBuilder)
@@ -228,15 +209,9 @@ final class RecipeFilter extends AbstractContextAwareFilter
                 Type::BUILTIN_TYPE_BOOL,
                 $property,
             );
-            $description[self::LIMIT_PROPERTY] = $this->createDescription(
-                self::LIMIT_PROPERTY,
-                'Limit number of returned recipes',
-                Type::BUILTIN_TYPE_INT,
-                $property,
-            );
             $description[self::ORDER_BY_RAND_PROPERTY] = $this->createDescription(
                 self::ORDER_BY_RAND_PROPERTY,
-                'Randomly order recipes to be returned. Does not have an effect if '.self::LIMIT_PROPERTY.' is not set',
+                'Randomly order recipes to be returned.',
                 Type::BUILTIN_TYPE_BOOL,
                 $property,
             );

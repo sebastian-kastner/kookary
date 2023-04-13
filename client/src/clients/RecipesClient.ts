@@ -16,6 +16,7 @@ export type RecipeFilter = {
   tags?: Tag[],
   isSeasonal?: boolean,
   marked?: boolean,
+  // FIXME: this is currently not considered in the backend, plain pagination is used instead
   limit?: number,
   orderByRand?: boolean,
 }
@@ -68,11 +69,6 @@ export class RecipesClient {
         isMarked = filter.marked;
       }
 
-      let limit = undefined;
-      if(filter?.limit) {
-        limit = filter.limit;
-      }
-
       const orderByRand = filter?.orderByRand;
 
       const getPromise = this.client.getRecipeCollection(
@@ -81,7 +77,6 @@ export class RecipesClient {
         tagFilter,
         isSeasonal,
         isMarked,
-        limit,
         orderByRand,
         filter?.nameContains
       );
@@ -100,7 +95,6 @@ export class RecipesClient {
             apiRecipes.forEach((apiRecipe) => {
               recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
             });
-
 
             resolve({
               recipes: recipes,
