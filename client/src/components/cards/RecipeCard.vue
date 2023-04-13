@@ -43,6 +43,7 @@ export default class RecipeCard extends Vue {
 
   $widthOnXs: 143px;
 
+  // width on xs
   width: $widthOnXs;
   margin: 20px;
 
@@ -60,7 +61,7 @@ export default class RecipeCard extends Vue {
     text-align: center;
   }
 
-  $widthOnSmall: "180px";
+  $widthOnSmall: 180px;
   // size on small
   @include media-breakpoint-up(sm) {
     width: $widthOnSmall;
@@ -78,12 +79,30 @@ export default class RecipeCard extends Vue {
   }
 
   // size on medium
+  $widthOnMedium: 190px;
   @include media-breakpoint-up(md) {
-    width: 250px;
+    width: $widthOnMedium;
     margin: 20px;
 
     img {
-      max-width: 250px;
+      max-width: $widthOnMedium;
+      max-height: 190px;
+    }
+
+    .recipe-card-title {
+      min-height: 75px;
+      padding: 10px;
+    }
+  }
+
+  // size on large and above
+  $widthOnLg: 250px;
+  @include media-breakpoint-up(lg) {
+    width: $widthOnLg;
+    margin: 20px;
+
+    img {
+      max-width: $widthOnLg;
       max-height: 190px;
     }
 
