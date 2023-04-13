@@ -12,6 +12,7 @@
     />
 
     <recipe-card-list
+      v-if="userLoggedIn"
       title="MERKLISTE"
       :recipeFilter="markedRecipeFilter"
       :moreLink="{ path: '/recipes', query: { marked: null } }"
@@ -24,6 +25,7 @@
 import { RecipeFilter } from "../clients/RecipesClient";
 import { Component, Vue } from "vue-property-decorator";
 import RecipeCardList from "../components/cards/RecipeCardList.vue";
+import { userStore } from "../stores/rootStore";
 
 @Component({
   components: {
@@ -31,6 +33,9 @@ import RecipeCardList from "../components/cards/RecipeCardList.vue";
   },
 })
 export default class HomeView extends Vue {
+  get userLoggedIn(): boolean {
+    return userStore.user !== null;
+  }
   seasonalRecipeFilter: RecipeFilter = {
     isSeasonal: true,
     limit: 3,
