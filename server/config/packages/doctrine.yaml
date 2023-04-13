@@ -20,7 +20,7 @@ doctrine:
                 type: attribute
         dql:
              numeric_functions:
-                 rand: DoctrineExtension\Query\Mysql\Rand
+                 rand: App\DoctrineExtension\Query\Mysql\Rand
 
 when@test:
     doctrine:
