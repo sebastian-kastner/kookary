@@ -71,12 +71,14 @@ export class ToRestModelConverter {
 
   public convertRecipe(apiRecipe: Recipe): RecipeJsonld {
     const imageIds: string[] = [];
-    apiRecipe.images.forEach((image) => {
-      const apiId = this.toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
-      if (apiId) {
-        imageIds.push(apiId);
-      }
-    });
+    if (apiRecipe.images && apiRecipe.images.forEach) {
+      apiRecipe.images.forEach((image) => {
+        const apiId = this.toApiId(ep.MEDIA_OBJECTS_ENDPOINT, image.mediaObjectId);
+        if (apiId) {
+          imageIds.push(apiId);
+        }
+      });
+    }
 
     return {
       recipeId: apiRecipe.recipeId,

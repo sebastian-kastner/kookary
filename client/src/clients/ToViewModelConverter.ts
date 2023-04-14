@@ -106,7 +106,7 @@ export class ToViewModelConverter {
 
   public convertRecipe(apiRecipe: RecipeJsonld): Recipe {
     const images: MediaObject[] = [];
-    if (apiRecipe.images) {
+    if (apiRecipe.images && apiRecipe.images.forEach) {
       apiRecipe.images.forEach((image) => {
         if (image) {
           images.push({

@@ -184,13 +184,7 @@ export default class RecipeEditorView extends Vue {
 
   doSubmit(): void {
     if (!this.hasValidName) {
-      this.$toast.open({
-              message: 'Rezeptname muss angegeben werden.',
-              type: 'error',
-              position: 'bottom',
-              dismissible: true,
-              // all of other options may go here
-          });
+      this.$toast.open('Rezeptname muss angegeben werden.');
       this.doValidate = true;
     } else {
       // create new recipe if no recipeId was given
@@ -203,6 +197,7 @@ export default class RecipeEditorView extends Vue {
         })
         .catch((err) => {
           this.isSaving = false;
+          console.error(err);
           const errorDetails = getErrorMessage(err);
           this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
         });

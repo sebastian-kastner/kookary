@@ -94,6 +94,7 @@ export default class RecipeIngredientEditor extends Vue {
         this.setIngredient(ingredient);
       })
       .catch((error) => {
+        console.error(error);
         const errorMessage = getErrorMessage(error);
         this.$toast.open(`Fehler beim Anlegen der Zutat ${ingredientName}: ${errorMessage}`);
       });
