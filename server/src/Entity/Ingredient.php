@@ -42,7 +42,7 @@ class Ingredient
     /**
      * @var string
      */
-    #[ORM\Column(name: "name", type: "string", length: 50, nullable: false)]
+    #[ORM\Column(name: "name", type: "string", length: 50, nullable: false, unique: true)]
     private $name;
 
     /**
