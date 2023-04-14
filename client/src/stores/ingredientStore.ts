@@ -30,6 +30,16 @@ export class IngredientStore extends VuexModule {
 
   @action
   async addIngredient(ingredientName: string): Promise<Ingredient> {
+    // check if an ingredient with that name already exists
+    // FIXME: this is a beautiful race condition and cannot deal with multiple clients adding ingredients
+    // eventually this code should be moved to the backend with more sophisticated logic
+    const existingIngredient = this.ingredients.find((ingredient) => {
+      return (ingredient.name?.trim() === ingredientName.trim());
+    });
+    if (existingIngredient) {
+      return existingIngredient;
+    }
+
     const ingredient = await this.ingredientClient.createIngredient(ingredientName);
     this.ADD_INGREDIENT(ingredient);
     return ingredient;
