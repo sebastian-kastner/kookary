@@ -12,23 +12,21 @@ Vue.use(Vuex);
 // init stores
 export const rootStore = new Vuex.Store({
   modules: {
-    ...extractVuexModule( TagStore ),
-    ...extractVuexModule( IngredientStore ),
-    ...extractVuexModule( MediaObjectStore ),
-    ...extractVuexModule( UserStore ),
-    ...extractVuexModule( IngredientCategoryStore ),
+    ...extractVuexModule(TagStore),
+    ...extractVuexModule(IngredientStore),
+    ...extractVuexModule(MediaObjectStore),
+    ...extractVuexModule(UserStore),
+    ...extractVuexModule(IngredientCategoryStore),
   }
 })
 
 export const ingredientStore = createProxy(rootStore, IngredientStore);
 export const tagStore = createProxy(rootStore, TagStore);
 export const mediaObjectStore = createProxy(rootStore, MediaObjectStore);
-export const userStore = createProxy(rootStore, UserStore); 
+export const userStore = createProxy(rootStore, UserStore);
 export const ingredientCategoryStore = createProxy(rootStore, IngredientCategoryStore);
 
 export async function initStores(): Promise<void> {
-  await userStore.initUserLogin();
-
   const ingredientInit = ingredientStore.init();
   const tagsInit = tagStore.init();
   const mediaObjectInit = mediaObjectStore.init();
@@ -40,6 +38,10 @@ export async function initStores(): Promise<void> {
     userStore.refreshToken();
   }, 180000);
 
-  await Promise.all([ingredientInit, tagsInit, mediaObjectInit, categoryStoreInit, usersInit]);
+  return new Promise<void>((resolve) => {
+    Promise.all([ingredientInit, tagsInit, mediaObjectInit, categoryStoreInit, usersInit]).then(() => {
+      resolve();
+    });
+  });
 }
 
