@@ -11,6 +11,8 @@
       v-model="input"
       @input="onInput"
       @compositionupdate="onCompositionUpdate($event)"
+      @compositionstart="onCompositionStart()"
+      @compositionend="onCompositionEnd()"
       @focus="onFocus"
       @blur="onBlur"
       @keydown.down.prevent="onArrowDown"
@@ -113,6 +115,7 @@ export default class TypeaheadInput extends Vue {
   resetOnSelect!: boolean;
 
   input = "";
+  inputBeforeComposition = "";
   isInputFocused = false;
   currentSelectionIndex = 0;
   minSelectionIndex = 0;
@@ -171,15 +174,23 @@ export default class TypeaheadInput extends Vue {
     this.$emit("onInput", { input: this.input, items: this.filteredItems });
   }
 
+  onCompositionStart(): void {
+    this.inputBeforeComposition = this.input;
+  }
+
   // this is a workaround to make the typeahead work on android in composition mode
   // when in composition mode, @input only fires when pressing space or when
   // choosing one of the android keyboard's suggested values
   // this workaround listens to composition updates and imitates a regular input event
   onCompositionUpdate(event: CompositionEvent) {
     if (event.data && this.input !== event.data) {
-      this.input = event.data;
+      this.input = this.inputBeforeComposition + event.data;
       this.onInput();
     }
+  }
+
+  onCompositionEnd(): void {
+    this.inputBeforeComposition = "";
   }
 
   onFocus() {
