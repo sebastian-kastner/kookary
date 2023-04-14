@@ -150,8 +150,9 @@ export default class RecipeEditorView extends Vue {
       .then((tag) => {
         this.recipe.tags?.push(tag);
       })
-      .catch((reason) => {
-        console.error("Failed to create tag", tagName, reason);
+      .catch((error) => {
+        const errorMessage = getErrorMessage(error);
+        this.$toast.open(`Fehler beim Anlegen des Tags ${tagName}: ${errorMessage}`);
       });
   }
 

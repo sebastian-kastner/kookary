@@ -49,6 +49,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 import { RecipeIngredient, Ingredient } from "../types";
 import TypeaheadInput from "./TypeaheadInput.vue";
 import { ingredientStore } from "../stores/rootStore";
+import { getErrorMessage } from "../utils/errors"
 
 @Component({
   components: { TypeaheadInput },
@@ -92,8 +93,9 @@ export default class RecipeIngredientEditor extends Vue {
       .then((ingredient) => {
         this.setIngredient(ingredient);
       })
-      .catch((reason) => {
-        console.error("Failed to create ingredient", ingredientName, reason);
+      .catch((error) => {
+        const errorMessage = getErrorMessage(error);
+        this.$toast.open(`Fehler beim Anlegen der Zutat ${ingredientName}: ${errorMessage}`);
       });
   }
 }

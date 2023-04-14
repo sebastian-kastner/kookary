@@ -40,6 +40,7 @@ import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 import TypeaheadInput from "../../components/TypeaheadInput.vue"
 import { getShoppingItemsByCategory, getCategoryName } from "../../utils/shoppingItemUtils";
+import { getErrorMessage } from "../../utils/errors";
 
 type AmountAndUnit = {
   amount?: string,
@@ -165,9 +166,10 @@ export default class ShoppingList extends Vue {
       .then(() => {
         this.shoppingItems = remainingItems;
       })
-      .catch(() => {
+      .catch((err) => {
         // re-synchronize items with database in case of error
-        console.error("Failed to delete shopping items " + idsToDelete.toString + ". Re-synching with database.")
+        const errorMessage = getErrorMessage(err);
+        this.$toast.open(`Fehler beim Löschen der Items: ${errorMessage}`);
         this.readShoppingItems();
       });
   }

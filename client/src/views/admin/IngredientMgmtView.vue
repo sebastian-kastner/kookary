@@ -57,6 +57,7 @@ import { Ingredient, User, IngredientCategory } from "../../types";
 import { Component, Vue } from "vue-property-decorator";
 import { ingredientStore, userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import IngredientEditor from '../../components/admin/IngredientEditor.vue';
+import { getErrorMessage } from "../../utils/errors";
 
 type IngredientFilter = {
   ingredientName: string | null;
@@ -153,8 +154,8 @@ export default class IngredientMgmtView extends Vue {
                   this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
                 })
                 .catch((err) => {
-                  // TODO improve error handling
-                  console.error(err);
+                  const errorMessage = getErrorMessage(err);
+                  this.$toast.open(`Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`);
                 })
             }
             this.$modal.hide('dialog');

@@ -130,7 +130,7 @@ export default class RecipeView extends Vue {
         this.setRecipeFavouriteState();
       });
     } else {
-      console.error("No recipe ID given..");
+      this.$toast.open("Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde");
     }
   }
 
