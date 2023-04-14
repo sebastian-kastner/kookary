@@ -55,7 +55,8 @@
         v-model="recipeDescription"
       />
     </div>
-    <button class="btn rounded-button" v-on:click="doSubmit">Submit</button>
+
+    <save-button buttonText="Speichern" :isLoading="isSaving" @onSave="doSubmit"/>
   </div>
 </template>
 
@@ -74,13 +75,15 @@ import { RecipesClient } from "../clients/RecipesClient";
 import RecipeIngredientsEditor from "../components/RecipeIngredientsEditor.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue";
+import SaveButton from "../components/SaveButton.vue";
 
 @Component({
-  components: { RecipeIngredientsEditor, InlineItemList, ImageUpload },
+  components: { RecipeIngredientsEditor, InlineItemList, ImageUpload, SaveButton },
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
   recipe: Recipe = recipeFactory();
+  isSaving = false;
 
   recipesClient: RecipesClient = new RecipesClient();
 
@@ -119,7 +122,7 @@ export default class RecipeEditorView extends Vue {
   }
 
   set recipeDescription(description: string) {
-    if(description) {
+    if (description) {
       this.recipe.description = description;
     } else {
       this.recipe.description = "";
@@ -182,12 +185,16 @@ export default class RecipeEditorView extends Vue {
       this.doValidate = true;
     } else {
       // create new recipe if no recipeId was given
+      this.isSaving = true;
       this.recipesClient
         .saveRecipe(this.recipe)
         .then(() => {
+          this.isSaving = false;
           this.$router.push({ path: "/recipes" });
         })
         .catch((err) => {
+          this.isSaving = false;
+          // TODO: show toast here!
           console.error("failed to save recipe.", err);
         });
     }
@@ -201,10 +208,9 @@ export default class RecipeEditorView extends Vue {
 #recipe-editor-view {
 
   padding: $content-padding;
-  
+
   label {
     font-weight: bold;
   }
 }
-
 </style>
