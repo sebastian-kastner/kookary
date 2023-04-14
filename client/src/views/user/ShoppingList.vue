@@ -23,9 +23,10 @@
       </div>
       
       <div class="row justify-content-end">
-        <button type="button" class="btn rounded-button apply-button" v-on:click="applyChanges">
+        <save-button buttonText="Speichern" :isLoading="isSaving" @onSave="applyChanges"/>
+        <!-- <button type="button" class="btn rounded-button apply-button" v-on:click="applyChanges">
           Fertig
-        </button>
+        </button> -->
       </div>
 
     </div>
@@ -40,6 +41,7 @@ import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 import TypeaheadInput from "../../components/TypeaheadInput.vue"
 import { getShoppingItemsByCategory, getCategoryName } from "../../utils/shoppingItemUtils";
+import SaveButton from "../../components/SaveButton.vue";
 import { getErrorMessage } from "../../utils/errors";
 
 type AmountAndUnit = {
@@ -50,7 +52,8 @@ type AmountAndUnit = {
 @Component({
   components: {
     ShoppingListItem,
-    TypeaheadInput
+    TypeaheadInput,
+    SaveButton
   },
 })
 export default class ShoppingList extends Vue {
@@ -63,6 +66,8 @@ export default class ShoppingList extends Vue {
   // fields for new item editor
   amountAndUnit = "";
   itemName = "";
+
+  isSaving = false;
 
   mounted(): void {
     this.readShoppingItems();
@@ -161,12 +166,16 @@ export default class ShoppingList extends Vue {
         remainingItems.push(item);
       }
     });
+
     // delete items in done state
+    this.isSaving = true;
     this.shoppingListClient.deleteShoppingItems(idsToDelete)
       .then(() => {
+        this.isSaving = false;
         this.shoppingItems = remainingItems;
       })
       .catch((err) => {
+        this.isSaving = false;
         // re-synchronize items with database in case of error
         const errorMessage = getErrorMessage(err);
         this.$toast.open(`Fehler beim Löschen der Items: ${errorMessage}`);

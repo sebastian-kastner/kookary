@@ -1,12 +1,8 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <button class="btn rounded-button" v-on:click="emitSave" :disabled="isLoading">
-        {{ buttonText }}
-        <b-spinner small label="Speichern" v-bind:style="(isLoading) ? 'visibility: visible' : 'visibility: hidden'" />
-      </button>
-    </div>
-  </div>
+  <button class="btn rounded-button" v-on:click="emitSave" :disabled="isLoading">
+    {{ buttonText }}
+    <b-spinner small label="Speichern" v-bind:style="(isLoading) ? 'visibility: visible' : 'visibility: hidden'" />
+  </button>
 </template>
 
 <script lang="ts">
@@ -18,7 +14,7 @@ export default class SaveButton extends Vue {
   @Prop({ required: true })
   isLoading!: boolean;
 
-  @Prop({ required: true})
+  @Prop({ required: true })
   buttonText!: string;
 
   emitSave(): void {
@@ -33,5 +29,4 @@ export default class SaveButton extends Vue {
 .btn {
   padding-left: 28px;
 }
-
 </style>
