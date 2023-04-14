@@ -76,6 +76,7 @@ import RecipeIngredientsEditor from "../components/RecipeIngredientsEditor.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue";
 import SaveButton from "../components/SaveButton.vue";
+import { getErrorMessage } from "../utils/errors"
 
 @Component({
   components: { RecipeIngredientsEditor, InlineItemList, ImageUpload, SaveButton },
@@ -182,6 +183,13 @@ export default class RecipeEditorView extends Vue {
 
   doSubmit(): void {
     if (!this.hasValidName) {
+      this.$toast.open({
+              message: 'Rezeptname muss angegeben werden.',
+              type: 'error',
+              position: 'bottom',
+              dismissible: true,
+              // all of other options may go here
+          });
       this.doValidate = true;
     } else {
       // create new recipe if no recipeId was given
@@ -194,8 +202,8 @@ export default class RecipeEditorView extends Vue {
         })
         .catch((err) => {
           this.isSaving = false;
-          // TODO: show toast here!
-          console.error("failed to save recipe.", err);
+          const errorDetails = getErrorMessage(err);
+          this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
         });
     }
   }
