@@ -1,10 +1,11 @@
 <template>
   <div>
-    <!-- <draggable
+    <draggable
       :list="ingredients"
       class="list-group"
+      handle=".draggable-handle"
       @end="updatePositions"
-    > -->
+    >
       <div
         v-for="ingredient in ingredients"
         v-bind="ingredient"
@@ -13,11 +14,12 @@
         <recipe-ingredient-editor
           :ingredient="ingredient"
           :existingIngredients="existingIngredients"
+          handleClass="draggable-handle"
           @onNameChanged="updateIngredientName"
           @onDelete="onDeleteIngredient"
         />
       </div>
-    <!-- </draggable> -->
+    </draggable>
   </div>
 </template>
 

@@ -1,6 +1,9 @@
 <template>
   <div id="ingredient-editor" class="form-group">
     <div class="form-row">
+      <div class="col-1 d-flex align-items-center justify-content-center" :class="handleClass">
+        <b-icon-arrow-down-up />
+      </div>
       <div class="col-5">
         <input
           v-if="ingredient.ingredient && ingredient.ingredient.ingredientId"
@@ -26,7 +29,7 @@
           v-model="ingredient.quantity"
         />
       </div>
-      <div class="col-3">
+      <div class="col-2">
         <input
           type="text"
           class="form-control"
@@ -35,7 +38,7 @@
         />
       </div>
 
-      <div class="col-1 d-flex align-items-center delete-ingredient-col" v-if="ingredientSelected" v-on:click="removeIngredient">
+      <div class="col-1 d-flex align-items-center justify-content-center delete-ingredient-col" v-if="ingredientSelected" v-on:click="removeIngredient">
         <b-icon-trash />
       </div>
       <div class="col-1" v-else />
@@ -57,6 +60,7 @@ import { getErrorMessage } from "../utils/errors"
 export default class RecipeIngredientEditor extends Vue {
   @Prop({ required: true }) ingredient!: RecipeIngredient;
   @Prop({ required: true }) existingIngredients!: Ingredient[];
+  @Prop({ required: true }) handleClass!: string;
 
   ingredientSelected = false;
 
