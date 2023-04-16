@@ -17,6 +17,14 @@ export function getErrorMessage(err: any): string {
     if (errorDetails) {
       return errorDetails;
     }
+  } else if (err.message || err.name) {
+    if (err.name && err.message) {
+      return err.name + ": " + err.message;
+    } else if (err.name) {
+      return err.name;
+    } else {
+      return err.message;
+    }
   } else if (typeof err === 'string') {
     return err;
   }
