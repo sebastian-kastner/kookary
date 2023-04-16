@@ -63,6 +63,7 @@
             <router-link :to="{ path: '/recipes', query: { ingredients: getIngredientId(ingredient) } }">
               {{ getIngredientName(ingredient) }}
             </router-link>
+            <b-icon-calendar-week v-if="isSeasonal(ingredient.ingredient)"/>
           </li>
         </ul>
       </div>
@@ -90,7 +91,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Recipe, recipeFactory, Cookup, RecipeIngredient, User } from "../types";
+import { Recipe, recipeFactory, Cookup, RecipeIngredient, User, Ingredient } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
 import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
@@ -100,6 +101,8 @@ import { userStore } from '../stores/rootStore';
 import { getScreenWidth } from "../utils/screenUtils";
 import AddCookupView from '../components/user/AddCookupView.vue';
 import AddToShoppingListModal from '../components/user/AddToShoppingListModal.vue';
+
+const currentMonth = new Date().getMonth() + 1;
 
 @Component({
   components: { BIconPencil, BIconBell, BIconBellFill },
@@ -245,6 +248,18 @@ export default class RecipeView extends Vue {
 
   getIngredientName(ingredient: RecipeIngredient): string | undefined {
     return ingredient.ingredient?.name;
+  }
+
+  isSeasonal(ingredient?: Ingredient | null): boolean {
+    if(ingredient && ingredient.seasonStart && ingredient.seasonEnd) {
+      if (ingredient.seasonStart <= ingredient.seasonEnd) {
+        return (currentMonth >= ingredient.seasonStart  && currentMonth <= ingredient.seasonEnd);
+      }
+      else if (ingredient.seasonStart > ingredient.seasonEnd) {
+        return (currentMonth >= ingredient.seasonEnd  && currentMonth <= ingredient.seasonStart);
+      }
+    }
+    return false;
   }
 
   deleteRecipe(): void {
