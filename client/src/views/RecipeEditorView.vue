@@ -2,66 +2,41 @@
   <div id="recipe-editor-view" class="main-content">
     <div class="form-group">
       <label for="recipe-name">Rezeptname</label>
-      <input
-        autocomplete="off"
-        class="form-control"
-        :class="doValidate && !hasValidName ? 'is-invalid' : ''"
-        id="recipe-name"
-        placeholder="Rezeptname"
-        v-model="recipe.name"
-      />
+      <input autocomplete="off" class="form-control" :class="doValidate && !hasValidName ? 'is-invalid' : ''"
+        id="recipe-name" placeholder="Rezeptname" v-model="recipe.name" />
     </div>
     <div class="form-group">
       <label>Rezeptbild</label>
-      <image-upload
-        :input-file="recipeImage"
-        @imageSelected="onRecipeImageSelected"
-        @imageRemoved="onRecipeImageRemoved"
-      />
+      <image-upload :input-file="recipeImage" @imageSelected="onRecipeImageSelected"
+        @imageRemoved="onRecipeImageRemoved" />
     </div>
     <div class="form-group">
       <label>Tags</label>
       <div>
-        <inline-item-list
-          :suggestItems="existingTags"
-          :items="recipe.tags"
-          :addNewHandler="createTag"
-        />
+        <inline-item-list :suggestItems="existingTags" :items="recipe.tags" :addNewHandler="createTag" />
       </div>
     </div>
     <div class="form-group">
       <label>Quelle</label>
-      <input
-        autocomplete="off"
-        class="form-control"
-        id="recipe-source"
-        placeholder="Rezept Quelle"
-        v-model="recipe.source"
-      />
+      <input autocomplete="off" class="form-control" id="recipe-source" placeholder="Rezept Quelle"
+        v-model="recipe.source" />
     </div>
     <div class="form-group">
       <label>Zutaten</label>
-      <recipe-ingredients-editor
-        :ingredients="recipe.ingredients"
-        :existingIngredients="existingIngredients"
-      />
+      <recipe-ingredients-editor :ingredients="recipe.ingredients" :existingIngredients="existingIngredients" />
     </div>
     <div class="form-group">
       <label>Beschreibung</label>
-      <textarea
-        class="form-control"
-        id="exampleFormControlTextarea1"
-        rows="10"
-        v-model="recipeDescription"
-      />
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" v-model="recipeDescription" />
     </div>
 
-    <save-button buttonText="Speichern" :isLoading="isSaving" @onSave="doSubmit"/>
+    <save-button buttonText="Speichern" :isLoading="isSaving" @onSave="doSubmit" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { NavigationGuardNext, Route } from "vue-router";
 import { v4 as uuid } from "uuid";
 import {
   Ingredient,
@@ -76,10 +51,13 @@ import RecipeIngredientsEditor from "../components/RecipeIngredientsEditor.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue";
 import SaveButton from "../components/SaveButton.vue";
+import ConfirmLeaveModal from "../components/user/ConfirmLeaveModal.vue";
 import { getErrorMessage } from "../utils/errors"
+import { getScreenWidth } from "../utils/screenUtils";
 
 @Component({
   components: { RecipeIngredientsEditor, InlineItemList, ImageUpload, SaveButton },
+  beforeRouteLeave: RecipeEditorView.navGuard,
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
@@ -89,6 +67,46 @@ export default class RecipeEditorView extends Vue {
   recipesClient: RecipesClient = new RecipesClient();
 
   doValidate = false;
+
+  isDirty = false;
+
+  ingredientsHaveChanges = false;
+
+  initialized = false;
+
+  ingredientsInitialized = false;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static navGuard(_to: Route, _from: Route, next: NavigationGuardNext<any>): void {
+    if (this instanceof RecipeEditorView) {
+      if (this.isDirty) {
+        const modalHandler = this.$modal;
+        const submitHandler = this.doSubmit;
+
+        modalHandler.show(
+          ConfirmLeaveModal,
+          {
+            saveHandler: () => {
+              submitHandler().finally(() => {
+                modalHandler.hideAll()
+              })
+            },
+            discardHandler: () => { 
+              modalHandler.hideAll();
+              next();
+            },
+            isSaving: this.isSaving
+          },
+          { height: "auto", width: getScreenWidth(400) }
+        );
+      } else {
+        next();
+      }
+    }
+    else {
+      this.$toast.open(`Unbekannter Fehler beim Versuch den Rezept Editor zu verlassen.`);
+    }
+  }
 
   mounted(): void {
     const routeRecipeId = this.$route.query["recipeId"];
@@ -104,6 +122,26 @@ export default class RecipeEditorView extends Vue {
     } else {
       this.recipe = recipeFactory();
       this.addNewIngredient();
+    }
+  }
+
+  @Watch("recipe", { deep: true })
+  dirtyStateWatcher() {
+    // ignore first change on component mount
+    if (this.initialized) {
+      this.isDirty = true;
+    } else {
+      this.initialized = true;
+    }
+  }
+
+  @Watch("recipe.ingredients", { deep: true })
+  ingredientsDirtyStateWatcher() {
+    // ignore first change on component mount
+    if (this.ingredientsInitialized) {
+      this.ingredientsHaveChanges = true;
+    } else {
+      this.ingredientsInitialized = true;
     }
   }
 
@@ -182,25 +220,35 @@ export default class RecipeEditorView extends Vue {
     }
   }
 
-  doSubmit(): void {
+  async doSubmit(): Promise<void> {
+    // nothing to do if no changes were made
+    if (!this.isDirty) {
+      return;
+    }
+
     if (!this.hasValidName) {
       this.$toast.open('Rezeptname muss angegeben werden.');
       this.doValidate = true;
     } else {
-      // create new recipe if no recipeId was given
       this.isSaving = true;
-      this.recipesClient
-        .saveRecipe(this.recipe)
-        .then(() => {
-          this.isSaving = false;
-          this.$router.push({ path: "/recipes" });
-        })
-        .catch((err) => {
-          this.isSaving = false;
-          console.error(err);
-          const errorDetails = getErrorMessage(err);
-          this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
-        });
+      return new Promise<void>((resolve, reject) => {
+        this.recipesClient
+          .saveRecipe(this.recipe, this.ingredientsHaveChanges)
+          .then(() => {
+            this.isDirty = false;
+            this.ingredientsHaveChanges = false;
+            this.isSaving = false;
+            resolve();
+            this.$router.push({ path: "/recipes" });
+          })
+          .catch((err) => {
+            this.isSaving = false;
+            console.error(err);
+            const errorDetails = getErrorMessage(err);
+            reject();
+            this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
+          });
+      });
     }
   }
 }

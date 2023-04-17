@@ -139,7 +139,7 @@ export class RecipesClient {
      * @param recipe the recipe to be saved/updated
      * @returns the saved recipe
      */
-    public async saveRecipe(recipe: Recipe): Promise<Recipe> {
+    public async saveRecipe(recipe: Recipe, updateIngredients?: boolean): Promise<Recipe> {
       // if a new file is set, upload the new file
       if(recipe.images.length > 0 && recipe.images[0].file) {
         const uploadedFile = await mediaObjectStore.createMediaObject({
@@ -152,6 +152,10 @@ export class RecipesClient {
       const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
 
       if(recipe.recipeId) {
+        // set ingredients to null to exclude them from patch update
+        if (updateIngredients === false) {
+          restRecipe.ingredients = undefined;
+        }
         const saveInternal = await this.saveInternal(this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe));
         // FIXME this is fugly
         // no need to wait for the deletions.. keep fingers crossed, hope for the best
