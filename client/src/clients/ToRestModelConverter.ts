@@ -80,11 +80,16 @@ export class ToRestModelConverter {
       });
     }
 
+    let servings = -1;
+    if (apiRecipe.servings && typeof apiRecipe.servings === "number" && apiRecipe.servings > 0) {
+      servings = apiRecipe.servings;
+    }
+
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
       description: apiRecipe.description,
-      servings: apiRecipe.servings,
+      servings: servings,
       source: apiRecipe.source,
       dateAdded: apiRecipe.dateAdded,
       images: imageIds,

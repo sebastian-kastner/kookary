@@ -64,7 +64,7 @@ class Recipe
      * @var int|null
      */
     #[ORM\Column(name: "servings", type: "integer", nullable: true)]
-    private $servings;
+    private $servings = -1;
 
     /**
      * @var string|null

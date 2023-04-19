@@ -56,15 +56,19 @@
         </div>
       </div>
 
+      <div class="row" v-if="showServingsForm">
+        <div class="form-group form-inline">
+          Für
+          <input type="number" class="form-control mx-sm-1 servings-input" v-model.number="internalServings"
+            @input="setQuanitityFactor">
+          Personen
+        </div>
+      </div>
+
       <div class="row">
         <ul>
-          <li v-for="ingredient in recipe.ingredients" v-bind:key="ingredient.uuid">
-            {{ ingredient.quantity }} {{ ingredient.unit }}
-            <router-link :to="{ path: '/recipes', query: { ingredients: getIngredientId(ingredient) } }">
-              {{ getIngredientName(ingredient) }}
-            </router-link>
-            <b-icon-calendar-week v-if="isSeasonal(ingredient.ingredient)"/>
-          </li>
+          <recipe-ingredient-list-item v-for="ingredient in recipe.ingredients" v-bind:key="ingredient.uuid"
+            :ingredient="ingredient" :quantityFactor="quantityFactor" />
         </ul>
       </div>
 
@@ -91,21 +95,19 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import { Recipe, recipeFactory, Cookup, RecipeIngredient, User, Ingredient } from "../types";
+import { Recipe, recipeFactory, Cookup, User } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
-import { BIconPencil, BIconBell, BIconBellFill } from "bootstrap-vue";
 import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
 import { userStore } from '../stores/rootStore';
 import { getScreenWidth } from "../utils/screenUtils";
 import AddCookupView from '../components/user/AddCookupView.vue';
 import AddToShoppingListModal from '../components/user/AddToShoppingListModal.vue';
-
-const currentMonth = new Date().getMonth() + 1;
+import RecipeIngredientListItem from '../components/RecipeIngredientListItem.vue'
 
 @Component({
-  components: { BIconPencil, BIconBell, BIconBellFill },
+  components: { RecipeIngredientListItem },
 })
 export default class RecipeView extends Vue {
   recipeId?: string;
@@ -119,6 +121,12 @@ export default class RecipeView extends Vue {
 
   doValidate = false;
 
+  showServingsForm = false;
+
+  internalServings = -1;
+
+  quantityFactor = 1;
+
   // poor man's regex for url validation
   urlRegex = new RegExp(
     /^((http|https):\/\/)?([a-z0-9\-\_]+\.)?([a-z0-9\-\_]+\.)([a-z0-9]){2,5}((\/?)[a-z0-9\-_~\:\/\?\#\[\]\@\!\$\&\'\(\)\*\+\ \,\;\%\=]*)?$/i
@@ -131,6 +139,10 @@ export default class RecipeView extends Vue {
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
         this.setRecipeFavouriteState();
+        if (typeof this.recipe.servings === 'number' && this.recipe.servings > 0) {
+          this.showServingsForm = true;
+          this.internalServings = this.recipe.servings;
+        }
       });
     } else {
       this.$toast.open("Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde");
@@ -242,24 +254,12 @@ export default class RecipeView extends Vue {
     }
   }
 
-  getIngredientId(ingredient: RecipeIngredient): number | undefined {
-    return ingredient.ingredient?.ingredientId;
-  }
-
-  getIngredientName(ingredient: RecipeIngredient): string | undefined {
-    return ingredient.ingredient?.name;
-  }
-
-  isSeasonal(ingredient?: Ingredient | null): boolean {
-    if(ingredient && ingredient.seasonStart && ingredient.seasonEnd) {
-      if (ingredient.seasonStart <= ingredient.seasonEnd) {
-        return (currentMonth >= ingredient.seasonStart  && currentMonth <= ingredient.seasonEnd);
-      }
-      else if (ingredient.seasonStart > ingredient.seasonEnd) {
-        return (currentMonth >= ingredient.seasonEnd  && currentMonth <= ingredient.seasonStart);
-      }
+  setQuanitityFactor(): void {
+    if (this.recipe.servings) {
+      this.quantityFactor = this.internalServings / this.recipe.servings;
+    } else {
+      this.quantityFactor = 1;
     }
-    return false;
   }
 
   deleteRecipe(): void {
@@ -292,7 +292,7 @@ export default class RecipeView extends Vue {
   addIngredientsToShoppingList(): void {
     this.$modal.show(
       AddToShoppingListModal,
-      { 
+      {
         user: this.loggedInUser,
         ingredients: Array.from(this.recipe.ingredients),
         doneHandler: () => this.$modal.hideAll(),
@@ -354,6 +354,10 @@ export default class RecipeView extends Vue {
   .tags {
     margin-top: 20px;
     margin-bottom: 10px;
+  }
+
+  .servings-input {
+    width: 60px;
   }
 }
 </style>

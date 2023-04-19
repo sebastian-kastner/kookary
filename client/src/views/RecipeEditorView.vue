@@ -16,10 +16,19 @@
         <inline-item-list :suggestItems="existingTags" :items="recipe.tags" :addNewHandler="createTag" />
       </div>
     </div>
-    <div class="form-group">
-      <label>Quelle</label>
-      <input autocomplete="off" class="form-control" id="recipe-source" placeholder="Rezept Quelle"
-        v-model="recipe.source" />
+    <div class="row">
+      <div class="col-5">
+        <div class="form-group">
+          <label>Portionen</label>
+          <input autocomplete="off" class="form-control" id="recipe-servings" type="number" v-model.number="recipe.servings" />
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="form-group">
+          <label>Quelle</label>
+          <input autocomplete="off" class="form-control" id="recipe-source" placeholder="Rezept Quelle" v-model="recipe.source" />
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label>Zutaten</label>
@@ -91,7 +100,7 @@ export default class RecipeEditorView extends Vue {
                 modalHandler.hideAll()
               })
             },
-            discardHandler: () => { 
+            discardHandler: () => {
               modalHandler.hideAll();
               next();
             },

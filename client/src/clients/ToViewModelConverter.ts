@@ -116,13 +116,18 @@ export class ToViewModelConverter {
       });
     }
 
+    let servings: number | undefined = undefined;
+    if (apiRecipe.servings && apiRecipe.servings > 0) {
+      servings = apiRecipe.servings;
+    }
+
     const authorId = toId(apiRecipe.author);
     return {
       recipeId: apiRecipe.recipeId,
       name: apiRecipe.name,
       images: images,
       description: apiRecipe.description,
-      servings: apiRecipe.servings,
+      servings: servings,
       source: this.getStringOrNull(apiRecipe.source),
       dateAdded: apiRecipe.dateAdded,
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
