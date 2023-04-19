@@ -27,6 +27,6 @@ export default class SaveButton extends Vue {
 @import "../../main.scss";
 
 .btn {
-  padding-left: 28px;
+  padding-left: 37px;
 }
 </style>
