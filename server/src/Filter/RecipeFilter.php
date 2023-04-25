@@ -30,11 +30,12 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const ORDER_BY_RAND_PROPERTY = "order_by_rand";
 
+    const AUTHOR_FILTER_PROPERTY = "author";
+
     // for some reason doctrine autogenerates the "_a2" suffix that we need to add here to make things work
     const RECIPE_INGREDIENT_ALIAS = "ri_a2";
     const INGREDIENT_ALIAS = "i";
     const TAG_ALIAS = "t";
-
     const FAVOURITE_RECIPE_ALIAS = "f";
 
     private $security;
@@ -68,6 +69,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $this->addMarkedFilter($value, $queryBuilder);
         } else if ($property == self::ORDER_BY_RAND_PROPERTY) {
             $this->orderByRand($value, $queryBuilder);
+        } else if ($property == self::AUTHOR_FILTER_PROPERTY) {
+            $this->addAuthorFilter($value, $queryBuilder);
         }
     }
 
@@ -162,6 +165,28 @@ final class RecipeFilter extends AbstractContextAwareFilter
         $queryBuilder->orderBy("RAND()");
     }
 
+    private function addAuthorFilter(string $value, QueryBuilder $queryBuilder) {
+        $authorIds = $this->getIdListFromString($value);
+        
+        $recipeAlias = $this->getRecipeAlias($queryBuilder);
+        $condition = sprintf("%s.author IN (%s)", $recipeAlias, implode(", ", $authorIds));
+        $queryBuilder->andWhere($condition);
+    }
+
+    private function getIdListFromString(string $value): array {
+        $valueArray = explode(",", $value);
+        $ids = [];
+        foreach ($valueArray as $item) {
+            $trimmedItem = trim($item);
+            if(is_numeric($trimmedItem)) {
+                array_push($ids, $trimmedItem);
+            } else {
+                throw new \InvalidArgumentException("Invalid number given: " + $trimmedItem);
+            }
+        }
+        return $ids;
+    }
+
     private function getRecipeAlias(QueryBuilder $queryBuilder): string
     {
         $aliases = $queryBuilder->getRootAliases();
@@ -208,6 +233,12 @@ final class RecipeFilter extends AbstractContextAwareFilter
                 self::ORDER_BY_RAND_PROPERTY,
                 'Randomly order recipes to be returned.',
                 Type::BUILTIN_TYPE_BOOL,
+                $property,
+            );
+            $description[self::AUTHOR_FILTER_PROPERTY] = $this->createDescription(
+                self::AUTHOR_FILTER_PROPERTY,
+                'Only show recipes of given authors',
+                Type::BUILTIN_TYPE_ITERABLE,
                 $property,
             );
         }

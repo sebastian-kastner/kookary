@@ -2,7 +2,7 @@ import { createModule, mutation, action } from "vuex-class-component";
 import axios, { AxiosRequestConfig } from "axios"
 import { UserClient } from '../clients/UserClient'
 import { User } from '../types'
-import { logAxiosError } from "@/clients/axiosErrorLogger";
+import { logAxiosError } from "../clients/axiosErrorLogger";
 
 const VuexModule = createModule({
   namespaced: "user",
@@ -16,6 +16,7 @@ type UserLoginData = {
 }
 
 const LOCAL_STORAGE_TOKEN_KEY = "token";
+const PRIVATE_MODE_KEY = "privateMode";
 
 export class UserStore extends VuexModule {
 
@@ -24,6 +25,7 @@ export class UserStore extends VuexModule {
   public userIsAdmin = false;
   public users: User[] = [];
   public userMap: Map<number, User> = new Map<number, User>();
+  public privateMode = false;
 
   private userClient = new UserClient();
 
@@ -61,17 +63,26 @@ export class UserStore extends VuexModule {
           if (user === null) {
 
             this.SET_TOKEN(null);
+            this.SET_PRIVATE_MODE(false);
             this.user = null;
             localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
 
             console.log("Invalid token in local storage. Logged out user.");
           } else {
+            const privateModeString = localStorage.getItem(PRIVATE_MODE_KEY);
+            if (privateModeString) {
+              const privateMode = (privateModeString === 'true');
+              this.SET_PRIVATE_MODE(privateMode);
+            }
+
             this.SET_USER(user);
           }
           resolve();
         })
         .catch(() => {
           this.SET_TOKEN(null);
+          this.SET_PRIVATE_MODE(false);
+
           localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
           this.user = null;
 
@@ -88,7 +99,7 @@ export class UserStore extends VuexModule {
         .then((users) => {
           const userMap = new Map<number, User>();
           users.forEach((user) => {
-            if(user.id && user.displayName) {
+            if (user.id && user.displayName) {
               userMap.set(user.id, user);
             }
           });
@@ -127,6 +138,11 @@ export class UserStore extends VuexModule {
                 reject("Unbekannter Fehler: Nach dem Login wurde kein gültiger Benutzer gefunden.")
               } else {
                 // resolve otherwise
+                const privateModeString = localStorage.getItem(PRIVATE_MODE_KEY);
+                if (privateModeString) {
+                  const privateMode = (privateModeString === 'true');
+                  this.SET_PRIVATE_MODE(privateMode);
+                }
                 this.SET_USER(user);
                 resolve(user);
               }
@@ -152,10 +168,18 @@ export class UserStore extends VuexModule {
   }
 
   @action
+  async togglePrivateMode(): Promise<void> {
+    const newMode = !this.privateMode;
+    localStorage.setItem(PRIVATE_MODE_KEY, newMode.toString());
+    this.SET_PRIVATE_MODE(newMode);
+  }
+
+  @action
   async logout(): Promise<void> {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
     this.SET_TOKEN(null);
     this.SET_USER(null);
+    this.SET_PRIVATE_MODE(false);
   }
 
   @mutation
@@ -173,6 +197,11 @@ export class UserStore extends VuexModule {
     } else {
       this.userIsAdmin = false;
     }
+  }
+
+  @mutation
+  private SET_PRIVATE_MODE(mode: boolean) {
+    this.privateMode = mode;
   }
 
   @mutation

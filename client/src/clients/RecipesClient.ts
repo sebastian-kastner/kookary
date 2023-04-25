@@ -6,8 +6,7 @@ import { ToViewModelConverter } from './ToViewModelConverter'
 import { ToRestModelConverter } from './ToRestModelConverter'
 import { logAxiosError } from './axiosErrorLogger';
 import { RecipeJsonld } from 'rest/models'
-import { tagStore } from '../stores/rootStore'
-import { mediaObjectStore } from "../stores/rootStore"
+import { tagStore, mediaObjectStore, userStore } from '../stores/rootStore'
 
 export type RecipeFilter = {
   page?: number,
@@ -16,6 +15,7 @@ export type RecipeFilter = {
   tags?: Tag[],
   isSeasonal?: boolean,
   marked?: boolean,
+  authors?: number[],
   // FIXME: this is currently not considered in the backend, plain pagination is used instead
   limit?: number,
   orderByRand?: boolean,
@@ -45,6 +45,11 @@ export class RecipesClient {
         page = filter.page;
       }
 
+      let authorsArray: undefined | string[];
+      if(userStore.privateMode && userStore.user?.id) {
+        authorsArray = [ userStore.user.id.toString() ]
+      }
+
       // FIXME this only works for a single ingredient now
       let ingredientFilter: string | undefined;
       if(filter?.ingredients) {
@@ -70,6 +75,11 @@ export class RecipesClient {
         isMarked = filter.marked;
       }
 
+      let authors: string | undefined;
+      if (authorsArray) {
+        authors = authorsArray.join(",");
+      }
+
       const orderByRand = filter?.orderByRand;
 
       const getPromise = this.client.getRecipeCollection(
@@ -79,6 +89,7 @@ export class RecipesClient {
         isSeasonal,
         isMarked,
         orderByRand,
+        authors,
         filter?.nameContains
       );
 

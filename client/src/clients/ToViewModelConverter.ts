@@ -195,7 +195,7 @@ export class ToViewModelConverter {
       name: shoppingItem.name,
       user: toId(shoppingItem.user),
       done: shoppingItem.done,
-      ingredientId: toId(shoppingItem.ingredient), // TODO: use real ingredient here..
+      ingredientId: toId(shoppingItem.ingredient),
       quantity: shoppingItem.quantity,
       unit: shoppingItem.unit,
     }
