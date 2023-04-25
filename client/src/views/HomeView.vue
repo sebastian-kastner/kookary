@@ -47,7 +47,7 @@ export default class HomeView extends Vue {
   }
 
   randRecipeFilter: RecipeFilter = {
-    orderByRand: true,
+    orderBy: "rand",
     limit: 6,
   }
 }

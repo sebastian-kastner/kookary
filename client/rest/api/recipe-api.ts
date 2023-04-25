@@ -73,17 +73,18 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
          * Retrieves the collection of Recipe resources.
          * @summary Retrieves the collection of Recipe resources.
          * @param {number} [page] The collection page number
-         * @param {string} [ingredients] 
-         * @param {string} [tags] 
-         * @param {boolean} [seasonal] 
-         * @param {boolean} [marked] 
-         * @param {boolean} [orderByRand] 
-         * @param {string} [author] 
+         * @param {string} [ingredients] Provide a comma separated list of ingredient ids to only return recipes containing all the given ingredients
+         * @param {string} [tags] Provide a comma separated list of tag ids to only return recipes tagged with all the given tags
+         * @param {boolean} [seasonal] Set to true to only return recipes with at least one seasonal ingredient
+         * @param {boolean} [marked] Set to true to only return recipes marked by the logged in user
+         * @param {'date' | 'rand'} [orderBy] If set, results will be sorted by the given property (Default: date)
+         * @param {'desc' | 'asc'} [orderByDirection] If set, results will be sorted in the given direction (Default: desc)
+         * @param {string} [author] Provide a comma separated list of author ids to only return recipes created by the given authors
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection: async (page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderByRand?: boolean, author?: string, name?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getRecipeCollection: async (page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderBy?: 'date' | 'rand', orderByDirection?: 'desc' | 'asc', author?: string, name?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/recipes`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -119,8 +120,12 @@ export const RecipeApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['marked'] = marked;
             }
 
-            if (orderByRand !== undefined) {
-                localVarQueryParameter['order_by_rand'] = orderByRand;
+            if (orderBy !== undefined) {
+                localVarQueryParameter['order_by'] = orderBy;
+            }
+
+            if (orderByDirection !== undefined) {
+                localVarQueryParameter['order_by_direction'] = orderByDirection;
             }
 
             if (author !== undefined) {
@@ -329,18 +334,19 @@ export const RecipeApiFp = function(configuration?: Configuration) {
          * Retrieves the collection of Recipe resources.
          * @summary Retrieves the collection of Recipe resources.
          * @param {number} [page] The collection page number
-         * @param {string} [ingredients] 
-         * @param {string} [tags] 
-         * @param {boolean} [seasonal] 
-         * @param {boolean} [marked] 
-         * @param {boolean} [orderByRand] 
-         * @param {string} [author] 
+         * @param {string} [ingredients] Provide a comma separated list of ingredient ids to only return recipes containing all the given ingredients
+         * @param {string} [tags] Provide a comma separated list of tag ids to only return recipes tagged with all the given tags
+         * @param {boolean} [seasonal] Set to true to only return recipes with at least one seasonal ingredient
+         * @param {boolean} [marked] Set to true to only return recipes marked by the logged in user
+         * @param {'date' | 'rand'} [orderBy] If set, results will be sorted by the given property (Default: date)
+         * @param {'desc' | 'asc'} [orderByDirection] If set, results will be sorted in the given direction (Default: desc)
+         * @param {string} [author] Provide a comma separated list of author ids to only return recipes created by the given authors
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderByRand?: boolean, author?: string, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, marked, orderByRand, author, name, options);
+        async getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderBy?: 'date' | 'rand', orderByDirection?: 'desc' | 'asc', author?: string, name?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2004>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecipeCollection(page, ingredients, tags, seasonal, marked, orderBy, orderByDirection, author, name, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -413,18 +419,19 @@ export const RecipeApiFactory = function (configuration?: Configuration, basePat
          * Retrieves the collection of Recipe resources.
          * @summary Retrieves the collection of Recipe resources.
          * @param {number} [page] The collection page number
-         * @param {string} [ingredients] 
-         * @param {string} [tags] 
-         * @param {boolean} [seasonal] 
-         * @param {boolean} [marked] 
-         * @param {boolean} [orderByRand] 
-         * @param {string} [author] 
+         * @param {string} [ingredients] Provide a comma separated list of ingredient ids to only return recipes containing all the given ingredients
+         * @param {string} [tags] Provide a comma separated list of tag ids to only return recipes tagged with all the given tags
+         * @param {boolean} [seasonal] Set to true to only return recipes with at least one seasonal ingredient
+         * @param {boolean} [marked] Set to true to only return recipes marked by the logged in user
+         * @param {'date' | 'rand'} [orderBy] If set, results will be sorted by the given property (Default: date)
+         * @param {'desc' | 'asc'} [orderByDirection] If set, results will be sorted in the given direction (Default: desc)
+         * @param {string} [author] Provide a comma separated list of author ids to only return recipes created by the given authors
          * @param {string} [name] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderByRand?: boolean, author?: string, name?: string, options?: any): AxiosPromise<InlineResponse2004> {
-            return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, marked, orderByRand, author, name, options).then((request) => request(axios, basePath));
+        getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderBy?: 'date' | 'rand', orderByDirection?: 'desc' | 'asc', author?: string, name?: string, options?: any): AxiosPromise<InlineResponse2004> {
+            return localVarFp.getRecipeCollection(page, ingredients, tags, seasonal, marked, orderBy, orderByDirection, author, name, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a Recipe resource.
@@ -494,19 +501,20 @@ export class RecipeApi extends BaseAPI {
      * Retrieves the collection of Recipe resources.
      * @summary Retrieves the collection of Recipe resources.
      * @param {number} [page] The collection page number
-     * @param {string} [ingredients] 
-     * @param {string} [tags] 
-     * @param {boolean} [seasonal] 
-     * @param {boolean} [marked] 
-     * @param {boolean} [orderByRand] 
-     * @param {string} [author] 
+     * @param {string} [ingredients] Provide a comma separated list of ingredient ids to only return recipes containing all the given ingredients
+     * @param {string} [tags] Provide a comma separated list of tag ids to only return recipes tagged with all the given tags
+     * @param {boolean} [seasonal] Set to true to only return recipes with at least one seasonal ingredient
+     * @param {boolean} [marked] Set to true to only return recipes marked by the logged in user
+     * @param {'date' | 'rand'} [orderBy] If set, results will be sorted by the given property (Default: date)
+     * @param {'desc' | 'asc'} [orderByDirection] If set, results will be sorted in the given direction (Default: desc)
+     * @param {string} [author] Provide a comma separated list of author ids to only return recipes created by the given authors
      * @param {string} [name] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RecipeApi
      */
-    public getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderByRand?: boolean, author?: string, name?: string, options?: AxiosRequestConfig) {
-        return RecipeApiFp(this.configuration).getRecipeCollection(page, ingredients, tags, seasonal, marked, orderByRand, author, name, options).then((request) => request(this.axios, this.basePath));
+    public getRecipeCollection(page?: number, ingredients?: string, tags?: string, seasonal?: boolean, marked?: boolean, orderBy?: 'date' | 'rand', orderByDirection?: 'desc' | 'asc', author?: string, name?: string, options?: AxiosRequestConfig) {
+        return RecipeApiFp(this.configuration).getRecipeCollection(page, ingredients, tags, seasonal, marked, orderBy, orderByDirection, author, name, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

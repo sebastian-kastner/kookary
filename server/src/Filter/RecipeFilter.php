@@ -28,7 +28,13 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const MARKED_FILTER_PROPERTY = "marked";
 
-    const ORDER_BY_RAND_PROPERTY = "order_by_rand";
+    const ORDER_BY_PROPERTY = "order_by";
+
+    const ORDER_BY_DIRECTION_PROPERTY = "order_by_direction";
+
+    const ORDER_BY_VALUES = [ 'date', 'rand' ];
+
+    const ORDER_BY_DIRECTION_VALUES = [ 'desc', 'asc' ];
 
     const AUTHOR_FILTER_PROPERTY = "author";
 
@@ -40,10 +46,22 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     private $security;
 
+    private $orderBy = self::ORDER_BY_VALUES[0];
+    private $orderByDirection = self::ORDER_BY_DIRECTION_PROPERTY[0];
+
     public function __construct(CoreSecurity $security, ManagerRegistry $managerRegistry, ?RequestStack $requestStack = null, LoggerInterface $logger = null, array $properties = null, NameConverterInterface $nameConverter = null)
     {
         parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
         $this->security = $security;
+    }
+
+    public function apply(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = []) {
+        $this->orderBy = self::ORDER_BY_VALUES[0];
+        $this->orderByDirection = self::ORDER_BY_DIRECTION_VALUES[0];
+
+        parent::apply($queryBuilder, $queryNameGenerator, $resourceClass, $operationName, $context);
+
+        $this->addOrderByClause($queryBuilder);
     }
 
     protected function filterProperty(
@@ -67,8 +85,10 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $this->addSeasonalFilter($value, $queryBuilder);
         } else if ($property == self::MARKED_FILTER_PROPERTY) {
             $this->addMarkedFilter($value, $queryBuilder);
-        } else if ($property == self::ORDER_BY_RAND_PROPERTY) {
-            $this->orderByRand($value, $queryBuilder);
+        } else if ($property == self::ORDER_BY_PROPERTY) {
+            $this->orderBy = $value;
+        } else if ($property == self::ORDER_BY_DIRECTION_PROPERTY) {
+            $this->orderByDirection = $value;
         } else if ($property == self::AUTHOR_FILTER_PROPERTY) {
             $this->addAuthorFilter($value, $queryBuilder);
         }
@@ -157,17 +177,43 @@ final class RecipeFilter extends AbstractContextAwareFilter
         }
     }
 
-    private function orderByRand(string $value, QueryBuilder $queryBuilder) {
-        // nothing to do if random ordering is set to false or no limit was set
-        if ($value != "true") {
-            return;
+    private function addOrderByClause(QueryBuilder $queryBuilder) {
+        // create direction value
+        $trimmedOrderByDirection = strtolower(trim($this->orderByDirection));
+        $dir = "";
+        if (in_array($trimmedOrderByDirection, self::ORDER_BY_DIRECTION_VALUES)) {
+            $dir = $trimmedOrderByDirection;
+        } else {
+            $err = sprintf("Invalid value for %s. Allowed values are: %s", self::ORDER_BY_DIRECTION_PROPERTY, implode(", ", self::ORDER_BY_DIRECTION_VALUES));
+            throw new \InvalidArgumentException($err);
         }
-        $queryBuilder->orderBy("RAND()");
+        
+        // create property value
+        $trimmedOrderBy = strtolower(trim($this->orderBy));
+        $prop = "";
+        $recipeAlias = $this->getRecipeAlias($queryBuilder);
+        if (in_array($trimmedOrderBy, self::ORDER_BY_VALUES)) {
+            if ($trimmedOrderBy == 'date') {
+                $prop = sprintf("%s.dateAdded", $recipeAlias);
+            } else if ($trimmedOrderBy == 'rand') {
+                $prop = "RAND()";
+                $dir = "";
+            }
+        } else {
+            $err = sprintf("Invalid value for %s. Allowed values are: %s", self::ORDER_BY_PROPERTY, implode(", ", self::ORDER_BY_VALUES));
+            throw new \InvalidArgumentException($err);
+        }
+
+        if($dir == "") {
+            $queryBuilder->orderBy($prop);
+        } else {
+            $queryBuilder->orderBy($prop, $dir);
+        }
     }
 
     private function addAuthorFilter(string $value, QueryBuilder $queryBuilder) {
         $authorIds = $this->getIdListFromString($value);
-        
+
         $recipeAlias = $this->getRecipeAlias($queryBuilder);
         $condition = sprintf("%s.author IN (%s)", $recipeAlias, implode(", ", $authorIds));
         $queryBuilder->andWhere($condition);
@@ -206,38 +252,47 @@ final class RecipeFilter extends AbstractContextAwareFilter
         $description = [];
         foreach ($this->properties as $property => $strategy) {
             $description[self::INGREDIENTS_FILTER_PROPERTY] = $this->createDescription(
-                self::INGREDIENTS_FILTER_PROPERTY,
-                'Filter for recipes with the specified tags.',
+                'Provide a comma separated list of ingredient ids to only return recipes containing all the given ingredients',
                 Type::BUILTIN_TYPE_ITERABLE,
                 $property,
             );
             $description[self::TAGS_FILTER_PROPERTY] = $this->createDescription(
-                self::TAGS_FILTER_PROPERTY,
-                'Filter for recipes with the specified tags.',
+                'Provide a comma separated list of tag ids to only return recipes tagged with all the given tags',
                 Type::BUILTIN_TYPE_ITERABLE,
                 $property,
             );
             $description[self::SEASONAL_FILTER_PROPERTY] = $this->createDescription(
-                self::SEASONAL_FILTER_PROPERTY,
-                'Filter for recipes containing seasonal ingredients',
+                'Set to true to only return recipes with at least one seasonal ingredient',
                 Type::BUILTIN_TYPE_BOOL,
                 $property,
             );
             $description[self::MARKED_FILTER_PROPERTY] = $this->createDescription(
-                self::MARKED_FILTER_PROPERTY,
-                'Filter for marked recipes',
+                'Set to true to only return recipes marked by the logged in user',
                 Type::BUILTIN_TYPE_BOOL,
                 $property,
             );
-            $description[self::ORDER_BY_RAND_PROPERTY] = $this->createDescription(
-                self::ORDER_BY_RAND_PROPERTY,
-                'Randomly order recipes to be returned.',
-                Type::BUILTIN_TYPE_BOOL,
-                $property,
-            );
+            $description[self::ORDER_BY_PROPERTY] = [
+                'property' => $property,
+                'type' => Type::BUILTIN_TYPE_STRING,
+                'required' => false,
+                'description' => "If set, results will be sorted by the given property (Default: date)",
+                'schema' => [
+                    'type' => Type::BUILTIN_TYPE_STRING,
+                    'enum' => self::ORDER_BY_VALUES,
+                ],
+            ];
+            $description[self::ORDER_BY_DIRECTION_PROPERTY] = [
+                'property' => $property,
+                'type' => Type::BUILTIN_TYPE_STRING,
+                'required' => false,
+                'description' => "If set, results will be sorted in the given direction (Default: desc)",
+                'schema' => [
+                    'type' => Type::BUILTIN_TYPE_STRING,
+                    'enum' => self::ORDER_BY_DIRECTION_VALUES,
+                ],
+            ];
             $description[self::AUTHOR_FILTER_PROPERTY] = $this->createDescription(
-                self::AUTHOR_FILTER_PROPERTY,
-                'Only show recipes of given authors',
+                'Provide a comma separated list of author ids to only return recipes created by the given authors',
                 Type::BUILTIN_TYPE_ITERABLE,
                 $property,
             );
@@ -246,16 +301,13 @@ final class RecipeFilter extends AbstractContextAwareFilter
         return $description;
     }
 
-    private function createDescription(string $name, string $description, string $type, $property): array
+    private function createDescription(string $description, string $type, $property): array
     {
         return [
             'property' => $property,
             'type' => $type,
             'required' => false,
-            'swagger' => [
-                'description' => $description,
-                'name' => $name . " filter",
-            ],
+            'description' => $description,
         ];
     }
 }
