@@ -51,7 +51,7 @@ class Cookup
     /**
      * @var \App\Entity\Recipe
      */
-    #[ORM\ManyToOne(targetEntity: "Recipe")]
+    #[ORM\ManyToOne(targetEntity: "Recipe", inversedBy: "cookups")]
     #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id", nullable: false)]
     public $recipe;
 

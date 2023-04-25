@@ -7,6 +7,7 @@ use Doctrine\ORM\PersistentCollection;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Vich\UploaderBundle\Handler\UploadHandler;
 
 final class RecipePersister implements ContextAwareDataPersisterInterface
@@ -29,14 +30,14 @@ final class RecipePersister implements ContextAwareDataPersisterInterface
     public function persist($data, array $context = [])
     {
         // this is one of the worst hacks of century!
-        if($data instanceof Recipe) {
+        if ($data instanceof Recipe) {
             $ingredients = $data->getIngredients();
             // this seems to be true when updating a collection
             // in that case we clear all ingredients
-            if($ingredients instanceof PersistentCollection) {
+            if ($ingredients instanceof PersistentCollection) {
                 $snapshots = $ingredients->getSnapshot();
                 foreach ($snapshots as $snapshot) {
-                    if($snapshot instanceof RecipeIngredient) {
+                    if ($snapshot instanceof RecipeIngredient) {
                         $this->entityManager->remove($snapshot);
                     }
                 }
@@ -50,13 +51,19 @@ final class RecipePersister implements ContextAwareDataPersisterInterface
     public function remove($recipe, array $context = [])
     {
         if ($recipe instanceof Recipe) {
+            // delete images on disk before cleaning up the database
             $images = $recipe->getImages();
-            $this->entityManager->remove($recipe);
-            $this->entityManager->flush();
-
-            foreach($images as $image) {
+            foreach ($images as $image) {
                 $this->uploadHandler->remove($image, "file");
             }
+
+            $recipe->images = [];
+            $this->entityManager->beginTransaction();
+            // saving the recipe without images seems like a terrible workaround..
+            $this->entityManager->persist($recipe);
+            $this->entityManager->remove($recipe);
+            $this->entityManager->flush();
+            $this->entityManager->commit();
         }
     }
 }

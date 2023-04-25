@@ -49,7 +49,7 @@ class UserRecipeFavourites
     /**
      * @var Recipe
      */
-    #[ORM\ManyToOne(targetEntity: "Recipe")]
+    #[ORM\ManyToOne(targetEntity: "Recipe", inversedBy: "markedBy")]
     #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
     private $recipe;
 

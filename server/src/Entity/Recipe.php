@@ -13,6 +13,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 
 use App\Filter\RecipeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 /**
  * Recipe
@@ -96,7 +97,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection|MediaObject[]
      */
-    #[ORM\ManyToMany(targetEntity: "MediaObject", cascade: ["remove"])]
+    #[ORM\ManyToMany(targetEntity: "MediaObject")] // cascade is handled in RecipePersister.php (and its terrible!)
     #[ORM\JoinTable(name: "image_to_recipe")]
     #[ORM\JoinColumn(name: "recipe_id", referencedColumnName: "recipe_id")]
     #[ORM\InverseJoinColumn(name: "media_object_id", referencedColumnName: "media_object_id")]
@@ -108,6 +109,20 @@ class Recipe
     #[ORM\ManyToOne(targetEntity: "User")]
     #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: false)]
     public $author;
+
+    /**
+     * @var UserRecipeFavourites
+     */
+    #[ORM\OneToMany(targetEntity: "UserRecipeFavourites", mappedBy: "recipe", cascade: ["all"])]
+    #[Ignore] // field is only added for cascades, dont include anywhere else
+    public $markedBy;
+
+    /**
+     * @var UserRecipeFavourites
+     */
+    #[ORM\OneToMany(targetEntity: "Cookup", mappedBy: "recipe", cascade: ["all"])]
+    #[Ignore] // field is only added for cascades, dont include anywhere else
+    public $cookups;
 
     public function __construct()
     {
