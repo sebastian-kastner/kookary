@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import RecipeView from '../views/RecipeView.vue';
 import RecipeOverview from '../views/RecipeOverview.vue';
+import Calendar from '../views/Calendar.vue'
 // user views
 import Account from '../views/user/Account.vue';
 import RecipeEditorView from '../views/RecipeEditorView.vue';
@@ -20,6 +21,7 @@ const routes: Array<RouteConfig> = [
   { path: '/', name: 'home', component: HomeView },
   { path: '/recipe', name: 'recipe', component: RecipeView },
   { path: '/recipes', name: 'recipes', component: RecipeOverview },
+  { path: '/calendar', name: 'calendar', component: Calendar },
   // user routes
   { path: '/user/account', name: 'account', component: Account },
   { path: '/user/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },

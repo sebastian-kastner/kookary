@@ -64,7 +64,7 @@ import { User } from "./types";
 import { UserStore } from "./stores/userStore";
 import LoginView from "./components/user/LoginView.vue";
 import UserMenu from "./components/user/UserMenu.vue";
-import { BIconListOl, BIconPlusCircle } from "bootstrap-vue";
+import { BIconListOl, BIconPlusCircle, BIconCalendarWeek } from "bootstrap-vue";
 
 export type NavItem = {
   name: string;
@@ -101,6 +101,11 @@ export default class App extends Vue {
         to: "/user/recipe-editor",
       });
     }
+    items.push({
+      icon: BIconCalendarWeek,
+      name: "Saisonkalender",
+      to: "/calendar",
+    })
     return items;
   }
 }

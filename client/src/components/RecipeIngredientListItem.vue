@@ -61,7 +61,7 @@ export default class RecipeIngredientListItem extends Vue {
         return (currentMonth >= ingredient.seasonStart  && currentMonth <= ingredient.seasonEnd);
       }
       else if (ingredient.seasonStart > ingredient.seasonEnd) {
-        return (currentMonth >= ingredient.seasonEnd  && currentMonth <= ingredient.seasonStart);
+        return (currentMonth >= ingredient.seasonEnd || currentMonth <= ingredient.seasonStart);
       }
     }
     return false;
