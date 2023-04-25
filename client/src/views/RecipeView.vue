@@ -44,7 +44,7 @@
       </div>
 
       <div class="row">
-        <h2>{{ recipe.name }}</h2>
+        <h1>{{ recipe.name }}</h1>
       </div>
 
       <div class="row">
