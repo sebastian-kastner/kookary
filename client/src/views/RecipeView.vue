@@ -7,9 +7,9 @@
 
       <div v-if="isEditable">
         <router-link :to="{
-          path: '/user/recipe-editor',
-          query: { recipeId: recipe.recipeId },
-        }" custom v-slot="{ navigate }">
+            path: '/user/recipe-editor',
+            query: { recipeId: recipe.recipeId },
+          }" custom v-slot="{ navigate }">
           <button @click="navigate" role="link" class="rounded-button">
             <b-icon-pencil />
           </button>
@@ -102,6 +102,7 @@ import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
 import { userStore } from '../stores/rootStore';
 import { getScreenWidth } from "../utils/screenUtils";
+import { getErrorMessage } from "../utils/errors";
 import AddCookupView from '../components/user/AddCookupView.vue';
 import AddToShoppingListModal from '../components/user/AddToShoppingListModal.vue';
 import RecipeIngredientListItem from '../components/RecipeIngredientListItem.vue'
@@ -143,6 +144,9 @@ export default class RecipeView extends Vue {
           this.showServingsForm = true;
           this.internalServings = this.recipe.servings;
         }
+      }).catch((err) => {
+        const msg = getErrorMessage(err);
+        this.$toast.open("Fehler beim Lesen des Rezepts: " + msg);
       });
     } else {
       this.$toast.open("Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde");
@@ -161,6 +165,9 @@ export default class RecipeView extends Vue {
             this.favouriteId = favouriteId;
             this.isMarked = true;
           }
+        }).catch((err) => {
+          const msg = getErrorMessage(err);
+          this.$toast.open("Fehler beim Auslesen des Favoriten Status: " + msg);
         });
     } else {
       this.favouriteId = null;
@@ -244,12 +251,18 @@ export default class RecipeView extends Vue {
             this.favouriteId = favouriteId;
             this.isMarked = true;
           }
+        }).catch((err) => {
+          const msg = getErrorMessage(err);
+          this.$toast.open("Fehler Hinzufügen des Rezepts als Favorit: " + msg);
         });
     } else {
       this.userRecipeFavouritesClient.deleteUserFavourite(oldFavouriteId)
         .then(() => {
           this.favouriteId = -1;
           this.isMarked = false;
+        }).catch((err) => {
+          const msg = getErrorMessage(err);
+          this.$toast.open("Fehler beim Löschen des Favoriten Status: " + msg);
         });
     }
   }
@@ -280,7 +293,10 @@ export default class RecipeView extends Vue {
               this.recipesClient.deleteRecipe(this.recipe.recipeId)
                 .then(() => {
                   this.$router.push("/recipes");
-                })
+                }).catch((err) => {
+                  const msg = getErrorMessage(err);
+                  this.$toast.open("Fehler beim Löschen des Rezepts: " + msg);
+                });
             }
             this.$modal.hide('dialog');
           }
