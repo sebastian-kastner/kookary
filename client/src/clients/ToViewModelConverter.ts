@@ -58,6 +58,7 @@ export class ToViewModelConverter {
       ingredientCategoryId: apiCategory.categoryId,
       name: apiCategory.name,
       order: apiCategory.order,
+      isDefault: apiCategory.isDefaultCategory,
     }
   }
 

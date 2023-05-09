@@ -38,5 +38,11 @@ export interface IngredientCategory {
      * @memberof IngredientCategory
      */
     'order'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof IngredientCategory
+     */
+    'isDefaultCategory'?: boolean | null;
 }
 

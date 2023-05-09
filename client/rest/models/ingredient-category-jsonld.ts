@@ -56,5 +56,11 @@ export interface IngredientCategoryJsonld {
      * @memberof IngredientCategoryJsonld
      */
     'order'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof IngredientCategoryJsonld
+     */
+    'isDefaultCategory'?: boolean | null;
 }
 

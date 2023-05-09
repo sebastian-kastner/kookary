@@ -49,6 +49,12 @@ class IngredientCategory
     #[ORM\Column(name: "order", type: "integer", length: 2, nullable: false)]
     private $order;
 
+    /**
+     * @var boolean
+     */
+    #[ORM\Column(name: "is_default_category", type: "boolean", nullable: true)]
+    private $isDefaultCategory;
+
     public function __construct()
     {
     }
@@ -78,6 +84,18 @@ class IngredientCategory
     public function setOrder(int $order): self
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    public function isIsDefaultCategory(): ?bool
+    {
+        return $this->isDefaultCategory;
+    }
+
+    public function setIsDefaultCategory(?bool $isDefaultCategory): self
+    {
+        $this->isDefaultCategory = $isDefaultCategory;
 
         return $this;
     }

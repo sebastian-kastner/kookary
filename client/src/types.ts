@@ -9,6 +9,7 @@ export type IngredientCategory = {
     ingredientCategoryId?: number;
     name?: string;
     order?: number;
+    isDefault?: null | boolean;
 }
 
 export type Ingredient = {

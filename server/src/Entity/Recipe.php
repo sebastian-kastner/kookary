@@ -130,6 +130,8 @@ class Recipe
         $this->ingredients = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->dateAdded = new DateTime();
+        $this->markedBy = new ArrayCollection();
+        $this->cookups = new ArrayCollection();
     }
 
     public function getRecipeId(): ?int

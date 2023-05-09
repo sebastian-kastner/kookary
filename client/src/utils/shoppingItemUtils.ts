@@ -5,12 +5,14 @@ import { ingredientStore, ingredientCategoryStore } from "../stores/rootStore";
  * Returns the category id of the given item or -1 if no category id is found
  * @param item the item for which to return the category id
  */
-function getIngredientCategoryId(item: ShoppingItem): number {
+function getIngredientCategoryId(item: ShoppingItem, defaultCategoryId: number | null): number {
   if (item.ingredientId) {
     const ingredient = ingredientStore.ingredientMap.get(item.ingredientId);
     if (ingredient && ingredient.ingredientCategoryId) {
       return ingredient.ingredientCategoryId;
     }
+  } else if (defaultCategoryId) {
+    return defaultCategoryId;
   }
   return -1;
 }
@@ -32,9 +34,14 @@ export function getShoppingItemsByCategory(shoppingItems: ShoppingItem[]): Map<n
   const itemsByCategory: Map<number, ShoppingItem[]> = new Map();
   const existingCategories: number[] = [];
 
+  // attempts to find a default category
+  // if there is a default category, uncategorized shopping items will be put into the default category
+  const defaultCategory = ingredientCategoryStore.categories.find((category) => category.isDefault);
+  const defaultCategoryId = (defaultCategory && defaultCategory.ingredientCategoryId) ? defaultCategory.ingredientCategoryId : null;
+
   // create map by category
   shoppingItems.forEach(item => {
-    const categoryId = getIngredientCategoryId(item);
+    const categoryId = getIngredientCategoryId(item, defaultCategoryId);
     if (categoryId) {
       let itemsInCategory = itemsByCategory.get(categoryId);
       if (!itemsInCategory) {
@@ -73,5 +80,5 @@ export function getCategoryName(categoryId: number): string {
       return category.name;
     }
   }
-  return "Sonstiges";
+  return "Unkategorisiert";
 }
