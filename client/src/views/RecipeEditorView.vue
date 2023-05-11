@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-facing-decorator";
 import { NavigationGuardNext, Route } from "vue-router";
 import { v4 as uuid } from "uuid";
 import {

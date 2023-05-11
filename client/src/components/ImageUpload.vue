@@ -21,12 +21,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Prop, Watch, Component, Vue } from "vue-facing-decorator";
+
 import { BIconXCircle } from "bootstrap-vue";
 import { MediaObject } from "../types";
 import { mediaObjectStore } from "@/stores/rootStore";
 
-@Component({
+ @Component({
   components: {
     BIconXCircle,
   },

@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { Prop, Vue, Component } from "vue-property-decorator";
+import { Prop, Vue, Component } from "vue-facing-decorator";
 import { Ingredient, IngredientCategory } from "../../types";
 import { userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import { IngredientsClient } from "../../clients/IngredientsClient";

@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../clients/RecipesClient";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import RecipeCardList from "../components/cards/RecipeCardList.vue";
 import { userStore } from "../stores/rootStore";
 

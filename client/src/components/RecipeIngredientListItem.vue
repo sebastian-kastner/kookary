@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import { round } from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-facing-decorator";
 import { Ingredient, RecipeIngredient } from "../types";
 import RecipeCard from "./cards/RecipeCard.vue";
 

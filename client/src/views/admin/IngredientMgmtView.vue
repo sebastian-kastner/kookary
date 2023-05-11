@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import { Ingredient, User, IngredientCategory } from "../../types";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { ingredientStore, userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import IngredientEditor from '../../components/admin/IngredientEditor.vue';
 import { getErrorMessage } from "../../utils/errors";

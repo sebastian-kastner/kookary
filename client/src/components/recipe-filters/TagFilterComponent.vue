@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import InlineItemList from "../InlineItemList.vue";
 import { tagStore } from "../../stores/rootStore";
 import { Tag } from "../../types";

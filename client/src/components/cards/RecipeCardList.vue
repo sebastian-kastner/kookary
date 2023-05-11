@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { RecipeFilter, RecipesClient } from "../../clients/RecipesClient";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 import { Recipe } from "../../types";
 import RecipeCard from "./RecipeCard.vue";
 import { RouterLinkProps } from "vue-router/types/router";

@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import { Ingredient } from "../types";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { ingredientStore } from "../stores/rootStore";
 
 @Component({

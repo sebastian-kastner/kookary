@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import draggable from "vuedraggable";
 import { RecipeIngredient, Ingredient } from "../types";
 import RecipeIngredientEditor from "./RecipeIngredientEditor.vue";

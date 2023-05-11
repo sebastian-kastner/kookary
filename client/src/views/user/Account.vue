@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { userStore } from "../../stores/rootStore";
 import { UserClient } from "../../clients/UserClient"
 import debounce from "lodash.debounce";

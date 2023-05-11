@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 import { User } from "../../types";
 import { userStore } from "../../stores/rootStore"
 import { UserClient } from "../../clients/UserClient"

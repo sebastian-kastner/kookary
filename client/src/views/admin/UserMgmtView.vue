@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { User } from "../../types";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { UserClient } from "../../clients/UserClient"
 import UserEditor from "../../components/admin/UserEditor.vue"
 import AddUser from "../../components/admin/AddUser.vue"

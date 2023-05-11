@@ -42,7 +42,7 @@ import {
   BIconXCircle,
   BIconBellFill,
 } from "bootstrap-vue";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { UiFilter } from './uiFilters'
 

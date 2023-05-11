@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 import { RecipeIngredient, ShoppingItem, User } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";

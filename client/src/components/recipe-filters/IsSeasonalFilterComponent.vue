@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { BDropdown, BDropdownItem } from "bootstrap-vue";
 
 @Component({
