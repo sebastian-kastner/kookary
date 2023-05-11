@@ -60,7 +60,7 @@ export default class FilterComponent extends Vue {
   activeFilter: string | null = "name";
 
   resetFilter(
-    event: PointerEvent,
+    event: MouseEvent,
     resetFunction: (filter: RecipeFilter) => void
   ): void {
     event.stopPropagation();
