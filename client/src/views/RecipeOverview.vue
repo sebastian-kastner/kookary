@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
 import { ingredientStore } from "../stores/rootStore";
@@ -43,7 +43,7 @@ enum RecipeLoadType {
   Replace,
 }
 
-@Component({
+@Options({
   components: { RecipeList, TypeaheadInput, FilterComponent },
 })
 export default class RecipesView extends Vue {

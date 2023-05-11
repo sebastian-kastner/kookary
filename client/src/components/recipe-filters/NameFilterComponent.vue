@@ -16,9 +16,10 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 
-@Component({
+@Options({
   components: {},
 })
 export default class NameFilterComponent extends Vue {

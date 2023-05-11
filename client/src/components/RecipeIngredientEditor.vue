@@ -54,13 +54,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { RecipeIngredient, Ingredient } from "../types";
 import TypeaheadInput from "./TypeaheadInput.vue";
 import { ingredientStore } from "../stores/rootStore";
 import { getErrorMessage } from "../utils/errors";
 
-@Component({
+@Options({
   components: { TypeaheadInput },
 })
 export default class RecipeIngredientEditor extends Vue {

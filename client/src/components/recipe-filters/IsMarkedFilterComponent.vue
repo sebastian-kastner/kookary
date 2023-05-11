@@ -31,12 +31,10 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop } from "vue-facing-decorator";
-import { BDropdown, BDropdownItem } from "bootstrap-vue";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 
-@Component({
-  components: { BDropdown, BDropdownItem },
-})
+@Options({})
 export default class IsMarkedFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 

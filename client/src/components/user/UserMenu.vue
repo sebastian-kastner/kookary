@@ -57,10 +57,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { userStore } from "../../stores/rootStore";
 
-@Component({})
+@Options({})
 export default class UserMenu extends Vue {
   get isAdmin(): boolean {
     return userStore.userIsAdmin;

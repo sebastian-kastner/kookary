@@ -13,7 +13,7 @@ import "vue-toast-notification/dist/theme-bootstrap.css";
 // Vue.use(BootstrapVueIcons);
 
 // createApp(App); --> this does not work for some reason..
-const app = createApp({});
+const app = createApp(App, {}).use(router);
 app.use(rootStore);
 app.use(router);
 // app.use(BootstrapVue);

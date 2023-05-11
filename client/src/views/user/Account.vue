@@ -74,12 +74,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { userStore } from "../../stores/rootStore";
 import { UserClient } from "../../clients/UserClient";
 import debounce from "lodash.debounce";
 
-@Component({})
+@Options({})
 export default class Account extends Vue {
   oldPassword = "";
   newPassword = "";

@@ -20,10 +20,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import SaveButton from "../SaveButton.vue";
 
-@Component({
+@Options({
   components: {
     SaveButton,
   },

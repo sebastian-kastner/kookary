@@ -20,11 +20,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { ShoppingItem } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
 
-@Component({})
+@Options({})
 export default class ShoppingListItem extends Vue {
   @Prop({ required: true })
   shoppingItem!: ShoppingItem;

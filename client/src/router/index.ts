@@ -1,5 +1,4 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RecipeView from "../views/RecipeView.vue";
 import RecipeOverview from "../views/RecipeOverview.vue";
@@ -14,9 +13,7 @@ import IngredientMgmtView from "../views/admin/IngredientMgmtView.vue";
 
 import { userStore } from "../stores/rootStore";
 
-Vue.use(VueRouter);
-
-const routes: Array<RouteConfig> = [
+const routes: Array<RouteRecordRaw> = [
   // general routes
   { path: "/", name: "home", component: HomeView },
   { path: "/recipe", name: "recipe", component: RecipeView },
@@ -43,7 +40,8 @@ const routes: Array<RouteConfig> = [
   },
 ];
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHashHistory(),
   routes,
 });
 

@@ -36,7 +36,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { RecipeIngredient, ShoppingItem, User } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
@@ -46,7 +47,7 @@ import {
 } from "../../utils/shoppingItemUtils";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 
-@Component({
+@Options({
   components: {
     ShoppingListItem,
   },

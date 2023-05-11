@@ -21,17 +21,14 @@
 </template>
 
 <script lang="ts">
-import { Prop, Watch, Component, Vue } from "vue-facing-decorator";
+import { Prop, Watch } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 
-import { BIconXCircle } from "bootstrap-vue";
+// import { BIconXCircle } from "bootstrap-vue";
 import { MediaObject } from "../types";
 import { mediaObjectStore } from "@/stores/rootStore";
 
-@Component({
-  components: {
-    BIconXCircle,
-  },
-})
+@Options({})
 export default class ImageUpload extends Vue {
   filePreview: string | ArrayBuffer | null = null;
   badDimensions = false;

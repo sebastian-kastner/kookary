@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import { Ingredient, ShoppingItem, User } from "../../types";
-import { Component, Vue } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { ingredientStore, userStore } from "../../stores/rootStore";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
@@ -75,7 +75,7 @@ type AmountAndUnit = {
   unit?: string;
 };
 
-@Component({
+@Options({
   components: {
     ShoppingListItem,
     TypeaheadInput,

@@ -49,13 +49,13 @@
 
 <script lang="ts">
 import { User } from "../../types";
-import { Component, Vue } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { UserClient } from "../../clients/UserClient";
 import UserEditor from "../../components/admin/UserEditor.vue";
 import AddUser from "../../components/admin/AddUser.vue";
 import { getScreenWidth } from "../../utils/screenUtils";
 
-@Component({})
+@Options({})
 export default class UserMgmtView extends Vue {
   private userClient = new UserClient();
 

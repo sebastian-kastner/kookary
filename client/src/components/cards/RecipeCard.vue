@@ -15,11 +15,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { Recipe } from "../../types";
 import { mediaObjectStore } from "../../stores/rootStore";
 
-@Component({
+@Options({
   components: {},
 })
 export default class RecipeCard extends Vue {

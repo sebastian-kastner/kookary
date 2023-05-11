@@ -18,12 +18,13 @@
 
 <script lang="ts">
 import { RecipeFilter, RecipesClient } from "../../clients/RecipesClient";
-import { Component, Prop, Vue } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { Recipe } from "../../types";
 import RecipeCard from "./RecipeCard.vue";
-import { RouterLinkProps } from "vue-router/types/router";
+import { RouterLinkProps } from "vue-router";
 
-@Component({
+@Options({
   components: { RecipeCard },
 })
 export default class RecipeCardList extends Vue {

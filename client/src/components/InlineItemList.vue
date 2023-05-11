@@ -23,10 +23,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import TypeaheadInput from "./TypeaheadInput.vue";
 
-@Component({
+@Options({
   components: { TypeaheadInput },
 })
 export default class InlineItemList extends Vue {

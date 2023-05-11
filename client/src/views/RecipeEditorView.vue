@@ -81,8 +81,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-facing-decorator";
-import { NavigationGuardNext, Route } from "vue-router";
+import { Watch } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
+import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 import { v4 as uuid } from "uuid";
 import { Ingredient, Recipe, Tag, recipeFactory, MediaObject } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore";
@@ -95,7 +96,7 @@ import ConfirmLeaveModal from "../components/user/ConfirmLeaveModal.vue";
 import { getErrorMessage } from "../utils/errors";
 import { getScreenWidth } from "../utils/screenUtils";
 
-@Component({
+@Options({
   components: {
     RecipeIngredientsEditor,
     InlineItemList,
@@ -121,10 +122,9 @@ export default class RecipeEditorView extends Vue {
 
   ingredientsInitialized = false;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   static navGuard(
-    _to: Route,
-    _from: Route,
+    _to: RouteLocationNormalized,
+    _from: RouteLocationNormalized,
     next: NavigationGuardNext
   ): void {
     if (this instanceof RecipeEditorView) {

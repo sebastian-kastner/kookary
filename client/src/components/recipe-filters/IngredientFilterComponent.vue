@@ -15,13 +15,14 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Prop } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import InlineItemList from "../InlineItemList.vue";
 import { ingredientStore } from "../../stores/rootStore";
 import { Ingredient } from "../../types";
 import { v4 as uuid } from "uuid";
 
-@Component({
+@Options({
   components: { InlineItemList },
 })
 export default class IngredientFilterComponent extends Vue {

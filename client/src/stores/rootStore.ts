@@ -1,4 +1,4 @@
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import { createProxy, extractVuexModule } from "vuex-class-component";
 import { TagStore } from "./tagStore";
 import { IngredientCategoryStore } from "./ingredientCategoryStore";
@@ -9,7 +9,7 @@ import { UserStore } from "./userStore";
 // Vue.use(Vuex);
 
 // init stores
-export const rootStore = new Vuex.Store({
+export const rootStore = createStore({
   modules: {
     ...extractVuexModule(TagStore),
     ...extractVuexModule(IngredientStore),

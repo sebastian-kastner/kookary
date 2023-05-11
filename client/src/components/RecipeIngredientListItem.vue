@@ -15,13 +15,14 @@
 
 <script lang="ts">
 import { round } from "lodash";
-import { Component, Prop, Vue, Watch } from "vue-facing-decorator";
+import { Prop, Watch } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import { Ingredient, RecipeIngredient } from "../types";
 import RecipeCard from "./cards/RecipeCard.vue";
 
 const currentMonth = new Date().getMonth() + 1;
 
-@Component({
+@Options({
   components: { RecipeCard },
 })
 export default class RecipeIngredientListItem extends Vue {

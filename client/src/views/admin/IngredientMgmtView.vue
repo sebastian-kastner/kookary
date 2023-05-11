@@ -86,7 +86,7 @@
 
 <script lang="ts">
 import { Ingredient, User, IngredientCategory } from "../../types";
-import { Component, Vue } from "vue-facing-decorator";
+import { Options, Vue } from "vue-class-component";
 import {
   ingredientStore,
   userStore,
@@ -102,7 +102,7 @@ type IngredientFilter = {
   seasonal: string;
 };
 
-@Component({
+@Options({
   components: {
     IngredientEditor,
   },

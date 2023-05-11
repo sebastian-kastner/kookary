@@ -1,61 +1,18 @@
 <template>
-  <div id="home" class="main-content">
-    <recipe-card-list title="ZUFÄLLIG" :recipeFilter="randRecipeFilter" />
-
-    <recipe-card-list
-      title="SAISONAL"
-      :recipeFilter="seasonalRecipeFilter"
-      :moreLink="{ path: '/recipes', query: { seasonal: null } }"
-    />
-
-    <recipe-card-list
-      v-if="userLoggedIn"
-      title="MERKLISTE"
-      :recipeFilter="markedRecipeFilter"
-      :moreLink="{ path: '/recipes', query: { marked: null } }"
-    />
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
-<script lang="ts">
-import { RecipeFilter } from "../clients/RecipesClient";
-import { Component, Vue } from "vue-facing-decorator";
-import RecipeCardList from "../components/cards/RecipeCardList.vue";
-import { userStore } from "../stores/rootStore";
+<script>
+// @ is an alias to /src
+import HelloWorld from "@/components/HelloWorld.vue";
 
-@Component({
+export default {
+  name: "HomeView",
   components: {
-    RecipeCardList,
+    HelloWorld,
   },
-})
-export default class HomeView extends Vue {
-  get userLoggedIn(): boolean {
-    return userStore.user !== null;
-  }
-  seasonalRecipeFilter: RecipeFilter = {
-    isSeasonal: true,
-    limit: 6,
-  };
-
-  markedRecipeFilter: RecipeFilter = {
-    marked: true,
-    limit: 6,
-  };
-
-  randRecipeFilter: RecipeFilter = {
-    orderBy: "rand",
-    limit: 6,
-  };
-}
+};
 </script>
-
-<style lang="scss">
-@import "../../main.scss";
-@import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
-
-#home {
-  @include media-breakpoint-up(sm) {
-    padding: $content-padding;
-  }
-}
-</style>

@@ -1,10 +1,10 @@
-import {
-  BIconInputCursor,
-  BIconTags,
-  BIconBag,
-  BIconCalendarWeek,
-  BIconBellFill,
-} from "bootstrap-vue";
+// import {
+//   BIconInputCursor,
+//   BIconTags,
+//   BIconBag,
+//   BIconCalendarWeek,
+//   BIconBellFill,
+// } from "bootstrap-vue";
 import { tagStore, ingredientStore } from "../../stores/rootStore";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Tag, Ingredient } from "../../types";
@@ -17,7 +17,7 @@ import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
 
 export type UiFilter = {
   name: string;
-  icon: unknown;
+  icon?: unknown;
   component: unknown;
   applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
   isActive: (filter: RecipeFilter) => boolean;
@@ -26,7 +26,7 @@ export type UiFilter = {
 
 export const nameFilter: UiFilter = {
   name: "name",
-  icon: BIconInputCursor,
+  // icon: BIconInputCursor,
   component: NameFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.nameContains = val;
@@ -37,7 +37,7 @@ export const nameFilter: UiFilter = {
 
 export const tagFilter: UiFilter = {
   name: "tags",
-  icon: BIconTags,
+  // icon: BIconTags,
   component: TagFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.tags = getTags(val.split(";"));
@@ -48,7 +48,7 @@ export const tagFilter: UiFilter = {
 
 export const ingredientFilter: UiFilter = {
   name: "ingredients",
-  icon: BIconBag,
+  // icon: BIconBag,
   component: IngredientFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.ingredients = getIngredients(val.split(";"));
@@ -59,7 +59,7 @@ export const ingredientFilter: UiFilter = {
 
 export const seasonalFilter: UiFilter = {
   name: "seasonal",
-  icon: BIconCalendarWeek,
+  // icon: BIconCalendarWeek,
   component: IsSeasonalFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.isSeasonal = true;
@@ -70,7 +70,7 @@ export const seasonalFilter: UiFilter = {
 
 export const markedFilter: UiFilter = {
   name: "marked",
-  icon: BIconBellFill,
+  // icon: BIconBellFill,
   component: IsMarkedFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.marked = true;
