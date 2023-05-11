@@ -4,15 +4,33 @@
       <div class="vue-dialog-content-title">{{ label }}</div>
 
       <div class="container">
-        <vs-datepicker id="cookupDate" v-model="cookupDate" placeholder="DD-MM-YYYY" format="DD-MM-YYYY" />
-        <div v-if="error" class="alert alert-error" warning="alert">
-        </div>
+        <vs-datepicker
+          id="cookupDate"
+          v-model="cookupDate"
+          placeholder="DD-MM-YYYY"
+          format="DD-MM-YYYY"
+        />
+        <div v-if="error" class="alert alert-error" warning="alert"></div>
       </div>
     </div>
 
     <div class="vue-dialog-buttons">
-      <button type="button" tabindex="0" class="vue-dialog-button" @click="cookupAddedCallback">Abbrechen</button>
-      <button type="button" tabindex="0" class="vue-dialog-button" @click="addCookup">Hinzufügen</button>
+      <button
+        type="button"
+        tabindex="0"
+        class="vue-dialog-button"
+        @click="cookupAddedCallback"
+      >
+        Abbrechen
+      </button>
+      <button
+        type="button"
+        tabindex="0"
+        class="vue-dialog-button"
+        @click="addCookup"
+      >
+        Hinzufügen
+      </button>
     </div>
   </div>
 </template>
@@ -20,8 +38,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-facing-decorator";
 import { Cookup, Recipe } from "../../types";
-import VsDatepicker from '@vuesimple/vs-datepicker';
-import { userStore } from '../../stores/rootStore'
+import VsDatepicker from "@vuesimple/vs-datepicker";
+import { userStore } from "../../stores/rootStore";
 import { CookupClient } from "../../clients/CookupClient";
 
 @Component({
@@ -60,19 +78,19 @@ export default class RecipeView extends Vue {
     }
 
     return new Promise<Cookup | void>((resolve, reject) => {
-      this.cookupClient.createCookup(userId, recipeId, this.cookupDate)
-        .then(cookup => {
+      this.cookupClient
+        .createCookup(userId, recipeId, this.cookupDate)
+        .then((cookup) => {
           this.cookupAddedCallback();
           resolve(cookup);
         })
-        .catch(err => {
+        .catch((err) => {
           this.error = err.toString();
           reject(err);
         });
     });
   }
 }
-
 </script>
 
 <style lang="scss" scoped>

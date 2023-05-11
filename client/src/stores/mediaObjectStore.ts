@@ -5,12 +5,12 @@ import { MediaObject } from "../types";
 const VuexModule = createModule({
   namespaced: "mediaObjects",
   strict: false,
-})
+});
 
 export type CreateMediaObjectRequest = {
-  file: File,
-  fileName?: string,
-}
+  file: File;
+  fileName?: string;
+};
 
 export class MediaObjectStore extends VuexModule {
   private mediaObjectClient = new MediaObjectClient();
@@ -24,7 +24,7 @@ export class MediaObjectStore extends VuexModule {
 
     const mediaObjectMap = new Map<number, string>();
     mediaObjects.forEach((mediaObject) => {
-      if(mediaObject.mediaObjectId && mediaObject.url) {
+      if (mediaObject.mediaObjectId && mediaObject.url) {
         mediaObjectMap.set(mediaObject.mediaObjectId, mediaObject.url);
       }
     });
@@ -34,8 +34,13 @@ export class MediaObjectStore extends VuexModule {
   }
 
   @action
-  async createMediaObject(request: CreateMediaObjectRequest): Promise<MediaObject> {
-    const mediaObject = await this.mediaObjectClient.createMediaObject(request.file, request.fileName);
+  async createMediaObject(
+    request: CreateMediaObjectRequest
+  ): Promise<MediaObject> {
+    const mediaObject = await this.mediaObjectClient.createMediaObject(
+      request.file,
+      request.fileName
+    );
     this.ADD_MEDIA_OBJECT(mediaObject);
     return mediaObject;
   }
@@ -58,7 +63,7 @@ export class MediaObjectStore extends VuexModule {
 
   @mutation
   private ADD_MEDIA_OBJECT(mediaObject: MediaObject): void {
-    if(mediaObject.mediaObjectId && mediaObject.url) {
+    if (mediaObject.mediaObjectId && mediaObject.url) {
       this.mediaObjects.push(mediaObject);
       this.mediaObjectMap.set(mediaObject.mediaObjectId, mediaObject.url);
     }
@@ -66,7 +71,7 @@ export class MediaObjectStore extends VuexModule {
 
   @mutation
   private REMOVE_MEDIA_OBJECT(mediaObjectId: number): void {
-    if(this.mediaObjectMap.has(mediaObjectId)) {
+    if (this.mediaObjectMap.has(mediaObjectId)) {
       this.mediaObjectMap.delete(mediaObjectId);
     }
   }

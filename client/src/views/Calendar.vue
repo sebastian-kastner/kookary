@@ -2,29 +2,56 @@
   <div id="calendar" class="main-content container">
     <div class="form-row">
       <div class="form-group col">
-        <label for="monthPicker">
-          Monat
-        </label>
-        <select id="monthPicker" name="category" class="form-control" v-model="selectedMonth" v-on:change="updateMonth">
-          <option v-for="(month, monthIndex) in monthNames" v-bind:key="month" :value="monthIndex">{{ month }}</option>
+        <label for="monthPicker"> Monat </label>
+        <select
+          id="monthPicker"
+          name="category"
+          class="form-control"
+          v-model="selectedMonth"
+          v-on:change="updateMonth"
+        >
+          <option
+            v-for="(month, monthIndex) in monthNames"
+            v-bind:key="month"
+            :value="monthIndex"
+          >
+            {{ month }}
+          </option>
         </select>
       </div>
       <div class="form-group col">
-        <label for="nameFilter">
-          Suche
-        </label>
-        <input id="nameFilter" type="text" class="form-control" v-model="nameFilter" v-on:focusout="updateNameFilter"
-          @keydown.enter="updateNameFilter" placeholder="Zutatenname" />
+        <label for="nameFilter"> Suche </label>
+        <input
+          id="nameFilter"
+          type="text"
+          class="form-control"
+          v-model="nameFilter"
+          v-on:focusout="updateNameFilter"
+          @keydown.enter="updateNameFilter"
+          placeholder="Zutatenname"
+        />
       </div>
     </div>
     <div class="container">
-      <div v-for="ingredient in ingredients" v-bind:key="ingredient.ingredientId" class="seasonal-ingredient">
+      <div
+        v-for="ingredient in ingredients"
+        v-bind:key="ingredient.ingredientId"
+        class="seasonal-ingredient"
+      >
         <div class="ingredient-title">
-          <router-link :to="{ path: '/recipes', query: { ingredients: ingredient.ingredientId } }">
+          <router-link
+            :to="{
+              path: '/recipes',
+              query: { ingredients: ingredient.ingredientId },
+            }"
+          >
             {{ ingredient.name }}
           </router-link>
         </div>
-        <div>{{ getMonthName(ingredient.seasonStart) }} - {{ getMonthName(ingredient.seasonEnd) }}</div>
+        <div>
+          {{ getMonthName(ingredient.seasonStart) }} -
+          {{ getMonthName(ingredient.seasonEnd) }}
+        </div>
       </div>
     </div>
   </div>
@@ -36,11 +63,9 @@ import { Component, Vue } from "vue-facing-decorator";
 import { ingredientStore } from "../stores/rootStore";
 
 @Component({
-  components: {
-  },
+  components: {},
 })
 export default class Calendar extends Vue {
-
   monthNames = [
     "--",
     "Januar",
@@ -54,16 +79,18 @@ export default class Calendar extends Vue {
     "September",
     "Oktober",
     "November",
-    "Dezember"
+    "Dezember",
   ];
 
   selectedMonth = new Date().getMonth() + 1;
   nameFilter = "";
 
   get allSeasonalIngredients(): Ingredient[] {
-    const allSeasonalIngredients = ingredientStore.ingredients.filter((ingredient) => {
-      return (ingredient.seasonStart && ingredient.seasonEnd);
-    });
+    const allSeasonalIngredients = ingredientStore.ingredients.filter(
+      (ingredient) => {
+        return ingredient.seasonStart && ingredient.seasonEnd;
+      }
+    );
     return allSeasonalIngredients.sort((a, b) => {
       if (a.seasonStart && b.seasonStart) {
         return a.seasonStart - b.seasonStart;
@@ -86,7 +113,9 @@ export default class Calendar extends Vue {
           return false;
         }
         // exclude if the ingredient name does not match the filter
-        if (!ingredient.name.toLowerCase().includes(this.nameFilter.toLowerCase())) {
+        if (
+          !ingredient.name.toLowerCase().includes(this.nameFilter.toLowerCase())
+        ) {
           return false;
         }
       }
@@ -100,16 +129,16 @@ export default class Calendar extends Vue {
       if (ingredient.seasonStart && ingredient.seasonEnd) {
         const start = ingredient.seasonStart;
         const end = ingredient.seasonEnd;
-        const month = this.selectedMonth
+        const month = this.selectedMonth;
         if (start < end) {
-          inSeason = (start <= month && end >= month);
+          inSeason = start <= month && end >= month;
         } else if (start > end) {
-          inSeason = (month >= start || month <= end);
+          inSeason = month >= start || month <= end;
         }
       }
 
       return inSeason;
-    })
+    });
   }
 
   updateMonth(): void {
@@ -136,7 +165,8 @@ export default class Calendar extends Vue {
   padding-top: $content-padding;
 
   .seasonal-ingredient {
-    padding: $content-padding $content-padding * 2 $content-padding $content-padding * 2;
+    padding: $content-padding $content-padding * 2 $content-padding
+      $content-padding * 2;
     margin: $content-padding;
     border: 1px solid $button-color-secondary;
     border-radius: 10px;

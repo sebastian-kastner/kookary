@@ -1,6 +1,9 @@
 <template>
   <div class="recipe-card">
-    <router-link v-bind:key="recipe.recipeId" :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }">
+    <router-link
+      v-bind:key="recipe.recipeId"
+      :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
+    >
       <div class="recipe-card-image">
         <img :src="recipeImgSrc" />
       </div>
@@ -14,7 +17,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-facing-decorator";
 import { Recipe } from "../../types";
-import { mediaObjectStore } from "../../stores/rootStore"
+import { mediaObjectStore } from "../../stores/rootStore";
 
 @Component({
   components: {},
@@ -24,7 +27,9 @@ export default class RecipeCard extends Vue {
 
   get recipeImgSrc(): string {
     if (this.recipe.images.length > 0 && this.recipe.images[0].mediaObjectId) {
-      const url = mediaObjectStore.mediaObjectMap.get(this.recipe.images[0].mediaObjectId);
+      const url = mediaObjectStore.mediaObjectMap.get(
+        this.recipe.images[0].mediaObjectId
+      );
       if (url) {
         return url;
       }
@@ -119,6 +124,5 @@ export default class RecipeCard extends Vue {
       padding: 10px;
     }
   }
-
 }
 </style>

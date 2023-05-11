@@ -5,21 +5,21 @@ import { Ingredient } from "../types";
 const VuexModule = createModule({
   namespaced: "ingredients",
   strict: false,
-})
+});
 
 export class IngredientStore extends VuexModule {
   private ingredientClient = new IngredientsClient();
 
   public ingredients: Ingredient[] = [];
   public ingredientMap: Map<number, Ingredient> = new Map<number, Ingredient>();
-  
+
   @action
   async init() {
     const ingredients = await this.ingredientClient.getIngredients();
 
     const ingredientMap = new Map<number, Ingredient>();
     ingredients.forEach((ingredient) => {
-      if(ingredient.ingredientId && ingredient.name) {
+      if (ingredient.ingredientId && ingredient.name) {
         ingredientMap.set(ingredient.ingredientId, ingredient);
       }
     });
@@ -34,13 +34,15 @@ export class IngredientStore extends VuexModule {
     // FIXME: this is a beautiful race condition and cannot deal with multiple clients adding ingredients
     // eventually this code should be moved to the backend with more sophisticated logic
     const existingIngredient = this.ingredients.find((ingredient) => {
-      return (ingredient.name?.trim() === ingredientName.trim());
+      return ingredient.name?.trim() === ingredientName.trim();
     });
     if (existingIngredient) {
       return existingIngredient;
     }
 
-    const ingredient = await this.ingredientClient.createIngredient(ingredientName);
+    const ingredient = await this.ingredientClient.createIngredient(
+      ingredientName
+    );
     this.ADD_INGREDIENT(ingredient);
     return ingredient;
   }
@@ -48,12 +50,13 @@ export class IngredientStore extends VuexModule {
   @action
   async removeIngredient(ingredientId: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.ingredientClient.deleteIngredient(ingredientId)
-      .then(() => {
-        this.REMOVE_INGREDIENT(ingredientId);
-        resolve();
-      })
-      .catch((err) => reject(err));
+      this.ingredientClient
+        .deleteIngredient(ingredientId)
+        .then(() => {
+          this.REMOVE_INGREDIENT(ingredientId);
+          resolve();
+        })
+        .catch((err) => reject(err));
     });
   }
 
@@ -69,7 +72,7 @@ export class IngredientStore extends VuexModule {
 
   @mutation
   private ADD_INGREDIENT(ingredient: Ingredient): void {
-    if(ingredient.ingredientId && ingredient.name) {
+    if (ingredient.ingredientId && ingredient.name) {
       this.ingredients.push(ingredient);
       this.ingredientMap.set(ingredient.ingredientId, ingredient);
     }
@@ -78,7 +81,7 @@ export class IngredientStore extends VuexModule {
   @mutation
   private REMOVE_INGREDIENT(ingredientId: number): void {
     const ingredientToRemove = this.ingredientMap.get(ingredientId);
-    if(ingredientToRemove) {
+    if (ingredientToRemove) {
       this.ingredientMap.delete(ingredientId);
       this.ingredients.splice(this.ingredients.indexOf(ingredientToRemove), 1);
     }

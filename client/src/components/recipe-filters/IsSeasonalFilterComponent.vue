@@ -10,9 +10,7 @@
           v-on:change="setIsSeasonal(true)"
           :checked="recipeFilter.isSeasonal === true"
         />
-        <label class="form-check-label" for="seasonal">
-          Saisonal
-        </label>
+        <label class="form-check-label" for="seasonal"> Saisonal </label>
       </div>
       <div class="form-check">
         <input

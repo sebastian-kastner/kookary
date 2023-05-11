@@ -38,13 +38,10 @@
 </template>
 
 <script lang="ts">
-import {
-  BIconXCircle,
-  BIconBellFill,
-} from "bootstrap-vue";
+import { BIconXCircle, BIconBellFill } from "bootstrap-vue";
 import { Component, Prop, Vue } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { UiFilter } from './uiFilters'
+import { UiFilter } from "./uiFilters";
 
 @Component({
   components: {
@@ -55,7 +52,7 @@ import { UiFilter } from './uiFilters'
 export default class FilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
-  @Prop({required: true }) filters!: UiFilter[];
+  @Prop({ required: true }) filters!: UiFilter[];
 
   activeFilter: string | null = "name";
 

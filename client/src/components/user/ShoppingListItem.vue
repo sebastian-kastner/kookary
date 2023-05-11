@@ -1,9 +1,16 @@
 <template>
   <div class="row shopping-list-item">
-    <div class="col-auto mr-auto shopping-list-item-main item-name" @click="toggle">
-      <b-icon-check-circle v-if="isChecked" @click="toggle"/>
-      <b-icon-circle v-else @click="toggle"/>
-      <span class="shopping-list-item-label" :class="isChecked ? 'checked-shopping-list-item' : ''">{{getItemLabel()}}</span>
+    <div
+      class="col-auto mr-auto shopping-list-item-main item-name"
+      @click="toggle"
+    >
+      <b-icon-check-circle v-if="isChecked" @click="toggle" />
+      <b-icon-circle v-else @click="toggle" />
+      <span
+        class="shopping-list-item-label"
+        :class="isChecked ? 'checked-shopping-list-item' : ''"
+        >{{ getItemLabel() }}</span
+      >
     </div>
 
     <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
@@ -17,8 +24,7 @@ import { Vue, Component, Prop } from "vue-facing-decorator";
 import { ShoppingItem } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
 
-@Component({
-})
+@Component({})
 export default class ShoppingListItem extends Vue {
   @Prop({ required: true })
   shoppingItem!: ShoppingItem;
@@ -27,17 +33,24 @@ export default class ShoppingListItem extends Vue {
   removeItemHandler?: (shoppingItem: ShoppingItem) => Promise<void>;
 
   @Prop({ required: false, default: null })
-  toggleItemHandler?: (shoppingItem: ShoppingItem, newState: boolean) => Promise<void>;
+  toggleItemHandler?: (
+    shoppingItem: ShoppingItem,
+    newState: boolean
+  ) => Promise<void>;
 
   get isChecked(): boolean {
-    if(this.shoppingItem.done) {
+    if (this.shoppingItem.done) {
       return true;
     }
     return false;
   }
 
   getItemLabel(): string {
-    return getIngredientLabel(this.shoppingItem.name, this.shoppingItem.unit, this.shoppingItem.quantity);
+    return getIngredientLabel(
+      this.shoppingItem.name,
+      this.shoppingItem.unit,
+      this.shoppingItem.quantity
+    );
   }
 
   async toggle(): Promise<void> {
@@ -50,7 +63,7 @@ export default class ShoppingListItem extends Vue {
   }
 
   removeItem(): void {
-    if(this.removeItemHandler) {
+    if (this.removeItemHandler) {
       this.removeItemHandler(this.shoppingItem);
     }
   }

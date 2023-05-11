@@ -1,4 +1,8 @@
-export function getIngredientLabel(name?: string | null, unit?: string | null, quantity?: string | null): string {
+export function getIngredientLabel(
+  name?: string | null,
+  unit?: string | null,
+  quantity?: string | null
+): string {
   let label = "";
 
   if (name) {
@@ -8,8 +12,8 @@ export function getIngredientLabel(name?: string | null, unit?: string | null, q
       if (quantity && unit) {
         space = " ";
       }
-      const quantityLabel = (quantity) ? quantity.toString() : "";
-      const unitLabel = (unit) ? unit.toString() : "";
+      const quantityLabel = quantity ? quantity.toString() : "";
+      const unitLabel = unit ? unit.toString() : "";
       label += `(${quantityLabel}${space}${unitLabel})`;
     }
   }

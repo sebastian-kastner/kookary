@@ -17,20 +17,37 @@
 
     <div class="form-group">
       <label for="old-password">Aktuelles Passwort</label>
-      <input type="password" class="form-control" id="old-password" placeholder="Aktuelles Passwort"
-        v-model="oldPassword" />
+      <input
+        type="password"
+        class="form-control"
+        id="old-password"
+        placeholder="Aktuelles Passwort"
+        v-model="oldPassword"
+      />
     </div>
 
     <div class="form-group">
       <label for="new-password">Neues Passwort</label>
-      <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password" placeholder="Neues Passwort"
-        v-model="newPassword" />
+      <input
+        v-on:keyup="pwCompare"
+        type="password"
+        class="form-control"
+        id="new-password"
+        placeholder="Neues Passwort"
+        v-model="newPassword"
+      />
     </div>
 
     <div class="form-group">
       <label for="new-password-repeated">Neues Passwort wiederholen</label>
-      <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password-repeated"
-        placeholder="Neues Passwort" v-model="newPasswordRepeated" />
+      <input
+        v-on:keyup="pwCompare"
+        type="password"
+        class="form-control"
+        id="new-password-repeated"
+        placeholder="Neues Passwort"
+        v-model="newPasswordRepeated"
+      />
     </div>
 
     <div v-if="errorTxt != ''" class="alert alert-danger" role="alert">
@@ -45,7 +62,12 @@
       Passwort erfolgreich geändert!
     </div>
 
-    <button type="submit" class="btn btn-primary" :disabled="newPassword != newPasswordRepeated || changed" @click="changePassword">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      :disabled="newPassword != newPasswordRepeated || changed"
+      @click="changePassword"
+    >
       Ändern
     </button>
   </div>
@@ -54,7 +76,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator";
 import { userStore } from "../../stores/rootStore";
-import { UserClient } from "../../clients/UserClient"
+import { UserClient } from "../../clients/UserClient";
 import debounce from "lodash.debounce";
 
 @Component({})
@@ -70,7 +92,9 @@ export default class Account extends Vue {
 
   private userClient = new UserClient();
 
-  debouncedPwCompare = debounce(() => { this.pwCompare(); }, 750);
+  debouncedPwCompare = debounce(() => {
+    this.pwCompare();
+  }, 750);
 
   get userName(): string {
     if (!userStore.user || !userStore.user.displayName) {
@@ -87,8 +111,12 @@ export default class Account extends Vue {
   }
 
   pwCompare(): void {
-    if (this.newPassword != "" && this.newPasswordRepeated != "" && this.newPassword !== this.newPasswordRepeated) {
-      this.warningTxt = "Die neuen Passwörter stimmen nicht überein."
+    if (
+      this.newPassword != "" &&
+      this.newPasswordRepeated != "" &&
+      this.newPassword !== this.newPasswordRepeated
+    ) {
+      this.warningTxt = "Die neuen Passwörter stimmen nicht überein.";
     } else {
       this.warningTxt = "";
     }
@@ -96,7 +124,7 @@ export default class Account extends Vue {
 
   changePassword(): void {
     const userId = userStore.user?.id;
-    
+
     // reset statuses
     this.changed = false;
     this.errorTxt = "";
@@ -104,7 +132,8 @@ export default class Account extends Vue {
     if (!userId) {
       throw new Error("No user logged in, cannot change password");
     }
-    this.userClient.changePassword(userId, this.newPassword, this.oldPassword)
+    this.userClient
+      .changePassword(userId, this.newPassword, this.oldPassword)
       .then(() => {
         this.changed = true;
       })

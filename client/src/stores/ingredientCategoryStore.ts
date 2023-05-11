@@ -5,13 +5,16 @@ import { IngredientCategory } from "../types";
 const VuexModule = createModule({
   namespaced: "ingredientCategories",
   strict: false,
-})
+});
 
 export class IngredientCategoryStore extends VuexModule {
   private client = new IngredientCategoriesClient();
 
   public categories: IngredientCategory[] = [];
-  public categoriesMap: Map<number, IngredientCategory> = new Map<number, IngredientCategory>();
+  public categoriesMap: Map<number, IngredientCategory> = new Map<
+    number,
+    IngredientCategory
+  >();
 
   @action
   async init() {
@@ -19,7 +22,7 @@ export class IngredientCategoryStore extends VuexModule {
 
     const categoryMap = new Map<number, IngredientCategory>();
     categories.forEach((category) => {
-      if(category.ingredientCategoryId && category.name) {
+      if (category.ingredientCategoryId && category.name) {
         categoryMap.set(category.ingredientCategoryId, category);
       }
     });

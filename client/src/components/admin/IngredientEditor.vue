@@ -1,27 +1,57 @@
 <template>
   <tr>
-    <td class="align-middle d-none d-ml-table-cell">{{ getUserName(ingredient.authorId) }}</td>
-    <td>
-      <input type="text" class="form-control" v-model="ingredient.name" v-on:focusout="updateIngredient"
-        @keydown.enter="updateIngredient" />
+    <td class="align-middle d-none d-ml-table-cell">
+      {{ getUserName(ingredient.authorId) }}
     </td>
     <td>
-      <select name="category" class="form-control" v-model="ingredient.ingredientCategoryId"
-        v-on:change="updateIngredient">
-        <option v-for="category in categories" v-bind:key="category.ingredientCategoryId"
-          :value="category.ingredientCategoryId">{{ category.name }}</option>
+      <input
+        type="text"
+        class="form-control"
+        v-model="ingredient.name"
+        v-on:focusout="updateIngredient"
+        @keydown.enter="updateIngredient"
+      />
+    </td>
+    <td>
+      <select
+        name="category"
+        class="form-control"
+        v-model="ingredient.ingredientCategoryId"
+        v-on:change="updateIngredient"
+      >
+        <option
+          v-for="category in categories"
+          v-bind:key="category.ingredientCategoryId"
+          :value="category.ingredientCategoryId"
+        >
+          {{ category.name }}
+        </option>
       </select>
     </td>
     <td class="d-none d-sm-table-cell">
-      <select name="seasonStart" class="form-control" v-model="ingredient.seasonStart" v-on:change="updateIngredient">
+      <select
+        name="seasonStart"
+        class="form-control"
+        v-model="ingredient.seasonStart"
+        v-on:change="updateIngredient"
+      >
         <option value="">-</option>
-        <option v-for="i in monthIndexes" v-bind:key="i" :value="i">{{ getMonthName(i) }}</option>
+        <option v-for="i in monthIndexes" v-bind:key="i" :value="i">
+          {{ getMonthName(i) }}
+        </option>
       </select>
     </td>
     <td class="d-none d-sm-table-cell">
-      <select name="seasonEnd" class="form-control" v-model="ingredient.seasonEnd" v-on:change="updateIngredient">
+      <select
+        name="seasonEnd"
+        class="form-control"
+        v-model="ingredient.seasonEnd"
+        v-on:change="updateIngredient"
+      >
         <option value="">-</option>
-        <option v-for="i in monthIndexes" v-bind:key="i" :value="i">{{ getMonthName(i) }}</option>
+        <option v-for="i in monthIndexes" v-bind:key="i" :value="i">
+          {{ getMonthName(i) }}
+        </option>
       </select>
     </td>
     <td class="align-middle">
@@ -39,15 +69,25 @@ import { userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import { IngredientsClient } from "../../clients/IngredientsClient";
 
 const MONTHS = [
-  "Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"
+  "Januar",
+  "Februar",
+  "März",
+  "April",
+  "Mai",
+  "Juni",
+  "Juli",
+  "August",
+  "September",
+  "Oktober",
+  "November",
+  "Dezember",
 ];
-const MONTH_INDEXES = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const MONTH_INDEXES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 @Component({
   components: {},
 })
 export default class IngredientEditor extends Vue {
-  
   @Prop({ required: true })
   ingredient!: Ingredient;
 
@@ -96,6 +136,5 @@ export default class IngredientEditor extends Vue {
   removeIngredient(ingredient: Ingredient): void {
     this.$emit("onIngredientDelete", ingredient);
   }
-
 }
 </script>

@@ -10,9 +10,7 @@
     </div>
     <div v-if="moreLink !== null" class="row d-flex justify-content-center">
       <div class="inline-item-list-element">
-        <router-link :to="moreLink">
-        Mehr..
-        </router-link>
+        <router-link :to="moreLink"> Mehr.. </router-link>
       </div>
     </div>
   </div>
@@ -57,16 +55,15 @@ export default class RecipeCardList extends Vue {
 @import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 .recipe-card-header {
-    font-size: 1.2rem;
-    color: $font-color-highlight;
-    padding-left: 5px;
+  font-size: 1.2rem;
+  color: $font-color-highlight;
+  padding-left: 5px;
 }
 
 // hide children above child count 4 on small
 @include media-breakpoint-down(sm) {
-  .recipe-card:nth-child(1n+5) {
+  .recipe-card:nth-child(1n + 5) {
     display: none;
   }
 }
-
 </style>

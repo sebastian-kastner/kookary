@@ -1,7 +1,10 @@
 <template>
   <div id="ingredient-editor" class="form-group">
     <div class="form-row">
-      <div class="col-1 d-flex align-items-center justify-content-center" :class="handleClass">
+      <div
+        class="col-1 d-flex align-items-center justify-content-center"
+        :class="handleClass"
+      >
         <b-icon-arrow-down-up />
       </div>
       <div class="col-5">
@@ -38,12 +41,15 @@
         />
       </div>
 
-      <div class="col-1 d-flex align-items-center justify-content-center delete-ingredient-col" v-if="ingredientSelected" v-on:click="removeIngredient">
+      <div
+        class="col-1 d-flex align-items-center justify-content-center delete-ingredient-col"
+        v-if="ingredientSelected"
+        v-on:click="removeIngredient"
+      >
         <b-icon-trash />
       </div>
       <div class="col-1" v-else />
     </div>
-
   </div>
 </template>
 
@@ -52,7 +58,7 @@ import { Vue, Component, Prop } from "vue-facing-decorator";
 import { RecipeIngredient, Ingredient } from "../types";
 import TypeaheadInput from "./TypeaheadInput.vue";
 import { ingredientStore } from "../stores/rootStore";
-import { getErrorMessage } from "../utils/errors"
+import { getErrorMessage } from "../utils/errors";
 
 @Component({
   components: { TypeaheadInput },
@@ -100,7 +106,9 @@ export default class RecipeIngredientEditor extends Vue {
       .catch((error) => {
         console.error(error);
         const errorMessage = getErrorMessage(error);
-        this.$toast.open(`Fehler beim Anlegen der Zutat ${ingredientName}: ${errorMessage}`);
+        this.$toast.open(
+          `Fehler beim Anlegen der Zutat ${ingredientName}: ${errorMessage}`
+        );
       });
   }
 }

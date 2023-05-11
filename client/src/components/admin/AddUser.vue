@@ -5,22 +5,46 @@
     <form>
       <div class="form-group">
         <label for="email">eMail</label>
-        <input type="email" class="form-control" id="email" placeholder="eMail" v-model="email" />
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          placeholder="eMail"
+          v-model="email"
+        />
       </div>
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" placeholder="name" v-model="displayname" />
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          placeholder="name"
+          v-model="displayname"
+        />
       </div>
       <div class="form-group">
         <label for="new-password">Passwort</label>
-        <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password"
-          placeholder="Neues Passwort" v-model="password"/>
+        <input
+          v-on:keyup="pwCompare"
+          type="password"
+          class="form-control"
+          id="new-password"
+          placeholder="Neues Passwort"
+          v-model="password"
+        />
       </div>
 
       <div class="form-group">
         <label for="new-password-repeated">Neues Passwort wiederholen</label>
-        <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password-repeated"
-          placeholder="Passwort wiederholung" v-model="passwordRepeated"/>
+        <input
+          v-on:keyup="pwCompare"
+          type="password"
+          class="form-control"
+          id="new-password-repeated"
+          placeholder="Passwort wiederholung"
+          v-model="passwordRepeated"
+        />
       </div>
       <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
         {{ warningTxt }}
@@ -29,22 +53,29 @@
         {{ errorTxt }}
       </div>
 
-      <button type="submit" class="btn btn-primary" :disabled="password != passwordRepeated" @click="createUser">Hinzufügen</button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :disabled="password != passwordRepeated"
+        @click="createUser"
+      >
+        Hinzufügen
+      </button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-facing-decorator";
-import { UserClient } from "../../clients/UserClient"
-import { User } from "../../types"
+import { UserClient } from "../../clients/UserClient";
+import { User } from "../../types";
 
 @Component({})
 export default class UserEditor extends Vue {
   private userClient = new UserClient();
 
-  @Prop({required: true })
-  private userAddedCallback!: (addedUser: User) => void
+  @Prop({ required: true })
+  private userAddedCallback!: (addedUser: User) => void;
 
   email = "";
   displayname = "";
@@ -55,8 +86,12 @@ export default class UserEditor extends Vue {
   errorTxt = "";
 
   pwCompare(): void {
-    if (this.password != "" && this.passwordRepeated != "" && this.password !== this.passwordRepeated) {
-      this.warningTxt = "Die Passwörter stimmen nicht überein."
+    if (
+      this.password != "" &&
+      this.passwordRepeated != "" &&
+      this.password !== this.passwordRepeated
+    ) {
+      this.warningTxt = "Die Passwörter stimmen nicht überein.";
     } else {
       this.warningTxt = "";
     }
@@ -78,7 +113,8 @@ export default class UserEditor extends Vue {
       return;
     }
 
-    this.userClient.createUser(this.email, this.displayname, this.password)
+    this.userClient
+      .createUser(this.email, this.displayname, this.password)
       .then((user) => {
         this.userAddedCallback(user);
         // this.$modal.hideAll();

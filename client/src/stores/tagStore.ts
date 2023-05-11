@@ -5,7 +5,7 @@ import { Tag } from "../types";
 const VuexModule = createModule({
   namespaced: "tags",
   strict: false,
-})
+});
 
 export class TagStore extends VuexModule {
   private tagClient = new TagsClient();
@@ -19,7 +19,7 @@ export class TagStore extends VuexModule {
 
     const tagMap = new Map<number, Tag>();
     tags.forEach((tag) => {
-      if(tag.tagId && tag.name) {
+      if (tag.tagId && tag.name) {
         tagMap.set(tag.tagId, tag);
       }
     });
@@ -47,7 +47,7 @@ export class TagStore extends VuexModule {
 
   @mutation
   private ADD_TAG(tag: Tag): void {
-    if(tag.tagId && tag.name) {
+    if (tag.tagId && tag.name) {
       this.tags.push(tag);
       this.tagMap.set(tag.tagId, tag);
     }

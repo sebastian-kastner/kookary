@@ -1,39 +1,51 @@
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import RecipeView from '../views/RecipeView.vue';
-import RecipeOverview from '../views/RecipeOverview.vue';
-import Calendar from '../views/Calendar.vue'
+import Vue from "vue";
+import VueRouter, { RouteConfig } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import RecipeView from "../views/RecipeView.vue";
+import RecipeOverview from "../views/RecipeOverview.vue";
+import Calendar from "../views/Calendar.vue";
 // user views
-import Account from '../views/user/Account.vue';
-import RecipeEditorView from '../views/RecipeEditorView.vue';
-import ShoppingList from '../views/user/ShoppingList.vue';
+import Account from "../views/user/Account.vue";
+import RecipeEditorView from "../views/RecipeEditorView.vue";
+import ShoppingList from "../views/user/ShoppingList.vue";
 // admin views
-import UserMgtmView from '../views/admin/UserMgmtView.vue';
-import IngredientMgmtView from '../views/admin/IngredientMgmtView.vue'
+import UserMgtmView from "../views/admin/UserMgmtView.vue";
+import IngredientMgmtView from "../views/admin/IngredientMgmtView.vue";
 
-import { userStore } from '../stores/rootStore';
+import { userStore } from "../stores/rootStore";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   // general routes
-  { path: '/', name: 'home', component: HomeView },
-  { path: '/recipe', name: 'recipe', component: RecipeView },
-  { path: '/recipes', name: 'recipes', component: RecipeOverview },
-  { path: '/calendar', name: 'calendar', component: Calendar },
+  { path: "/", name: "home", component: HomeView },
+  { path: "/recipe", name: "recipe", component: RecipeView },
+  { path: "/recipes", name: "recipes", component: RecipeOverview },
+  { path: "/calendar", name: "calendar", component: Calendar },
   // user routes
-  { path: '/user/account', name: 'account', component: Account },
-  { path: '/user/recipe-editor', name: 'recipe-editor', component: RecipeEditorView },
-  { path: '/user/shopping-list', name: 'shopping-list', component: ShoppingList },
+  { path: "/user/account", name: "account", component: Account },
+  {
+    path: "/user/recipe-editor",
+    name: "recipe-editor",
+    component: RecipeEditorView,
+  },
+  {
+    path: "/user/shopping-list",
+    name: "shopping-list",
+    component: ShoppingList,
+  },
   // admin routes
-  { path: '/admin/users', name: 'user-mgmt', component: UserMgtmView },
-  { path: '/admin/ingredients', name: 'ingredient-mgmt', component: IngredientMgmtView },
-]
+  { path: "/admin/users", name: "user-mgmt", component: UserMgtmView },
+  {
+    path: "/admin/ingredients",
+    name: "ingredient-mgmt",
+    component: IngredientMgmtView,
+  },
+];
 
 const router = new VueRouter({
-  routes
-})
+  routes,
+});
 
 router.beforeEach((to, from, next) => {
   if (to.path && to.path.startsWith("/user")) {
@@ -42,7 +54,7 @@ router.beforeEach((to, from, next) => {
       return;
     }
   } else if (to.path && to.path.startsWith("/admin")) {
-    if(!userStore.userIsAdmin) {
+    if (!userStore.userIsAdmin) {
       next("/");
       return;
     }
@@ -51,4 +63,4 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-export default router
+export default router;

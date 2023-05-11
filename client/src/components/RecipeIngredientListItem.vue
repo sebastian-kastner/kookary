@@ -1,10 +1,15 @@
 <template>
   <li>
     {{ quantity }} {{ ingredient.unit }}
-    <router-link :to="{ path: '/recipes', query: { ingredients: getIngredientId(ingredient) } }">
+    <router-link
+      :to="{
+        path: '/recipes',
+        query: { ingredients: getIngredientId(ingredient) },
+      }"
+    >
       {{ getIngredientName(ingredient) }}
     </router-link>
-    <b-icon-calendar-week v-if="isSeasonal(ingredient.ingredient)"/>
+    <b-icon-calendar-week v-if="isSeasonal(ingredient.ingredient)" />
   </li>
 </template>
 
@@ -29,7 +34,7 @@ export default class RecipeIngredientListItem extends Vue {
   mounted() {
     if (this.ingredient.quantity) {
       const nmbr = Number(this.ingredient.quantity);
-      if(!isNaN(nmbr)) {
+      if (!isNaN(nmbr)) {
         this.numericQuantity = nmbr;
       }
     }
@@ -38,8 +43,8 @@ export default class RecipeIngredientListItem extends Vue {
 
   @Watch("quantityFactor")
   setQuantity(): void {
-    if(this.numericQuantity) {
-      this.quantity = round((this.numericQuantity * this.quantityFactor), 2);
+    if (this.numericQuantity) {
+      this.quantity = round(this.numericQuantity * this.quantityFactor, 2);
     } else if (this.ingredient.quantity) {
       this.quantity = this.ingredient.quantity;
     } else {
@@ -56,12 +61,17 @@ export default class RecipeIngredientListItem extends Vue {
   }
 
   isSeasonal(ingredient?: Ingredient | null): boolean {
-    if(ingredient && ingredient.seasonStart && ingredient.seasonEnd) {
+    if (ingredient && ingredient.seasonStart && ingredient.seasonEnd) {
       if (ingredient.seasonStart <= ingredient.seasonEnd) {
-        return (currentMonth >= ingredient.seasonStart  && currentMonth <= ingredient.seasonEnd);
-      }
-      else if (ingredient.seasonStart > ingredient.seasonEnd) {
-        return (currentMonth >= ingredient.seasonEnd || currentMonth <= ingredient.seasonStart);
+        return (
+          currentMonth >= ingredient.seasonStart &&
+          currentMonth <= ingredient.seasonEnd
+        );
+      } else if (ingredient.seasonStart > ingredient.seasonEnd) {
+        return (
+          currentMonth >= ingredient.seasonEnd ||
+          currentMonth <= ingredient.seasonStart
+        );
       }
     }
     return false;

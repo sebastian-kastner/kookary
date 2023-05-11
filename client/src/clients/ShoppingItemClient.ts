@@ -1,9 +1,9 @@
-import { ShoppingItem } from '../types';
-import { ShoppingItemApi } from '../../rest/api';
-import { logAxiosError } from './axiosErrorLogger';
-import { clientConfiguration } from './clientConfiguration';
-import { ToRestModelConverter } from './ToRestModelConverter';
-import { ToViewModelConverter } from './ToViewModelConverter';
+import { ShoppingItem } from "../types";
+import { ShoppingItemApi } from "../../rest/api";
+import { logAxiosError } from "./axiosErrorLogger";
+import { clientConfiguration } from "./clientConfiguration";
+import { ToRestModelConverter } from "./ToRestModelConverter";
+import { ToViewModelConverter } from "./ToViewModelConverter";
 
 export class ShoppingListClient {
   client = new ShoppingItemApi(clientConfiguration);
@@ -13,30 +13,36 @@ export class ShoppingListClient {
 
   public async getUserItems(userId: number): Promise<ShoppingItem[]> {
     return new Promise<ShoppingItem[]>((resolve, reject) => {
-      this.client.getShoppingItemCollection(userId.toString(), [])
+      this.client
+        .getShoppingItemCollection(userId.toString(), [])
         .then((response) => {
-          const items = this.viewModelConverter.convertShoppingItems(response.data['hydra:member']);
+          const items = this.viewModelConverter.convertShoppingItems(
+            response.data["hydra:member"]
+          );
           resolve(items);
         })
         .catch((e) => {
           logAxiosError(e);
           reject(e);
-        })
+        });
     });
   }
 
   public async createShoppingItem(shoppingItem: ShoppingItem): Promise<number> {
     const userId = shoppingItem.user;
-    if(!userId) {
+    if (!userId) {
       throw new Error("No user id given");
     }
 
     const apiItem = this.restModelConverter.convertShoppingItem(shoppingItem);
     return new Promise<number>((resolve, reject) => {
-      this.client.postShoppingItemCollection(apiItem)
+      this.client
+        .postShoppingItemCollection(apiItem)
         .then((response) => {
-          const storedItem = this.viewModelConverter.convertShoppingItem(response.data);
-          if(storedItem.shoppingItemId) {
+          const storedItem = this.viewModelConverter.convertShoppingItem(
+            response.data
+          );
+          if (storedItem.shoppingItemId) {
             resolve(storedItem.shoppingItemId);
           } else {
             reject("No shopping item id returned!");
@@ -44,14 +50,17 @@ export class ShoppingListClient {
         })
         .catch((e) => {
           logAxiosError(e);
-          reject(e)
+          reject(e);
         });
     });
   }
 
-  public async createShoppingItems(userId: number, shoppingItems: ShoppingItem[]): Promise<void> {
+  public async createShoppingItems(
+    userId: number,
+    shoppingItems: ShoppingItem[]
+  ): Promise<void> {
     const promises: Promise<number>[] = [];
-    shoppingItems.forEach(item => {
+    shoppingItems.forEach((item) => {
       promises.push(this.createShoppingItem(item));
     });
 
@@ -62,9 +71,16 @@ export class ShoppingListClient {
     });
   }
 
-  public async updateShoppingItem(shoppingItemId: number, shoppingItem: ShoppingItem): Promise<void> {
+  public async updateShoppingItem(
+    shoppingItemId: number,
+    shoppingItem: ShoppingItem
+  ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.client.patchShoppingItemItem(shoppingItemId.toString(), this.restModelConverter.convertShoppingItem(shoppingItem))
+      this.client
+        .patchShoppingItemItem(
+          shoppingItemId.toString(),
+          this.restModelConverter.convertShoppingItem(shoppingItem)
+        )
         .then(() => {
           resolve();
         })
@@ -75,24 +91,29 @@ export class ShoppingListClient {
     });
   }
 
-  public async setDoneState(shoppingItemId: number, newState: boolean): Promise<void> {
+  public async setDoneState(
+    shoppingItemId: number,
+    newState: boolean
+  ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.client.patchShoppingItemItem(shoppingItemId.toString(), {
-        done: newState
-      })
-      .then(() => {
-        resolve();
-      })
-      .catch((err) => {
-        logAxiosError(err);
-        reject(err);
-      })
+      this.client
+        .patchShoppingItemItem(shoppingItemId.toString(), {
+          done: newState,
+        })
+        .then(() => {
+          resolve();
+        })
+        .catch((err) => {
+          logAxiosError(err);
+          reject(err);
+        });
     });
   }
 
   public async deleteShoppingItem(shoppingItemId: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.client.deleteShoppingItemItem(shoppingItemId.toString())
+      this.client
+        .deleteShoppingItemItem(shoppingItemId.toString())
         .then(() => resolve())
         .catch((e) => {
           logAxiosError(e);
@@ -103,7 +124,7 @@ export class ShoppingListClient {
 
   public async deleteShoppingItems(shoppingItemIds: number[]): Promise<void> {
     const promises: Promise<void>[] = [];
-    shoppingItemIds.forEach(id => {
+    shoppingItemIds.forEach((id) => {
       promises.push(this.deleteShoppingItem(id));
     });
     return new Promise<void>((resolve, reject) => {

@@ -13,8 +13,8 @@
     "@types/uuid": "^8.3.4",
     "@vuesimple/vs-datepicker": "^1.4.13",
     "axios": "^0.26.1",
-    "bootstrap": "^5.2.3",
-    "bootstrap-vue-next": "^0.8.11",
+    "bootstrap": "^4.6.2",
+    "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "jquery": "^3.6.1",
     "lodash.debounce": "^4.0.8",
@@ -56,8 +56,10 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
-      "@vue/typescript/recommended"
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/typescript/recommended",
+      "plugin:prettier/recommended"
     ],
     "parserOptions": {
       "ecmaVersion": 2020

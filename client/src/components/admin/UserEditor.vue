@@ -10,17 +10,27 @@
         </div>
         <div class="col">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="ROLE_ADMIN" v-model="isAdmin"
-              :disabled="isLoggedInUser()" @change="adminStateChanged">
-            <label class="form-check-label" for="ROLE_ADMIN">
-              Admin
-            </label>
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="ROLE_ADMIN"
+              v-model="isAdmin"
+              :disabled="isLoggedInUser()"
+              @change="adminStateChanged"
+            />
+            <label class="form-check-label" for="ROLE_ADMIN"> Admin </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="ROLE_USER" checked disabled>
-            <label class="form-check-label" for="ROLE_USER">
-              Benutzer
-            </label>
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="ROLE_USER"
+              checked
+              disabled
+            />
+            <label class="form-check-label" for="ROLE_USER"> Benutzer </label>
           </div>
         </div>
       </div>
@@ -30,22 +40,40 @@
       <h4>Neues Passwort</h4>
       <div class="form-group">
         <label for="new-password">Neues Passwort</label>
-        <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password"
-          placeholder="Neues Passwort" v-model="newPassword" :disabled="isLoggedInUser()"/>
+        <input
+          v-on:keyup="pwCompare"
+          type="password"
+          class="form-control"
+          id="new-password"
+          placeholder="Neues Passwort"
+          v-model="newPassword"
+          :disabled="isLoggedInUser()"
+        />
       </div>
 
       <div class="form-group">
         <label for="new-password-repeated">Neues Passwort wiederholen</label>
-        <input v-on:keyup="pwCompare" type="password" class="form-control" id="new-password-repeated"
-          placeholder="Passwort Wiederholung" v-model="newPasswordRepeated" :disabled="isLoggedInUser()"/>
+        <input
+          v-on:keyup="pwCompare"
+          type="password"
+          class="form-control"
+          id="new-password-repeated"
+          placeholder="Passwort Wiederholung"
+          v-model="newPasswordRepeated"
+          :disabled="isLoggedInUser()"
+        />
       </div>
 
       <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
         {{ warningTxt }}
       </div>
 
-      <button type="submit" class="btn btn-primary" :disabled="newPassword != newPasswordRepeated || isLoggedInUser()"
-        @click="changePassword">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :disabled="newPassword != newPasswordRepeated || isLoggedInUser()"
+        @click="changePassword"
+      >
         Passwort Ändern
       </button>
     </div>
@@ -55,8 +83,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-facing-decorator";
 import { User } from "../../types";
-import { userStore } from "../../stores/rootStore"
-import { UserClient } from "../../clients/UserClient"
+import { userStore } from "../../stores/rootStore";
+import { UserClient } from "../../clients/UserClient";
 import { cloneDeep } from "lodash";
 
 @Component({})
@@ -96,17 +124,23 @@ export default class UserEditor extends Vue {
     }
 
     // TBD: error handling..
-    this.userClient.updateUser({
-      id: this.user.id,
-      roles: roles,
-    }).then(() => {
-      this.user.roles = roles;
-    });
+    this.userClient
+      .updateUser({
+        id: this.user.id,
+        roles: roles,
+      })
+      .then(() => {
+        this.user.roles = roles;
+      });
   }
 
   pwCompare(): void {
-    if (this.newPassword != "" && this.newPasswordRepeated != "" && this.newPassword !== this.newPasswordRepeated) {
-      this.warningTxt = "Die neuen Passwörter stimmen nicht überein."
+    if (
+      this.newPassword != "" &&
+      this.newPasswordRepeated != "" &&
+      this.newPassword !== this.newPasswordRepeated
+    ) {
+      this.warningTxt = "Die neuen Passwörter stimmen nicht überein.";
     } else {
       this.warningTxt = "";
     }
@@ -116,11 +150,9 @@ export default class UserEditor extends Vue {
     if (!this.user.id) {
       throw new Error("Keine Benutzer ID gesetzt");
     }
-    this.userClient.changePassword(this.user.id, this.newPassword)
-      .then(() => {
-        // this.$modal.hideAll();
-      })
+    this.userClient.changePassword(this.user.id, this.newPassword).then(() => {
+      // this.$modal.hideAll();
+    });
   }
-
 }
 </script>

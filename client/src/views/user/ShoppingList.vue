@@ -5,11 +5,23 @@
     <div class="form-group">
       <div class="form-row justify-content-center">
         <div class="col-4">
-          <input class="form-control" type="text" v-model="amountAndUnit" placeholder="Menge" />
+          <input
+            class="form-control"
+            type="text"
+            v-model="amountAndUnit"
+            placeholder="Menge"
+          />
         </div>
         <div class="col-8">
-          <typeahead-input :items="ingredients" :value="itemName" :itemProjection="getIngredientName" resetOnSelect="true"
-            placeholder="Name" :addNewHandler="addNewCustomItem" @selectItem="addNewIngredientItem" />
+          <typeahead-input
+            :items="ingredients"
+            :value="itemName"
+            :itemProjection="getIngredientName"
+            resetOnSelect="true"
+            placeholder="Name"
+            :addNewHandler="addNewCustomItem"
+            @selectItem="addNewIngredientItem"
+          />
         </div>
       </div>
     </div>
@@ -17,18 +29,29 @@
     <div class="container">
       <div v-for="entry in itemsByCategory" :key="entry[0]">
         {{ getCategoryName(entry[0]) }}
-        <div v-for="shoppingItem in entry[1]" v-bind="shoppingItem" v-bind:key="getShoppingItemId(shoppingItem)">
-          <shopping-list-item :shoppingItem="shoppingItem" :removeItemHandler="deleteItem" :toggleItemHandler="toggleItem" />
+        <div
+          v-for="shoppingItem in entry[1]"
+          v-bind="shoppingItem"
+          v-bind:key="getShoppingItemId(shoppingItem)"
+        >
+          <shopping-list-item
+            :shoppingItem="shoppingItem"
+            :removeItemHandler="deleteItem"
+            :toggleItemHandler="toggleItem"
+          />
         </div>
       </div>
-      
+
       <div class="row justify-content-end">
-        <save-button buttonText="Speichern" :isLoading="isSaving" @onSave="applyChanges"/>
+        <save-button
+          buttonText="Speichern"
+          :isLoading="isSaving"
+          @onSave="applyChanges"
+        />
         <!-- <button type="button" class="btn rounded-button apply-button" v-on:click="applyChanges">
           Fertig
         </button> -->
       </div>
-
     </div>
   </div>
 </template>
@@ -39,21 +62,24 @@ import { Component, Vue } from "vue-facing-decorator";
 import { ingredientStore, userStore } from "../../stores/rootStore";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
-import TypeaheadInput from "../../components/TypeaheadInput.vue"
-import { getShoppingItemsByCategory, getCategoryName } from "../../utils/shoppingItemUtils";
+import TypeaheadInput from "../../components/TypeaheadInput.vue";
+import {
+  getShoppingItemsByCategory,
+  getCategoryName,
+} from "../../utils/shoppingItemUtils";
 import SaveButton from "../../components/SaveButton.vue";
 import { getErrorMessage } from "../../utils/errors";
 
 type AmountAndUnit = {
-  amount?: string,
-  unit?: string
-}
+  amount?: string;
+  unit?: string;
+};
 
 @Component({
   components: {
     ShoppingListItem,
     TypeaheadInput,
-    SaveButton
+    SaveButton,
   },
 })
 export default class ShoppingList extends Vue {
@@ -77,7 +103,7 @@ export default class ShoppingList extends Vue {
     if (!this.user || !this.user.id) {
       throw new Error("No user logged in!");
     }
-    this.shoppingListClient.getUserItems(this.user.id).then(items => {
+    this.shoppingListClient.getUserItems(this.user.id).then((items) => {
       this.shoppingItems = items;
     });
   }
@@ -101,22 +127,33 @@ export default class ShoppingList extends Vue {
     }
     const id = shoppingItemToRemove.shoppingItemId;
     return new Promise<void>((resolve, reject) => {
-      this.shoppingListClient.deleteShoppingItem(id)
+      this.shoppingListClient
+        .deleteShoppingItem(id)
         .then(() => {
-          this.shoppingItems.splice(this.shoppingItems.indexOf(shoppingItemToRemove), 1);
+          this.shoppingItems.splice(
+            this.shoppingItems.indexOf(shoppingItemToRemove),
+            1
+          );
           resolve();
         })
-        .catch((err) => { reject(err); })
+        .catch((err) => {
+          reject(err);
+        });
     });
   }
 
-  async toggleItem(shoppingItem: ShoppingItem, newState: boolean): Promise<void> {
+  async toggleItem(
+    shoppingItem: ShoppingItem,
+    newState: boolean
+  ): Promise<void> {
     if (!shoppingItem.shoppingItemId) {
       throw new Error("No ShoppingItem Id set, cannot set done state!");
     }
-    this.shoppingListClient.setDoneState(shoppingItem.shoppingItemId, newState).then(() => {
-      shoppingItem.done = newState;
-    });
+    this.shoppingListClient
+      .setDoneState(shoppingItem.shoppingItemId, newState)
+      .then(() => {
+        shoppingItem.done = newState;
+      });
   }
 
   addNewIngredientItem(ingredient: Ingredient): void {
@@ -129,7 +166,10 @@ export default class ShoppingList extends Vue {
     this.storeItem(itemName);
   }
 
-  async storeItem(itemName: string, ingredientId?: number | null): Promise<void> {
+  async storeItem(
+    itemName: string,
+    ingredientId?: number | null
+  ): Promise<void> {
     const amountAndUnit = this.getAmountAndUnit();
     const shoppingItem: ShoppingItem = {
       name: itemName,
@@ -141,8 +181,9 @@ export default class ShoppingList extends Vue {
     };
 
     return new Promise<void>((resolve, reject) => {
-      this.shoppingListClient.createShoppingItem(shoppingItem)
-        .then((shoppingItemId => {
+      this.shoppingListClient
+        .createShoppingItem(shoppingItem)
+        .then((shoppingItemId) => {
           shoppingItem.shoppingItemId = shoppingItemId;
           this.shoppingItems.push(shoppingItem);
 
@@ -150,8 +191,8 @@ export default class ShoppingList extends Vue {
           this.amountAndUnit = "";
 
           resolve();
-        }))
-        .catch(err => reject(err));
+        })
+        .catch((err) => reject(err));
     });
   }
 
@@ -169,7 +210,8 @@ export default class ShoppingList extends Vue {
 
     // delete items in done state
     this.isSaving = true;
-    this.shoppingListClient.deleteShoppingItems(idsToDelete)
+    this.shoppingListClient
+      .deleteShoppingItems(idsToDelete)
       .then(() => {
         this.isSaving = false;
         this.shoppingItems = remainingItems;
@@ -199,7 +241,7 @@ export default class ShoppingList extends Vue {
     return {
       amount: amount,
       unit: unit,
-    }
+    };
   }
 
   getIngredientName(item: Ingredient): string {

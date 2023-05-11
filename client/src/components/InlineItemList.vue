@@ -63,27 +63,27 @@ export default class InlineItemList extends Vue {
   }
 
   getId(item: unknown): string {
-    if(this.provideId) {
+    if (this.provideId) {
       return this.provideId(item);
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const itemAsAny = item as any;
-    if(typeof itemAsAny['uuid'] === 'string') {
-      return itemAsAny['uuid'];
+    if (typeof itemAsAny["uuid"] === "string") {
+      return itemAsAny["uuid"];
     }
-    return '';
+    return "";
   }
 
   getLabel(item: unknown): string {
-    if(this.provideLabel) {
+    if (this.provideLabel) {
       return this.provideLabel(item);
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const itemAsAny = item as any;
-    if(typeof itemAsAny['name'] === 'string') {
-      return itemAsAny['name'];
+    if (typeof itemAsAny["name"] === "string") {
+      return itemAsAny["name"];
     }
-    return '';
+    return "";
   }
 }
 </script>

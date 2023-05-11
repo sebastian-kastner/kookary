@@ -5,7 +5,10 @@ import { ingredientStore, ingredientCategoryStore } from "../stores/rootStore";
  * Returns the category id of the given item or -1 if no category id is found
  * @param item the item for which to return the category id
  */
-function getIngredientCategoryId(item: ShoppingItem, defaultCategoryId: number | null): number {
+function getIngredientCategoryId(
+  item: ShoppingItem,
+  defaultCategoryId: number | null
+): number {
   if (item.ingredientId) {
     const ingredient = ingredientStore.ingredientMap.get(item.ingredientId);
     if (ingredient && ingredient.ingredientCategoryId) {
@@ -30,17 +33,24 @@ function getCategoryOrder(categoryId: number): number {
   return category.order;
 }
 
-export function getShoppingItemsByCategory(shoppingItems: ShoppingItem[]): Map<number, ShoppingItem[]> {
+export function getShoppingItemsByCategory(
+  shoppingItems: ShoppingItem[]
+): Map<number, ShoppingItem[]> {
   const itemsByCategory: Map<number, ShoppingItem[]> = new Map();
   const existingCategories: number[] = [];
 
   // attempts to find a default category
   // if there is a default category, uncategorized shopping items will be put into the default category
-  const defaultCategory = ingredientCategoryStore.categories.find((category) => category.isDefault);
-  const defaultCategoryId = (defaultCategory && defaultCategory.ingredientCategoryId) ? defaultCategory.ingredientCategoryId : null;
+  const defaultCategory = ingredientCategoryStore.categories.find(
+    (category) => category.isDefault
+  );
+  const defaultCategoryId =
+    defaultCategory && defaultCategory.ingredientCategoryId
+      ? defaultCategory.ingredientCategoryId
+      : null;
 
   // create map by category
-  shoppingItems.forEach(item => {
+  shoppingItems.forEach((item) => {
     const categoryId = getIngredientCategoryId(item, defaultCategoryId);
     if (categoryId) {
       let itemsInCategory = itemsByCategory.get(categoryId);
@@ -62,7 +72,7 @@ export function getShoppingItemsByCategory(shoppingItems: ShoppingItem[]): Map<n
 
   // create map sorted by category
   const sortedItemsByCategory: Map<number, ShoppingItem[]> = new Map();
-  existingCategories.forEach(categoryId => {
+  existingCategories.forEach((categoryId) => {
     const categoryItems = itemsByCategory.get(categoryId);
     if (!categoryItems) {
       console.error("Failed to find category with id " + categoryId);

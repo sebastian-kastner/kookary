@@ -44,7 +44,7 @@ export const tagFilter: UiFilter = {
   },
   isActive: (filter) => listHasElements(filter.tags),
   resetFilter: (filter) => (filter.tags = []),
-}
+};
 
 export const ingredientFilter: UiFilter = {
   name: "ingredients",
@@ -55,7 +55,7 @@ export const ingredientFilter: UiFilter = {
   },
   isActive: (filter) => listHasElements(filter.ingredients),
   resetFilter: (filter) => (filter.ingredients = []),
-}
+};
 
 export const seasonalFilter: UiFilter = {
   name: "seasonal",
@@ -66,7 +66,7 @@ export const seasonalFilter: UiFilter = {
   },
   isActive: (filter) => filter.isSeasonal === true,
   resetFilter: (filter) => (filter.isSeasonal = false),
-}
+};
 
 export const markedFilter: UiFilter = {
   name: "marked",
@@ -77,7 +77,7 @@ export const markedFilter: UiFilter = {
   },
   isActive: (filter) => filter.marked === true,
   resetFilter: (filter) => (filter.marked = false),
-}
+};
 
 function listHasElements(list: Array<object> | string | undefined): boolean {
   if (list) {
@@ -104,7 +104,7 @@ function getTags(tagIds: string[]): Tag[] {
 
 function getIngredients(ingredientIds: string[]): Ingredient[] {
   const ingredients: Ingredient[] = [];
-  ingredientIds.forEach(stringId => {
+  ingredientIds.forEach((stringId) => {
     if (stringId) {
       const id = Number(stringId);
       if (!isNaN(id)) {

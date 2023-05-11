@@ -1,32 +1,32 @@
-import { Ingredient, Recipe, Tag } from '../types'
-import { AxiosError, AxiosResponse } from 'axios'
-import { RecipeApi } from '../../rest/api'
-import { clientConfiguration } from './clientConfiguration'
-import { ToViewModelConverter } from './ToViewModelConverter'
-import { ToRestModelConverter } from './ToRestModelConverter'
-import { logAxiosError } from './axiosErrorLogger';
-import { RecipeJsonld } from 'rest/models'
-import { tagStore, mediaObjectStore, userStore } from '../stores/rootStore'
+import { Ingredient, Recipe, Tag } from "../types";
+import { AxiosError, AxiosResponse } from "axios";
+import { RecipeApi } from "../../rest/api";
+import { clientConfiguration } from "./clientConfiguration";
+import { ToViewModelConverter } from "./ToViewModelConverter";
+import { ToRestModelConverter } from "./ToRestModelConverter";
+import { logAxiosError } from "./axiosErrorLogger";
+import { RecipeJsonld } from "rest/models";
+import { tagStore, mediaObjectStore, userStore } from "../stores/rootStore";
 
 export type RecipeFilter = {
-  page?: number,
-  ingredients?: Ingredient[],
-  nameContains?: string,
-  tags?: Tag[],
-  isSeasonal?: boolean,
-  marked?: boolean,
-  authors?: number[],
+  page?: number;
+  ingredients?: Ingredient[];
+  nameContains?: string;
+  tags?: Tag[];
+  isSeasonal?: boolean;
+  marked?: boolean;
+  authors?: number[];
   // FIXME: this is currently not considered in the backend, plain pagination is used instead
-  limit?: number,
-  orderBy?: 'date' | 'rand',
-  orderByDirection?: 'desc' | 'asc',
-}
+  limit?: number;
+  orderBy?: "date" | "rand";
+  orderByDirection?: "desc" | "asc";
+};
 
 export type RecipesList = {
-  recipes: Recipe[],
-  totalItems?: number,
-  hasMoreItems: boolean,
-}
+  recipes: Recipe[];
+  totalItems?: number;
+  hasMoreItems: boolean;
+};
 
 // FIXME: is it possible to get this parameter from the return set? like this it is duplicated in client and server
 const recipesPerPage = 18;
@@ -37,7 +37,7 @@ export class RecipesClient {
   toRestModelConverter = new ToRestModelConverter();
 
   /**
-   * 
+   *
    * @returns all recipes
    */
   public async getRecipes(filter?: RecipeFilter): Promise<RecipesList> {
@@ -48,7 +48,7 @@ export class RecipesClient {
 
     let authorsArray: undefined | string[];
     if (userStore.privateMode && userStore.user?.id) {
-      authorsArray = [userStore.user.id.toString()]
+      authorsArray = [userStore.user.id.toString()];
     }
 
     // FIXME this only works for a single ingredient now
@@ -99,16 +99,20 @@ export class RecipesClient {
     return new Promise<RecipesList>((resolve, reject) => {
       getPromise
         .then((ret) => {
-          const apiRecipes = ret.data['hydra:member'];
-          const totalItems = ret.data['hydra:totalItems'];
+          const apiRecipes = ret.data["hydra:member"];
+          const totalItems = ret.data["hydra:totalItems"];
           let hasMoreItems = false;
-          if (totalItems && filter?.page && filter.page * recipesPerPage < totalItems) {
+          if (
+            totalItems &&
+            filter?.page &&
+            filter.page * recipesPerPage < totalItems
+          ) {
             hasMoreItems = true;
           }
 
-          const recipes: Recipe[] = []
+          const recipes: Recipe[] = [];
           apiRecipes.forEach((apiRecipe) => {
-            recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe))
+            recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe));
           });
 
           resolve({
@@ -121,12 +125,12 @@ export class RecipesClient {
           logAxiosError(e);
           reject(e);
         });
-    })
+    });
   }
 
   /**
    * Gets the recipe with the given id
-   * 
+   *
    * @param recipeId the id of the recipe to be fetched
    * @returns the recipe with the given id
    */
@@ -149,16 +153,19 @@ export class RecipesClient {
 
   /**
    * Saves the recipe if it does not have a recipeId yet or updates the given recipe if it does have a recipeId.
-   * 
+   *
    * @param recipe the recipe to be saved/updated
    * @returns the saved recipe
    */
-  public async saveRecipe(recipe: Recipe, updateIngredients?: boolean): Promise<Recipe> {
+  public async saveRecipe(
+    recipe: Recipe,
+    updateIngredients?: boolean
+  ): Promise<Recipe> {
     // if a new file is set, upload the new file
     if (recipe.images.length > 0 && recipe.images[0].file) {
       const uploadedFile = await mediaObjectStore.createMediaObject({
         file: recipe.images[0].file,
-        fileName: recipe.name
+        fileName: recipe.name,
       });
       recipe.images[0] = uploadedFile;
     }
@@ -170,7 +177,9 @@ export class RecipesClient {
       if (updateIngredients === false) {
         restRecipe.ingredients = undefined;
       }
-      const saveInternal = await this.saveInternal(this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe));
+      const saveInternal = await this.saveInternal(
+        this.client.patchRecipeItem(recipe.recipeId.toString(), restRecipe)
+      );
       // FIXME this is fugly
       // no need to wait for the deletions.. keep fingers crossed, hope for the best
       recipe.imagesToDelete.forEach((mediaObjectId) => {
@@ -183,13 +192,14 @@ export class RecipesClient {
 
   public async deleteRecipe(recipeId: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.client.deleteRecipeItem(recipeId.toString())
+      this.client
+        .deleteRecipeItem(recipeId.toString())
         .then(() => resolve())
         .catch((e) => {
           logAxiosError(e);
           reject(e);
         });
-    })
+    });
   }
 
   // eslint-disable-next-line
@@ -197,13 +207,12 @@ export class RecipesClient {
     return new Promise<Recipe>((resolve, reject) => {
       savePromise
         .then((ret) => {
-          resolve(this.toViewModelConverter.convertRecipe(ret['data']));
+          resolve(this.toViewModelConverter.convertRecipe(ret["data"]));
         })
         .catch((e: AxiosError) => {
           logAxiosError(e);
           reject(e);
         });
-    })
+    });
   }
 }
-

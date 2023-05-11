@@ -1,14 +1,17 @@
-import { User } from '../types'
+import { User } from "../types";
 import axios from "axios";
-import { UserApi } from '../../rest/api/user-api';
-import { clientConfiguration } from './clientConfiguration'
-import { ToViewModelConverter } from './ToViewModelConverter'
-import { ToRestModelConverter } from './ToRestModelConverter'
-import { logAxiosError } from './axiosErrorLogger';
-import { AUTH_TOKEN_ENDPOINT, REFRESH_TOKEN_ENDPOINT, ME_ENDPOINT } from './endpoints'
+import { UserApi } from "../../rest/api/user-api";
+import { clientConfiguration } from "./clientConfiguration";
+import { ToViewModelConverter } from "./ToViewModelConverter";
+import { ToRestModelConverter } from "./ToRestModelConverter";
+import { logAxiosError } from "./axiosErrorLogger";
+import {
+  AUTH_TOKEN_ENDPOINT,
+  REFRESH_TOKEN_ENDPOINT,
+  ME_ENDPOINT,
+} from "./endpoints";
 
 export class UserClient {
-
   client = new UserApi(clientConfiguration);
 
   toViewModelConverter = new ToViewModelConverter();
@@ -16,16 +19,17 @@ export class UserClient {
 
   public async getUsers(): Promise<User[]> {
     return new Promise<User[]>((resolve, reject) => {
-      this.client.getUserCollection()
+      this.client
+        .getUserCollection()
         .then((response) => {
           const apiUsers = response.data["hydra:member"];
           resolve(this.toViewModelConverter.convertUsers(apiUsers));
         })
         .catch((e) => {
-          logAxiosError(e)
+          logAxiosError(e);
           reject(e);
         });
-    })
+    });
   }
 
   public async updateUser(user: User): Promise<void> {
@@ -37,16 +41,23 @@ export class UserClient {
       }
       const apiId = user.id.toString();
 
-      this.client.patchUserItem(apiId, apiUser)
-        .then(() => { resolve() })
+      this.client
+        .patchUserItem(apiId, apiUser)
+        .then(() => {
+          resolve();
+        })
         .catch((err) => {
           logAxiosError(err);
           reject(err);
-        })
+        });
     });
   }
 
-  public async createUser(email: string, name: string, password: string): Promise<User> {
+  public async createUser(
+    email: string,
+    name: string,
+    password: string
+  ): Promise<User> {
     const user = this.toRestModelConverter.convertUserWrite({
       email: email,
       displayName: name,
@@ -54,21 +65,25 @@ export class UserClient {
     user.password = password;
 
     return new Promise<User>((resolve, reject) => {
-      this.client.postUserCollection(user)
-      .then((response) => {
-        resolve(this.toViewModelConverter.convertUser(response.data));
-      })
-      .catch((err) => {
-        logAxiosError(err);
-        reject(err);
-      })
+      this.client
+        .postUserCollection(user)
+        .then((response) => {
+          resolve(this.toViewModelConverter.convertUser(response.data));
+        })
+        .catch((err) => {
+          logAxiosError(err);
+          reject(err);
+        });
     });
   }
 
   public async deleteUser(userId: number): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.client.deleteUserItem(userId.toString())
-        .then(() => { resolve() })
+      this.client
+        .deleteUserItem(userId.toString())
+        .then(() => {
+          resolve();
+        })
         .catch((err) => {
           logAxiosError(err);
           reject(err);
@@ -107,7 +122,9 @@ export class UserClient {
         .then((response) => {
           const token = response.data["token"];
           if (!token) {
-            reject("Received unexpected return value from authorization endpoint.")
+            reject(
+              "Received unexpected return value from authorization endpoint."
+            );
           }
           resolve(token);
         })
@@ -120,11 +137,14 @@ export class UserClient {
 
   public async refreshUserToken(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-      axios.get(process.env.VUE_APP_ROOT_API + REFRESH_TOKEN_ENDPOINT)
+      axios
+        .get(process.env.VUE_APP_ROOT_API + REFRESH_TOKEN_ENDPOINT)
         .then((response) => {
           const token = response.data["token"];
           if (!token) {
-            reject("Received unexpected return value from authorization endpoint.")
+            reject(
+              "Received unexpected return value from authorization endpoint."
+            );
           }
           resolve(token);
         })
@@ -132,11 +152,15 @@ export class UserClient {
           // do not pass on errors for refreshs
           const errorTxt = this.logAndGetErrorMessage(error);
           console.error(errorTxt);
-        })
+        });
     });
   }
 
-  public async changePassword(userId: number, newPassword: string, oldPassword?: string): Promise<void> {
+  public async changePassword(
+    userId: number,
+    newPassword: string,
+    oldPassword?: string
+  ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       axios
         .post(process.env.VUE_APP_ROOT_API + "/api/change_password", {
@@ -167,7 +191,7 @@ export class UserClient {
   // eslint-disable-next-line
   private logAndGetErrorMessage(err: any): string {
     console.error(err);
-    
+
     if (err.response && err.response.data) {
       const data = err.response.data;
       if (data.detail) {

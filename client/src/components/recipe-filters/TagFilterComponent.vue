@@ -2,12 +2,12 @@
   <div class="row">
     <div class="col-12">
       <inline-item-list
-          :suggestItems="existingTags"
-          :items="recipeFilter.tags"
-          :inputPlaceholder="inputPlaceholder"
-          @itemSelected="applyFilter"
-          @itemDeleted="applyFilter"
-        />
+        :suggestItems="existingTags"
+        :items="recipeFilter.tags"
+        :inputPlaceholder="inputPlaceholder"
+        @itemSelected="applyFilter"
+        @itemDeleted="applyFilter"
+      />
     </div>
   </div>
 </template>

@@ -11,4 +11,3 @@ export const USER_RECIPE_FAVOURITES = "/api/user_recipe_favourites";
 export const ME_ENDPOINT = "/api/me";
 export const AUTH_TOKEN_ENDPOINT = "/api/auth_token";
 export const REFRESH_TOKEN_ENDPOINT = "/api/refresh_token";
-

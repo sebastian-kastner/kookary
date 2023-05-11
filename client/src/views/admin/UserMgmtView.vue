@@ -24,28 +24,35 @@
           <td class="d-sm-none d-md-table-cell">{{ user.email }}</td>
           <td>{{ rolesToString(user) }}</td>
           <td>
-            <button @click="deleteUser(user)" role="button" class="rounded-button">
+            <button
+              @click="deleteUser(user)"
+              role="button"
+              class="rounded-button"
+            >
               <b-icon-trash />
             </button>
           </td>
           <td>
-            <button @click="showEditDialog(user)" role="button" class="rounded-button">
+            <button
+              @click="showEditDialog(user)"
+              role="button"
+              class="rounded-button"
+            >
               <b-icon-pencil />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-
   </div>
 </template>
 
 <script lang="ts">
 import { User } from "../../types";
 import { Component, Vue } from "vue-facing-decorator";
-import { UserClient } from "../../clients/UserClient"
-import UserEditor from "../../components/admin/UserEditor.vue"
-import AddUser from "../../components/admin/AddUser.vue"
+import { UserClient } from "../../clients/UserClient";
+import UserEditor from "../../components/admin/UserEditor.vue";
+import AddUser from "../../components/admin/AddUser.vue";
 import { getScreenWidth } from "../../utils/screenUtils";
 
 @Component({})
@@ -55,15 +62,18 @@ export default class UserMgmtView extends Vue {
   users: User[] = [];
 
   mounted(): void {
-    this.userClient.getUsers().then((users) => {
-      this.users = users;
-    }).catch(() => {
-      // bestest error handling in the world!
-      this.users.push({
-        id: 0,
-        displayName: "Fehler beim Laden der Benutzer"
+    this.userClient
+      .getUsers()
+      .then((users) => {
+        this.users = users;
+      })
+      .catch(() => {
+        // bestest error handling in the world!
+        this.users.push({
+          id: 0,
+          displayName: "Fehler beim Laden der Benutzer",
+        });
       });
-    });
   }
 
   showEditDialog(user: User): void {
@@ -116,15 +126,15 @@ export default class UserMgmtView extends Vue {
   rolesToString(user: User): string {
     if (user.roles) {
       const out: string[] = [];
-      const rolePrefix = "ROLE_"
+      const rolePrefix = "ROLE_";
       user.roles.forEach((role) => {
         if (role.startsWith(rolePrefix)) {
           out.push(role.slice(rolePrefix.length));
         } else {
           out.push(role);
         }
-      })
-      return out.sort().join(', ');
+      });
+      return out.sort().join(", ");
     }
     return "";
   }

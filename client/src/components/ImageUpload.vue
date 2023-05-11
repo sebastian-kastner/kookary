@@ -27,7 +27,7 @@ import { BIconXCircle } from "bootstrap-vue";
 import { MediaObject } from "../types";
 import { mediaObjectStore } from "@/stores/rootStore";
 
- @Component({
+@Component({
   components: {
     BIconXCircle,
   },

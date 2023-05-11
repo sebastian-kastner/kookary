@@ -1,9 +1,6 @@
 <template>
   <div id="home" class="main-content">
-    <recipe-card-list
-      title="ZUFÄLLIG"
-      :recipeFilter="randRecipeFilter"
-    />
+    <recipe-card-list title="ZUFÄLLIG" :recipeFilter="randRecipeFilter" />
 
     <recipe-card-list
       title="SAISONAL"
@@ -17,7 +14,6 @@
       :recipeFilter="markedRecipeFilter"
       :moreLink="{ path: '/recipes', query: { marked: null } }"
     />
-
   </div>
 </template>
 
@@ -44,12 +40,12 @@ export default class HomeView extends Vue {
   markedRecipeFilter: RecipeFilter = {
     marked: true,
     limit: 6,
-  }
+  };
 
   randRecipeFilter: RecipeFilter = {
     orderBy: "rand",
     limit: 6,
-  }
+  };
 }
 </script>
 
@@ -62,5 +58,4 @@ export default class HomeView extends Vue {
     padding: $content-padding;
   }
 }
-
 </style>

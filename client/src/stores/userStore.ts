@@ -1,25 +1,24 @@
 import { createModule, mutation, action } from "vuex-class-component";
-import axios, { AxiosRequestConfig } from "axios"
-import { UserClient } from '../clients/UserClient'
-import { User } from '../types'
+import axios, { AxiosRequestConfig } from "axios";
+import { UserClient } from "../clients/UserClient";
+import { User } from "../types";
 import { logAxiosError } from "../clients/axiosErrorLogger";
 
 const VuexModule = createModule({
   namespaced: "user",
   strict: false,
-})
+});
 
 type UserLoginData = {
   email: string;
   password: string;
   rememberUser: boolean;
-}
+};
 
 const LOCAL_STORAGE_TOKEN_KEY = "token";
 const PRIVATE_MODE_KEY = "privateMode";
 
 export class UserStore extends VuexModule {
-
   public token: string | null = null;
   public user: User | null = null;
   public userIsAdmin = false;
@@ -37,9 +36,9 @@ export class UserStore extends VuexModule {
       (config: AxiosRequestConfig) => {
         if (this.token) {
           if (!config.headers) {
-            config.headers = {}
+            config.headers = {};
           }
-          config.headers['Authorization'] = `Bearer ${this.token}`;
+          config.headers["Authorization"] = `Bearer ${this.token}`;
         }
         return config;
       },
@@ -58,10 +57,10 @@ export class UserStore extends VuexModule {
 
       this.SET_TOKEN(storedToken);
 
-      this.userClient.getLoggedInUser()
+      this.userClient
+        .getLoggedInUser()
         .then((user: User | null) => {
           if (user === null) {
-
             this.SET_TOKEN(null);
             this.SET_PRIVATE_MODE(false);
             this.user = null;
@@ -71,7 +70,7 @@ export class UserStore extends VuexModule {
           } else {
             const privateModeString = localStorage.getItem(PRIVATE_MODE_KEY);
             if (privateModeString) {
-              const privateMode = (privateModeString === 'true');
+              const privateMode = privateModeString === "true";
               this.SET_PRIVATE_MODE(privateMode);
             }
 
@@ -87,7 +86,7 @@ export class UserStore extends VuexModule {
           this.user = null;
 
           console.log("Invalid token in local storage. Logged out user.");
-          resolve()
+          resolve();
         });
     });
   }
@@ -95,7 +94,8 @@ export class UserStore extends VuexModule {
   @action
   async initUsers(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
-      this.userClient.getUsers()
+      this.userClient
+        .getUsers()
         .then((users) => {
           const userMap = new Map<number, User>();
           users.forEach((user) => {
@@ -111,14 +111,15 @@ export class UserStore extends VuexModule {
         .catch((error) => {
           logAxiosError(error);
           reject(error);
-        })
-    })
+        });
+    });
   }
 
   @action
   async checkCredentials(userLoginData: UserLoginData): Promise<User> {
     return new Promise<User>((resolve, reject) => {
-      this.userClient.getUserToken(userLoginData.email, userLoginData.password)
+      this.userClient
+        .getUserToken(userLoginData.email, userLoginData.password)
         .then((token: string) => {
           // internally save token
           // this needs to be done before obtaining the logged in user because the internal token will
@@ -131,26 +132,27 @@ export class UserStore extends VuexModule {
           }
 
           // query for details about logged in user
-          this.userClient.getLoggedInUser()
-            .then((user: User | null) => {
-              if (user === null) {
-                // reject with unknown error if no user was found
-                reject("Unbekannter Fehler: Nach dem Login wurde kein gültiger Benutzer gefunden.")
-              } else {
-                // resolve otherwise
-                const privateModeString = localStorage.getItem(PRIVATE_MODE_KEY);
-                if (privateModeString) {
-                  const privateMode = (privateModeString === 'true');
-                  this.SET_PRIVATE_MODE(privateMode);
-                }
-                this.SET_USER(user);
-                resolve(user);
+          this.userClient.getLoggedInUser().then((user: User | null) => {
+            if (user === null) {
+              // reject with unknown error if no user was found
+              reject(
+                "Unbekannter Fehler: Nach dem Login wurde kein gültiger Benutzer gefunden."
+              );
+            } else {
+              // resolve otherwise
+              const privateModeString = localStorage.getItem(PRIVATE_MODE_KEY);
+              if (privateModeString) {
+                const privateMode = privateModeString === "true";
+                this.SET_PRIVATE_MODE(privateMode);
               }
-            })
+              this.SET_USER(user);
+              resolve(user);
+            }
+          });
         })
         .catch((reason) => {
           reject(reason);
-        })
+        });
     });
   }
 

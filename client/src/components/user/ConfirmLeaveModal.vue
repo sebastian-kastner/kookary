@@ -3,14 +3,18 @@
     <div class="vue-dialog-content">
       <div class="vue-dialog-content-title">Ungespeicherte Änderungen</div>
 
-      <div class="container">
-        Es gibt ungespeicherte Änderungen.
-      </div>
+      <div class="container">Es gibt ungespeicherte Änderungen.</div>
     </div>
 
     <div class="vue-dialog-buttons d-flex justify-content-around">
-      <button class="btn rounded-button" @click="discardHandler">Verwerfen</button>
-      <save-button buttonText="Speichern" :isLoading="isSaving" @onSave="saveHandler" />
+      <button class="btn rounded-button" @click="discardHandler">
+        Verwerfen
+      </button>
+      <save-button
+        buttonText="Speichern"
+        :isLoading="isSaving"
+        @onSave="saveHandler"
+      />
     </div>
   </div>
 </template>
@@ -21,7 +25,7 @@ import SaveButton from "../SaveButton.vue";
 
 @Component({
   components: {
-    SaveButton
+    SaveButton,
   },
 })
 export default class ConfirmLeaveModal extends Vue {

@@ -3,7 +3,7 @@ export function getErrorMessage(err: any): string {
   if (err.isAxiosError) {
     const response = err.response;
     if (response) {
-      const errorDetails = response.data['hydra:description'];
+      const errorDetails = response.data["hydra:description"];
       const statusCode = response.status;
       if (errorDetails && statusCode) {
         return errorDetails + "(Status: " + statusCode + ")";
@@ -13,7 +13,7 @@ export function getErrorMessage(err: any): string {
         return "Unbekannter Fehler (Status: " + statusCode + ")";
       }
     }
-    const errorDetails = err.response?.data['hydra:description'];
+    const errorDetails = err.response?.data["hydra:description"];
     if (errorDetails) {
       return errorDetails;
     }
@@ -25,7 +25,7 @@ export function getErrorMessage(err: any): string {
     } else {
       return err.message;
     }
-  } else if (typeof err === 'string') {
+  } else if (typeof err === "string") {
     return err;
   }
 

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <v-dialog />
 
     <div class="topbar">
@@ -8,30 +7,53 @@
         <div class="topbar-left">
           <!-- burger menu; only visible on screens smaller than large -->
           <div class="d-lg-none d-inline">
-            <span class="btn" id="burger-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span
+              class="btn"
+              id="burger-menu"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
               <b-icon-list />
             </span>
             <div class="dropdown-menu" aria-labelledby="burger-menu">
-              <router-link v-for="navItem in navItems" v-bind:key="navItem.name"
-                class="dropdown-item d-flex align-items-center" :to="navItem.to">
+              <router-link
+                v-for="navItem in navItems"
+                v-bind:key="navItem.name"
+                class="dropdown-item d-flex align-items-center"
+                :to="navItem.to"
+              >
                 <component :is="navItem.icon" />{{ navItem.name }}
               </router-link>
             </div>
           </div>
 
-          <router-link class="navbar-brand" to="/">&#129348; kookary</router-link>
+          <router-link class="navbar-brand" to="/"
+            >&#129348; kookary</router-link
+          >
         </div>
 
         <!-- nav items in middle; only visible on large screens -->
         <div class="d-none d-lg-block">
-          <router-link v-for="navItem in navItems" v-bind:key="navItem.name" :to="navItem.to"
-            class="nav-button">{{ navItem.name }}</router-link>
+          <router-link
+            v-for="navItem in navItems"
+            v-bind:key="navItem.name"
+            :to="navItem.to"
+            class="nav-button"
+            >{{ navItem.name }}</router-link
+          >
         </div>
 
         <div class="topbar-right">
           <!-- Login button and login form if user is not logged in -->
-          <span class="btn dropdown-toggle" type="button" id="user-dropdown-button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <span
+            class="btn dropdown-toggle"
+            type="button"
+            id="user-dropdown-button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <span v-if="user === null">
               <b-icon-box-arrow-in-right /> Login
             </span>
@@ -44,7 +66,6 @@
             <user-menu v-else />
           </div>
         </div>
-
       </div>
     </div>
     <div class="main">
@@ -105,7 +126,7 @@ export default class App extends Vue {
       icon: BIconCalendarWeek,
       name: "Saisonkalender",
       to: "/calendar",
-    })
+    });
     return items;
   }
 }
@@ -118,7 +139,8 @@ body {
   overflow-x: hidden;
 }
 
-#app, .vm--modal {
+#app,
+.vm--modal {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

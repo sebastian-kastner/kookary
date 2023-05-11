@@ -4,15 +4,33 @@
       <div class="vue-dialog-content-title">Zu Einkaufsliste hinzufügen</div>
 
       <div class="container">
-        <div v-for="shoppingItem in shoppingItems" v-bind="shoppingItem" v-bind:key="getIngredientId(shoppingItem)">
+        <div
+          v-for="shoppingItem in shoppingItems"
+          v-bind="shoppingItem"
+          v-bind:key="getIngredientId(shoppingItem)"
+        >
           <shopping-list-item :shoppingItem="shoppingItem" />
         </div>
       </div>
     </div>
 
     <div class="vue-dialog-buttons">
-      <button type="button" tabindex="0" class="vue-dialog-button" @click="doneHandler">Abbrechen</button>
-      <button type="button" tabindex="0" class="vue-dialog-button" @click="addToCart">Hinzufügen</button>
+      <button
+        type="button"
+        tabindex="0"
+        class="vue-dialog-button"
+        @click="doneHandler"
+      >
+        Abbrechen
+      </button>
+      <button
+        type="button"
+        tabindex="0"
+        class="vue-dialog-button"
+        @click="addToCart"
+      >
+        Hinzufügen
+      </button>
     </div>
   </div>
 </template>
@@ -22,7 +40,10 @@ import { Component, Prop, Vue } from "vue-facing-decorator";
 import { RecipeIngredient, ShoppingItem, User } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
-import { getShoppingItemsByCategory, getCategoryName } from "../../utils/shoppingItemUtils";
+import {
+  getShoppingItemsByCategory,
+  getCategoryName,
+} from "../../utils/shoppingItemUtils";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 
 @Component({
@@ -41,15 +62,15 @@ export default class AddToShoppingListModal extends Vue {
   getCategoryName = getCategoryName;
 
   mounted(): void {
-    this.ingredients.forEach(ingredient => {
+    this.ingredients.forEach((ingredient) => {
       this.shoppingItems.push({
         done: false,
         ingredientId: ingredient.ingredient?.ingredientId,
         name: ingredient.ingredient?.name,
         unit: ingredient.unit,
         quantity: ingredient.quantity,
-        user: this.user.id
-      })
+        user: this.user.id,
+      });
     });
   }
 
@@ -62,13 +83,14 @@ export default class AddToShoppingListModal extends Vue {
       throw new Error("No logged in user!");
     }
     const shoppingItemsToAdd: ShoppingItem[] = [];
-    this.shoppingItems.forEach(shoppingItem => {
-      if(!shoppingItem.done) {
+    this.shoppingItems.forEach((shoppingItem) => {
+      if (!shoppingItem.done) {
         shoppingItemsToAdd.push(shoppingItem);
       }
     });
 
-    this.client.createShoppingItems(this.user.id, shoppingItemsToAdd)
+    this.client
+      .createShoppingItems(this.user.id, shoppingItemsToAdd)
       .finally(() => {
         this.doneHandler();
       });
@@ -82,9 +104,12 @@ export default class AddToShoppingListModal extends Vue {
   }
 
   getLabel(shoppingItem: ShoppingItem): string {
-    return getIngredientLabel(shoppingItem.name, shoppingItem.unit, shoppingItem.quantity);
+    return getIngredientLabel(
+      shoppingItem.name,
+      shoppingItem.unit,
+      shoppingItem.quantity
+    );
   }
-
 }
 </script>
 

@@ -1,9 +1,26 @@
 import {
-  RecipeJsonld, TagJsonld, IngredientJsonld, RecipeIngredientJsonld, MediaObjectJsonldMediaObjectRead,
-  UserJsonldRead, IngredientCategoryJsonld, CookupJsonld, ShoppingItemJsonld
-} from '../../rest/models'
-import { Recipe, Tag, Ingredient, RecipeIngredient, MediaObject, User, IngredientCategory, Cookup, ShoppingItem } from '../types'
-import { v4 as uuid } from 'uuid';
+  RecipeJsonld,
+  TagJsonld,
+  IngredientJsonld,
+  RecipeIngredientJsonld,
+  MediaObjectJsonldMediaObjectRead,
+  UserJsonldRead,
+  IngredientCategoryJsonld,
+  CookupJsonld,
+  ShoppingItemJsonld,
+} from "../../rest/models";
+import {
+  Recipe,
+  Tag,
+  Ingredient,
+  RecipeIngredient,
+  MediaObject,
+  User,
+  IngredientCategory,
+  Cookup,
+  ShoppingItem,
+} from "../types";
+import { v4 as uuid } from "uuid";
 
 export function toId(iri: string | null | undefined): number | undefined {
   if (!iri) {
@@ -11,7 +28,7 @@ export function toId(iri: string | null | undefined): number | undefined {
   }
   const stringId = iri.split("/").pop()?.toString();
   if (stringId) {
-    const number = Number(stringId)
+    const number = Number(stringId);
     if (!isNaN(number)) {
       return number;
     }
@@ -26,7 +43,7 @@ export class ToViewModelConverter {
       name: apiTag.name,
       authorId: toId(apiTag.author),
       uuid: uuid(),
-    }
+    };
   }
 
   public convertTags(apiTags: string[] | undefined): Tag[] {
@@ -35,7 +52,7 @@ export class ToViewModelConverter {
       apiTags.forEach((apiTag) => {
         tags.push({
           uuid: uuid(),
-          tagId: toId(apiTag)
+          tagId: toId(apiTag),
         });
       });
     }
@@ -49,38 +66,46 @@ export class ToViewModelConverter {
       authorId: toId(apiIngredient.author),
       seasonStart: apiIngredient.seasonStart,
       seasonEnd: apiIngredient.seasonEnd,
-      ingredientCategoryId: toId(apiIngredient.category)
-    }
+      ingredientCategoryId: toId(apiIngredient.category),
+    };
   }
 
-  public convertIngredientCategory(apiCategory: IngredientCategoryJsonld): IngredientCategory {
+  public convertIngredientCategory(
+    apiCategory: IngredientCategoryJsonld
+  ): IngredientCategory {
     return {
       ingredientCategoryId: apiCategory.categoryId,
       name: apiCategory.name,
       order: apiCategory.order,
       isDefault: apiCategory.isDefaultCategory,
-    }
+    };
   }
 
-  public convertRecipeIngredient(apiIngredient: RecipeIngredientJsonld): RecipeIngredient {
+  public convertRecipeIngredient(
+    apiIngredient: RecipeIngredientJsonld
+  ): RecipeIngredient {
     return {
       recipeIngredientId: apiIngredient.recipeIngredientId,
-      ingredient: this.convertIngredient(apiIngredient.ingredient as IngredientJsonld),
+      ingredient: this.convertIngredient(
+        apiIngredient.ingredient as IngredientJsonld
+      ),
       quantity: apiIngredient.quantity,
       unit: apiIngredient.unit,
       position: apiIngredient.position,
       uuid: uuid(),
-    }
+    };
   }
 
-  public convertRecipeIngredients(apiIngredients?: RecipeIngredientJsonld[]): RecipeIngredient[] {
+  public convertRecipeIngredients(
+    apiIngredients?: RecipeIngredientJsonld[]
+  ): RecipeIngredient[] {
     if (!apiIngredients) {
       return [];
     }
     const ingredients: RecipeIngredient[] = [];
     // not using forEach here because in for some reason apiIngredients is an object after a save operation
     for (const key in apiIngredients) {
-      ingredients.push(this.convertRecipeIngredient(apiIngredients[key]))
+      ingredients.push(this.convertRecipeIngredient(apiIngredients[key]));
     }
 
     ingredients.sort((a, b) => {
@@ -100,7 +125,7 @@ export class ToViewModelConverter {
       }
 
       return aPos - bPos;
-    })
+    });
 
     return ingredients;
   }
@@ -111,7 +136,7 @@ export class ToViewModelConverter {
       apiRecipe.images.forEach((image) => {
         if (image) {
           images.push({
-            mediaObjectId: toId(image)
+            mediaObjectId: toId(image),
           });
         }
       });
@@ -134,30 +159,34 @@ export class ToViewModelConverter {
       ingredients: this.convertRecipeIngredients(apiRecipe.ingredients),
       tags: this.convertTags(apiRecipe.tags),
       imagesToDelete: [],
-      authorId: (authorId ? authorId : null),
-    }
+      authorId: authorId ? authorId : null,
+    };
   }
 
-  public convertMediaObject(apiMediaObject: MediaObjectJsonldMediaObjectRead): MediaObject {
+  public convertMediaObject(
+    apiMediaObject: MediaObjectJsonldMediaObjectRead
+  ): MediaObject {
     let url;
     if (apiMediaObject.contentUrl) {
       url = process.env.VUE_APP_ROOT_API + apiMediaObject.contentUrl;
     }
     return {
-      mediaObjectId: toId(apiMediaObject['@id']),
+      mediaObjectId: toId(apiMediaObject["@id"]),
       url: url,
       authorId: toId(apiMediaObject.author),
-    }
+    };
   }
 
-  public convertMediaObjects(apiMediaObjects?: MediaObjectJsonldMediaObjectRead[]): MediaObject[] {
+  public convertMediaObjects(
+    apiMediaObjects?: MediaObjectJsonldMediaObjectRead[]
+  ): MediaObject[] {
     if (!apiMediaObjects) {
-      return []
+      return [];
     }
-    const mediaObjects: MediaObject[] = []
+    const mediaObjects: MediaObject[] = [];
     // not using forEach here because for some reason apiIngredients is an object after a save operation
     for (const key in apiMediaObjects) {
-      mediaObjects.push(this.convertMediaObject(apiMediaObjects[key]))
+      mediaObjects.push(this.convertMediaObject(apiMediaObjects[key]));
     }
     return mediaObjects;
   }
@@ -175,7 +204,7 @@ export class ToViewModelConverter {
       email: apiUser.email,
       id: apiUser.id,
       roles: roles,
-    }
+    };
   }
 
   public convertUsers(apiUsers?: UserJsonldRead[]): User[] {
@@ -199,12 +228,12 @@ export class ToViewModelConverter {
       ingredientId: toId(shoppingItem.ingredient),
       quantity: shoppingItem.quantity,
       unit: shoppingItem.unit,
-    }
+    };
   }
 
   public convertShoppingItems(apiItems: ShoppingItemJsonld[]): ShoppingItem[] {
     const items: ShoppingItem[] = [];
-    apiItems.forEach(cookup => {
+    apiItems.forEach((cookup) => {
       items.push(this.convertShoppingItem(cookup));
     });
     return items;
@@ -216,12 +245,12 @@ export class ToViewModelConverter {
       userId: toId(cookup.user),
       recipeId: toId(cookup.recipe),
       date: cookup.date,
-    }
+    };
   }
 
   public convertCookups(apiCookups: CookupJsonld[]): Cookup[] {
     const cookups: Cookup[] = [];
-    apiCookups.forEach(cookup => {
+    apiCookups.forEach((cookup) => {
       cookups.push(this.convertCookup(cookup));
     });
     return cookups;
@@ -240,5 +269,4 @@ export class ToViewModelConverter {
     }
     return false;
   }
-
 }
