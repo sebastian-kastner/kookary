@@ -118,7 +118,7 @@ export default class UserEditor extends Vue {
     }
     this.userClient.changePassword(this.user.id, this.newPassword)
       .then(() => {
-        this.$modal.hideAll();
+        // this.$modal.hideAll();
       })
   }
 

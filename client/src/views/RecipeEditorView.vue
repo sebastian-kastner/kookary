@@ -89,25 +89,25 @@ export default class RecipeEditorView extends Vue {
   static navGuard(_to: Route, _from: Route, next: NavigationGuardNext<any>): void {
     if (this instanceof RecipeEditorView) {
       if (this.isDirty) {
-        const modalHandler = this.$modal;
-        const submitHandler = this.doSubmit;
+        // const modalHandler = this.$modal;
+        // const submitHandler = this.doSubmit;
 
-        modalHandler.show(
-          ConfirmLeaveModal,
-          {
-            saveHandler: () => {
-              submitHandler().finally(() => {
-                modalHandler.hideAll()
-              })
-            },
-            discardHandler: () => {
-              modalHandler.hideAll();
-              next();
-            },
-            isSaving: this.isSaving
-          },
-          { height: "auto", width: getScreenWidth(400) }
-        );
+        // modalHandler.show(
+        //   ConfirmLeaveModal,
+        //   {
+        //     saveHandler: () => {
+        //       submitHandler().finally(() => {
+        //         modalHandler.hideAll()
+        //       })
+        //     },
+        //     discardHandler: () => {
+        //       modalHandler.hideAll();
+        //       next();
+        //     },
+        //     isSaving: this.isSaving
+        //   },
+        //   { height: "auto", width: getScreenWidth(400) }
+        // );
       } else {
         next();
       }

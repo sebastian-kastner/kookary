@@ -229,11 +229,11 @@ export default class RecipeView extends Vue {
   }
 
   async addCookup(): Promise<Cookup | void> {
-    this.$modal.show(
-      AddCookupView,
-      { recipe: this.recipe, cookupAddedCallback: () => this.$modal.hideAll() },
-      { height: "auto", width: getScreenWidth(400) }
-    );
+    // this.$modal.show(
+    //   AddCookupView,
+    //   { recipe: this.recipe, cookupAddedCallback: () => this.$modal.hideAll() },
+    //   { height: "auto", width: getScreenWidth(400) }
+    // );
   }
 
   async toggleMarked(): Promise<void> {
@@ -276,45 +276,45 @@ export default class RecipeView extends Vue {
   }
 
   deleteRecipe(): void {
-    this.$modal.show('dialog', {
-      title: "Rezept löschen",
-      text: "Soll das Rezept " + this.recipe.name + " wirklich gelöscht werden?",
-      buttons: [
-        {
-          title: 'Abbrechen',
-          handler: () => {
-            this.$modal.hide('dialog')
-          }
-        },
-        {
-          title: 'Löschen',
-          handler: () => {
-            if (this.recipe.recipeId) {
-              this.recipesClient.deleteRecipe(this.recipe.recipeId)
-                .then(() => {
-                  this.$router.push("/recipes");
-                }).catch((err) => {
-                  const msg = getErrorMessage(err);
-                  this.$toast.open("Fehler beim Löschen des Rezepts: " + msg);
-                });
-            }
-            this.$modal.hide('dialog');
-          }
-        }
-      ]
-    });
+    // this.$modal.show('dialog', {
+    //   title: "Rezept löschen",
+    //   text: "Soll das Rezept " + this.recipe.name + " wirklich gelöscht werden?",
+    //   buttons: [
+    //     {
+    //       title: 'Abbrechen',
+    //       handler: () => {
+    //         this.$modal.hide('dialog')
+    //       }
+    //     },
+    //     {
+    //       title: 'Löschen',
+    //       handler: () => {
+    //         if (this.recipe.recipeId) {
+    //           this.recipesClient.deleteRecipe(this.recipe.recipeId)
+    //             .then(() => {
+    //               this.$router.push("/recipes");
+    //             }).catch((err) => {
+    //               const msg = getErrorMessage(err);
+    //               this.$toast.open("Fehler beim Löschen des Rezepts: " + msg);
+    //             });
+    //         }
+    //         this.$modal.hide('dialog');
+    //       }
+    //     }
+    //   ]
+    // });
   }
 
   addIngredientsToShoppingList(): void {
-    this.$modal.show(
-      AddToShoppingListModal,
-      {
-        user: this.loggedInUser,
-        ingredients: Array.from(this.recipe.ingredients),
-        doneHandler: () => this.$modal.hideAll(),
-      },
-      { height: "auto", width: getScreenWidth(350) }
-    );
+    // this.$modal.show(
+    //   AddToShoppingListModal,
+    //   {
+    //     user: this.loggedInUser,
+    //     ingredients: Array.from(this.recipe.ingredients),
+    //     doneHandler: () => this.$modal.hideAll(),
+    //   },
+    //   { height: "auto", width: getScreenWidth(350) }
+    // );
   }
 }
 </script>

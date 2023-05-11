@@ -134,35 +134,35 @@ export default class IngredientMgmtView extends Vue {
   }
 
   removeIngredient(ingredient: Ingredient): void {
-    this.$modal.show('dialog', {
-      title: "Zutat löschen",
-      text: "Soll die Zutat " + ingredient.name + " wirklich gelöscht werden?",
-      buttons: [
-        {
-          title: 'Abbrechen',
-          handler: () => {
-            this.$modal.hide('dialog')
-          }
-        },
-        {
-          title: 'Löschen',
-          handler: () => {
-            if (ingredient.ingredientId) {
-              ingredientStore.removeIngredient(ingredient.ingredientId)
-                .then(() => {
-                  // remove ingredient from view
-                  this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
-                })
-                .catch((err) => {
-                  const errorMessage = getErrorMessage(err);
-                  this.$toast.open(`Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`);
-                })
-            }
-            this.$modal.hide('dialog');
-          }
-        }
-      ]
-    });
+    // this.$modal.show('dialog', {
+    //   title: "Zutat löschen",
+    //   text: "Soll die Zutat " + ingredient.name + " wirklich gelöscht werden?",
+    //   buttons: [
+    //     {
+    //       title: 'Abbrechen',
+    //       handler: () => {
+    //         this.$modal.hide('dialog')
+    //       }
+    //     },
+    //     {
+    //       title: 'Löschen',
+    //       handler: () => {
+    //         if (ingredient.ingredientId) {
+    //           ingredientStore.removeIngredient(ingredient.ingredientId)
+    //             .then(() => {
+    //               // remove ingredient from view
+    //               this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
+    //             })
+    //             .catch((err) => {
+    //               const errorMessage = getErrorMessage(err);
+    //               this.$toast.open(`Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`);
+    //             })
+    //         }
+    //         this.$modal.hide('dialog');
+    //       }
+    //     }
+    //   ]
+    // });
   }
 
   private appliesToFilter(ingredient: Ingredient, ingredientName: null | string, categoryId: number, authorId: number, seasonal: null | boolean) {

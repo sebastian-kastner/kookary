@@ -67,19 +67,19 @@ export default class UserMgmtView extends Vue {
   }
 
   showEditDialog(user: User): void {
-    this.$modal.show(
-      UserEditor,
-      { user: user },
-      { height: 470, width: getScreenWidth(400) }
-    );
+    // this.$modal.show(
+    //   UserEditor,
+    //   { user: user },
+    //   { height: 470, width: getScreenWidth(400) }
+    // );
   }
 
   showAddUserModal(): void {
-    this.$modal.show(
-      AddUser,
-      { userAddedCallback: (user: User) => { this.users.push(user) } },
-      { height: "auto", width: getScreenWidth(400) }
-    );
+    // this.$modal.show(
+    //   AddUser,
+    //   { userAddedCallback: (user: User) => { this.users.push(user) } },
+    //   { height: "auto", width: getScreenWidth(400) }
+    // );
   }
 
   deleteUser(user: User): void {
@@ -89,28 +89,28 @@ export default class UserMgmtView extends Vue {
       throw new Error("Zu löschender Benutzer hat keine ID!");
     }
 
-    this.$modal.show('dialog', {
-      title: "Benutzer " + user.displayName + " löschen",
-      text: "Soll der Benutzer " + user.displayName + " wirklich gelöscht werden?",
-      buttons: [
-        {
-          title: 'Abbrechen',
-          handler: () => {
-            this.$modal.hide('dialog')
-          }
-        },
-        {
-          title: 'Löschen',
-          handler: () => {
-            this.userClient.deleteUser(userId)
-            .then(() => {
-              this.users.splice(this.users.indexOf(user), 2);
-            });
-            this.$modal.hide('dialog');
-          }
-        }
-      ]
-    });
+    // this.$modal.show('dialog', {
+    //   title: "Benutzer " + user.displayName + " löschen",
+    //   text: "Soll der Benutzer " + user.displayName + " wirklich gelöscht werden?",
+    //   buttons: [
+    //     {
+    //       title: 'Abbrechen',
+    //       handler: () => {
+    //         this.$modal.hide('dialog')
+    //       }
+    //     },
+    //     {
+    //       title: 'Löschen',
+    //       handler: () => {
+    //         this.userClient.deleteUser(userId)
+    //         .then(() => {
+    //           this.users.splice(this.users.indexOf(user), 2);
+    //         });
+    //         this.$modal.hide('dialog');
+    //       }
+    //     }
+    //   ]
+    // });
   }
 
   rolesToString(user: User): string {

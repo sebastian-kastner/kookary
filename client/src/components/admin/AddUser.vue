@@ -81,7 +81,7 @@ export default class UserEditor extends Vue {
     this.userClient.createUser(this.email, this.displayname, this.password)
       .then((user) => {
         this.userAddedCallback(user);
-        this.$modal.hideAll();
+        // this.$modal.hideAll();
       });
   }
 }
