@@ -5,7 +5,7 @@
         class="col-1 d-flex align-items-center justify-content-center"
         :class="handleClass"
       >
-        <b-icon-arrow-down-up />
+        <Icon icon="arrowDownUp" />
       </div>
       <div class="col-5">
         <input
@@ -46,7 +46,7 @@
         v-if="ingredientSelected"
         v-on:click="removeIngredient"
       >
-        <b-icon-trash />
+        <Icon icon="trash" />
       </div>
       <div class="col-1" v-else />
     </div>
@@ -59,9 +59,11 @@ import { RecipeIngredient, Ingredient } from "../types";
 import TypeaheadInput from "./TypeaheadInput.vue";
 import { ingredientStore } from "../stores/rootStore";
 import { getErrorMessage } from "../utils/errors";
+import { Icon } from '@iconify/vue/dist/offline';
+
 
 @Component({
-  components: { TypeaheadInput },
+  components: { TypeaheadInput, Icon },
 })
 export default class RecipeIngredientEditor extends Vue {
   @Prop({ required: true }) ingredient!: RecipeIngredient;

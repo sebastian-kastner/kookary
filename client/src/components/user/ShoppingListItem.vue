@@ -4,8 +4,8 @@
       class="col-auto mr-auto shopping-list-item-main item-name"
       @click="toggle"
     >
-      <b-icon-check-circle v-if="isChecked" @click="toggle" />
-      <b-icon-circle v-else @click="toggle" />
+      <Icon icon="checkCircle" v-if="isChecked" @click="toggle" />
+      <Icon icon="circle" v-else @click="toggle" />
       <span
         class="shopping-list-item-label"
         :class="isChecked ? 'checked-shopping-list-item' : ''"
@@ -14,7 +14,7 @@
     </div>
 
     <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
-      <b-icon-trash />
+      <Icon icon="trash" />
     </div>
   </div>
 </template>
@@ -23,8 +23,9 @@
 import { Vue, Component, Prop } from "vue-facing-decorator";
 import { ShoppingItem } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
+import { Icon } from '@iconify/vue/dist/offline';
 
-@Component({})
+@Component({ components: { Icon }})
 export default class ShoppingListItem extends Vue {
   @Prop({ required: true })
   shoppingItem!: ShoppingItem;

@@ -19,7 +19,7 @@
                 : null
             "
           >
-            <b-icon-x-circle v-if="filter.isActive(recipeFilter)" />
+            <Icon icon="xCircle" v-if="filter.isActive(recipeFilter)" />
           </div>
         </div>
       </div>
@@ -38,12 +38,12 @@
 </template>
 
 <script lang="ts">
-// import { BIconXCircle, BIconBellFill } from "bootstrap-vue";
 import { Vue, Component, Prop } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { UiFilter } from "./uiFilters";
+import { Icon } from '@iconify/vue/dist/offline';
 
-@Component({})
+@Component({ components: { Icon }})
 export default class FilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 

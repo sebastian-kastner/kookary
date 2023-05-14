@@ -36,7 +36,7 @@
         @mouseenter="currentSelectionIndex = -1"
       >
         <span class="simple-typeahead-list-item-text" :data-text="input">
-          <b-icon-plus-circle />
+          <Icon icon="plusCircle" />
           {{ input }}
         </span>
       </div>
@@ -79,9 +79,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-facing-decorator";
-// import { BIconPlusCircle } from "bootstrap-vue";
+import { Icon } from '@iconify/vue/dist/offline';
 
-@Component({})
+@Component({ components: { Icon }})
 export default class TypeaheadInput extends Vue {
   @Prop({ required: false })
   id!: string;

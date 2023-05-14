@@ -4,7 +4,7 @@
       class="dropdown-item d-flex align-items-center"
       to="/user/shopping-list"
     >
-      <b-icon-basket /> Einkaufsliste
+      <Icon icon="basket" /> Einkaufsliste
     </router-link>
 
     <div v-if="isAdmin">
@@ -14,7 +14,7 @@
         class="dropdown-item d-flex align-items-center"
         to="/admin/users"
       >
-        <b-icon-people /> Benutzerverwaltung
+        <Icon icon="people" /> Benutzerverwaltung
       </router-link>
 
       <router-link
@@ -22,7 +22,7 @@
         class="dropdown-item d-flex align-items-center"
         to="/admin/ingredients"
       >
-        <b-icon-bag /> Zutatenverwaltung
+        <Icon icon="bag" /> Zutatenverwaltung
       </router-link>
     </div>
 
@@ -34,11 +34,11 @@
     >
       <div class="row">
         <div class="col d-flex justify-content-start">
-          <b-icon-people /> Privater Modus
+          <Icon icon="people" /> Privater Modus
         </div>
         <div class="col d-flex justify-content-end private-toggle">
-          <b-icon-toggle-on class="active" v-if="isPrivateMode" />
-          <b-icon-toggle-off class="inactive" v-else />
+          <Icon icon="toggleOn" class="active" v-if="isPrivateMode" />
+          <Icon icon="toggleOff" class="inactive" v-else />
         </div>
       </div>
     </a>
@@ -47,11 +47,11 @@
       class="dropdown-item d-flex align-items-center"
       to="/user/account"
     >
-      <b-icon-person /> Benutzerkonto
+      <Icon icon="person" /> Benutzerkonto
     </router-link>
 
     <a href="#" class="dropdown-item d-flex align-items-center" @click="logout">
-      <b-icon-box-arrow-in-left /> Logout
+      <Icon icon="boxArrowInLeft" /> Logout
     </a>
   </div>
 </template>
@@ -59,8 +59,9 @@
 <script lang="ts">
 import { Vue, Component } from "vue-facing-decorator";
 import { userStore } from "../../stores/rootStore";
+import { Icon } from '@iconify/vue/dist/offline';
 
-@Component({})
+@Component({ components: { Icon }})
 export default class UserMenu extends Vue {
   get isAdmin(): boolean {
     return userStore.userIsAdmin;

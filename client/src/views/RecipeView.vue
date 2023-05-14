@@ -6,7 +6,7 @@
         class="rounded-button"
         v-on:click="deleteRecipe"
       >
-        <b-icon-trash />
+        <Icon icon="trash" />
       </button>
 
       <div v-if="isEditable">
@@ -19,7 +19,7 @@
           v-slot="{ navigate }"
         >
           <button @click="navigate" role="link" class="rounded-button">
-            <b-icon-pencil />
+            <Icon icon="pencil" />
           </button>
         </router-link>
       </div>
@@ -29,7 +29,7 @@
         class="rounded-button"
         v-on:click="addCookup"
       >
-        <b-icon-calendar-week />
+        <Icon icon="calendar-week" />
       </button>
 
       <button
@@ -39,8 +39,8 @@
         :class="{ active: isMarked }"
         v-on:click="toggleMarked"
       >
-        <b-icon-bell-fill v-if="isMarked" />
-        <b-icon-bell v-else />
+        <Icon icon="bellFill" v-if="isMarked" />
+        <Icon icon="bell" v-else />
       </button>
     </div>
 
@@ -75,7 +75,7 @@
             class="rounded-button"
             v-on:click="addIngredientsToShoppingList"
           >
-            <b-icon-bag />
+            <Icon icon="bag" />
           </button>
         </div>
       </div>
@@ -139,9 +139,11 @@ import { getErrorMessage } from "../utils/errors";
 import AddCookupView from "../components/user/AddCookupView.vue";
 import AddToShoppingListModal from "../components/user/AddToShoppingListModal.vue";
 import RecipeIngredientListItem from "../components/RecipeIngredientListItem.vue";
+import { Icon } from '@iconify/vue/dist/offline';
+
 
 @Options({
-  components: { RecipeIngredientListItem },
+  components: { RecipeIngredientListItem, Icon },
 })
 export default class RecipeView extends Vue {
   recipeId?: string;

@@ -15,8 +15,7 @@
               aria-haspopup="true"
               aria-expanded="false"
             >
-              ☰
-              <!-- <b-icon-list /> -->
+              <Icon icon="burgerMenu" />
             </span>
             <div
               class="dropdown-menu"
@@ -29,6 +28,7 @@
                 class="dropdown-item d-flex align-items-center"
                 :to="navItem.to"
               >
+                <Icon v-bind:icon="navItem.icon" />
                 <component :is="navItem.icon" />{{ navItem.name }}
               </router-link>
             </div>
@@ -62,10 +62,10 @@
             aria-expanded="false"
           >
             <span v-if="user === null">
-              <b-icon-box-arrow-in-right /> Login
+              <Icon icon="boxArrowInRight" /> Login
             </span>
             <span v-else>
-              <b-icon-person-circle /> {{ user.displayName }}
+              <Icon icon="personCircle" /> {{ user.displayName }}
             </span>
           </span>
           <div
@@ -96,16 +96,21 @@ import { User } from "./types";
 import { UserStore } from "./stores/userStore";
 import LoginView from "./components/user/LoginView.vue";
 import UserMenu from "./components/user/UserMenu.vue";
-// import { BIconListOl, BIconPlusCircle, BIconCalendarWeek } from "bootstrap-vue";
+import { Icon } from '@iconify/vue/dist/offline';
+import listOlIcon from '@iconify-icons/bi/list-ol';
+import plusCircleIcon from '@iconify-icons/bi/plus-circle';
+import calendarWeekIcon from '@iconify-icons/bi/calendar-week';
+
 export type NavItem = {
   name: string;
   to: string;
-  icon?: unknown;
+  icon: unknown;
 };
 @Options({
   components: {
     LoginView,
     UserMenu,
+    Icon
   },
 })
 export default class App extends Vue {
@@ -118,19 +123,19 @@ export default class App extends Vue {
   get navItems(): NavItem[] {
     const items: NavItem[] = [];
     items.push({
-      // icon: BIconListOl,
+      icon: listOlIcon,
       name: "Rezepte",
       to: "/recipes",
     });
     if (this.user) {
       items.push({
-        // icon: BIconPlusCircle,
+        icon: plusCircleIcon,
         name: "Neues Rezept",
         to: "/user/recipe-editor",
       });
     }
     items.push({
-      // icon: BIconCalendarWeek,
+      icon: calendarWeekIcon,
       name: "Saisonkalender",
       to: "/calendar",
     });
@@ -222,7 +227,7 @@ body {
 }
 
 .main {
-  background-image: url("~@/../public/partial_bg.png");
+  background-image: url("~@/../partial_bg.png");
   background-repeat: repeat-x;
   padding-top: 15px;
 }

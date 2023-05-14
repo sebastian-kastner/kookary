@@ -56,7 +56,7 @@
     </td>
     <td class="align-middle">
       <div @click="removeIngredient(ingredient)">
-        <b-icon-trash />
+        <Icon icon="trash" />
       </div>
     </td>
   </tr>
@@ -67,6 +67,8 @@ import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Ingredient, IngredientCategory } from "../../types";
 import { userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import { IngredientsClient } from "../../clients/IngredientsClient";
+import { Icon } from '@iconify/vue/dist/offline';
+
 
 const MONTHS = [
   "Januar",
@@ -85,7 +87,7 @@ const MONTHS = [
 const MONTH_INDEXES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 @Component({
-  components: {},
+  components: { Icon },
 })
 export default class IngredientEditor extends Vue {
   @Prop({ required: true })

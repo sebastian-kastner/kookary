@@ -6,8 +6,6 @@
     ],
   },
   "compilerOptions": {
-    "rootDir": "./lib",
-    "outDir": "./src",
     "target": "ESNext",
     "module": "ESNext",
     "declaration": false,

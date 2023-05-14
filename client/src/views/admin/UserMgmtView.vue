@@ -3,7 +3,7 @@
     <h3>Benutzer</h3>
     <div id="add-user-button" class="row justify-content-end">
       <button @click="showAddUserModal" role="button" class="rounded-button">
-        <b-icon-plus /> Benutzer hinzufügen
+        <Icon icon="plus" /> Benutzer hinzufügen
       </button>
     </div>
     <table class="table">
@@ -29,7 +29,7 @@
               role="button"
               class="rounded-button"
             >
-              <b-icon-trash />
+              <Icon icon="trash" />
             </button>
           </td>
           <td>
@@ -38,7 +38,7 @@
               role="button"
               class="rounded-button"
             >
-              <b-icon-pencil />
+              <Icon icon="pencil" />
             </button>
           </td>
         </tr>
@@ -54,8 +54,9 @@ import { UserClient } from "../../clients/UserClient";
 import UserEditor from "../../components/admin/UserEditor.vue";
 import AddUser from "../../components/admin/AddUser.vue";
 import { getScreenWidth } from "../../utils/screenUtils";
+import { Icon } from '@iconify/vue/dist/offline';
 
-@Options({})
+@Options({ components: { Icon }})
 export default class UserMgmtView extends Vue {
   private userClient = new UserClient();
 

@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import { addIcons } from "./icons";
 import { rootStore, userStore, initStores } from "./stores/rootStore";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -13,6 +14,7 @@ app.use(router);
 // app.use(ToastPlugin, { position: "bottom", type: "error", duration: 10000 });
 
 initStores();
+addIcons();
 
 userStore.initUserLogin().finally(() => {
   app.mount("#app");
@@ -22,8 +24,6 @@ userStore.initUserLogin().finally(() => {
 // import App from "./App.vue";
 // import router from "./router";
 // import { rootStore, userStore, initStores } from "./stores/rootStore";
-// // import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-// // import VModal from 'vue-js-modal'
 // import ToastPlugin from "vue-toast-notification";
 // import "vue-toast-notification/dist/theme-bootstrap.css";
 
@@ -32,8 +32,6 @@ userStore.initUserLogin().finally(() => {
 // const app = createApp(App).use(router);
 // app.use(rootStore);
 // app.use(router);
-// // app.use(BootstrapVue);
-// // app.use(BootstrapVueIcons);
 // app.use(ToastPlugin, { position: "bottom", type: "error", duration: 10000 });
 // // Vue.use(VModal, { dialog: true });
 

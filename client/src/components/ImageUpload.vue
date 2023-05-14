@@ -2,7 +2,7 @@
   <div>
     <div class="image-preview" v-if="filePreview !== null">
       <img :src="filePreview" ref="filePreview" alt="Preview Image" />
-      <b-icon-x-circle @click="removeImage" />
+      <Icon icon="xCircle" @click="removeImage" />
       <div v-if="badDimensions" class="bad-dimension-hint">
         Bilder im Querformat sind empfohlen!
       </div>
@@ -22,12 +22,12 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
+import { Icon } from '@iconify/vue/dist/offline';
 
-// import { BIconXCircle } from "bootstrap-vue";
 import { MediaObject } from "../types";
 import { mediaObjectStore } from "../stores/rootStore";
 
-@Component({})
+@Component({ components: { Icon }})
 export default class ImageUpload extends Vue {
   filePreview: string | ArrayBuffer | null = null;
   badDimensions = false;
