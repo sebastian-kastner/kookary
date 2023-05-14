@@ -25,7 +25,7 @@ import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 
 // import { BIconXCircle } from "bootstrap-vue";
 import { MediaObject } from "../types";
-import { mediaObjectStore } from "@/stores/rootStore";
+import { mediaObjectStore } from "../stores/rootStore";
 
 @Component({})
 export default class ImageUpload extends Vue {

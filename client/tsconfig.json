@@ -6,8 +6,11 @@
     ],
   },
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
+    "rootDir": "./lib",
+    "outDir": "./src",
+    "target": "ESNext",
+    "module": "ESNext",
+    "declaration": false,
     "strict": true,
     "jsx": "preserve",
     "moduleResolution": "node",

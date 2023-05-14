@@ -41,7 +41,7 @@ export default class RecipeCard extends Vue {
 
 <style lang="scss" scoped>
 @import "../../../main.scss";
-@import "~bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
+@import "../../../node_modules/bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 .recipe-card {
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
