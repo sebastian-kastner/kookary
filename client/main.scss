@@ -21,6 +21,7 @@ $content-padding: 7px;
 }
 
 .rounded-button {
+  width: auto;
   border: 2px solid $button-color-main;
   border-radius: 20px;
   color: $button-color-main;
