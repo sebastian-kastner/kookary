@@ -3,6 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import { rootStore, userStore, initStores } from "./stores/rootStore";
 
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap";
+
 const app = createApp(App);
 app.use(rootStore);
 app.use(router);

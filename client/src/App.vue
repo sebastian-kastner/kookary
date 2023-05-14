@@ -10,13 +10,19 @@
             <span
               class="btn"
               id="burger-menu"
-              data-toggle="dropdown"
+              data-bs-toggle="dropdown"
+              data-bs-target="#burgerMenuDropdownTarget"
               aria-haspopup="true"
               aria-expanded="false"
             >
-              <b-icon-list />
+              ☰
+              <!-- <b-icon-list /> -->
             </span>
-            <div class="dropdown-menu" aria-labelledby="burger-menu">
+            <div
+              class="dropdown-menu"
+              id="burgerMenuDropdownTarget"
+              aria-labelledby="burger-menu"
+            >
               <router-link
                 v-for="navItem in navItems"
                 v-bind:key="navItem.name"
@@ -50,7 +56,8 @@
             class="btn dropdown-toggle"
             type="button"
             id="user-dropdown-button"
-            data-toggle="dropdown"
+            data-bs-toggle="dropdown"
+            data-bs-target="#userDropdownTarget"
             aria-haspopup="true"
             aria-expanded="false"
           >
@@ -61,7 +68,11 @@
               <b-icon-person-circle /> {{ user.displayName }}
             </span>
           </span>
-          <div class="dropdown-menu" aria-labelledby="user-dropdown-button">
+          <div
+            class="dropdown-menu"
+            id="userDropdownTarget"
+            aria-labelledby="user-dropdown-button"
+          >
             <login-view v-if="user === null" />
             <user-menu v-else />
           </div>
@@ -130,19 +141,23 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import "../main.scss";
+
 body {
   overflow-x: hidden;
 }
+
 #app,
 .vm--modal {
   font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 // this prevents the layout from jumping if the scrollbar appears
 #app {
   width: 100vw;
 }
+
 .topbar {
   padding-top: 20px;
   padding-bottom: 20px;
@@ -152,31 +167,39 @@ body {
   border-bottom: 2px solid $background-color-highlight-1;
   box-shadow: 0 6px 10px $background-color-highlight-1;
   z-index: 10;
+
   .navbar-brand {
     font-family: Helvetica, Arial, sans-serif;
     font-weight: bold;
     font-size: 20pt;
     color: black;
+
     a {
       color: black;
     }
   }
+
   .nav-button {
     min-width: 125px;
     margin-left: 10px;
     color: $link-color-main;
     padding: 0 5px 10px 5px;
   }
+
   .nav-button:hover {
     text-decoration: none;
   }
+
   .nav-button.router-link-active {
     border-bottom: 2px solid $button-color-main;
   }
+
   .dropdown-menu {
     min-width: 250px;
+
     a {
       height: 3em;
+
       svg {
         font-size: 1.5em;
         padding-bottom: 3px;
@@ -184,9 +207,11 @@ body {
       }
     }
   }
+
   #burger-menu {
     padding-top: 0;
   }
+
   #user-dropdown-button,
   #burger-menu {
     svg {
@@ -195,11 +220,13 @@ body {
     }
   }
 }
+
 .main {
   background-image: url("~@/../public/partial_bg.png");
   background-repeat: repeat-x;
   padding-top: 15px;
 }
+
 .main-wrapper {
   margin-bottom: 50px;
 }

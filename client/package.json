@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.7",
     "@types/lodash.debounce": "^4.0.7",
     "@types/marked": "^4.0.6",
     "@types/uuid": "^8.3.4",
@@ -28,6 +29,7 @@
     "vuex-class-component": "^2.3.6"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.6",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
