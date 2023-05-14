@@ -165,7 +165,7 @@ export function convertMediaObject(
 ): MediaObject {
   let url;
   if (apiMediaObject.contentUrl) {
-    url = process.env.VUE_APP_ROOT_API + apiMediaObject.contentUrl;
+    url = import.meta.env.VITE_APP_ROOT_API + apiMediaObject.contentUrl;
   }
   return {
     mediaObjectId: toId(apiMediaObject["@id"]),

@@ -92,7 +92,7 @@ export class UserClient {
     // the token is not required here because it will be set by an axios interceptor
     return new Promise<User | null>((resolve, reject) => {
       axios
-        .get(process.env.VUE_APP_ROOT_API + ME_ENDPOINT, {})
+        .get(import.meta.env.VITE_APP_ROOT_API + ME_ENDPOINT, {})
         .then((response) => {
           const data = response.data;
           resolve({
@@ -112,7 +112,7 @@ export class UserClient {
   public async getUserToken(email: string, password: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       axios
-        .post(process.env.VUE_APP_ROOT_API + AUTH_TOKEN_ENDPOINT, {
+        .post(import.meta.env.VITE_APP_ROOT_API + AUTH_TOKEN_ENDPOINT, {
           email: email,
           password: password,
         })
@@ -135,7 +135,7 @@ export class UserClient {
   public async refreshUserToken(): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       axios
-        .get(process.env.VUE_APP_ROOT_API + REFRESH_TOKEN_ENDPOINT)
+        .get(import.meta.env.VITE_APP_ROOT_API + REFRESH_TOKEN_ENDPOINT)
         .then((response) => {
           const token = response.data["token"];
           if (!token) {
@@ -160,7 +160,7 @@ export class UserClient {
   ): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       axios
-        .post(process.env.VUE_APP_ROOT_API + "/api/change_password", {
+        .post(import.meta.env.VITE_APP_ROOT_API + "/api/change_password", {
           oldPassword: oldPassword,
           newPassword: newPassword,
           userId: userId,
