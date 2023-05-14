@@ -1,47 +1,36 @@
 <template>
   <div id="recipe-view" class="container main-content">
-    <div id="top-icons" class="row justify-content-end">
-      <button
-        v-if="isEditable"
-        class="rounded-button"
-        v-on:click="deleteRecipe"
-      >
-        <Icon icon="trash" />
-      </button>
+    <div id="top-icons" class="p-1 d-flex flex-row-reverse">
+      <div>
+        <button v-if="isEditable" class="rounded-button" v-on:click="deleteRecipe">
+          <Icon icon="trash" />
+        </button>
+      </div>
 
       <div v-if="isEditable">
-        <router-link
-          :to="{
-            path: '/user/recipe-editor',
-            query: { recipeId: recipe.recipeId },
-          }"
-          custom
-          v-slot="{ navigate }"
-        >
-          <button @click="navigate" role="link" class="rounded-button">
+        <router-link :to="{
+          path: '/user/recipe-editor',
+          query: { recipeId: recipe.recipeId },
+        }" custom v-slot="{ navigate }">
+          <button @click="navigate" class="rounded-button">
             <Icon icon="pencil" />
           </button>
         </router-link>
       </div>
 
-      <button
-        v-if="loggedInUserId"
-        class="rounded-button"
-        v-on:click="addCookup"
-      >
-        <Icon icon="calendar-week" />
-      </button>
+      <div>
+        <button v-if="loggedInUserId" class="rounded-button" v-on:click="addCookup">
+          <Icon icon="calendarWeek" />
+        </button>
+      </div>
 
-      <button
-        v-if="loggedInUserId"
-        :disabled="favouriteId === null"
-        class="rounded-button"
-        :class="{ active: isMarked }"
-        v-on:click="toggleMarked"
-      >
-        <Icon icon="bellFill" v-if="isMarked" />
-        <Icon icon="bell" v-else />
-      </button>
+      <div>
+        <button v-if="loggedInUserId" :disabled="favouriteId === null" class="rounded-button"
+          :class="{ active: isMarked }" v-on:click="toggleMarked">
+          <Icon icon="bellFill" v-if="isMarked" />
+          <Icon icon="bell" v-else />
+        </button>
+      </div>
     </div>
 
     <div class="recipe-image row" v-if="recipeImgSrc">
@@ -52,11 +41,7 @@
 
     <div id="recipe-description">
       <div class="tags row">
-        <div
-          v-for="item in recipe.tags"
-          class="inline-item-list-element"
-          v-bind:key="item.uuid"
-        >
+        <div v-for="item in recipe.tags" class="inline-item-list-element" v-bind:key="item.uuid">
           <router-link :to="{ path: '/recipes', query: { tags: item.tagId } }">
             {{ item.name }}
           </router-link>
@@ -70,11 +55,7 @@
       <div class="row">
         <h4>ZUTATEN</h4>
         <div class="col">
-          <button
-            v-if="loggedInUserId"
-            class="rounded-button"
-            v-on:click="addIngredientsToShoppingList"
-          >
+          <button v-if="loggedInUserId" class="rounded-button" v-on:click="addIngredientsToShoppingList">
             <Icon icon="bag" />
           </button>
         </div>
@@ -83,24 +64,16 @@
       <div class="row" v-if="showServingsForm">
         <div class="form-group form-inline">
           Für
-          <input
-            type="number"
-            class="form-control mx-sm-1 servings-input"
-            v-model.number="internalServings"
-            @input="setQuanitityFactor"
-          />
+          <input type="number" class="form-control mx-sm-1 servings-input" v-model.number="internalServings"
+            @input="setQuanitityFactor" />
           Personen
         </div>
       </div>
 
       <div class="row">
         <ul>
-          <recipe-ingredient-list-item
-            v-for="ingredient in recipe.ingredients"
-            v-bind:key="ingredient.uuid"
-            :ingredient="ingredient"
-            :quantityFactor="quantityFactor"
-          />
+          <recipe-ingredient-list-item v-for="ingredient in recipe.ingredients" v-bind:key="ingredient.uuid"
+            :ingredient="ingredient" :quantityFactor="quantityFactor" />
         </ul>
       </div>
 

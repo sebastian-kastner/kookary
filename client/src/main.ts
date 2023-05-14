@@ -21,7 +21,6 @@ userStore.initUserLogin().finally(() => {
 });
 
 // import { createApp } from "vue";
-// import App from "./App.vue";
 // import router from "./router";
 // import { rootStore, userStore, initStores } from "./stores/rootStore";
 // import ToastPlugin from "vue-toast-notification";
