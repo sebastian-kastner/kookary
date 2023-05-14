@@ -1,25 +1,25 @@
 <template>
   <div>
-    <draggable
+    <!-- <draggable
       :list="ingredients"
       class="list-group"
       handle=".draggable-handle"
       @end="updatePositions"
+    > -->
+    <div
+      v-for="ingredient in ingredients"
+      v-bind="ingredient"
+      v-bind:key="ingredient.uuid"
     >
-      <div
-        v-for="ingredient in ingredients"
-        v-bind="ingredient"
-        v-bind:key="ingredient.uuid"
-      >
-        <recipe-ingredient-editor
-          :ingredient="ingredient"
-          :existingIngredients="existingIngredients"
-          handleClass="draggable-handle"
-          @onNameChanged="updateIngredientName"
-          @onDelete="onDeleteIngredient"
-        />
-      </div>
-    </draggable>
+      <recipe-ingredient-editor
+        :ingredient="ingredient"
+        :existingIngredients="existingIngredients"
+        handleClass="draggable-handle"
+        @onNameChanged="updateIngredientName"
+        @onDelete="onDeleteIngredient"
+      />
+    </div>
+    <!-- </draggable> -->
   </div>
 </template>
 

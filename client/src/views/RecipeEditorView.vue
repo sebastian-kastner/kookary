@@ -103,7 +103,7 @@ import { getScreenWidth } from "../utils/screenUtils";
     ImageUpload,
     SaveButton,
   },
-  beforeRouteLeave: RecipeEditorView.navGuard,
+  // beforeRouteLeave: RecipeEditorView.navGuard,
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
@@ -128,29 +128,29 @@ export default class RecipeEditorView extends Vue {
     next: NavigationGuardNext
   ): void {
     if (this instanceof RecipeEditorView) {
-      if (this.isDirty) {
-        // const modalHandler = this.$modal;
-        // const submitHandler = this.doSubmit;
-        // modalHandler.show(
-        //   ConfirmLeaveModal,
-        //   {
-        //     saveHandler: () => {
-        //       submitHandler().finally(() => {
-        //         modalHandler.hideAll()
-        //       })
-        //     },
-        //     discardHandler: () => {
-        //       modalHandler.hideAll();
-        //       next();
-        //     },
-        //     isSaving: this.isSaving
-        //   },
-        //   { height: "auto", width: getScreenWidth(400) }
-        // );
-      } else {
-        next();
-      }
-    } else {
+      // if (this.isDirty) {
+      // const modalHandler = this.$modal;
+      // const submitHandler = this.doSubmit;
+      // modalHandler.show(
+      //   ConfirmLeaveModal,
+      //   {
+      //     saveHandler: () => {
+      //       submitHandler().finally(() => {
+      //         modalHandler.hideAll()
+      //       })
+      //     },
+      //     discardHandler: () => {
+      //       modalHandler.hideAll();
+      //       next();
+      //     },
+      //     isSaving: this.isSaving
+      //   },
+      //   { height: "auto", width: getScreenWidth(400) }
+      // );
+      // } else {
+      next();
+      // }
+      // } else {
       // this.$toast.open(
       //   `Unbekannter Fehler beim Versuch den Rezept Editor zu verlassen.`
       // );
