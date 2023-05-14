@@ -1,5 +1,5 @@
 <template>
-  <div class="recipe-card">
+  <div class="recipe-card col">
     <router-link
       v-bind:key="recipe.recipeId"
       :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
