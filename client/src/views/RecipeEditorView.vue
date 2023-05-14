@@ -151,9 +151,9 @@ export default class RecipeEditorView extends Vue {
         next();
       }
     } else {
-      this.$toast.open(
-        `Unbekannter Fehler beim Versuch den Rezept Editor zu verlassen.`
-      );
+      // this.$toast.open(
+      //   `Unbekannter Fehler beim Versuch den Rezept Editor zu verlassen.`
+      // );
     }
   }
 
@@ -239,9 +239,9 @@ export default class RecipeEditorView extends Vue {
       })
       .catch((error) => {
         const errorMessage = getErrorMessage(error);
-        this.$toast.open(
-          `Fehler beim Anlegen des Tags ${tagName}: ${errorMessage}`
-        );
+        // this.$toast.open(
+        //   `Fehler beim Anlegen des Tags ${tagName}: ${errorMessage}`
+        // );
       });
   }
 
@@ -278,7 +278,7 @@ export default class RecipeEditorView extends Vue {
     }
 
     if (!this.hasValidName) {
-      this.$toast.open("Rezeptname muss angegeben werden.");
+      // this.$toast.open("Rezeptname muss angegeben werden.");
       this.doValidate = true;
     } else {
       this.isSaving = true;
@@ -297,7 +297,7 @@ export default class RecipeEditorView extends Vue {
             console.error(err);
             const errorDetails = getErrorMessage(err);
             reject();
-            this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
+            // this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
           });
       });
     }

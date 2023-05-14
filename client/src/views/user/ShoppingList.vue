@@ -220,7 +220,7 @@ export default class ShoppingList extends Vue {
         this.isSaving = false;
         // re-synchronize items with database in case of error
         const errorMessage = getErrorMessage(err);
-        this.$toast.open(`Fehler beim Löschen der Items: ${errorMessage}`);
+        // this.$toast.open(`Fehler beim Löschen der Items: ${errorMessage}`);
         this.readShoppingItems();
       });
   }

@@ -186,12 +186,12 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          this.$toast.open("Fehler beim Lesen des Rezepts: " + msg);
+          // this.$toast.open("Fehler beim Lesen des Rezepts: " + msg);
         });
     } else {
-      this.$toast.open(
-        "Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde"
-      );
+      // this.$toast.open(
+      //   "Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde"
+      // );
     }
   }
 
@@ -211,7 +211,7 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          this.$toast.open("Fehler beim Auslesen des Favoriten Status: " + msg);
+          // this.$toast.open("Fehler beim Auslesen des Favoriten Status: " + msg);
         });
     } else {
       this.favouriteId = null;
@@ -302,7 +302,7 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          this.$toast.open("Fehler Hinzufügen des Rezepts als Favorit: " + msg);
+          // this.$toast.open("Fehler Hinzufügen des Rezepts als Favorit: " + msg);
         });
     } else {
       this.userRecipeFavouritesClient
@@ -313,7 +313,7 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          this.$toast.open("Fehler beim Löschen des Favoriten Status: " + msg);
+          // this.$toast.open("Fehler beim Löschen des Favoriten Status: " + msg);
         });
     }
   }
