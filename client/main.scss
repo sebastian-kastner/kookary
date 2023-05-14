@@ -58,6 +58,9 @@ $content-padding: 7px;
   overflow-y: auto !important;
 }
 
+.row ul, .row ol {
+  margin-left: 30px;
+}
 
 // quick fix for form-group elements
 // TODO: replace with usage of grid and utilities
