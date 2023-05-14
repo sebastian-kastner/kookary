@@ -2,23 +2,21 @@ import { ShoppingItem } from "../types";
 import { ShoppingItemApi } from "../../rest/api";
 import { logAxiosError } from "./axiosErrorLogger";
 import { clientConfiguration } from "./clientConfiguration";
-import { ToRestModelConverter } from "./ToRestModelConverter";
-import { ToViewModelConverter } from "./ToViewModelConverter";
+import { convertShoppingItem } from "./ToRestModelConverter";
+import {
+  convertShoppingItems,
+  convertShoppingItem as convertToViewModelShoppingItem,
+} from "./ToViewModelConverter";
 
 export class ShoppingListClient {
   client = new ShoppingItemApi(clientConfiguration);
-
-  viewModelConverter = new ToViewModelConverter();
-  restModelConverter = new ToRestModelConverter();
 
   public async getUserItems(userId: number): Promise<ShoppingItem[]> {
     return new Promise<ShoppingItem[]>((resolve, reject) => {
       this.client
         .getShoppingItemCollection(userId.toString(), [])
         .then((response) => {
-          const items = this.viewModelConverter.convertShoppingItems(
-            response.data["hydra:member"]
-          );
+          const items = convertShoppingItems(response.data["hydra:member"]);
           resolve(items);
         })
         .catch((e) => {
@@ -34,14 +32,12 @@ export class ShoppingListClient {
       throw new Error("No user id given");
     }
 
-    const apiItem = this.restModelConverter.convertShoppingItem(shoppingItem);
+    const apiItem = convertShoppingItem(shoppingItem);
     return new Promise<number>((resolve, reject) => {
       this.client
         .postShoppingItemCollection(apiItem)
         .then((response) => {
-          const storedItem = this.viewModelConverter.convertShoppingItem(
-            response.data
-          );
+          const storedItem = convertToViewModelShoppingItem(response.data);
           if (storedItem.shoppingItemId) {
             resolve(storedItem.shoppingItemId);
           } else {
@@ -79,7 +75,7 @@ export class ShoppingListClient {
       this.client
         .patchShoppingItemItem(
           shoppingItemId.toString(),
-          this.restModelConverter.convertShoppingItem(shoppingItem)
+          convertShoppingItem(shoppingItem)
         )
         .then(() => {
           resolve();

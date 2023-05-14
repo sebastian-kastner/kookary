@@ -4,20 +4,17 @@ import { logAxiosError } from "./axiosErrorLogger";
 import { clientConfiguration } from "./clientConfiguration";
 import * as ep from "./endpoints";
 import { toIri } from "./ToRestModelConverter";
-import { ToViewModelConverter } from "./ToViewModelConverter";
+import { convertCookup, convertCookups } from "./ToViewModelConverter";
 
 export class CookupClient {
   client = new CookupApi(clientConfiguration);
-  viewModelConverter = new ToViewModelConverter();
 
   public async getCookups(userId: number, recipeId: number): Promise<Cookup[]> {
     return new Promise<Cookup[]>((resolve, reject) => {
       this.client
         .getCookupCollection(userId.toString(), [], recipeId.toString(), [])
         .then((response) => {
-          const cookups = this.viewModelConverter.convertCookups(
-            response.data["hydra:member"]
-          );
+          const cookups = convertCookups(response.data["hydra:member"]);
           resolve(cookups);
         })
         .catch((e) => {
@@ -42,7 +39,7 @@ export class CookupClient {
           date: datetimeDate,
         })
         .then((response) => {
-          const cookup = this.viewModelConverter.convertCookup(response.data);
+          const cookup = convertCookup(response.data);
           resolve(cookup);
         })
         .catch((e) => {

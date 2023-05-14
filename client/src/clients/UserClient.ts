@@ -2,8 +2,8 @@ import { User } from "../types";
 import axios from "axios";
 import { UserApi } from "../../rest/api/user-api";
 import { clientConfiguration } from "./clientConfiguration";
-import { ToViewModelConverter } from "./ToViewModelConverter";
-import { ToRestModelConverter } from "./ToRestModelConverter";
+import { convertUser, convertUsers } from "./ToViewModelConverter";
+import { convertUserWrite } from "./ToRestModelConverter";
 import { logAxiosError } from "./axiosErrorLogger";
 import {
   AUTH_TOKEN_ENDPOINT,
@@ -14,16 +14,13 @@ import {
 export class UserClient {
   client = new UserApi(clientConfiguration);
 
-  toViewModelConverter = new ToViewModelConverter();
-  toRestModelConverter = new ToRestModelConverter();
-
   public async getUsers(): Promise<User[]> {
     return new Promise<User[]>((resolve, reject) => {
       this.client
         .getUserCollection()
         .then((response) => {
           const apiUsers = response.data["hydra:member"];
-          resolve(this.toViewModelConverter.convertUsers(apiUsers));
+          resolve(convertUsers(apiUsers));
         })
         .catch((e) => {
           logAxiosError(e);
@@ -33,7 +30,7 @@ export class UserClient {
   }
 
   public async updateUser(user: User): Promise<void> {
-    const apiUser = this.toRestModelConverter.convertUserWrite(user);
+    const apiUser = convertUserWrite(user);
     return new Promise<void>((resolve, reject) => {
       if (!user.id) {
         reject("Benutzer ID muss gesetzt sein");
@@ -58,7 +55,7 @@ export class UserClient {
     name: string,
     password: string
   ): Promise<User> {
-    const user = this.toRestModelConverter.convertUserWrite({
+    const user = convertUserWrite({
       email: email,
       displayName: name,
     });
@@ -68,7 +65,7 @@ export class UserClient {
       this.client
         .postUserCollection(user)
         .then((response) => {
-          resolve(this.toViewModelConverter.convertUser(response.data));
+          resolve(convertUser(response.data));
         })
         .catch((err) => {
           logAxiosError(err);

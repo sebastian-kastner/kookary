@@ -2,8 +2,8 @@ import { Ingredient, Recipe, Tag } from "../types";
 import { AxiosError, AxiosResponse } from "axios";
 import { RecipeApi } from "../../rest/api";
 import { clientConfiguration } from "./clientConfiguration";
-import { ToViewModelConverter } from "./ToViewModelConverter";
-import { ToRestModelConverter } from "./ToRestModelConverter";
+import { convertRecipe as convertToViewModelRecipe } from "./ToViewModelConverter";
+import { convertRecipe } from "./ToRestModelConverter";
 import { logAxiosError } from "./axiosErrorLogger";
 import { RecipeJsonld } from "rest/models";
 import { tagStore, mediaObjectStore, userStore } from "../stores/rootStore";
@@ -32,9 +32,6 @@ export type RecipesList = {
 const recipesPerPage = 18;
 export class RecipesClient {
   client = new RecipeApi(clientConfiguration);
-
-  toViewModelConverter = new ToViewModelConverter();
-  toRestModelConverter = new ToRestModelConverter();
 
   /**
    *
@@ -112,7 +109,7 @@ export class RecipesClient {
 
           const recipes: Recipe[] = [];
           apiRecipes.forEach((apiRecipe) => {
-            recipes.push(this.toViewModelConverter.convertRecipe(apiRecipe));
+            recipes.push(convertToViewModelRecipe(apiRecipe));
           });
 
           resolve({
@@ -136,7 +133,7 @@ export class RecipesClient {
    */
   public async getRecipe(recipeId: string | number): Promise<Recipe> {
     const ret = await this.client.getRecipeItem(recipeId.toString());
-    const recipe = this.toViewModelConverter.convertRecipe(ret.data);
+    const recipe = convertToViewModelRecipe(ret.data);
     // manually resolve tag names
     const tags = tagStore.tagMap;
     recipe.tags?.forEach((tag) => {
@@ -170,7 +167,7 @@ export class RecipesClient {
       recipe.images[0] = uploadedFile;
     }
 
-    const restRecipe = this.toRestModelConverter.convertRecipe(recipe);
+    const restRecipe = convertRecipe(recipe);
 
     if (recipe.recipeId) {
       // set ingredients to null to exclude them from patch update
@@ -207,7 +204,7 @@ export class RecipesClient {
     return new Promise<Recipe>((resolve, reject) => {
       savePromise
         .then((ret) => {
-          resolve(this.toViewModelConverter.convertRecipe(ret["data"]));
+          resolve(convertToViewModelRecipe(ret["data"]));
         })
         .catch((e: AxiosError) => {
           logAxiosError(e);

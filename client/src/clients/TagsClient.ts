@@ -1,15 +1,13 @@
 import { Tag } from "../types";
 import { TagApi } from "../../rest/api";
 import { clientConfiguration } from "./clientConfiguration";
-import { ToViewModelConverter } from "./ToViewModelConverter";
-import { ToRestModelConverter, toIri } from "./ToRestModelConverter";
+import { convertTag } from "./ToViewModelConverter";
+import { toIri } from "./ToRestModelConverter";
 import { USER_ENDPOINT } from "./endpoints";
 import { userStore } from "../stores/rootStore";
 
 export class TagsClient {
   client = new TagApi(clientConfiguration);
-  toViewModelConverter = new ToViewModelConverter();
-  toRestModelConverter = new ToRestModelConverter();
 
   /**
    *
@@ -21,7 +19,7 @@ export class TagsClient {
 
     const tags: Tag[] = [];
     restTags.forEach((restTag) => {
-      tags.push(this.toViewModelConverter.convertTag(restTag));
+      tags.push(convertTag(restTag));
     });
 
     return tags;
@@ -42,7 +40,7 @@ export class TagsClient {
             author: toIri(USER_ENDPOINT, user.id),
           })
           .then((response) => {
-            resolve(this.toViewModelConverter.convertTag(response.data));
+            resolve(convertTag(response.data));
           })
           .catch((e) => reject(e));
       } else {

@@ -1,17 +1,19 @@
 import { MediaObject } from "../types";
 import { MediaObjectApi } from "../../rest/api";
 import { clientConfiguration } from "./clientConfiguration";
-import { ToViewModelConverter } from "./ToViewModelConverter";
+import {
+  convertMediaObject,
+  convertMediaObjects,
+} from "./ToViewModelConverter";
 import { userStore } from "../stores/rootStore";
 
 export class MediaObjectClient {
   client: MediaObjectApi = new MediaObjectApi(clientConfiguration);
-  toViewModelConverter = new ToViewModelConverter();
 
   public async getMediaObjects(): Promise<MediaObject[]> {
     const ret = await this.client.getMediaObjectCollection();
     const apiMediaObjects = ret.data["hydra:member"];
-    return this.toViewModelConverter.convertMediaObjects(apiMediaObjects);
+    return convertMediaObjects(apiMediaObjects);
   }
 
   public async createMediaObject(
@@ -23,7 +25,7 @@ export class MediaObjectClient {
       fileName,
       userStore.user?.id
     );
-    return this.toViewModelConverter.convertMediaObject(ret.data);
+    return convertMediaObject(ret.data);
   }
 
   public async deleteMediaObject(mediaObjectId: number): Promise<void> {
