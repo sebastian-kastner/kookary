@@ -14,10 +14,9 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
-@Options({})
+@Component({})
 export default class SaveButton extends Vue {
   @Prop({ required: true })
   isLoading!: boolean;

@@ -66,12 +66,11 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { UserClient } from "../../clients/UserClient";
 import { User } from "../../types";
 
-@Options({})
+@Component({})
 export default class UserEditor extends Vue {
   private userClient = new UserClient();
 

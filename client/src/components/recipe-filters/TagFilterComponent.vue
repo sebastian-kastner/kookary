@@ -14,13 +14,12 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import InlineItemList from "../InlineItemList.vue";
 import { tagStore } from "../../stores/rootStore";
 import { Tag } from "../../types";
 
-@Options({
+@Component({
   components: { InlineItemList },
 })
 export default class NameFilterComponent extends Vue {

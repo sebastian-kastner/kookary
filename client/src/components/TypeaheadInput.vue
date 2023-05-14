@@ -78,11 +78,10 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 // import { BIconPlusCircle } from "bootstrap-vue";
 
-@Options({})
+@Component({})
 export default class TypeaheadInput extends Vue {
   @Prop({ required: false })
   id!: string;

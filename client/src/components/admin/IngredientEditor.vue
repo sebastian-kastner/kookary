@@ -63,8 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Ingredient, IngredientCategory } from "../../types";
 import { userStore, ingredientCategoryStore } from "../../stores/rootStore";
 import { IngredientsClient } from "../../clients/IngredientsClient";
@@ -85,7 +84,7 @@ const MONTHS = [
 ];
 const MONTH_INDEXES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-@Options({
+@Component({
   components: {},
 })
 export default class IngredientEditor extends Vue {

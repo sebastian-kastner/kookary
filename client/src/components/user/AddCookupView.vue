@@ -36,15 +36,14 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Cookup, Recipe } from "../../types";
 
 import VsDatepicker from "@vuesimple/vs-datepicker";
 import { userStore } from "../../stores/rootStore";
 import { CookupClient } from "../../clients/CookupClient";
 
-@Options({
+@Component({
   components: { VsDatepicker },
 })
 export default class RecipeView extends Vue {

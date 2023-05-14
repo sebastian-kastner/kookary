@@ -39,12 +39,11 @@
 
 <script lang="ts">
 // import { BIconXCircle, BIconBellFill } from "bootstrap-vue";
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { UiFilter } from "./uiFilters";
 
-@Options({})
+@Component({})
 export default class FilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 

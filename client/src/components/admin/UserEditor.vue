@@ -81,14 +81,13 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { User } from "../../types";
 import { userStore } from "../../stores/rootStore";
 import { UserClient } from "../../clients/UserClient";
 import { cloneDeep } from "lodash";
 
-@Options({})
+@Component({})
 export default class UserEditor extends Vue {
   @Prop({ required: true }) user!: User;
 

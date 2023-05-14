@@ -42,10 +42,10 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component } from "vue-facing-decorator";
 import { userStore } from "../../stores/rootStore";
 
-@Options({})
+@Component({})
 export default class LoginView extends Vue {
   email = "";
   password = "";

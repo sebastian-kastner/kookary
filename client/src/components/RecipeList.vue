@@ -9,12 +9,11 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Recipe } from "../types";
 import RecipeCard from "./cards/RecipeCard.vue";
 
-@Options({
+@Component({
   components: { RecipeCard },
 })
 export default class RecipesView extends Vue {

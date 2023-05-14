@@ -24,14 +24,13 @@
 </template>
 
 <script lang="ts">
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import draggable from "vuedraggable";
 import { RecipeIngredient, Ingredient } from "../types";
 import RecipeIngredientEditor from "./RecipeIngredientEditor.vue";
 import { v4 as uuid } from "uuid";
 
-@Options({
+@Component({
   components: { RecipeIngredientEditor, draggable },
 })
 export default class RecipeIngredientsEditor extends Vue {

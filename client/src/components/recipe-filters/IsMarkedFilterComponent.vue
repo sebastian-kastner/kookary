@@ -31,10 +31,9 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Prop } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
-@Options({})
+@Component({})
 export default class IsMarkedFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
