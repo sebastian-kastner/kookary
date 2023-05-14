@@ -40,7 +40,7 @@
     </div>
 
     <div id="recipe-description">
-      <div class="tags row">
+      <div v-if="recipe.tags.length > 0" class="tags row">
         <div v-for="item in recipe.tags" class="inline-item-list-element" v-bind:key="item.uuid">
           <router-link :to="{ path: '/recipes', query: { tags: item.tagId } }">
             {{ item.name }}
@@ -52,10 +52,12 @@
         <h1>{{ recipe.name }}</h1>
       </div>
 
-      <div class="row">
-        <h4>ZUTATEN</h4>
-        <div class="col">
-          <button v-if="loggedInUserId" class="rounded-button" v-on:click="addIngredientsToShoppingList">
+      <div class="d-flex flex-row">
+        <div>
+          <h4>ZUTATEN</h4>
+        </div>
+        <div class="ps-3">
+          <button v-if="loggedInUserId" class="rounded-button float-start" v-on:click="addIngredientsToShoppingList">
             <Icon icon="bag" />
           </button>
         </div>
