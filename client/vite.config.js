@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import Vue from "@vitejs/plugin-vue";
+import eslint from "vite-plugin-eslint";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [Vue()],
+  plugins: [Vue(), eslint()],
   // resolve: {
   //   alias: {
   //     "@": path.resolve(__dirname, "./src"),
@@ -12,4 +13,4 @@ export default defineConfig({
   build: {
     sourcemap: true,
   },
-})
+});
