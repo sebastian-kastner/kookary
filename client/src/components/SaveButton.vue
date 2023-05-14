@@ -5,11 +5,7 @@
     :disabled="isLoading"
   >
     {{ buttonText }}
-    <b-spinner
-      small
-      label="Speichern"
-      v-bind:style="isLoading ? 'visibility: visible' : 'visibility: hidden'"
-    />
+    <span class="spinner-border spinner-border-sm" role="status" v-bind:style="isLoading ? 'visibility: visible' : 'visibility: hidden'" />
   </button>
 </template>
 
@@ -34,6 +30,6 @@ export default class SaveButton extends Vue {
 @import "../../main.scss";
 
 .btn {
-  padding-left: 37px;
+  padding-left: 35px;
 }
 </style>
