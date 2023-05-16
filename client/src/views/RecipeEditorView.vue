@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="recipe-editor-view"
-    class="main-content"
-  >
+  <div id="recipe-editor-view" class="main-content">
     <div class="form-group">
       <label for="recipe-name">Rezeptname</label>
       <input
@@ -12,7 +9,7 @@
         class="form-control"
         :class="doValidate && !hasValidName ? 'is-invalid' : ''"
         placeholder="Rezeptname"
-      >
+      />
     </div>
     <div class="form-group">
       <label>Rezeptbild</label>
@@ -42,7 +39,7 @@
             autocomplete="off"
             class="form-control"
             type="number"
-          >
+          />
         </div>
       </div>
       <div class="col-7">
@@ -54,7 +51,7 @@
             autocomplete="off"
             class="form-control"
             placeholder="Rezept Quelle"
-          >
+          />
         </div>
       </div>
     </div>
@@ -84,7 +81,6 @@
 </template>
 
 <script lang="ts">
-import { Watch } from "vue-facing-decorator";
 import { Options, Vue } from "vue-class-component";
 import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 import { v4 as uuid } from "uuid";
@@ -105,6 +101,20 @@ import { getScreenWidth } from "../utils/screenUtils";
     InlineItemList,
     ImageUpload,
     SaveButton,
+  },
+  watch: {
+    recipe: {
+      handler() {
+        this.handleRecipeUpdate();
+      },
+      deep: true,
+    },
+    "recipe.ingredients": {
+      handler() {
+        this.handleIngredientUpdate();
+      },
+      deep: true,
+    },
   },
   // beforeRouteLeave: RecipeEditorView.navGuard,
 })
@@ -177,18 +187,17 @@ export default class RecipeEditorView extends Vue {
     }
   }
 
-  @Watch("recipe", { deep: true })
-  dirtyStateWatcher() {
+  handleRecipeUpdate(): void {
     // ignore first change on component mount
     if (this.initialized) {
       this.isDirty = true;
+      console.log("setting things to dirty");
     } else {
       this.initialized = true;
     }
   }
 
-  @Watch("recipe.ingredients", { deep: true })
-  ingredientsDirtyStateWatcher() {
+  handleIngredientUpdate(): void {
     // ignore first change on component mount
     if (this.ingredientsInitialized) {
       this.ingredientsHaveChanges = true;
