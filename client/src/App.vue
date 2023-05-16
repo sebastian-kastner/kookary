@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-dialog />
+    <ModalsContainer />
 
     <div class="topbar">
       <div class="d-flex justify-content-between align-items-center container">
@@ -34,10 +34,7 @@
             </div>
           </div>
 
-          <router-link
-            class="navbar-brand"
-            to="/"
-          >
+          <router-link class="navbar-brand" to="/">
             &#129348; kookary
           </router-link>
         </div>
@@ -93,6 +90,8 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { ModalsContainer } from "vue-final-modal";
+import "vue-final-modal/style.css";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { userStore } from "./stores/rootStore";
@@ -100,10 +99,10 @@ import { User } from "./types";
 import { UserStore } from "./stores/userStore";
 import LoginView from "./components/user/LoginView.vue";
 import UserMenu from "./components/user/UserMenu.vue";
-import { Icon } from '@iconify/vue/dist/offline';
-import listOlIcon from '@iconify-icons/bi/list-ol';
-import plusCircleIcon from '@iconify-icons/bi/plus-circle';
-import calendarWeekIcon from '@iconify-icons/bi/calendar-week';
+import { Icon } from "@iconify/vue/dist/offline";
+import listOlIcon from "@iconify-icons/bi/list-ol";
+import plusCircleIcon from "@iconify-icons/bi/plus-circle";
+import calendarWeekIcon from "@iconify-icons/bi/calendar-week";
 
 export type NavItem = {
   name: string;
@@ -114,7 +113,8 @@ export type NavItem = {
   components: {
     LoginView,
     UserMenu,
-    Icon
+    Icon,
+    ModalsContainer,
   },
 })
 export default class App extends Vue {

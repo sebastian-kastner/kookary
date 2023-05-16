@@ -1,14 +1,17 @@
 import { createApp } from "vue";
+import { createVfm } from 'vue-final-modal'
+
 import App from "./App.vue";
 import router from "./router";
 import { addIcons } from "./icons";
 import { rootStore, userStore, initStores } from "./stores/rootStore";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap";
-
 const app = createApp(App);
+
+const vfm = createVfm();
+
 app.use(rootStore);
+app.use(vfm);
 app.use(router);
 // for some reason this breaks the access to this.$router
 // app.use(ToastPlugin, { position: "bottom", type: "error", duration: 10000 });

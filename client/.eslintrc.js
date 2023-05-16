@@ -19,6 +19,7 @@ module.exports = {
     // Customize your rules here
     "vue/html-self-closing": "off",
     "vue/v-on-event-hyphenation": "off",
+    "vue/singleline-html-element-content-newline": "off",
     "vue/max-attributes-per-line": [
       "error",
       {

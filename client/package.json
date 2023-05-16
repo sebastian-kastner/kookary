@@ -23,6 +23,7 @@
     "vue": "^3.2.26",
     "vue-class-component": "^8.0.0-0",
     "vue-facing-decorator": "^2.1.20",
+    "vue-final-modal": "^4.4.2",
     "vue-router": "^4.0.3",
     "vue-toast-notification": "^3.1.1",
     "vuedraggable": "^2.24.3",
