@@ -1,18 +1,21 @@
 <template>
-  <div id="calendar" class="main-content container">
+  <div
+    id="calendar"
+    class="main-content container"
+  >
     <div class="form-row">
       <div class="form-group col">
         <label for="monthPicker"> Monat </label>
         <select
           id="monthPicker"
+          v-model="selectedMonth"
           name="category"
           class="form-control"
-          v-model="selectedMonth"
-          v-on:change="updateMonth"
+          @change="updateMonth"
         >
           <option
             v-for="(month, monthIndex) in monthNames"
-            v-bind:key="month"
+            :key="month"
             :value="monthIndex"
           >
             {{ month }}
@@ -23,19 +26,19 @@
         <label for="nameFilter"> Suche </label>
         <input
           id="nameFilter"
+          v-model="nameFilter"
           type="text"
           class="form-control"
-          v-model="nameFilter"
-          v-on:focusout="updateNameFilter"
-          @keydown.enter="updateNameFilter"
           placeholder="Zutatenname"
-        />
+          @focusout="updateNameFilter"
+          @keydown.enter="updateNameFilter"
+        >
       </div>
     </div>
     <div class="container">
       <div
         v-for="ingredient in ingredients"
-        v-bind:key="ingredient.ingredientId"
+        :key="ingredient.ingredientId"
         class="seasonal-ingredient"
       >
         <div class="ingredient-title">

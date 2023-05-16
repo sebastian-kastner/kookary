@@ -3,25 +3,31 @@
     <div class="col-12">
       <div class="form-check">
         <input
+          id="seasonal"
           class="form-check-input"
           type="radio"
           name="isSeasonal"
-          id="seasonal"
-          v-on:change="setIsSeasonal(true)"
           :checked="recipeFilter.isSeasonal === true"
-        />
-        <label class="form-check-label" for="seasonal"> Saisonal </label>
+          @change="setIsSeasonal(true)"
+        >
+        <label
+          class="form-check-label"
+          for="seasonal"
+        > Saisonal </label>
       </div>
       <div class="form-check">
         <input
+          id="notSeasonal"
           class="form-check-input"
           type="radio"
           name="isSeasonal"
-          id="notSeasonal"
-          v-on:change="setIsSeasonal(false)"
           :checked="recipeFilter.isSeasonal === false"
-        />
-        <label class="form-check-label" for="notSeasonal">
+          @change="setIsSeasonal(false)"
+        >
+        <label
+          class="form-check-label"
+          for="notSeasonal"
+        >
           Nicht saisonal
         </label>
       </div>

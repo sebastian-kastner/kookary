@@ -5,23 +5,23 @@
     </td>
     <td>
       <input
+        v-model="ingredient.name"
         type="text"
         class="form-control"
-        v-model="ingredient.name"
-        v-on:focusout="updateIngredient"
+        @focusout="updateIngredient"
         @keydown.enter="updateIngredient"
-      />
+      >
     </td>
     <td>
       <select
+        v-model="ingredient.ingredientCategoryId"
         name="category"
         class="form-control"
-        v-model="ingredient.ingredientCategoryId"
-        v-on:change="updateIngredient"
+        @change="updateIngredient"
       >
         <option
           v-for="category in categories"
-          v-bind:key="category.ingredientCategoryId"
+          :key="category.ingredientCategoryId"
           :value="category.ingredientCategoryId"
         >
           {{ category.name }}
@@ -30,26 +30,38 @@
     </td>
     <td class="d-none d-sm-table-cell">
       <select
+        v-model="ingredient.seasonStart"
         name="seasonStart"
         class="form-control"
-        v-model="ingredient.seasonStart"
-        v-on:change="updateIngredient"
+        @change="updateIngredient"
       >
-        <option value="">-</option>
-        <option v-for="i in monthIndexes" v-bind:key="i" :value="i">
+        <option value="">
+          -
+        </option>
+        <option
+          v-for="i in monthIndexes"
+          :key="i"
+          :value="i"
+        >
           {{ getMonthName(i) }}
         </option>
       </select>
     </td>
     <td class="d-none d-sm-table-cell">
       <select
+        v-model="ingredient.seasonEnd"
         name="seasonEnd"
         class="form-control"
-        v-model="ingredient.seasonEnd"
-        v-on:change="updateIngredient"
+        @change="updateIngredient"
       >
-        <option value="">-</option>
-        <option v-for="i in monthIndexes" v-bind:key="i" :value="i">
+        <option value="">
+          -
+        </option>
+        <option
+          v-for="i in monthIndexes"
+          :key="i"
+          :value="i"
+        >
           {{ getMonthName(i) }}
         </option>
       </select>

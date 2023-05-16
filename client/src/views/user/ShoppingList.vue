@@ -6,20 +6,20 @@
       <div class="form-row justify-content-center">
         <div class="col-4">
           <input
+            v-model="amountAndUnit"
             class="form-control"
             type="text"
-            v-model="amountAndUnit"
             placeholder="Menge"
-          />
+          >
         </div>
         <div class="col-8">
           <typeahead-input
             :items="ingredients"
             :value="itemName"
-            :itemProjection="getIngredientName"
-            resetOnSelect="true"
+            :item-projection="getIngredientName"
+            reset-on-select="true"
             placeholder="Name"
-            :addNewHandler="addNewCustomItem"
+            :add-new-handler="addNewCustomItem"
             @selectItem="addNewIngredientItem"
           />
         </div>
@@ -27,25 +27,28 @@
     </div>
 
     <div class="container">
-      <div v-for="entry in itemsByCategory" :key="entry[0]">
+      <div
+        v-for="entry in itemsByCategory"
+        :key="entry[0]"
+      >
         {{ getCategoryName(entry[0]) }}
         <div
           v-for="shoppingItem in entry[1]"
           v-bind="shoppingItem"
-          v-bind:key="getShoppingItemId(shoppingItem)"
+          :key="getShoppingItemId(shoppingItem)"
         >
           <shopping-list-item
-            :shoppingItem="shoppingItem"
-            :removeItemHandler="deleteItem"
-            :toggleItemHandler="toggleItem"
+            :shopping-item="shoppingItem"
+            :remove-item-handler="deleteItem"
+            :toggle-item-handler="toggleItem"
           />
         </div>
       </div>
 
       <div class="row justify-content-end">
         <save-button
-          buttonText="Speichern"
-          :isLoading="isSaving"
+          button-text="Speichern"
+          :is-loading="isSaving"
           @onSave="applyChanges"
         />
         <!-- <button type="button" class="btn rounded-button apply-button" v-on:click="applyChanges">

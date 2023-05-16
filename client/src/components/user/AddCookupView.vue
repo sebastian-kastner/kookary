@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="vue-dialog-content">
-      <div class="vue-dialog-content-title">{{ label }}</div>
+      <div class="vue-dialog-content-title">
+        {{ label }}
+      </div>
 
       <div class="container">
         <vs-datepicker
@@ -10,7 +12,11 @@
           placeholder="DD-MM-YYYY"
           format="DD-MM-YYYY"
         />
-        <div v-if="error" class="alert alert-error" warning="alert"></div>
+        <div
+          v-if="error"
+          class="alert alert-error"
+          warning="alert"
+        />
       </div>
     </div>
 

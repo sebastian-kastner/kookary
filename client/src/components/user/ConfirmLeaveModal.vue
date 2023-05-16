@@ -1,18 +1,25 @@
 <template>
   <div>
     <div class="vue-dialog-content">
-      <div class="vue-dialog-content-title">Ungespeicherte Änderungen</div>
+      <div class="vue-dialog-content-title">
+        Ungespeicherte Änderungen
+      </div>
 
-      <div class="container">Es gibt ungespeicherte Änderungen.</div>
+      <div class="container">
+        Es gibt ungespeicherte Änderungen.
+      </div>
     </div>
 
     <div class="vue-dialog-buttons d-flex justify-content-around">
-      <button class="btn rounded-button" @click="discardHandler">
+      <button
+        class="btn rounded-button"
+        @click="discardHandler"
+      >
         Verwerfen
       </button>
       <save-button
-        buttonText="Speichern"
-        :isLoading="isSaving"
+        button-text="Speichern"
+        :is-loading="isSaving"
         @onSave="saveHandler"
       />
     </div>

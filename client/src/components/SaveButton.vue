@@ -1,11 +1,15 @@
 <template>
   <button
     class="btn rounded-button"
-    v-on:click="emitSave"
     :disabled="isLoading"
+    @click="emitSave"
   >
     {{ buttonText }}
-    <span class="spinner-border spinner-border-sm" role="status" v-bind:style="isLoading ? 'visibility: visible' : 'visibility: hidden'" />
+    <span
+      class="spinner-border spinner-border-sm"
+      role="status"
+      :style="isLoading ? 'visibility: visible' : 'visibility: hidden'"
+    />
   </button>
 </template>
 

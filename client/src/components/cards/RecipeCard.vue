@@ -1,11 +1,11 @@
 <template>
   <div class="recipe-card col">
     <router-link
-      v-bind:key="recipe.recipeId"
+      :key="recipe.recipeId"
       :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
     >
       <div class="recipe-card-image">
-        <img :src="recipeImgSrc" />
+        <img :src="recipeImgSrc">
       </div>
       <div class="recipe-card-title">
         {{ recipe.name }}

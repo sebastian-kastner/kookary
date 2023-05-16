@@ -2,10 +2,10 @@
   <div class="row">
     <div class="col-12">
       <inline-item-list
-        :suggestItems="existingIngredients"
+        :suggest-items="existingIngredients"
         :items="recipeFilter.ingredients"
-        :provideId="getIngredientId"
-        :inputPlaceholder="inputPlaceholder"
+        :provide-id="getIngredientId"
+        :input-placeholder="inputPlaceholder"
         @itemSelected="applyFilter"
         @itemDeleted="applyFilter"
       />

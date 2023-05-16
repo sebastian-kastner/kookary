@@ -3,25 +3,31 @@
     <div class="col-12">
       <div class="form-check">
         <input
+          id="marked"
           class="form-check-input"
           type="radio"
           name="isMarked"
-          id="marked"
-          v-on:change="setIsMarked(true)"
           :checked="internalValue === true"
-        />
-        <label class="form-check-label" for="marked"> Auf Merkliste </label>
+          @change="setIsMarked(true)"
+        >
+        <label
+          class="form-check-label"
+          for="marked"
+        > Auf Merkliste </label>
       </div>
       <div class="form-check">
         <input
+          id="notMarked"
           class="form-check-input"
           type="radio"
           name="isMarked"
-          id="notMarked"
-          v-on:change="setIsMarked(false)"
           :checked="internalValue !== true"
-        />
-        <label class="form-check-label" for="notMarked">
+          @change="setIsMarked(false)"
+        >
+        <label
+          class="form-check-label"
+          for="notMarked"
+        >
           Nicht auf Merkliste
         </label>
       </div>

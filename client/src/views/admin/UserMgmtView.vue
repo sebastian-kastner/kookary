@@ -1,42 +1,70 @@
 <template>
-  <div id="user-mgt" class="container main-content padding-top">
+  <div
+    id="user-mgt"
+    class="container main-content padding-top"
+  >
     <h3>Benutzer</h3>
-    <div id="add-user-button" class="row justify-content-end">
-      <button @click="showAddUserModal" role="button" class="rounded-button">
+    <div
+      id="add-user-button"
+      class="row justify-content-end"
+    >
+      <button
+        role="button"
+        class="rounded-button"
+        @click="showAddUserModal"
+      >
         <Icon icon="plus" /> Benutzer hinzufügen
       </button>
     </div>
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col" class="d-sm-none d-md-table-cell">eMail</th>
-          <th scope="col">Roles</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
+          <th scope="col">
+            ID
+          </th>
+          <th scope="col">
+            Name
+          </th>
+          <th
+            scope="col"
+            class="d-sm-none d-md-table-cell"
+          >
+            eMail
+          </th>
+          <th scope="col">
+            Roles
+          </th>
+          <th scope="col" />
+          <th scope="col" />
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" v-bind:key="user.id">
-          <th scope="row">{{ user.id }}</th>
+        <tr
+          v-for="user in users"
+          :key="user.id"
+        >
+          <th scope="row">
+            {{ user.id }}
+          </th>
           <td>{{ user.displayName }}</td>
-          <td class="d-sm-none d-md-table-cell">{{ user.email }}</td>
+          <td class="d-sm-none d-md-table-cell">
+            {{ user.email }}
+          </td>
           <td>{{ rolesToString(user) }}</td>
           <td>
             <button
-              @click="deleteUser(user)"
               role="button"
               class="rounded-button"
+              @click="deleteUser(user)"
             >
               <Icon icon="trash" />
             </button>
           </td>
           <td>
             <button
-              @click="showEditDialog(user)"
               role="button"
               class="rounded-button"
+              @click="showEditDialog(user)"
             >
               <Icon icon="pencil" />
             </button>

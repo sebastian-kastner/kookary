@@ -8,8 +8,8 @@
           <!-- burger menu; only visible on screens smaller than large -->
           <div class="d-lg-none d-inline">
             <span
-              class="btn"
               id="burger-menu"
+              class="btn"
               data-bs-toggle="dropdown"
               data-bs-target="#burgerMenuDropdownTarget"
               aria-haspopup="true"
@@ -18,44 +18,48 @@
               <Icon icon="burgerMenu" />
             </span>
             <div
-              class="dropdown-menu"
               id="burgerMenuDropdownTarget"
+              class="dropdown-menu"
               aria-labelledby="burger-menu"
             >
               <router-link
                 v-for="navItem in navItems"
-                v-bind:key="navItem.name"
+                :key="navItem.name"
                 class="dropdown-item d-flex align-items-center"
                 :to="navItem.to"
               >
-                <Icon v-bind:icon="navItem.icon" />
+                <Icon :icon="navItem.icon" />
                 <component :is="navItem.icon" />{{ navItem.name }}
               </router-link>
             </div>
           </div>
 
-          <router-link class="navbar-brand" to="/"
-            >&#129348; kookary</router-link
+          <router-link
+            class="navbar-brand"
+            to="/"
           >
+            &#129348; kookary
+          </router-link>
         </div>
 
         <!-- nav items in middle; only visible on large screens -->
         <div class="d-none d-lg-block">
           <router-link
             v-for="navItem in navItems"
-            v-bind:key="navItem.name"
+            :key="navItem.name"
             :to="navItem.to"
             class="nav-button"
-            >{{ navItem.name }}</router-link
           >
+            {{ navItem.name }}
+          </router-link>
         </div>
 
         <div class="topbar-right">
           <!-- Login button and login form if user is not logged in -->
           <span
+            id="user-dropdown-button"
             class="btn dropdown-toggle"
             type="button"
-            id="user-dropdown-button"
             data-bs-toggle="dropdown"
             data-bs-target="#userDropdownTarget"
             aria-haspopup="true"
@@ -69,8 +73,8 @@
             </span>
           </span>
           <div
-            class="dropdown-menu"
             id="userDropdownTarget"
+            class="dropdown-menu"
             aria-labelledby="user-dropdown-button"
           >
             <login-view v-if="user === null" />

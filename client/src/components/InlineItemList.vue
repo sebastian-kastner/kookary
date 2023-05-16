@@ -2,20 +2,23 @@
   <div class="inline-item-list">
     <div
       v-for="item in items"
+      :key="getId(item)"
       class="inline-item-list-element"
-      v-bind:key="getId(item)"
     >
       {{ getLabel(item) }}
-      <span class="item-delete" v-on:click="deleteItem">x</span>
+      <span
+        class="item-delete"
+        @click="deleteItem"
+      >x</span>
     </div>
     <typeahead-input
       :items="suggestItems"
-      :excludedItems="items"
-      :itemProjection="getLabel"
-      :addNewHandler="addNewHandler"
+      :excluded-items="items"
+      :item-projection="getLabel"
+      :add-new-handler="addNewHandler"
       :value="typeaheadValue"
       :v-model="typeaheadValue"
-      :resetOnSelect="true"
+      :reset-on-select="true"
       :placeholder="inputPlaceholder"
       @selectItem="selectItem"
     />

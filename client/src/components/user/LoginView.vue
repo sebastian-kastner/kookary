@@ -1,43 +1,60 @@
 <template>
-  <div id="login" @click.stop class="form-group">
-    <div class="alert alert-danger" role="alert" v-if="errorTxt != ''">
+  <div
+    id="login"
+    class="form-group"
+    @click.stop
+  >
+    <div
+      v-if="errorTxt != ''"
+      class="alert alert-danger"
+      role="alert"
+    >
       {{ errorTxt }}
     </div>
 
     <div class="form-group">
       <label for="email">Email adresse</label>
       <input
+        id="email"
+        v-model="email"
         type="email"
         class="form-control"
-        id="email"
         placeholder="Email adresse"
-        v-model="email"
-      />
+      >
     </div>
     <div class="form-group">
       <label for="password">Password</label>
       <input
+        id="password"
+        v-model="password"
         type="password"
         class="form-control"
-        id="password"
         placeholder="Passwort"
-        v-model="password"
-      />
+      >
     </div>
     <div class="form-group custom-control-lg custom-control custom-checkbox">
       <input
-        type="checkbox"
-        class="custom-control-input"
         id="remember-me"
         v-model="rememberMe"
-      />
-      <label class="custom-control-label" for="remember-me">
+        type="checkbox"
+        class="custom-control-input"
+      >
+      <label
+        class="custom-control-label"
+        for="remember-me"
+      >
         Eingeloggt bleiben
       </label>
     </div>
 
-    <button type="submit" class="btn btn-primary" @click="login">Login</button>
-    <br />
+    <button
+      type="submit"
+      class="btn btn-primary"
+      @click="login"
+    >
+      Login
+    </button>
+    <br>
   </div>
 </template>
 

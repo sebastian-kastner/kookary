@@ -8,7 +8,7 @@
     </router-link>
 
     <div v-if="isAdmin">
-      <div class="dropdown-divider"></div>
+      <div class="dropdown-divider" />
       <router-link
         v-if="isAdmin"
         class="dropdown-item d-flex align-items-center"
@@ -26,7 +26,7 @@
       </router-link>
     </div>
 
-    <div class="dropdown-divider"></div>
+    <div class="dropdown-divider" />
 
     <a
       class="dropdown-item d-flex align-items-center"
@@ -37,8 +37,16 @@
           <Icon icon="people" /> Privater Modus
         </div>
         <div class="col d-flex justify-content-end private-toggle">
-          <Icon icon="toggleOn" class="active" v-if="isPrivateMode" />
-          <Icon icon="toggleOff" class="inactive" v-else />
+          <Icon
+            v-if="isPrivateMode"
+            icon="toggleOn"
+            class="active"
+          />
+          <Icon
+            v-else
+            icon="toggleOff"
+            class="inactive"
+          />
         </div>
       </div>
     </a>
@@ -50,7 +58,11 @@
       <Icon icon="person" /> Benutzerkonto
     </router-link>
 
-    <a href="#" class="dropdown-item d-flex align-items-center" @click="logout">
+    <a
+      href="#"
+      class="dropdown-item d-flex align-items-center"
+      @click="logout"
+    >
       <Icon icon="boxArrowInLeft" /> Logout
     </a>
   </div>

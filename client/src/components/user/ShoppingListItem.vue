@@ -4,16 +4,27 @@
       class="col-auto mr-auto shopping-list-item-main item-name"
       @click="toggle"
     >
-      <Icon icon="checkCircle" v-if="isChecked" @click="toggle" />
-      <Icon icon="circle" v-else @click="toggle" />
+      <Icon
+        v-if="isChecked"
+        icon="checkCircle"
+        @click="toggle"
+      />
+      <Icon
+        v-else
+        icon="circle"
+        @click="toggle"
+      />
       <span
         class="shopping-list-item-label"
         :class="isChecked ? 'checked-shopping-list-item' : ''"
-        >{{ getItemLabel() }}</span
-      >
+      >{{ getItemLabel() }}</span>
     </div>
 
-    <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
+    <div
+      v-if="removeItemHandler !== null"
+      class="col-auto"
+      @click="removeItem"
+    >
       <Icon icon="trash" />
     </div>
   </div>

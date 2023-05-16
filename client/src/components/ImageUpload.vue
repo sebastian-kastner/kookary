@@ -1,21 +1,41 @@
 <template>
   <div>
-    <div class="image-preview" v-if="filePreview !== null">
-      <img :src="filePreview" ref="filePreview" alt="Preview Image" />
-      <Icon icon="xCircle" @click="removeImage" />
-      <div v-if="badDimensions" class="bad-dimension-hint">
+    <div
+      v-if="filePreview !== null"
+      class="image-preview"
+    >
+      <img
+        ref="filePreview"
+        :src="filePreview"
+        alt="Preview Image"
+      >
+      <Icon
+        icon="xCircle"
+        @click="removeImage"
+      />
+      <div
+        v-if="badDimensions"
+        class="bad-dimension-hint"
+      >
         Bilder im Querformat sind empfohlen!
       </div>
     </div>
-    <div v-else class="custom-file" style="padding: 0; margin: 0">
+    <div
+      v-else
+      class="custom-file"
+      style="padding: 0; margin: 0"
+    >
       <input
-        type="file"
         id="inputGroupFile"
-        accept="image/*"
         ref="fileInput"
+        type="file"
+        accept="image/*"
         @input="selectImgFile"
-      />
-      <label class="custom-file-label" for="inputGroupFile">Bild wählen</label>
+      >
+      <label
+        class="custom-file-label"
+        for="inputGroupFile"
+      >Bild wählen</label>
     </div>
   </div>
 </template>
@@ -51,7 +71,7 @@ export default class ImageUpload extends Vue {
   }
 
   public selectImgFile(): void {
-    let fileInput = this.$refs.fileInput;
+    const fileInput = this.$refs.fileInput;
     if (fileInput) {
       /* eslint-disable */
       const inputAsAny = fileInput as any;

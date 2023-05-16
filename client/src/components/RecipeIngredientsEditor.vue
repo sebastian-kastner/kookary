@@ -9,12 +9,12 @@
     <div
       v-for="ingredient in ingredients"
       v-bind="ingredient"
-      v-bind:key="ingredient.uuid"
+      :key="ingredient.uuid"
     >
       <recipe-ingredient-editor
         :ingredient="ingredient"
-        :existingIngredients="existingIngredients"
-        handleClass="draggable-handle"
+        :existing-ingredients="existingIngredients"
+        handle-class="draggable-handle"
         @onNameChanged="updateIngredientName"
         @onDelete="onDeleteIngredient"
       />

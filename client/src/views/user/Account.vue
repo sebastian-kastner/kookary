@@ -1,15 +1,29 @@
 <template>
-  <div id="account" class="main-content">
+  <div
+    id="account"
+    class="main-content"
+  >
     <h3>Benutzerkonto</h3>
 
-    <div class="container" id="account-details">
+    <div
+      id="account-details"
+      class="container"
+    >
       <div class="row">
-        <div class="col-4">Benutzername</div>
-        <div class="col-8">{{ userName }}</div>
+        <div class="col-4">
+          Benutzername
+        </div>
+        <div class="col-8">
+          {{ userName }}
+        </div>
       </div>
       <div class="row">
-        <div class="col-4">eMail Adresse</div>
-        <div class="col-8">{{ email }}</div>
+        <div class="col-4">
+          eMail Adresse
+        </div>
+        <div class="col-8">
+          {{ email }}
+        </div>
       </div>
     </div>
 
@@ -18,47 +32,59 @@
     <div class="form-group">
       <label for="old-password">Aktuelles Passwort</label>
       <input
+        id="old-password"
+        v-model="oldPassword"
         type="password"
         class="form-control"
-        id="old-password"
         placeholder="Aktuelles Passwort"
-        v-model="oldPassword"
-      />
+      >
     </div>
 
     <div class="form-group">
       <label for="new-password">Neues Passwort</label>
       <input
-        v-on:keyup="pwCompare"
+        id="new-password"
+        v-model="newPassword"
         type="password"
         class="form-control"
-        id="new-password"
         placeholder="Neues Passwort"
-        v-model="newPassword"
-      />
+        @keyup="pwCompare"
+      >
     </div>
 
     <div class="form-group">
       <label for="new-password-repeated">Neues Passwort wiederholen</label>
       <input
-        v-on:keyup="pwCompare"
+        id="new-password-repeated"
+        v-model="newPasswordRepeated"
         type="password"
         class="form-control"
-        id="new-password-repeated"
         placeholder="Neues Passwort"
-        v-model="newPasswordRepeated"
-      />
+        @keyup="pwCompare"
+      >
     </div>
 
-    <div v-if="errorTxt != ''" class="alert alert-danger" role="alert">
+    <div
+      v-if="errorTxt != ''"
+      class="alert alert-danger"
+      role="alert"
+    >
       {{ errorTxt }}
     </div>
 
-    <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
+    <div
+      v-if="warningTxt != ''"
+      class="alert alert-warning"
+      warning="alert"
+    >
       {{ warningTxt }}
     </div>
 
-    <div v-if="changed" class="alert alert-success" role="alert">
+    <div
+      v-if="changed"
+      class="alert alert-success"
+      role="alert"
+    >
       Passwort erfolgreich geändert!
     </div>
 

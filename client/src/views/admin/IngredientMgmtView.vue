@@ -1,30 +1,54 @@
 <template>
-  <div id="user-mgt" class="container main-content padding-top">
+  <div
+    id="user-mgt"
+    class="container main-content padding-top"
+  >
     <h3>Zutaten</h3>
     <table class="table">
       <thead>
         <tr>
-          <th scope="col" class="d-none d-ml-table-cell">Author</th>
-          <th scope="col">Name</th>
-          <th scope="col">Category</th>
-          <th scope="col" class="d-none d-sm-table-cell">Saison von</th>
-          <th scope="col" class="d-none d-sm-table-cell">Saison bis</th>
-          <th scope="col"></th>
+          <th
+            scope="col"
+            class="d-none d-ml-table-cell"
+          >
+            Author
+          </th>
+          <th scope="col">
+            Name
+          </th>
+          <th scope="col">
+            Category
+          </th>
+          <th
+            scope="col"
+            class="d-none d-sm-table-cell"
+          >
+            Saison von
+          </th>
+          <th
+            scope="col"
+            class="d-none d-sm-table-cell"
+          >
+            Saison bis
+          </th>
+          <th scope="col" />
         </tr>
       </thead>
       <tbody>
         <tr>
           <td class="d-none d-ml-table-cell">
             <select
+              v-model="filter.authorId"
               name="author"
               class="form-control"
-              v-model="filter.authorId"
-              v-on:change="applyFilter"
+              @change="applyFilter"
             >
-              <option value="-1">-</option>
+              <option value="-1">
+                -
+              </option>
               <option
                 v-for="user in users"
-                v-bind:key="user.id"
+                :key="user.id"
                 :value="user.id"
               >
                 {{ user.displayName }}
@@ -33,49 +57,62 @@
           </td>
           <td>
             <input
+              v-model="filter.ingredientName"
               type="text"
               class="form-control"
-              v-model="filter.ingredientName"
-              v-on:focusout="applyFilter"
+              @focusout="applyFilter"
               @keydown.enter="applyFilter"
-            />
+            >
           </td>
           <td>
             <select
+              v-model="filter.categoryId"
               name="category"
               class="form-control"
-              v-model="filter.categoryId"
-              v-on:change="applyFilter"
+              @change="applyFilter"
             >
-              <option value="-1">-</option>
-              <option value="0">Unkategorisiert</option>
+              <option value="-1">
+                -
+              </option>
+              <option value="0">
+                Unkategorisiert
+              </option>
               <option
                 v-for="category in categories"
-                v-bind:key="category.ingredientCategoryId"
+                :key="category.ingredientCategoryId"
                 :value="category.ingredientCategoryId"
               >
                 {{ category.name }}
               </option>
             </select>
           </td>
-          <td colspan="2" class="d-none d-sm-table-cell">
+          <td
+            colspan="2"
+            class="d-none d-sm-table-cell"
+          >
             <select
+              v-model="filter.seasonal"
               name="seasonal"
               class="form-control"
-              v-model="filter.seasonal"
-              v-on:change="applyFilter"
+              @change="applyFilter"
             >
-              <option value="">-</option>
-              <option value="seasonal">Saisonal</option>
-              <option value="nonseasonal">Nicht Saisonal</option>
+              <option value="">
+                -
+              </option>
+              <option value="seasonal">
+                Saisonal
+              </option>
+              <option value="nonseasonal">
+                Nicht Saisonal
+              </option>
             </select>
           </td>
-          <td></td>
+          <td />
         </tr>
 
         <ingredient-editor
           v-for="ingredient in ingredients"
-          v-bind:key="ingredient.ingredientId"
+          :key="ingredient.ingredientId"
           :ingredient="ingredient"
           @onIngredientDelete="removeIngredient"
         />

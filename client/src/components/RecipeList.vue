@@ -2,7 +2,7 @@
   <div class="row d-flex justify-content-center">
     <recipe-card
       v-for="recipe in recipes"
-      v-bind:key="recipe.recipeId"
+      :key="recipe.recipeId"
       :recipe="recipe"
     />
   </div>

@@ -3,7 +3,7 @@
     <h3>Benutzer {{ user.displayName }} bearbeiten</h3>
     <span>{{ user.email }}</span>
     <div class="container">
-      <hr />
+      <hr>
       <div class="row">
         <div class="col">
           <h4>Rollen</h4>
@@ -11,60 +11,70 @@
         <div class="col">
           <div class="form-check">
             <input
+              id="ROLE_ADMIN"
+              v-model="isAdmin"
               class="form-check-input"
               type="checkbox"
               value=""
-              id="ROLE_ADMIN"
-              v-model="isAdmin"
               :disabled="isLoggedInUser()"
               @change="adminStateChanged"
-            />
-            <label class="form-check-label" for="ROLE_ADMIN"> Admin </label>
+            >
+            <label
+              class="form-check-label"
+              for="ROLE_ADMIN"
+            > Admin </label>
           </div>
           <div class="form-check">
             <input
+              id="ROLE_USER"
               class="form-check-input"
               type="checkbox"
               value=""
-              id="ROLE_USER"
               checked
               disabled
-            />
-            <label class="form-check-label" for="ROLE_USER"> Benutzer </label>
+            >
+            <label
+              class="form-check-label"
+              for="ROLE_USER"
+            > Benutzer </label>
           </div>
         </div>
       </div>
 
-      <hr />
+      <hr>
 
       <h4>Neues Passwort</h4>
       <div class="form-group">
         <label for="new-password">Neues Passwort</label>
         <input
-          v-on:keyup="pwCompare"
+          id="new-password"
+          v-model="newPassword"
           type="password"
           class="form-control"
-          id="new-password"
           placeholder="Neues Passwort"
-          v-model="newPassword"
           :disabled="isLoggedInUser()"
-        />
+          @keyup="pwCompare"
+        >
       </div>
 
       <div class="form-group">
         <label for="new-password-repeated">Neues Passwort wiederholen</label>
         <input
-          v-on:keyup="pwCompare"
+          id="new-password-repeated"
+          v-model="newPasswordRepeated"
           type="password"
           class="form-control"
-          id="new-password-repeated"
           placeholder="Passwort Wiederholung"
-          v-model="newPasswordRepeated"
           :disabled="isLoggedInUser()"
-        />
+          @keyup="pwCompare"
+        >
       </div>
 
-      <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
+      <div
+        v-if="warningTxt != ''"
+        class="alert alert-warning"
+        warning="alert"
+      >
         {{ warningTxt }}
       </div>
 

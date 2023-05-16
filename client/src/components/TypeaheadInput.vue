@@ -2,13 +2,17 @@
     Code taken from: https://github.com/frikinside/vue3-simple-typeahead 
 -->
 <template>
-  <div :id="wrapperId" class="simple-typeahead">
+  <div
+    :id="wrapperId"
+    class="simple-typeahead"
+  >
     <input
       :id="inputId"
+      v-model="input"
       class="form-control simple-typeahead-input"
       type="text"
       :placeholder="placeholder"
-      v-model="input"
+      autocomplete="off"
       @input="onInput"
       @compositionupdate="onCompositionUpdate($event)"
       @compositionstart="onCompositionStart()"
@@ -18,11 +22,16 @@
       @keydown.down.prevent="onArrowDown"
       @keydown.up.prevent="onArrowUp"
       @keydown.enter.tab.prevent="selectCurrentSelection"
-      autocomplete="off"
-    />
-    <div v-if="isListVisible" class="simple-typeahead-list">
-      <div class="simple-typeahead-list-header" v-if="$slots['list-header']">
-        <slot name="list-header"></slot>
+    >
+    <div
+      v-if="isListVisible"
+      class="simple-typeahead-list"
+    >
+      <div
+        v-if="$slots['list-header']"
+        class="simple-typeahead-list-header"
+      >
+        <slot name="list-header" />
       </div>
 
       <div
@@ -35,43 +44,48 @@
         @click="selectItem"
         @mouseenter="currentSelectionIndex = -1"
       >
-        <span class="simple-typeahead-list-item-text" :data-text="input">
+        <span
+          class="simple-typeahead-list-item-text"
+          :data-text="input"
+        >
           <Icon icon="plusCircle" />
           {{ input }}
         </span>
       </div>
 
       <div
+        v-for="(item, index) in filteredItems"
+        :key="index"
         class="simple-typeahead-list-item"
         :class="{
           'simple-typeahead-list-item-active': currentSelectionIndex == index,
         }"
-        v-for="(item, index) in filteredItems"
-        :key="index"
         @mousedown.prevent
         @click="selectItem(item)"
         @mouseenter="currentSelectionIndex = index"
       >
         <span
+          v-if="$slots['list-item-text']"
           class="simple-typeahead-list-item-text"
           :data-text="itemProjection(item)"
-          v-if="$slots['list-item-text']"
-          ><slot
-            name="list-item-text"
-            :item="item"
-            :itemProjection="itemProjection"
-            :boldMatchText="boldMatchText"
-          ></slot
-        ></span>
+        ><slot
+          name="list-item-text"
+          :item="item"
+          :item-projection="itemProjection"
+          :bold-match-text="boldMatchText"
+        /></span>
         <span
+          v-else
           class="simple-typeahead-list-item-text"
           :data-text="itemProjection(item)"
           v-html="boldMatchText(itemProjection(item))"
-          v-else
-        ></span>
+        />
       </div>
-      <div class="simple-typeahead-list-footer" v-if="$slots['list-footer']">
-        <slot name="list-footer"></slot>
+      <div
+        v-if="$slots['list-footer']"
+        class="simple-typeahead-list-footer"
+      >
+        <slot name="list-footer" />
       </div>
     </div>
   </div>
@@ -279,7 +293,7 @@ export default class TypeaheadInput extends Vue {
     if (this.currentSelectionIndex === -1 && this.addNewHandler !== undefined) {
       // dont add a new item if the current value already exists
       let itemAlreadyExists = false;
-      for (let i in this.filteredItems) {
+      for (const i in this.filteredItems) {
         const suggestion = this.filteredItems[i];
         if (this.itemProjection(suggestion) === this.input) {
           itemToSelect = suggestion;

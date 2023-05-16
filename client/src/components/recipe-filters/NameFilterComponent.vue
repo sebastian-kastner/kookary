@@ -2,14 +2,14 @@
   <div class="row text-center">
     <div class="col-12">
       <input
+        v-model="internalValue"
         type="text"
         class="form-control"
         placeholder="Name"
-        v-model="internalValue"
-        v-on:blur="updateFilter"
+        @blur="updateFilter"
         @keydown.enter.tab.prevent="updateFilter"
         @keydown.esc.prevent="resetFilter"
-      />
+      >
     </div>
   </div>
 </template>

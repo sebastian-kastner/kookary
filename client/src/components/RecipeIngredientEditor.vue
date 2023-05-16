@@ -1,5 +1,8 @@
 <template>
-  <div id="ingredient-editor" class="form-group">
+  <div
+    id="ingredient-editor"
+    class="form-group"
+  >
     <div class="form-row">
       <div
         class="col-1 d-flex align-items-center justify-content-center"
@@ -10,45 +13,48 @@
       <div class="col-5">
         <input
           v-if="ingredient.ingredient && ingredient.ingredient.ingredientId"
+          v-model="ingredient.ingredient.name"
           class="form-control simple-typeahead-input"
           type="text"
-          v-model="ingredient.ingredient.name"
           disabled="true"
-        />
+        >
         <typeahead-input
           v-else
           :items="existingIngredients"
           :value="getIngredientLabel(ingredient.ingredient)"
-          :itemProjection="getIngredientLabel"
-          :addNewHandler="addNewIngredient"
+          :item-projection="getIngredientLabel"
+          :add-new-handler="addNewIngredient"
           @selectItem="setIngredient"
         />
       </div>
       <div class="col-3">
         <input
+          v-model="ingredient.quantity"
           type="text"
           class="form-control"
           placeholder="Menge"
-          v-model="ingredient.quantity"
-        />
+        >
       </div>
       <div class="col-2">
         <input
+          v-model="ingredient.unit"
           type="text"
           class="form-control"
           placeholder="Einheit"
-          v-model="ingredient.unit"
-        />
+        >
       </div>
 
       <div
-        class="col-1 d-flex align-items-center justify-content-center delete-ingredient-col"
         v-if="ingredientSelected"
-        v-on:click="removeIngredient"
+        class="col-1 d-flex align-items-center justify-content-center delete-ingredient-col"
+        @click="removeIngredient"
       >
         <Icon icon="trash" />
       </div>
-      <div class="col-1" v-else />
+      <div
+        v-else
+        class="col-1"
+      />
     </div>
   </div>
 </template>

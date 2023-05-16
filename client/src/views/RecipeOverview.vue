@@ -1,18 +1,24 @@
 <template>
-  <div id="recipe-overview" class="main-content">
+  <div
+    id="recipe-overview"
+    class="main-content"
+  >
     <filter-component
-      :recipeFilter="recipeFilter"
+      :recipe-filter="recipeFilter"
       :filters="filters"
       @applyFilter="applyFilter"
     />
-    <br />
+    <br>
     <recipe-list :recipes="recipes" />
-    <div class="d-flex justify-content-center" v-if="hasMoreRecipes">
+    <div
+      v-if="hasMoreRecipes"
+      class="d-flex justify-content-center"
+    >
       <button
         type="button"
         class="btn rounded-button"
-        v-on:click="loadNextPage"
         :disabled="isLoading"
+        @click="loadNextPage"
       >
         Mehr...
       </button>

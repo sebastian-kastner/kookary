@@ -1,15 +1,17 @@
 <template>
   <div>
     <div class="vue-dialog-content">
-      <div class="vue-dialog-content-title">Zu Einkaufsliste hinzufügen</div>
+      <div class="vue-dialog-content-title">
+        Zu Einkaufsliste hinzufügen
+      </div>
 
       <div class="container">
         <div
           v-for="shoppingItem in shoppingItems"
           v-bind="shoppingItem"
-          v-bind:key="getIngredientId(shoppingItem)"
+          :key="getIngredientId(shoppingItem)"
         >
-          <shopping-list-item :shoppingItem="shoppingItem" />
+          <shopping-list-item :shopping-item="shoppingItem" />
         </div>
       </div>
     </div>

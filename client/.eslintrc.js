@@ -2,21 +2,22 @@ module.exports = {
   root: true,
   env: {
     node: true,
-    es2022: true,
   },
   extends: [
-    // "prettier",
-    "@vue/typescript/recommended",
-    "@vue/eslint-config-typescript/recommended",
-    // "plugin:prettier/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:vue/vue3-recommended",
+    "@vue/typescript/recommended",
   ],
   parserOptions: {
-    ecmaVersion: 2022,
+    parser: "@typescript-eslint/parser",
+    ecmaVersion: 2021,
+    sourceType: "module",
   },
+  plugins: ["@typescript-eslint", "vue"],
   rules: {
+    // Customize your rules here
     "vue/html-self-closing": "off",
-    "vue/singleline-html-element-content-newline": "off",
     "vue/max-attributes-per-line": [
       "error",
       {

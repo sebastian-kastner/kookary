@@ -1,16 +1,26 @@
 <template>
-  <div v-if="recipes.length > 0" class="recipe-card-list">
-    <div class="recipe-card-header">{{ title }}</div>
+  <div
+    v-if="recipes.length > 0"
+    class="recipe-card-list"
+  >
+    <div class="recipe-card-header">
+      {{ title }}
+    </div>
     <div class="row d-flex justify-content-center">
       <recipe-card
         v-for="recipe in recipes"
-        v-bind:key="recipe.recipeId"
+        :key="recipe.recipeId"
         :recipe="recipe"
       />
     </div>
-    <div v-if="moreLink !== null" class="row d-flex justify-content-center">
+    <div
+      v-if="moreLink !== null"
+      class="row d-flex justify-content-center"
+    >
       <div class="inline-item-list-element">
-        <router-link :to="moreLink"> Mehr.. </router-link>
+        <router-link :to="moreLink">
+          Mehr..
+        </router-link>
       </div>
     </div>
   </div>

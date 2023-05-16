@@ -1,13 +1,19 @@
 <template>
-  <div id="filter-component" class="container">
+  <div
+    id="filter-component"
+    class="container"
+  >
     <div class="row filter-bar">
       <div
         v-for="(filter, index) in filters"
-        v-bind:key="filter.name"
+        :key="filter.name"
         :class="[isSelectedClass(filter.name), getFilterClass(index)]"
         class="col filter-icon"
       >
-        <div class="row" v-on:click="showFilter(filter.name)">
+        <div
+          class="row"
+          @click="showFilter(filter.name)"
+        >
           <div class="col">
             <component :is="filter.icon" />
           </div>
@@ -19,19 +25,25 @@
                 : null
             "
           >
-            <Icon icon="xCircle" v-if="filter.isActive(recipeFilter)" />
+            <Icon
+              v-if="filter.isActive(recipeFilter)"
+              icon="xCircle"
+            />
           </div>
         </div>
       </div>
     </div>
 
-    <div v-for="filter in filters" v-bind:key="filter.name">
+    <div
+      v-for="filter in filters"
+      :key="filter.name"
+    >
       <component
         :is="filter.component"
         v-if="activeFilter == filter.name"
         class="filter-details"
+        :recipe-filter="recipeFilter"
         @applyFilter="applyFilter"
-        :recipeFilter="recipeFilter"
       />
     </div>
   </div>

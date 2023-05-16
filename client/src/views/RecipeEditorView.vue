@@ -1,15 +1,18 @@
 <template>
-  <div id="recipe-editor-view" class="main-content">
+  <div
+    id="recipe-editor-view"
+    class="main-content"
+  >
     <div class="form-group">
       <label for="recipe-name">Rezeptname</label>
       <input
+        id="recipe-name"
+        v-model="recipe.name"
         autocomplete="off"
         class="form-control"
         :class="doValidate && !hasValidName ? 'is-invalid' : ''"
-        id="recipe-name"
         placeholder="Rezeptname"
-        v-model="recipe.name"
-      />
+      >
     </div>
     <div class="form-group">
       <label>Rezeptbild</label>
@@ -23,9 +26,9 @@
       <label>Tags</label>
       <div>
         <inline-item-list
-          :suggestItems="existingTags"
+          :suggest-items="existingTags"
           :items="recipe.tags"
-          :addNewHandler="createTag"
+          :add-new-handler="createTag"
         />
       </div>
     </div>
@@ -34,24 +37,24 @@
         <div class="form-group">
           <label>Portionen</label>
           <input
+            id="recipe-servings"
+            v-model.number="recipe.servings"
             autocomplete="off"
             class="form-control"
-            id="recipe-servings"
             type="number"
-            v-model.number="recipe.servings"
-          />
+          >
         </div>
       </div>
       <div class="col-7">
         <div class="form-group">
           <label>Quelle</label>
           <input
+            id="recipe-source"
+            v-model="recipe.source"
             autocomplete="off"
             class="form-control"
-            id="recipe-source"
             placeholder="Rezept Quelle"
-            v-model="recipe.source"
-          />
+          >
         </div>
       </div>
     </div>
@@ -59,22 +62,22 @@
       <label>Zutaten</label>
       <recipe-ingredients-editor
         :ingredients="recipe.ingredients"
-        :existingIngredients="existingIngredients"
+        :existing-ingredients="existingIngredients"
       />
     </div>
     <div class="form-group">
       <label>Beschreibung</label>
       <textarea
-        class="form-control"
         id="exampleFormControlTextarea1"
-        rows="10"
         v-model="recipeDescription"
+        class="form-control"
+        rows="10"
       />
     </div>
 
     <save-button
-      buttonText="Speichern"
-      :isLoading="isSaving"
+      button-text="Speichern"
+      :is-loading="isSaving"
       @onSave="doSubmit"
     />
   </div>

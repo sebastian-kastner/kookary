@@ -1,47 +1,89 @@
 <template>
-  <div id="recipe-view" class="container main-content">
-    <div id="top-icons" class="p-1 d-flex flex-row-reverse">
+  <div
+    id="recipe-view"
+    class="container main-content"
+  >
+    <div
+      id="top-icons"
+      class="p-1 d-flex flex-row-reverse"
+    >
       <div>
-        <button v-if="isEditable" class="rounded-button" v-on:click="deleteRecipe">
+        <button
+          v-if="isEditable"
+          class="rounded-button"
+          @click="deleteRecipe"
+        >
           <Icon icon="trash" />
         </button>
       </div>
 
       <div v-if="isEditable">
-        <router-link :to="{
-          path: '/user/recipe-editor',
-          query: { recipeId: recipe.recipeId },
-        }" custom v-slot="{ navigate }">
-          <button @click="navigate" class="rounded-button">
+        <router-link
+          v-slot="{ navigate }"
+          :to="{
+            path: '/user/recipe-editor',
+            query: { recipeId: recipe.recipeId },
+          }"
+          custom
+        >
+          <button
+            class="rounded-button"
+            @click="navigate"
+          >
             <Icon icon="pencil" />
           </button>
         </router-link>
       </div>
 
       <div>
-        <button v-if="loggedInUserId" class="rounded-button" v-on:click="addCookup">
+        <button
+          v-if="loggedInUserId"
+          class="rounded-button"
+          @click="addCookup"
+        >
           <Icon icon="calendarWeek" />
         </button>
       </div>
 
       <div>
-        <button v-if="loggedInUserId" :disabled="favouriteId === null" class="rounded-button"
-          :class="{ active: isMarked }" v-on:click="toggleMarked">
-          <Icon icon="bellFill" v-if="isMarked" />
-          <Icon icon="bell" v-else />
+        <button
+          v-if="loggedInUserId"
+          :disabled="favouriteId === null"
+          class="rounded-button"
+          :class="{ active: isMarked }"
+          @click="toggleMarked"
+        >
+          <Icon
+            v-if="isMarked"
+            icon="bellFill"
+          />
+          <Icon
+            v-else
+            icon="bell"
+          />
         </button>
       </div>
     </div>
 
-    <div class="recipe-image row" v-if="recipeImgSrc">
+    <div
+      v-if="recipeImgSrc"
+      class="recipe-image row"
+    >
       <div>
-        <img :src="recipeImgSrc" />
+        <img :src="recipeImgSrc">
       </div>
     </div>
 
     <div id="recipe-description">
-      <div v-if="recipe.tags.length > 0" class="tags row">
-        <div v-for="item in recipe.tags" class="inline-item-list-element" v-bind:key="item.uuid">
+      <div
+        v-if="recipe.tags.length > 0"
+        class="tags row"
+      >
+        <div
+          v-for="item in recipe.tags"
+          :key="item.uuid"
+          class="inline-item-list-element"
+        >
           <router-link :to="{ path: '/recipes', query: { tags: item.tagId } }">
             {{ item.name }}
           </router-link>
@@ -57,25 +99,40 @@
           <h4>ZUTATEN</h4>
         </div>
         <div class="ps-3">
-          <button v-if="loggedInUserId" class="rounded-button float-start" v-on:click="addIngredientsToShoppingList">
+          <button
+            v-if="loggedInUserId"
+            class="rounded-button float-start"
+            @click="addIngredientsToShoppingList"
+          >
             <Icon icon="bag" />
           </button>
         </div>
       </div>
 
-      <div class="row" v-if="showServingsForm">
+      <div
+        v-if="showServingsForm"
+        class="row"
+      >
         <div class="form-group form-inline">
           Für
-          <input type="number" class="form-control mx-sm-1 servings-input" v-model.number="internalServings"
-            @input="setQuanitityFactor" />
+          <input
+            v-model.number="internalServings"
+            type="number"
+            class="form-control mx-sm-1 servings-input"
+            @input="setQuanitityFactor"
+          >
           Personen
         </div>
       </div>
 
       <div class="row">
         <ul>
-          <recipe-ingredient-list-item v-for="ingredient in recipe.ingredients" v-bind:key="ingredient.uuid"
-            :ingredient="ingredient" :quantityFactor="quantityFactor" />
+          <recipe-ingredient-list-item
+            v-for="ingredient in recipe.ingredients"
+            :key="ingredient.uuid"
+            :ingredient="ingredient"
+            :quantity-factor="quantityFactor"
+          />
         </ul>
       </div>
 
@@ -83,13 +140,20 @@
         <h4>ZUBEREITUNG</h4>
       </div>
 
-      <div class="row" v-html="description" />
+      <div
+        class="row"
+        v-html="description"
+      />
 
       <div class="row">
         <h4>QUELLE</h4>
       </div>
       <div class="row">
-        <a v-if="sourceLink !== null" :href="sourceLink" target="_blank">
+        <a
+          v-if="sourceLink !== null"
+          :href="sourceLink"
+          target="_blank"
+        >
           {{ recipe.source }}
         </a>
         <p v-else>

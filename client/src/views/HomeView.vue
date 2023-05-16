@@ -1,18 +1,24 @@
 <template>
-  <div id="home" class="main-content">
-    <recipe-card-list title="ZUFÄLLIG" :recipeFilter="randRecipeFilter" />
+  <div
+    id="home"
+    class="main-content"
+  >
+    <recipe-card-list
+      title="ZUFÄLLIG"
+      :recipe-filter="randRecipeFilter"
+    />
 
     <recipe-card-list
       title="SAISONAL"
-      :recipeFilter="seasonalRecipeFilter"
-      :moreLink="{ path: '/recipes', query: { seasonal: null } }"
+      :recipe-filter="seasonalRecipeFilter"
+      :more-link="{ path: '/recipes', query: { seasonal: null } }"
     />
 
     <recipe-card-list
       v-if="userLoggedIn"
       title="MERKLISTE"
-      :recipeFilter="markedRecipeFilter"
-      :moreLink="{ path: '/recipes', query: { marked: null } }"
+      :recipe-filter="markedRecipeFilter"
+      :more-link="{ path: '/recipes', query: { marked: null } }"
     />
   </div>
 </template>

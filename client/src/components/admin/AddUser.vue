@@ -6,44 +6,44 @@
       <div class="form-group">
         <label for="email">eMail</label>
         <input
+          id="email"
+          v-model="email"
           type="email"
           class="form-control"
-          id="email"
           placeholder="eMail"
-          v-model="email"
         />
       </div>
       <div class="form-group">
         <label for="name">Name</label>
         <input
+          id="name"
+          v-model="displayname"
           type="text"
           class="form-control"
-          id="name"
           placeholder="name"
-          v-model="displayname"
         />
       </div>
       <div class="form-group">
         <label for="new-password">Passwort</label>
         <input
-          v-on:keyup="pwCompare"
+          id="new-password"
+          v-model="password"
           type="password"
           class="form-control"
-          id="new-password"
           placeholder="Neues Passwort"
-          v-model="password"
+          @keyup="pwCompare"
         />
       </div>
 
       <div class="form-group">
         <label for="new-password-repeated">Neues Passwort wiederholen</label>
         <input
-          v-on:keyup="pwCompare"
+          id="new-password-repeated"
+          v-model="passwordRepeated"
           type="password"
           class="form-control"
-          id="new-password-repeated"
           placeholder="Passwort wiederholung"
-          v-model="passwordRepeated"
+          @keyup="pwCompare"
         />
       </div>
       <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
