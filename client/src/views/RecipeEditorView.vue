@@ -318,7 +318,7 @@ export default class RecipeEditorView extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main.scss";
+@import "../styles/variables.scss";
 
 #recipe-editor-view {
   padding: $content-padding;

@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="filter-component"
-    class="container"
-  >
+  <div id="filter-component" class="container">
     <div class="row filter-bar">
       <div
         v-for="(filter, index) in filters"
@@ -10,10 +7,7 @@
         :class="[isSelectedClass(filter.name), getFilterClass(index)]"
         class="col filter-icon"
       >
-        <div
-          class="row"
-          @click="showFilter(filter.name)"
-        >
+        <div class="row" @click="showFilter(filter.name)">
           <div class="col">
             <component :is="filter.icon" />
           </div>
@@ -25,19 +19,13 @@
                 : null
             "
           >
-            <Icon
-              v-if="filter.isActive(recipeFilter)"
-              icon="xCircle"
-            />
+            <Icon v-if="filter.isActive(recipeFilter)" icon="xCircle" />
           </div>
         </div>
       </div>
     </div>
 
-    <div
-      v-for="filter in filters"
-      :key="filter.name"
-    >
+    <div v-for="filter in filters" :key="filter.name">
       <component
         :is="filter.component"
         v-if="activeFilter == filter.name"
@@ -53,9 +41,9 @@
 import { Vue, Component, Prop } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { UiFilter } from "./uiFilters";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 
-@Component({ components: { Icon }})
+@Component({ components: { Icon } })
 export default class FilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
@@ -94,7 +82,7 @@ export default class FilterComponent extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 
 $base-color: #534f63;
 $highlight-color: $background-color-main;

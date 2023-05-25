@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="ingredient-editor"
-    class="form-group"
-  >
+  <div id="ingredient-editor" class="form-group">
     <div class="form-row">
       <div
         class="col-1 d-flex align-items-center justify-content-center"
@@ -17,7 +14,7 @@
           class="form-control simple-typeahead-input"
           type="text"
           disabled="true"
-        >
+        />
         <typeahead-input
           v-else
           :items="existingIngredients"
@@ -33,7 +30,7 @@
           type="text"
           class="form-control"
           placeholder="Menge"
-        >
+        />
       </div>
       <div class="col-2">
         <input
@@ -41,7 +38,7 @@
           type="text"
           class="form-control"
           placeholder="Einheit"
-        >
+        />
       </div>
 
       <div
@@ -51,10 +48,7 @@
       >
         <Icon icon="trash" />
       </div>
-      <div
-        v-else
-        class="col-1"
-      />
+      <div v-else class="col-1" />
     </div>
   </div>
 </template>
@@ -65,8 +59,7 @@ import { RecipeIngredient, Ingredient } from "../types";
 import TypeaheadInput from "./TypeaheadInput.vue";
 import { ingredientStore } from "../stores/rootStore";
 import { getErrorMessage } from "../utils/errors";
-import { Icon } from '@iconify/vue/dist/offline';
-
+import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
   components: { TypeaheadInput, Icon },
@@ -123,7 +116,7 @@ export default class RecipeIngredientEditor extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../main.scss";
+@import "../styles/variables.scss";
 
 #ingredient-editor {
   .rounded-button {

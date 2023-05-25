@@ -1,26 +1,16 @@
 <template>
-  <div
-    id="account"
-    class="main-content"
-  >
+  <div id="account" class="main-content">
     <h3>Benutzerkonto</h3>
 
-    <div
-      id="account-details"
-      class="container"
-    >
+    <div id="account-details" class="container">
       <div class="row">
-        <div class="col-4">
-          Benutzername
-        </div>
+        <div class="col-4">Benutzername</div>
         <div class="col-8">
           {{ userName }}
         </div>
       </div>
       <div class="row">
-        <div class="col-4">
-          eMail Adresse
-        </div>
+        <div class="col-4">eMail Adresse</div>
         <div class="col-8">
           {{ email }}
         </div>
@@ -37,7 +27,7 @@
         type="password"
         class="form-control"
         placeholder="Aktuelles Passwort"
-      >
+      />
     </div>
 
     <div class="form-group">
@@ -49,7 +39,7 @@
         class="form-control"
         placeholder="Neues Passwort"
         @keyup="pwCompare"
-      >
+      />
     </div>
 
     <div class="form-group">
@@ -61,30 +51,18 @@
         class="form-control"
         placeholder="Neues Passwort"
         @keyup="pwCompare"
-      >
+      />
     </div>
 
-    <div
-      v-if="errorTxt != ''"
-      class="alert alert-danger"
-      role="alert"
-    >
+    <div v-if="errorTxt != ''" class="alert alert-danger" role="alert">
       {{ errorTxt }}
     </div>
 
-    <div
-      v-if="warningTxt != ''"
-      class="alert alert-warning"
-      warning="alert"
-    >
+    <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
       {{ warningTxt }}
     </div>
 
-    <div
-      v-if="changed"
-      class="alert alert-success"
-      role="alert"
-    >
+    <div v-if="changed" class="alert alert-success" role="alert">
       Passwort erfolgreich geändert!
     </div>
 
@@ -171,7 +149,7 @@ export default class Account extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 
 #account {
   padding: $content-padding;

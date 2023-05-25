@@ -5,7 +5,7 @@
       :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
     >
       <div class="recipe-card-image">
-        <img :src="recipeImgSrc">
+        <img :src="recipeImgSrc" />
       </div>
       <div class="recipe-card-title">
         {{ recipe.name }}
@@ -40,7 +40,7 @@ export default class RecipeCard extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 @import "../../../node_modules/bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 
 .recipe-card {

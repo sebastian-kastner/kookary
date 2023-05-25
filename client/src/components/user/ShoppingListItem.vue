@@ -4,27 +4,16 @@
       class="col-auto mr-auto shopping-list-item-main item-name"
       @click="toggle"
     >
-      <Icon
-        v-if="isChecked"
-        icon="checkCircle"
-        @click="toggle"
-      />
-      <Icon
-        v-else
-        icon="circle"
-        @click="toggle"
-      />
+      <Icon v-if="isChecked" icon="checkCircle" @click="toggle" />
+      <Icon v-else icon="circle" @click="toggle" />
       <span
         class="shopping-list-item-label"
         :class="isChecked ? 'checked-shopping-list-item' : ''"
-      >{{ getItemLabel() }}</span>
+        >{{ getItemLabel() }}</span
+      >
     </div>
 
-    <div
-      v-if="removeItemHandler !== null"
-      class="col-auto"
-      @click="removeItem"
-    >
+    <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
       <Icon icon="trash" />
     </div>
   </div>
@@ -34,9 +23,9 @@
 import { Vue, Component, Prop } from "vue-facing-decorator";
 import { ShoppingItem } from "../../types";
 import { getIngredientLabel } from "../../utils/ingredientUtils";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 
-@Component({ components: { Icon }})
+@Component({ components: { Icon } })
 export default class ShoppingListItem extends Vue {
   @Prop({ required: true })
   shoppingItem!: ShoppingItem;
@@ -83,7 +72,7 @@ export default class ShoppingListItem extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 
 .shopping-list-item {
   color: $link-color-main;

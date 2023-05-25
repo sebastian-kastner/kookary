@@ -1,53 +1,33 @@
 <template>
   <div>
-    <div
-      v-if="filePreview !== null"
-      class="image-preview"
-    >
-      <img
-        ref="filePreview"
-        :src="filePreview"
-        alt="Preview Image"
-      >
-      <Icon
-        icon="xCircle"
-        @click="removeImage"
-      />
-      <div
-        v-if="badDimensions"
-        class="bad-dimension-hint"
-      >
+    <div v-if="filePreview !== null" class="image-preview">
+      <img ref="filePreview" :src="filePreview" alt="Preview Image" />
+      <Icon icon="xCircle" @click="removeImage" />
+      <div v-if="badDimensions" class="bad-dimension-hint">
         Bilder im Querformat sind empfohlen!
       </div>
     </div>
-    <div
-      v-else
-      class="custom-file"
-      style="padding: 0; margin: 0"
-    >
+    <div v-else class="custom-file" style="padding: 0; margin: 0">
       <input
         id="inputGroupFile"
         ref="fileInput"
         type="file"
         accept="image/*"
         @input="selectImgFile"
-      >
-      <label
-        class="custom-file-label"
-        for="inputGroupFile"
-      >Bild wählen</label>
+      />
+      <label class="custom-file-label" for="inputGroupFile">Bild wählen</label>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 
 import { MediaObject } from "../types";
 import { mediaObjectStore } from "../stores/rootStore";
 
-@Component({ components: { Icon }})
+@Component({ components: { Icon } })
 export default class ImageUpload extends Vue {
   filePreview: string | ArrayBuffer | null = null;
   badDimensions = false;
@@ -120,7 +100,7 @@ export default class ImageUpload extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main.scss";
+@import "../styles/variables.scss";
 
 .image-preview svg {
   vertical-align: top;

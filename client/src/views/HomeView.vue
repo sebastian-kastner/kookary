@@ -1,12 +1,6 @@
 <template>
-  <div
-    id="home"
-    class="main-content"
-  >
-    <recipe-card-list
-      title="ZUFÄLLIG"
-      :recipe-filter="randRecipeFilter"
-    />
+  <div id="home" class="main-content">
+    <recipe-card-list title="ZUFÄLLIG" :recipe-filter="randRecipeFilter" />
 
     <recipe-card-list
       title="SAISONAL"
@@ -53,7 +47,7 @@ export default class HomeView extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../main.scss";
+@import "../styles/variables.scss";
 @import "../../node_modules/bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
 #home {
   @include media-breakpoint-up(sm) {

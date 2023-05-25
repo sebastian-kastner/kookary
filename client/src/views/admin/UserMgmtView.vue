@@ -174,7 +174,7 @@ export default class UserMgmtView extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 
 #add-user-button {
   padding: $content-padding * 2;

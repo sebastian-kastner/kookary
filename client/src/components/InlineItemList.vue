@@ -6,10 +6,7 @@
       class="inline-item-list-element"
     >
       {{ getLabel(item) }}
-      <span
-        class="item-delete"
-        @click="deleteItem"
-      >x</span>
+      <span class="item-delete" @click="deleteItem">x</span>
     </div>
     <typeahead-input
       :items="suggestItems"
@@ -92,7 +89,7 @@ export default class InlineItemList extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main.scss";
+@import "../styles/variables.scss";
 
 .inline-item-list {
   .simple-typeahead {

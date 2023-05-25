@@ -1,19 +1,13 @@
 <template>
-  <div
-    id="recipe-overview"
-    class="main-content"
-  >
+  <div id="recipe-overview" class="main-content">
     <filter-component
       :recipe-filter="recipeFilter"
       :filters="filters"
       @applyFilter="applyFilter"
     />
-    <br>
+    <br />
     <recipe-list :recipes="recipes" />
-    <div
-      v-if="hasMoreRecipes"
-      class="d-flex justify-content-center"
-    >
+    <div v-if="hasMoreRecipes" class="d-flex justify-content-center">
       <button
         type="button"
         class="btn rounded-button"
@@ -144,5 +138,5 @@ export default class RecipesView extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main.scss";
+@import "../styles/variables.scss";
 </style>

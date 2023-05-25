@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="calendar"
-    class="main-content container"
-  >
+  <div id="calendar" class="main-content container">
     <div class="form-row">
       <div class="form-group col">
         <label for="monthPicker"> Monat </label>
@@ -32,7 +29,7 @@
           placeholder="Zutatenname"
           @focusout="updateNameFilter"
           @keydown.enter="updateNameFilter"
-        >
+        />
       </div>
     </div>
     <div class="container">
@@ -162,7 +159,7 @@ export default class Calendar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main.scss";
+@import "../styles/variables.scss";
 
 #calendar {
   padding-top: $content-padding;

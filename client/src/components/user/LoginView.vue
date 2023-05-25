@@ -1,14 +1,6 @@
 <template>
-  <div
-    id="login"
-    class="form-group"
-    @click.stop
-  >
-    <div
-      v-if="errorTxt != ''"
-      class="alert alert-danger"
-      role="alert"
-    >
+  <div id="login" class="form-group" @click.stop>
+    <div v-if="errorTxt != ''" class="alert alert-danger" role="alert">
       {{ errorTxt }}
     </div>
 
@@ -20,7 +12,7 @@
         type="email"
         class="form-control"
         placeholder="Email adresse"
-      >
+      />
     </div>
     <div class="form-group">
       <label for="password">Password</label>
@@ -30,7 +22,7 @@
         type="password"
         class="form-control"
         placeholder="Passwort"
-      >
+      />
     </div>
     <div class="form-group custom-control-lg custom-control custom-checkbox">
       <input
@@ -38,23 +30,14 @@
         v-model="rememberMe"
         type="checkbox"
         class="custom-control-input"
-      >
-      <label
-        class="custom-control-label"
-        for="remember-me"
-      >
+      />
+      <label class="custom-control-label" for="remember-me">
         Eingeloggt bleiben
       </label>
     </div>
 
-    <button
-      type="submit"
-      class="btn btn-primary"
-      @click="login"
-    >
-      Login
-    </button>
-    <br>
+    <button type="submit" class="btn btn-primary" @click="login">Login</button>
+    <br />
   </div>
 </template>
 
@@ -93,7 +76,7 @@ export default class LoginView extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 
 #login {
   padding: $content-padding;

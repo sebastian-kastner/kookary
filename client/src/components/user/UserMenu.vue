@@ -37,16 +37,8 @@
           <Icon icon="people" /> Privater Modus
         </div>
         <div class="col d-flex justify-content-end private-toggle">
-          <Icon
-            v-if="isPrivateMode"
-            icon="toggleOn"
-            class="active"
-          />
-          <Icon
-            v-else
-            icon="toggleOff"
-            class="inactive"
-          />
+          <Icon v-if="isPrivateMode" icon="toggleOn" class="active" />
+          <Icon v-else icon="toggleOff" class="inactive" />
         </div>
       </div>
     </a>
@@ -58,11 +50,7 @@
       <Icon icon="person" /> Benutzerkonto
     </router-link>
 
-    <a
-      href="#"
-      class="dropdown-item d-flex align-items-center"
-      @click="logout"
-    >
+    <a href="#" class="dropdown-item d-flex align-items-center" @click="logout">
       <Icon icon="boxArrowInLeft" /> Logout
     </a>
   </div>
@@ -71,9 +59,9 @@
 <script lang="ts">
 import { Vue, Component } from "vue-facing-decorator";
 import { userStore } from "../../stores/rootStore";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 
-@Component({ components: { Icon }})
+@Component({ components: { Icon } })
 export default class UserMenu extends Vue {
   get isAdmin(): boolean {
     return userStore.userIsAdmin;
@@ -97,7 +85,7 @@ export default class UserMenu extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 
 .private-toggle svg.active {
   color: $button-color-main;

@@ -57,7 +57,7 @@ export default class RecipeCardList extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+@import "../../styles/variables.scss";
 @import "../../../node_modules/bootstrap/scss/bootstrap-grid.scss";
 
 .recipe-card-header {

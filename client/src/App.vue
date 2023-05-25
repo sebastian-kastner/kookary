@@ -149,7 +149,8 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import "../main.scss";
+@import "styles/main.scss";
+@import "styles/variables.scss";
 
 body {
   overflow-x: hidden;

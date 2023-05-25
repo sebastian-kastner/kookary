@@ -66,5 +66,5 @@ export default class RecipeIngredientsEditor extends Vue {
 </script>
 
 <style lang="scss">
-@import "../../main.scss";
+@import "../styles/variables.scss";
 </style>
