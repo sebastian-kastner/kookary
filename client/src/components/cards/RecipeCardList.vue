@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="recipes.length > 0"
-    class="recipe-card-list"
-  >
+  <div v-if="recipes.length > 0" class="recipe-card-list">
     <div class="recipe-card-header">
       {{ title }}
     </div>
@@ -13,14 +10,9 @@
         :recipe="recipe"
       />
     </div>
-    <div
-      v-if="moreLink !== null"
-      class="row d-flex justify-content-center"
-    >
+    <div v-if="moreLink !== null" class="row d-flex justify-content-center">
       <div class="inline-item-list-element">
-        <router-link :to="moreLink">
-          Mehr..
-        </router-link>
+        <router-link :to="moreLink"> Mehr.. </router-link>
       </div>
     </div>
   </div>
@@ -53,7 +45,11 @@ export default class RecipeCardList extends Vue {
         count = recipes.length;
       }
       for (let i = 0; i < count; i++) {
-        this.recipes.push(recipes[i]);
+        const recipe = recipes[i];
+        // FIXME: for some reason recipe can be undefined here..
+        if (recipe) {
+          this.recipes.push(recipe);
+        }
       }
     });
   }
