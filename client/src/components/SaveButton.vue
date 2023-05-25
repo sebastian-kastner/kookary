@@ -1,6 +1,6 @@
 <template>
   <button
-    class="btn rounded-button"
+    class="btn btn-outline-primary save-button"
     :disabled="isLoading"
     @click="emitSave"
   >
@@ -33,7 +33,7 @@ export default class SaveButton extends Vue {
 <style lang="scss" scoped>
 @import "../../main.scss";
 
-.btn {
-  padding-left: 35px;
+.save-button {
+  padding-left: 33px !important;
 }
 </style>

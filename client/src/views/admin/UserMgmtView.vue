@@ -1,16 +1,10 @@
 <template>
-  <div
-    id="user-mgt"
-    class="container main-content padding-top"
-  >
+  <div id="user-mgt" class="container main-content padding-top">
     <h3>Benutzer</h3>
-    <div
-      id="add-user-button"
-      class="row justify-content-end"
-    >
+    <div id="add-user-button" class="d-flex justify-content-end">
       <button
         role="button"
-        class="rounded-button"
+        class="btn btn-outline-primary"
         @click="showAddUserModal"
       >
         <Icon icon="plus" /> Benutzer hinzufügen
@@ -19,30 +13,16 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">
-            ID
-          </th>
-          <th scope="col">
-            Name
-          </th>
-          <th
-            scope="col"
-            class="d-sm-none d-md-table-cell"
-          >
-            eMail
-          </th>
-          <th scope="col">
-            Roles
-          </th>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col" class="d-sm-none d-md-table-cell">eMail</th>
+          <th scope="col">Roles</th>
           <th scope="col" />
           <th scope="col" />
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="user in users"
-          :key="user.id"
-        >
+        <tr v-for="user in users" :key="user.id">
           <th scope="row">
             {{ user.id }}
           </th>
@@ -52,20 +32,12 @@
           </td>
           <td>{{ rolesToString(user) }}</td>
           <td>
-            <button
-              role="button"
-              class="rounded-button"
-              @click="deleteUser(user)"
-            >
+            <button class="rounded-button" @click="deleteUser(user)">
               <Icon icon="trash" />
             </button>
           </td>
           <td>
-            <button
-              role="button"
-              class="rounded-button"
-              @click="showEditDialog(user)"
-            >
+            <button class="rounded-button" @click="showEditDialog(user)">
               <Icon icon="pencil" />
             </button>
           </td>
@@ -79,12 +51,14 @@
 import { User } from "../../types";
 import { Options, Vue } from "vue-class-component";
 import { UserClient } from "../../clients/UserClient";
+import { useModal } from "vue-final-modal";
 import UserEditor from "../../components/admin/UserEditor.vue";
 import AddUser from "../../components/admin/AddUser.vue";
+import DialogModal from "../../components/DialogModal.vue";
 import { getScreenWidth } from "../../utils/screenUtils";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 
-@Options({ components: { Icon }})
+@Options({ components: { Icon } })
 export default class UserMgmtView extends Vue {
   private userClient = new UserClient();
 
@@ -106,19 +80,38 @@ export default class UserMgmtView extends Vue {
   }
 
   showEditDialog(user: User): void {
-    // this.$modal.show(
-    //   UserEditor,
-    //   { user: user },
-    //   { height: 470, width: getScreenWidth(400) }
-    // );
+    const { open, close } = useModal({
+      component: UserEditor,
+      attrs: {
+        user: user,
+        onUserEdited(): void {
+          close();
+        },
+        onCancel(): void {
+          close();
+        },
+      },
+    });
+    open();
   }
 
   showAddUserModal(): void {
-    // this.$modal.show(
-    //   AddUser,
-    //   { userAddedCallback: (user: User) => { this.users.push(user) } },
-    //   { height: "auto", width: getScreenWidth(400) }
-    // );
+    const addUserHandler = (user: User) => {
+      this.users.push(user);
+    };
+    const { open, close } = useModal({
+      component: AddUser,
+      attrs: {
+        onUserAdded(user: User) {
+          addUserHandler(user);
+          close();
+        },
+        onCancel() {
+          close();
+        },
+      },
+    });
+    open();
   }
 
   deleteUser(user: User): void {
@@ -128,28 +121,38 @@ export default class UserMgmtView extends Vue {
       throw new Error("Zu löschender Benutzer hat keine ID!");
     }
 
-    // this.$modal.show('dialog', {
-    //   title: "Benutzer " + user.displayName + " löschen",
-    //   text: "Soll der Benutzer " + user.displayName + " wirklich gelöscht werden?",
-    //   buttons: [
-    //     {
-    //       title: 'Abbrechen',
-    //       handler: () => {
-    //         this.$modal.hide('dialog')
-    //       }
-    //     },
-    //     {
-    //       title: 'Löschen',
-    //       handler: () => {
-    //         this.userClient.deleteUser(userId)
-    //         .then(() => {
-    //           this.users.splice(this.users.indexOf(user), 2);
-    //         });
-    //         this.$modal.hide('dialog');
-    //       }
-    //     }
-    //   ]
-    // });
+    const deleteHandler = () => {
+      return new Promise<void>((resolve, reject) => {
+        this.userClient
+          .deleteUser(userId)
+          .then(() => {
+            this.users.splice(this.users.indexOf(user), 2);
+            resolve();
+          })
+          .catch((e) => {
+            reject(e);
+            // const errorMessage = getErrorMessage(err);
+            // this.$toast.open(`Fehler beim Löschen von Benutzer ${user.displayName}: ${errorMessage}`);
+          });
+      });
+    };
+
+    const { open, close } = useModal({
+      component: DialogModal,
+      attrs: {
+        title: `Benutzer ${user.displayName} löschen`,
+        text: `Soll der Benutzer ${user.displayName} wirklich gelöscht werden?`,
+        confirmText: "Löschen",
+        cancelText: "Abbrechen",
+        onConfirm() {
+          deleteHandler().finally(() => close());
+        },
+        onCancel() {
+          close();
+        },
+      },
+    });
+    open();
   }
 
   rolesToString(user: User): string {

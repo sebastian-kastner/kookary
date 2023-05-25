@@ -1,40 +1,49 @@
 <template>
-  <div>
-    <div class="vue-dialog-content">
-      <div class="vue-dialog-content-title">
-        Zu Einkaufsliste hinzufügen
-      </div>
+  <VueFinalModal
+    class="vfm-modal"
+    content-class="vfm-modal-content"
+    overlay-transition="vfm-fade"
+    content-transition="vfm-fade"
+  >
+    <div class="d-flex justify-content-between">
+      <h4>Zu Einkaufsliste hinzufügen</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        @click="$emit('cancel')"
+      ></button>
+    </div>
 
-      <div class="container">
-        <div
-          v-for="shoppingItem in shoppingItems"
-          v-bind="shoppingItem"
-          :key="getIngredientId(shoppingItem)"
-        >
-          <shopping-list-item :shopping-item="shoppingItem" />
-        </div>
+    <div class="container pt-2">
+      <div
+        v-for="shoppingItem in shoppingItems"
+        v-bind="shoppingItem"
+        :key="getIngredientId(shoppingItem)"
+      >
+        <shopping-list-item :shopping-item="shoppingItem" />
       </div>
     </div>
 
-    <div class="vue-dialog-buttons">
+    <div class="d-flex justify-content-between pt-2">
       <button
         type="button"
         tabindex="0"
-        class="vue-dialog-button"
-        @click="doneHandler"
+        class="btn btn-outline-primary"
+        @click="$emit('cancel')"
       >
         Abbrechen
       </button>
       <button
         type="button"
         tabindex="0"
-        class="vue-dialog-button"
+        class="btn btn-outline-primary"
         @click="addToCart"
       >
         Hinzufügen
       </button>
     </div>
-  </div>
+  </VueFinalModal>
 </template>
 
 <script lang="ts">
@@ -47,16 +56,17 @@ import {
   getCategoryName,
 } from "../../utils/shoppingItemUtils";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
+import { VueFinalModal } from "vue-final-modal";
 
 @Component({
   components: {
     ShoppingListItem,
+    VueFinalModal,
   },
 })
 export default class AddToShoppingListModal extends Vue {
   @Prop({ required: true }) user!: User;
   @Prop({ required: true }) ingredients!: RecipeIngredient[];
-  @Prop({ required: true }) doneHandler!: () => void;
 
   client = new ShoppingListClient();
   shoppingItems: ShoppingItem[] = [];
@@ -94,7 +104,7 @@ export default class AddToShoppingListModal extends Vue {
     this.client
       .createShoppingItems(this.user.id, shoppingItemsToAdd)
       .finally(() => {
-        this.doneHandler();
+        this.$emit("done");
       });
   }
 
@@ -114,9 +124,3 @@ export default class AddToShoppingListModal extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.vue-dialog-button {
-  flex: 1 1 50%;
-}
-</style>

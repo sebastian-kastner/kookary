@@ -1,18 +1,8 @@
 <template>
-  <div
-    id="recipe-view"
-    class="container main-content"
-  >
-    <div
-      id="top-icons"
-      class="p-1 d-flex flex-row-reverse"
-    >
+  <div id="recipe-view" class="container main-content">
+    <div id="top-icons" class="p-1 d-flex flex-row-reverse">
       <div>
-        <button
-          v-if="isEditable"
-          class="rounded-button"
-          @click="deleteRecipe"
-        >
+        <button v-if="isEditable" class="rounded-button" @click="deleteRecipe">
           <Icon icon="trash" />
         </button>
       </div>
@@ -26,21 +16,14 @@
           }"
           custom
         >
-          <button
-            class="rounded-button"
-            @click="navigate"
-          >
+          <button class="rounded-button" @click="navigate">
             <Icon icon="pencil" />
           </button>
         </router-link>
       </div>
 
       <div>
-        <button
-          v-if="loggedInUserId"
-          class="rounded-button"
-          @click="addCookup"
-        >
+        <button v-if="loggedInUserId" class="rounded-button" @click="addCookup">
           <Icon icon="calendarWeek" />
         </button>
       </div>
@@ -53,32 +36,20 @@
           :class="{ active: isMarked }"
           @click="toggleMarked"
         >
-          <Icon
-            v-if="isMarked"
-            icon="bellFill"
-          />
-          <Icon
-            v-else
-            icon="bell"
-          />
+          <Icon v-if="isMarked" icon="bellFill" />
+          <Icon v-else icon="bell" />
         </button>
       </div>
     </div>
 
-    <div
-      v-if="recipeImgSrc"
-      class="recipe-image row"
-    >
+    <div v-if="recipeImgSrc" class="recipe-image row">
       <div>
-        <img :src="recipeImgSrc">
+        <img :src="recipeImgSrc" />
       </div>
     </div>
 
     <div id="recipe-description">
-      <div
-        v-if="recipe.tags.length > 0"
-        class="tags row"
-      >
+      <div v-if="recipe.tags.length > 0" class="tags row">
         <div
           v-for="item in recipe.tags"
           :key="item.uuid"
@@ -109,10 +80,7 @@
         </div>
       </div>
 
-      <div
-        v-if="showServingsForm"
-        class="row"
-      >
+      <div v-if="showServingsForm" class="row">
         <div class="form-group form-inline">
           Für
           <input
@@ -120,7 +88,7 @@
             type="number"
             class="form-control mx-sm-1 servings-input"
             @input="setQuanitityFactor"
-          >
+          />
           Personen
         </div>
       </div>
@@ -140,20 +108,13 @@
         <h4>ZUBEREITUNG</h4>
       </div>
 
-      <div
-        class="row"
-        v-html="description"
-      />
+      <div class="row" v-html="description" />
 
       <div class="row">
         <h4>QUELLE</h4>
       </div>
       <div class="row">
-        <a
-          v-if="sourceLink !== null"
-          :href="sourceLink"
-          target="_blank"
-        >
+        <a v-if="sourceLink !== null" :href="sourceLink" target="_blank">
           {{ recipe.source }}
         </a>
         <p v-else>
@@ -167,19 +128,19 @@
 <script lang="ts">
 import { Watch } from "vue-facing-decorator";
 import { Options, Vue } from "vue-class-component";
+import { useModal } from "vue-final-modal";
+import DialogModal from "../components/DialogModal.vue";
 import { Recipe, recipeFactory, Cookup, User } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
 import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
 import { userStore } from "../stores/rootStore";
-import { getScreenWidth } from "../utils/screenUtils";
 import { getErrorMessage } from "../utils/errors";
 import AddCookupView from "../components/user/AddCookupView.vue";
 import AddToShoppingListModal from "../components/user/AddToShoppingListModal.vue";
 import RecipeIngredientListItem from "../components/RecipeIngredientListItem.vue";
-import { Icon } from '@iconify/vue/dist/offline';
-
+import { Icon } from "@iconify/vue/dist/offline";
 
 @Options({
   components: { RecipeIngredientListItem, Icon },
@@ -317,11 +278,19 @@ export default class RecipeView extends Vue {
   }
 
   async addCookup(): Promise<Cookup | void> {
-    // this.$modal.show(
-    //   AddCookupView,
-    //   { recipe: this.recipe, cookupAddedCallback: () => this.$modal.hideAll() },
-    //   { height: "auto", width: getScreenWidth(400) }
-    // );
+    const { open, close } = useModal({
+      component: AddCookupView,
+      attrs: {
+        recipe: this.recipe,
+        onCookupAdded() {
+          close();
+        },
+        onCancel() {
+          close();
+        },
+      },
+    });
+    open();
   }
 
   async toggleMarked(): Promise<void> {
@@ -342,8 +311,8 @@ export default class RecipeView extends Vue {
           }
         })
         .catch((err) => {
-          const msg = getErrorMessage(err);
-          // this.$toast.open("Fehler Hinzufügen des Rezepts als Favorit: " + msg);
+          // const msg = getErrorMessage(err);
+          // this.$toast.open("Fehler beim Hinzufügen des Rezepts als Favorit: " + msg);
         });
     } else {
       this.userRecipeFavouritesClient
@@ -368,45 +337,52 @@ export default class RecipeView extends Vue {
   }
 
   deleteRecipe(): void {
-    // this.$modal.show('dialog', {
-    //   title: "Rezept löschen",
-    //   text: "Soll das Rezept " + this.recipe.name + " wirklich gelöscht werden?",
-    //   buttons: [
-    //     {
-    //       title: 'Abbrechen',
-    //       handler: () => {
-    //         this.$modal.hide('dialog')
-    //       }
-    //     },
-    //     {
-    //       title: 'Löschen',
-    //       handler: () => {
-    //         if (this.recipe.recipeId) {
-    //           this.recipesClient.deleteRecipe(this.recipe.recipeId)
-    //             .then(() => {
-    //               this.$router.push("/recipes");
-    //             }).catch((err) => {
-    //               const msg = getErrorMessage(err);
-    //               this.$toast.open("Fehler beim Löschen des Rezepts: " + msg);
-    //             });
-    //         }
-    //         this.$modal.hide('dialog');
-    //       }
-    //     }
-    //   ]
-    // });
+    const deleteHandler = () => {
+      if (this.recipe.recipeId) {
+        this.recipesClient
+          .deleteRecipe(this.recipe.recipeId)
+          .then(() => {
+            this.$router.push("/recipes");
+          })
+          .catch((err: unknown) => {
+            const msg = getErrorMessage(err);
+            // this.$toast.open("Fehler beim Löschen des Rezepts: " + msg);
+          });
+      }
+    };
+
+    const { open, close } = useModal({
+      component: DialogModal,
+      attrs: {
+        title: "Rezept löschen",
+        text: `Soll das Rezept ${this.recipe.name} wirklich gelöscht werden?`,
+        onConfirm() {
+          deleteHandler();
+          close();
+        },
+        onCancel() {
+          close();
+        },
+      },
+    });
+    open();
   }
 
   addIngredientsToShoppingList(): void {
-    // this.$modal.show(
-    //   AddToShoppingListModal,
-    //   {
-    //     user: this.loggedInUser,
-    //     ingredients: Array.from(this.recipe.ingredients),
-    //     doneHandler: () => this.$modal.hideAll(),
-    //   },
-    //   { height: "auto", width: getScreenWidth(350) }
-    // );
+    const { open, close } = useModal({
+      component: AddToShoppingListModal,
+      attrs: {
+        user: this.loggedInUser,
+        ingredients: Array.from(this.recipe.ingredients),
+        onDone() {
+          close();
+        },
+        onCancel() {
+          close();
+        },
+      },
+    });
+    open();
   }
 }
 </script>

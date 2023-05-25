@@ -1,44 +1,49 @@
 <template>
-  <div>
-    <div class="vue-dialog-content">
-      <div class="vue-dialog-content-title">
-        {{ label }}
-      </div>
-
-      <div class="container">
-        <vs-datepicker
-          id="cookupDate"
-          v-model="cookupDate"
-          placeholder="DD-MM-YYYY"
-          format="DD-MM-YYYY"
-        />
-        <div
-          v-if="error"
-          class="alert alert-error"
-          warning="alert"
-        />
-      </div>
+  <VueFinalModal
+    class="vfm-modal"
+    content-class="vfm-modal-content"
+    overlay-transition="vfm-fade"
+    content-transition="vfm-fade"
+  >
+    <div class="d-flex justify-content-between">
+      <h4>{{ label }}</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        @click="$emit('cancel')"
+      ></button>
     </div>
 
-    <div class="vue-dialog-buttons">
+    <div class="container">
+      <vs-datepicker
+        id="cookupDate"
+        v-model="cookupDate"
+        placeholder="DD-MM-YYYY"
+        format="DD-MM-YYYY"
+      />
+      <div v-if="error" class="alert alert-error" warning="alert" />
+    </div>
+
+    <div class="d-flex justify-content-between">
       <button
         type="button"
         tabindex="0"
-        class="vue-dialog-button"
-        @click="cookupAddedCallback"
+        class="btn btn-outline-primary"
+        @click="$emit('cancel')"
       >
         Abbrechen
       </button>
       <button
         type="button"
         tabindex="0"
-        class="vue-dialog-button"
+        class="btn btn-outline-primary"
         @click="addCookup"
       >
         Hinzufügen
       </button>
     </div>
-  </div>
+  </VueFinalModal>
 </template>
 
 <script lang="ts">
@@ -48,13 +53,13 @@ import { Cookup, Recipe } from "../../types";
 import VsDatepicker from "@vuesimple/vs-datepicker";
 import { userStore } from "../../stores/rootStore";
 import { CookupClient } from "../../clients/CookupClient";
+import { VueFinalModal } from "vue-final-modal";
 
 @Component({
-  components: { VsDatepicker },
+  components: { VsDatepicker, VueFinalModal },
 })
 export default class RecipeView extends Vue {
   @Prop({ required: true }) recipe!: Recipe;
-  @Prop({ required: true }) cookupAddedCallback!: () => void;
 
   cookupDate = new Date();
 
@@ -80,7 +85,8 @@ export default class RecipeView extends Vue {
     this.error = null;
 
     if (!userId || !this.recipe || !recipeId) {
-      this.cookupAddedCallback();
+      // FIXME: this is weird error handling..
+      this.$emit("cookupAdded");
       return;
     }
 
@@ -88,20 +94,16 @@ export default class RecipeView extends Vue {
       this.cookupClient
         .createCookup(userId, recipeId, this.cookupDate)
         .then((cookup) => {
-          this.cookupAddedCallback();
+          this.$emit("cookupAdded");
           resolve(cookup);
         })
         .catch((err) => {
           this.error = err.toString();
           reject(err);
+          // const msg = getErrorMessage(err);
+          // this.$toast.open("Fehler Hinzufügen des Cookups: " + msg);
         });
     });
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.vue-dialog-button {
-  flex: 1 1 50%;
-}
-</style>

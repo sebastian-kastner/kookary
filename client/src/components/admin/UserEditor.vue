@@ -1,9 +1,22 @@
 <template>
-  <div class="container">
-    <h3>Benutzer {{ user.displayName }} bearbeiten</h3>
+  <VueFinalModal
+    class="vfm-modal"
+    content-class="vfm-modal-content"
+    overlay-transition="vfm-fade"
+    content-transition="vfm-fade"
+  >
+    <div class="d-flex justify-content-between">
+      <h4 class="pe-5">Benutzer bearbeiten</h4>
+      <button
+        type="button"
+        class="btn-close"
+        aria-label="Close"
+        @click="$emit('cancel')"
+      ></button>
+    </div>
     <span>{{ user.email }}</span>
     <div class="container">
-      <hr>
+      <hr />
       <div class="row">
         <div class="col">
           <h4>Rollen</h4>
@@ -18,11 +31,8 @@
               value=""
               :disabled="isLoggedInUser()"
               @change="adminStateChanged"
-            >
-            <label
-              class="form-check-label"
-              for="ROLE_ADMIN"
-            > Admin </label>
+            />
+            <label class="form-check-label" for="ROLE_ADMIN"> Admin </label>
           </div>
           <div class="form-check">
             <input
@@ -32,16 +42,13 @@
               value=""
               checked
               disabled
-            >
-            <label
-              class="form-check-label"
-              for="ROLE_USER"
-            > Benutzer </label>
+            />
+            <label class="form-check-label" for="ROLE_USER"> Benutzer </label>
           </div>
         </div>
       </div>
 
-      <hr>
+      <hr />
 
       <h4>Neues Passwort</h4>
       <div class="form-group">
@@ -54,7 +61,7 @@
           placeholder="Neues Passwort"
           :disabled="isLoggedInUser()"
           @keyup="pwCompare"
-        >
+        />
       </div>
 
       <div class="form-group">
@@ -67,14 +74,10 @@
           placeholder="Passwort Wiederholung"
           :disabled="isLoggedInUser()"
           @keyup="pwCompare"
-        >
+        />
       </div>
 
-      <div
-        v-if="warningTxt != ''"
-        class="alert alert-warning"
-        warning="alert"
-      >
+      <div v-if="warningTxt != ''" class="alert alert-warning" warning="alert">
         {{ warningTxt }}
       </div>
 
@@ -87,7 +90,7 @@
         Passwort Ändern
       </button>
     </div>
-  </div>
+  </VueFinalModal>
 </template>
 
 <script lang="ts">
@@ -96,8 +99,9 @@ import { User } from "../../types";
 import { userStore } from "../../stores/rootStore";
 import { UserClient } from "../../clients/UserClient";
 import { cloneDeep } from "lodash";
+import { VueFinalModal } from "vue-final-modal";
 
-@Component({})
+@Component({ components: { VueFinalModal } })
 export default class UserEditor extends Vue {
   @Prop({ required: true }) user!: User;
 
@@ -133,7 +137,6 @@ export default class UserEditor extends Vue {
       roles.delete("ROLE_ADMIN");
     }
 
-    // TBD: error handling..
     this.userClient
       .updateUser({
         id: this.user.id,
@@ -141,6 +144,12 @@ export default class UserEditor extends Vue {
       })
       .then(() => {
         this.user.roles = roles;
+      })
+      .catch((e) => {
+        // const errorMessage = getErrorMessage(error);
+        // this.$toast.open(
+        //   `Fehler beim Anlegen des Benutzers: ${errorMessage}`
+        // );
       });
   }
 
@@ -161,7 +170,7 @@ export default class UserEditor extends Vue {
       throw new Error("Keine Benutzer ID gesetzt");
     }
     this.userClient.changePassword(this.user.id, this.newPassword).then(() => {
-      // this.$modal.hideAll();
+      this.$emit("userEdited");
     });
   }
 }

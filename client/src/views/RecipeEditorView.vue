@@ -72,11 +72,13 @@
       />
     </div>
 
-    <save-button
-      button-text="Speichern"
-      :is-loading="isSaving"
-      @onSave="doSubmit"
-    />
+    <div class="d-flex justify-content-end">
+      <save-button
+        button-text="Speichern"
+        :is-loading="isSaving"
+        @onSave="doSubmit"
+      />
+    </div>
   </div>
 </template>
 
@@ -84,6 +86,7 @@
 import { Options, Vue } from "vue-class-component";
 import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 import { v4 as uuid } from "uuid";
+import { useModal } from "vue-final-modal";
 import { Ingredient, Recipe, Tag, recipeFactory, MediaObject } from "../types";
 import { ingredientStore, tagStore } from "../stores/rootStore";
 import { RecipesClient } from "../clients/RecipesClient";
@@ -91,7 +94,7 @@ import RecipeIngredientsEditor from "../components/RecipeIngredientsEditor.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 import InlineItemList from "../components/InlineItemList.vue";
 import SaveButton from "../components/SaveButton.vue";
-import ConfirmLeaveModal from "../components/user/ConfirmLeaveModal.vue";
+import DialogModal from "../components/DialogModal.vue";
 import { getErrorMessage } from "../utils/errors";
 import { getScreenWidth } from "../utils/screenUtils";
 
@@ -116,7 +119,7 @@ import { getScreenWidth } from "../utils/screenUtils";
       deep: true,
     },
   },
-  // beforeRouteLeave: RecipeEditorView.navGuard,
+  beforeRouteLeave: RecipeEditorView.navGuard,
 })
 export default class RecipeEditorView extends Vue {
   recipeId?: string;
@@ -140,33 +143,31 @@ export default class RecipeEditorView extends Vue {
     _from: RouteLocationNormalized,
     next: NavigationGuardNext
   ): void {
-    if (this instanceof RecipeEditorView) {
-      // if (this.isDirty) {
-      // const modalHandler = this.$modal;
-      // const submitHandler = this.doSubmit;
-      // modalHandler.show(
-      //   ConfirmLeaveModal,
-      //   {
-      //     saveHandler: () => {
-      //       submitHandler().finally(() => {
-      //         modalHandler.hideAll()
-      //       })
-      //     },
-      //     discardHandler: () => {
-      //       modalHandler.hideAll();
-      //       next();
-      //     },
-      //     isSaving: this.isSaving
-      //   },
-      //   { height: "auto", width: getScreenWidth(400) }
-      // );
-      // } else {
+    const editor = this as unknown as RecipeEditorView;
+    if (editor.isDirty) {
+      const submitHandler = editor.doSubmit;
+      const { open, close } = useModal({
+        component: DialogModal,
+        attrs: {
+          title: "Ungespeicherte Änderungen",
+          text: "Es gibt ungespeicherte Änderungen",
+          confirmText: "Bestätigen",
+          cancelText: "Verwerfen",
+          isSaving: editor.isSaving,
+          onConfirm() {
+            submitHandler().finally(() => {
+              close();
+            });
+          },
+          onCancel() {
+            close();
+            next();
+          },
+        },
+      });
+      open();
+    } else {
       next();
-      // }
-      // } else {
-      // this.$toast.open(
-      //   `Unbekannter Fehler beim Versuch den Rezept Editor zu verlassen.`
-      // );
     }
   }
 
@@ -191,7 +192,6 @@ export default class RecipeEditorView extends Vue {
     // ignore first change on component mount
     if (this.initialized) {
       this.isDirty = true;
-      console.log("setting things to dirty");
     } else {
       this.initialized = true;
     }

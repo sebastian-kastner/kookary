@@ -10,7 +10,7 @@
             class="form-control"
             type="text"
             placeholder="Menge"
-          >
+          />
         </div>
         <div class="col-8">
           <typeahead-input
@@ -27,10 +27,7 @@
     </div>
 
     <div class="container">
-      <div
-        v-for="entry in itemsByCategory"
-        :key="entry[0]"
-      >
+      <div v-for="entry in itemsByCategory" :key="entry[0]">
         {{ getCategoryName(entry[0]) }}
         <div
           v-for="shoppingItem in entry[1]"
@@ -45,15 +42,12 @@
         </div>
       </div>
 
-      <div class="row justify-content-end">
+      <div class="d-flex justify-content-end">
         <save-button
           button-text="Speichern"
           :is-loading="isSaving"
           @onSave="applyChanges"
         />
-        <!-- <button type="button" class="btn rounded-button apply-button" v-on:click="applyChanges">
-          Fertig
-        </button> -->
       </div>
     </div>
   </div>

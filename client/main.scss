@@ -51,13 +51,6 @@ $content-padding: 7px;
   }
 }
 
-.vm--modal {
-  border: 1px solid gray;
-  padding-top: $content-padding;
-  max-height: 90%;
-  overflow-y: auto !important;
-}
-
 .row ul, .row ol {
   margin-left: 30px;
 }
@@ -89,3 +82,28 @@ $content-padding: 7px;
 label {
   margin-bottom: 0.5rem;
 }
+
+// modals
+
+.vfm-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vfm-modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+
+// .modal__content {
+//   flex-grow: 1;
+//   overflow-y: auto;
+// }

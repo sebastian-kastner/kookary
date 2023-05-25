@@ -1,36 +1,14 @@
 <template>
-  <div
-    id="user-mgt"
-    class="container main-content padding-top"
-  >
+  <div id="user-mgt" class="container main-content padding-top">
     <h3>Zutaten</h3>
     <table class="table">
       <thead>
         <tr>
-          <th
-            scope="col"
-            class="d-none d-ml-table-cell"
-          >
-            Author
-          </th>
-          <th scope="col">
-            Name
-          </th>
-          <th scope="col">
-            Category
-          </th>
-          <th
-            scope="col"
-            class="d-none d-sm-table-cell"
-          >
-            Saison von
-          </th>
-          <th
-            scope="col"
-            class="d-none d-sm-table-cell"
-          >
-            Saison bis
-          </th>
+          <th scope="col" class="d-none d-ml-table-cell">Author</th>
+          <th scope="col">Name</th>
+          <th scope="col">Category</th>
+          <th scope="col" class="d-none d-sm-table-cell">Saison von</th>
+          <th scope="col" class="d-none d-sm-table-cell">Saison bis</th>
           <th scope="col" />
         </tr>
       </thead>
@@ -43,14 +21,8 @@
               class="form-control"
               @change="applyFilter"
             >
-              <option value="-1">
-                -
-              </option>
-              <option
-                v-for="user in users"
-                :key="user.id"
-                :value="user.id"
-              >
+              <option value="-1">-</option>
+              <option v-for="user in users" :key="user.id" :value="user.id">
                 {{ user.displayName }}
               </option>
             </select>
@@ -62,7 +34,7 @@
               class="form-control"
               @focusout="applyFilter"
               @keydown.enter="applyFilter"
-            >
+            />
           </td>
           <td>
             <select
@@ -71,12 +43,8 @@
               class="form-control"
               @change="applyFilter"
             >
-              <option value="-1">
-                -
-              </option>
-              <option value="0">
-                Unkategorisiert
-              </option>
+              <option value="-1">-</option>
+              <option value="0">Unkategorisiert</option>
               <option
                 v-for="category in categories"
                 :key="category.ingredientCategoryId"
@@ -86,25 +54,16 @@
               </option>
             </select>
           </td>
-          <td
-            colspan="2"
-            class="d-none d-sm-table-cell"
-          >
+          <td colspan="2" class="d-none d-sm-table-cell">
             <select
               v-model="filter.seasonal"
               name="seasonal"
               class="form-control"
               @change="applyFilter"
             >
-              <option value="">
-                -
-              </option>
-              <option value="seasonal">
-                Saisonal
-              </option>
-              <option value="nonseasonal">
-                Nicht Saisonal
-              </option>
+              <option value="">-</option>
+              <option value="seasonal">Saisonal</option>
+              <option value="nonseasonal">Nicht Saisonal</option>
             </select>
           </td>
           <td />
@@ -131,6 +90,8 @@ import {
 } from "../../stores/rootStore";
 import IngredientEditor from "../../components/admin/IngredientEditor.vue";
 import { getErrorMessage } from "../../utils/errors";
+import { useModal } from "vue-final-modal";
+import DialogModal from "../../components/DialogModal.vue";
 
 type IngredientFilter = {
   ingredientName: string | null;
@@ -215,35 +176,41 @@ export default class IngredientMgmtView extends Vue {
   }
 
   removeIngredient(ingredient: Ingredient): void {
-    // this.$modal.show('dialog', {
-    //   title: "Zutat löschen",
-    //   text: "Soll die Zutat " + ingredient.name + " wirklich gelöscht werden?",
-    //   buttons: [
-    //     {
-    //       title: 'Abbrechen',
-    //       handler: () => {
-    //         this.$modal.hide('dialog')
-    //       }
-    //     },
-    //     {
-    //       title: 'Löschen',
-    //       handler: () => {
-    //         if (ingredient.ingredientId) {
-    //           ingredientStore.removeIngredient(ingredient.ingredientId)
-    //             .then(() => {
-    //               // remove ingredient from view
-    //               this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
-    //             })
-    //             .catch((err) => {
-    //               const errorMessage = getErrorMessage(err);
-    //               this.$toast.open(`Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`);
-    //             })
-    //         }
-    //         this.$modal.hide('dialog');
-    //       }
-    //     }
-    //   ]
-    // });
+    const deleteHandler = () => {
+      return new Promise<void>((resolve, reject) => {
+        if (ingredient.ingredientId) {
+          ingredientStore
+            .removeIngredient(ingredient.ingredientId)
+            .then(() => {
+              // remove ingredient from view
+              this.ingredients.splice(this.ingredients.indexOf(ingredient), 1);
+              resolve();
+            })
+            .catch((err) => {
+              // const errorMessage = getErrorMessage(err);
+              // this.$toast.open(`Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`);
+              reject();
+            });
+        }
+      });
+    };
+
+    const { open, close } = useModal({
+      component: DialogModal,
+      attrs: {
+        title: `Zutat löschen`,
+        text: `Soll die Zutat ${ingredient.name} wirklich gelöscht werden?`,
+        confirmText: "Löschen",
+        cancelText: "Abbrechen",
+        onConfirm() {
+          deleteHandler().finally(() => close());
+        },
+        onCancel() {
+          close();
+        },
+      },
+    });
+    open();
   }
 
   private appliesToFilter(
