@@ -61,7 +61,8 @@ export default class RecipeCard extends Vue {
   margin: 20px;
 
   img {
-    max-width: $widthOnXs;
+    // max-width: $widthOnXs;
+    max-width: 100%;
     max-height: 113px;
   }
 
@@ -81,7 +82,7 @@ export default class RecipeCard extends Vue {
     margin: 20px;
 
     img {
-      max-width: $widthOnSmall;
+      // max-width: $widthOnSmall;
       max-height: 135px;
     }
 
@@ -98,7 +99,7 @@ export default class RecipeCard extends Vue {
     margin: 20px;
 
     img {
-      max-width: $widthOnMedium;
+      // max-width: $widthOnMedium;
       max-height: 190px;
     }
 
@@ -115,7 +116,7 @@ export default class RecipeCard extends Vue {
     margin: 20px;
 
     img {
-      max-width: $widthOnLg;
+      // max-width: $widthOnLg;
       max-height: 190px;
     }
 
