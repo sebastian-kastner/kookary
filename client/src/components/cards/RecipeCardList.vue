@@ -58,7 +58,7 @@ export default class RecipeCardList extends Vue {
 
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
-@import "../../../node_modules/bootstrap/scss/bootstrap-grid.scss";
+@import "../../styles/breakpoints.scss";
 
 .recipe-card-header {
   font-size: 1.2rem;

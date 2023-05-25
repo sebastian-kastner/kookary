@@ -389,7 +389,7 @@ export default class RecipeView extends Vue {
 
 <style lang="scss" scoped>
 @import "../styles/variables.scss";
-@import "../../node_modules/bootstrap/scss/bootstrap-grid.scss"; // import breakpoint mixin from grid definition
+@import "../styles/breakpoints.scss";
 
 #recipe-view {
   @include media-breakpoint-up(sm) {
