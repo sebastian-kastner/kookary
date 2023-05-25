@@ -258,12 +258,6 @@ export default class ShoppingList extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
-
-.main-content {
-  padding: $content-padding;
-}
-
 .apply-button {
   margin-top: 15px;
 }
