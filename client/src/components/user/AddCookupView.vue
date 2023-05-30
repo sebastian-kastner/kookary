@@ -47,18 +47,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Component, Prop, mixins } from "vue-facing-decorator";
 import { Cookup, Recipe } from "../../types";
 
 import VsDatepicker from "@vuesimple/vs-datepicker";
+import ToastMixin from "../../mixins/ToastMixin.vue";
 import { userStore } from "../../stores/rootStore";
 import { CookupClient } from "../../clients/CookupClient";
 import { VueFinalModal } from "vue-final-modal";
+import { getErrorMessage } from "../../utils/errors";
 
 @Component({
   components: { VsDatepicker, VueFinalModal },
 })
-export default class RecipeView extends Vue {
+export default class RecipeView extends mixins(ToastMixin) {
   @Prop({ required: true }) recipe!: Recipe;
 
   cookupDate = new Date();
@@ -100,8 +102,8 @@ export default class RecipeView extends Vue {
         .catch((err) => {
           this.error = err.toString();
           reject(err);
-          // const msg = getErrorMessage(err);
-          // this.$toast.open("Fehler Hinzufügen des Cookups: " + msg);
+          const msg = getErrorMessage(err);
+          this.showToast.error("Fehler Hinzufügen des Cookups: " + msg);
         });
     });
   }

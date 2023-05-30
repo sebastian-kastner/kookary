@@ -54,8 +54,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Component, Prop, mixins } from "vue-facing-decorator";
 import { RecipeIngredient, Ingredient } from "../types";
+import ToastMixin from "../mixins/ToastMixin.vue";
 import TypeaheadInput from "./TypeaheadInput.vue";
 import { ingredientStore } from "../stores/rootStore";
 import { getErrorMessage } from "../utils/errors";
@@ -64,7 +65,7 @@ import { Icon } from "@iconify/vue/dist/offline";
 @Component({
   components: { TypeaheadInput, Icon },
 })
-export default class RecipeIngredientEditor extends Vue {
+export default class RecipeIngredientEditor extends mixins(ToastMixin) {
   @Prop({ required: true }) ingredient!: RecipeIngredient;
   @Prop({ required: true }) existingIngredients!: Ingredient[];
   @Prop({ required: true }) handleClass!: string;
@@ -107,9 +108,9 @@ export default class RecipeIngredientEditor extends Vue {
       .catch((error) => {
         console.error(error);
         const errorMessage = getErrorMessage(error);
-        // this.$toast.open(
-        //   `Fehler beim Anlegen der Zutat ${ingredientName}: ${errorMessage}`
-        // );
+        this.showToast.error(
+          `Fehler beim Anlegen der Zutat ${ingredientName}: ${errorMessage}`
+        );
       });
   }
 }

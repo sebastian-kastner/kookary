@@ -9,10 +9,7 @@
     >
       {{ getIngredientName(ingredient) }}
     </router-link>
-    <Icon
-      v-if="isSeasonal(ingredient.ingredient)"
-      icon="calendarWeek"
-    />
+    <Icon v-if="isSeasonal(ingredient.ingredient)" icon="calendarWeek" />
   </li>
 </template>
 
@@ -20,7 +17,7 @@
 import { round } from "lodash";
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 import { Ingredient, RecipeIngredient } from "../types";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 import RecipeCard from "./cards/RecipeCard.vue";
 
 const currentMonth = new Date().getMonth() + 1;

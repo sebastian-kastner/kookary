@@ -49,17 +49,22 @@
 
 <script lang="ts">
 import { User } from "../../types";
-import { Options, Vue } from "vue-class-component";
+import { Component, mixins } from "vue-facing-decorator";
 import { UserClient } from "../../clients/UserClient";
+import ToastMixin from "../../mixins/ToastMixin.vue";
 import { useModal } from "vue-final-modal";
 import UserEditor from "../../components/admin/UserEditor.vue";
 import AddUser from "../../components/admin/AddUser.vue";
 import DialogModal from "../../components/DialogModal.vue";
-import { getScreenWidth } from "../../utils/screenUtils";
+import { getErrorMessage } from "../../utils/errors";
 import { Icon } from "@iconify/vue/dist/offline";
 
-@Options({ components: { Icon } })
-export default class UserMgmtView extends Vue {
+@Component({
+  components: {
+    Icon,
+  },
+})
+export default class UserMgmtView extends mixins(ToastMixin) {
   private userClient = new UserClient();
 
   users: User[] = [];
@@ -131,8 +136,10 @@ export default class UserMgmtView extends Vue {
           })
           .catch((e) => {
             reject(e);
-            // const errorMessage = getErrorMessage(err);
-            // this.$toast.open(`Fehler beim Löschen von Benutzer ${user.displayName}: ${errorMessage}`);
+            const errorMessage = getErrorMessage(e);
+            this.showToast.error(
+              `Fehler beim Löschen von Benutzer ${user.displayName}: ${errorMessage}`
+            );
           });
       });
     };

@@ -78,12 +78,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-facing-decorator";
+import { Component, mixins } from "vue-facing-decorator";
 import { UserClient } from "../../clients/UserClient";
 import { VueFinalModal } from "vue-final-modal";
+import { getErrorMessage } from "../../utils/errors";
+import ToastMixin from "../../mixins/ToastMixin.vue";
 
 @Component({ components: { VueFinalModal } })
-export default class UserEditor extends Vue {
+export default class UserEditor extends mixins(ToastMixin) {
   private userClient = new UserClient();
 
   email = "";
@@ -125,14 +127,11 @@ export default class UserEditor extends Vue {
     this.userClient
       .createUser(this.email, this.displayname, this.password)
       .then((user) => {
-        console.log(user);
         this.$emit("userAdded", user);
       })
       .catch((e) => {
-        // const errorMessage = getErrorMessage(error);
-        // this.$toast.open(
-        //   `Fehler beim Anlegen des Benutzers: ${errorMessage}`
-        // );
+        const msg = getErrorMessage(e);
+        this.showToast.error(`Fehler beim Anlegen des Benutzers: ${msg}`);
       });
   }
 }

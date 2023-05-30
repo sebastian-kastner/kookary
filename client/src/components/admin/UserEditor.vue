@@ -94,15 +94,21 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Component, Prop, mixins } from "vue-facing-decorator";
 import { User } from "../../types";
 import { userStore } from "../../stores/rootStore";
 import { UserClient } from "../../clients/UserClient";
 import { cloneDeep } from "lodash";
 import { VueFinalModal } from "vue-final-modal";
+import { getErrorMessage } from "../../utils/errors";
+import ToastMixin from "../../mixins/ToastMixin.vue";
 
-@Component({ components: { VueFinalModal } })
-export default class UserEditor extends Vue {
+@Component({
+  components: {
+    VueFinalModal,
+  },
+})
+export default class UserEditor extends mixins(ToastMixin) {
   @Prop({ required: true }) user!: User;
 
   private userClient = new UserClient();
@@ -146,10 +152,8 @@ export default class UserEditor extends Vue {
         this.user.roles = roles;
       })
       .catch((e) => {
-        // const errorMessage = getErrorMessage(error);
-        // this.$toast.open(
-        //   `Fehler beim Anlegen des Benutzers: ${errorMessage}`
-        // );
+        const errorMessage = getErrorMessage(e);
+        this.showToast.error(`Fehler beim Ändern der Rollen: ${errorMessage}`);
       });
   }
 

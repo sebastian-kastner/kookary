@@ -82,7 +82,8 @@
 
 <script lang="ts">
 import { Ingredient, User, IngredientCategory } from "../../types";
-import { Options, Vue } from "vue-class-component";
+import { Component, mixins } from "vue-facing-decorator";
+import ToastMixin from "../../mixins/ToastMixin.vue";
 import {
   ingredientStore,
   userStore,
@@ -100,12 +101,12 @@ type IngredientFilter = {
   seasonal: string;
 };
 
-@Options({
+@Component({
   components: {
     IngredientEditor,
   },
 })
-export default class IngredientMgmtView extends Vue {
+export default class IngredientMgmtView extends mixins(ToastMixin) {
   ingredients: Ingredient[] = [];
 
   filter: IngredientFilter = {
@@ -187,8 +188,10 @@ export default class IngredientMgmtView extends Vue {
               resolve();
             })
             .catch((err) => {
-              // const errorMessage = getErrorMessage(err);
-              // this.$toast.open(`Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`);
+              const errorMessage = getErrorMessage(err);
+              this.showToast.error(
+                `Fehler beim Löschen von ${ingredient.name}: ${errorMessage}`
+              );
               reject();
             });
         }

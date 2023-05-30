@@ -96,7 +96,7 @@ import InlineItemList from "../components/InlineItemList.vue";
 import SaveButton from "../components/SaveButton.vue";
 import DialogModal from "../components/DialogModal.vue";
 import { getErrorMessage } from "../utils/errors";
-import { getScreenWidth } from "../utils/screenUtils";
+import { useToast } from "vue-toast-notification";
 
 @Options({
   components: {
@@ -137,6 +137,12 @@ export default class RecipeEditorView extends Vue {
   initialized = false;
 
   ingredientsInitialized = false;
+
+  // FIXME: this component is using useToast directly instead of
+  // the ToastMixin. To use the ToastMixin, migrating the watchers
+  // and the beforeRouteLeave configuration to vue-facing-decorators
+  // is required
+  showToast = useToast();
 
   static navGuard(
     _to: RouteLocationNormalized,
@@ -251,9 +257,9 @@ export default class RecipeEditorView extends Vue {
       })
       .catch((error) => {
         const errorMessage = getErrorMessage(error);
-        // this.$toast.open(
-        //   `Fehler beim Anlegen des Tags ${tagName}: ${errorMessage}`
-        // );
+        this.showToast.error(
+          `Fehler beim Anlegen des Tags ${tagName}: ${errorMessage}`
+        );
       });
   }
 
@@ -290,7 +296,7 @@ export default class RecipeEditorView extends Vue {
     }
 
     if (!this.hasValidName) {
-      // this.$toast.open("Rezeptname muss angegeben werden.");
+      this.showToast.error("Rezeptname muss angegeben werden.");
       this.doValidate = true;
     } else {
       this.isSaving = true;
@@ -309,7 +315,9 @@ export default class RecipeEditorView extends Vue {
             console.error(err);
             const errorDetails = getErrorMessage(err);
             reject();
-            // this.$toast.open("Fehler beim Speichern: <br/> " + errorDetails);
+            this.showToast.error(
+              "Fehler beim Speichern: <br/> " + errorDetails
+            );
           });
       });
     }

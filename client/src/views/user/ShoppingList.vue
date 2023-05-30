@@ -55,11 +55,12 @@
 
 <script lang="ts">
 import { Ingredient, ShoppingItem, User } from "../../types";
-import { Options, Vue } from "vue-class-component";
+import { Component, mixins } from "vue-facing-decorator";
 import { ingredientStore, userStore } from "../../stores/rootStore";
 import { ShoppingListClient } from "../../clients/ShoppingItemClient";
 import ShoppingListItem from "../../components/user/ShoppingListItem.vue";
 import TypeaheadInput from "../../components/TypeaheadInput.vue";
+import ToastMixin from "../../mixins/ToastMixin.vue";
 import {
   getShoppingItemsByCategory,
   getCategoryName,
@@ -72,14 +73,14 @@ type AmountAndUnit = {
   unit?: string;
 };
 
-@Options({
+@Component({
   components: {
     ShoppingListItem,
     TypeaheadInput,
     SaveButton,
   },
 })
-export default class ShoppingList extends Vue {
+export default class ShoppingList extends mixins(ToastMixin) {
   shoppingListClient = new ShoppingListClient();
 
   shoppingItems: ShoppingItem[] = [];
@@ -217,7 +218,7 @@ export default class ShoppingList extends Vue {
         this.isSaving = false;
         // re-synchronize items with database in case of error
         const errorMessage = getErrorMessage(err);
-        // this.$toast.open(`Fehler beim Löschen der Items: ${errorMessage}`);
+        this.showToast.error(`Fehler beim Löschen der Items: ${errorMessage}`);
         this.readShoppingItems();
       });
   }

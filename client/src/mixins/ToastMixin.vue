@@ -4,6 +4,6 @@ import { useToast } from "vue-toast-notification";
 
 @ComponentBase
 export default class ToastMixin extends Vue {
-  $toast = useToast();
+  showToast = useToast();
 }
 </script>

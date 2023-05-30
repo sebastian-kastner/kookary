@@ -108,6 +108,7 @@
         <h4>ZUBEREITUNG</h4>
       </div>
 
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="row" v-html="description" />
 
       <div class="row">
@@ -126,10 +127,10 @@
 </template>
 
 <script lang="ts">
-import { Watch } from "vue-facing-decorator";
-import { Options, Vue } from "vue-class-component";
+import { Watch, Component, mixins } from "vue-facing-decorator";
 import { useModal } from "vue-final-modal";
 import DialogModal from "../components/DialogModal.vue";
+import ToastMixin from "../mixins/ToastMixin.vue";
 import { Recipe, recipeFactory, Cookup, User } from "../types";
 import { RecipesClient } from "../clients/RecipesClient";
 import { UserRecipeFavouritesClient } from "../clients/UserRecipeFavouritesClient";
@@ -142,10 +143,13 @@ import AddToShoppingListModal from "../components/user/AddToShoppingListModal.vu
 import RecipeIngredientListItem from "../components/RecipeIngredientListItem.vue";
 import { Icon } from "@iconify/vue/dist/offline";
 
-@Options({
-  components: { RecipeIngredientListItem, Icon },
+@Component({
+  components: {
+    RecipeIngredientListItem,
+    Icon,
+  },
 })
-export default class RecipeView extends Vue {
+export default class RecipeView extends mixins(ToastMixin) {
   recipeId?: string;
   recipe: Recipe = recipeFactory();
 
@@ -188,12 +192,12 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          // this.$toast.open("Fehler beim Lesen des Rezepts: " + msg);
+          this.showToast.error("Fehler beim Lesen des Rezepts: " + msg);
         });
     } else {
-      // this.$toast.open(
-      //   "Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde"
-      // );
+      this.showToast.error(
+        "Es kann kein Rezept angezeigt werden da keine Rezept ID übergeben wurde"
+      );
     }
   }
 
@@ -213,7 +217,9 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          // this.$toast.open("Fehler beim Auslesen des Favoriten Status: " + msg);
+          this.showToast.error(
+            "Fehler beim Auslesen des Favoriten Status: " + msg
+          );
         });
     } else {
       this.favouriteId = null;
@@ -311,8 +317,10 @@ export default class RecipeView extends Vue {
           }
         })
         .catch((err) => {
-          // const msg = getErrorMessage(err);
-          // this.$toast.open("Fehler beim Hinzufügen des Rezepts als Favorit: " + msg);
+          const msg = getErrorMessage(err);
+          this.showToast.error(
+            "Fehler beim Hinzufügen des Rezepts als Favorit: " + msg
+          );
         });
     } else {
       this.userRecipeFavouritesClient
@@ -323,7 +331,9 @@ export default class RecipeView extends Vue {
         })
         .catch((err) => {
           const msg = getErrorMessage(err);
-          // this.$toast.open("Fehler beim Löschen des Favoriten Status: " + msg);
+          this.showToast.error(
+            "Fehler beim Löschen des Favoriten Status: " + msg
+          );
         });
     }
   }
@@ -346,7 +356,7 @@ export default class RecipeView extends Vue {
           })
           .catch((err: unknown) => {
             const msg = getErrorMessage(err);
-            // this.$toast.open("Fehler beim Löschen des Rezepts: " + msg);
+            this.showToast.error("Fehler beim Löschen des Rezepts: " + msg);
           });
       }
     };
