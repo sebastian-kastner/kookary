@@ -1,6 +1,6 @@
 <template>
   <div id="recipe-view" class="container main-content">
-    <div id="top-icons" class="p-1 d-flex flex-row-reverse">
+    <div id="top-icons" class="p-1 pt-2 d-flex flex-row-reverse">
       <div>
         <button v-if="isEditable" class="rounded-button" @click="deleteRecipe">
           <Icon icon="trash" />

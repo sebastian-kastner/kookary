@@ -1,9 +1,6 @@
 <template>
-  <div class="row shopping-list-item">
-    <div
-      class="col-auto mr-auto shopping-list-item-main item-name"
-      @click="toggle"
-    >
+  <div class="d-flex justify-content-between shopping-list-item">
+    <div class="shopping-list-item-main item-name ps-3" @click="toggle">
       <Icon v-if="isChecked" icon="checkCircle" @click="toggle" />
       <Icon v-else icon="circle" @click="toggle" />
       <span
@@ -14,7 +11,7 @@
       </span>
     </div>
 
-    <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">
+    <div v-if="removeItemHandler !== null" class="pe-3" @click="removeItem">
       <Icon icon="trash" />
     </div>
   </div>

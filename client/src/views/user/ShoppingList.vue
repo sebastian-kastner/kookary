@@ -1,10 +1,10 @@
 <template>
-  <div class="main-content">
+  <div class="main-content p-2">
     <h2>Einkaufsliste</h2>
 
-    <div class="form-group">
-      <div class="form-row justify-content-center">
-        <div class="col-4">
+    <div>
+      <div class="d-flex justify-content-center">
+        <div class="col-4 pe-2">
           <input
             v-model="amountAndUnit"
             class="form-control"
@@ -26,8 +26,8 @@
       </div>
     </div>
 
-    <div class="container">
-      <div v-for="entry in itemsByCategory" :key="entry[0]">
+    <div class="pt-2">
+      <div v-for="entry in itemsByCategory" :key="entry[0]" class="pt-2">
         {{ getCategoryName(entry[0]) }}
         <div
           v-for="shoppingItem in entry[1]"
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="d-flex justify-content-end">
+      <div class="d-flex justify-content-end pt-3">
         <save-button
           button-text="Speichern"
           :is-loading="isSaving"
