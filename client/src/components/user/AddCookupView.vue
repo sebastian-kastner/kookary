@@ -6,7 +6,7 @@
     content-transition="vfm-fade"
   >
     <div class="d-flex justify-content-between">
-      <h4>{{ label }}</h4>
+      <h4 class="ps-2 pe-2">{{ label }}</h4>
       <button
         type="button"
         class="btn-close"
@@ -15,10 +15,11 @@
       ></button>
     </div>
 
-    <div class="container">
-      <vs-datepicker
+    <div class="d-flex justify-content-center p-4">
+      <Datepicker
         id="cookupDate"
         v-model="cookupDate"
+        class="form-control"
         placeholder="DD-MM-YYYY"
         format="DD-MM-YYYY"
       />
@@ -40,7 +41,7 @@
         class="btn btn-outline-primary"
         @click="addCookup"
       >
-        Hinzufügen
+        Bestätigen
       </button>
     </div>
   </VueFinalModal>
@@ -50,7 +51,7 @@
 import { Component, Prop, mixins } from "vue-facing-decorator";
 import { Cookup, Recipe } from "../../types";
 
-import VsDatepicker from "@vuesimple/vs-datepicker";
+import Datepicker from "vue3-datepicker";
 import ToastMixin from "../../mixins/ToastMixin.vue";
 import { userStore } from "../../stores/rootStore";
 import { CookupClient } from "../../clients/CookupClient";
@@ -58,7 +59,7 @@ import { VueFinalModal } from "vue-final-modal";
 import { getErrorMessage } from "../../utils/errors";
 
 @Component({
-  components: { VsDatepicker, VueFinalModal },
+  components: { Datepicker, VueFinalModal },
 })
 export default class RecipeView extends mixins(ToastMixin) {
   @Prop({ required: true }) recipe!: Recipe;
@@ -70,7 +71,7 @@ export default class RecipeView extends mixins(ToastMixin) {
   error: null | string = null;
 
   get label(): string {
-    return this.recipe.name + " gekocht am";
+    return this.recipe.name + " gekocht am...";
   }
 
   get loggedInUserId(): number | null {
@@ -109,3 +110,12 @@ export default class RecipeView extends mixins(ToastMixin) {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.v3dp__datepicker {
+  width: 280px;
+}
+// .form-control {
+//   width: 280px !important;
+// }
+</style>

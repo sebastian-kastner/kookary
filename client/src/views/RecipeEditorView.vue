@@ -157,7 +157,7 @@ export default class RecipeEditorView extends Vue {
         attrs: {
           title: "Ungespeicherte Änderungen",
           text: "Es gibt ungespeicherte Änderungen",
-          confirmText: "Bestätigen",
+          confirmText: "Speichern",
           cancelText: "Verwerfen",
           isSaving: editor.isSaving,
           onConfirm() {
