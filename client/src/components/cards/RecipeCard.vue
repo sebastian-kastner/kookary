@@ -43,6 +43,16 @@ export default class RecipeCard extends Vue {
 @import "../../styles/variables.scss";
 @import "../../styles/breakpoints.scss";
 
+@mixin recipeCard($width, $height, $margin) {
+  width: $width + px;
+  max-width: $width + px;
+  margin: $margin + px;
+
+  img {
+    max-height: $height + px;
+  }
+}
+
 .recipe-card {
   box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 
@@ -54,37 +64,31 @@ export default class RecipeCard extends Vue {
     overflow-x: hidden;
   }
 
-  $widthOnXs: 143px;
-
-  // width on xs
-  width: $widthOnXs;
-  margin: 20px;
-
-  img {
-    // max-width: $widthOnXs;
-    max-width: 100%;
-    max-height: 113px;
-  }
-
-  .recipe-card-title {
-    min-height: 55px;
-    padding: 5px;
-  }
-
   .recipe-card-image {
     text-align: center;
-  }
-
-  $widthOnSmall: 180px;
-  // size on small
-  @include media-breakpoint-up(sm) {
-    width: $widthOnSmall;
-    margin: 20px;
+    padding-top: 2px;
 
     img {
-      // max-width: $widthOnSmall;
-      max-height: 135px;
+      max-width: 100%;
     }
+  }
+
+  // width on xs
+  @include media-breakpoint-down(sm) {
+    // width, height, margin
+    @include recipeCard(143, 135, 5);
+
+    .recipe-card-title {
+      min-height: 55px;
+      padding: 5px;
+      font-size: smaller;
+    }
+  }
+
+  // size on small
+  @include media-breakpoint-up(sm) {
+    // width, height, margin
+    @include recipeCard(150, 110, 10);
 
     .recipe-card-title {
       min-height: 75px;
@@ -93,37 +97,15 @@ export default class RecipeCard extends Vue {
   }
 
   // size on medium
-  $widthOnMedium: 190px;
   @include media-breakpoint-up(md) {
-    width: $widthOnMedium;
-    margin: 20px;
-
-    img {
-      // max-width: $widthOnMedium;
-      max-height: 190px;
-    }
-
-    .recipe-card-title {
-      min-height: 75px;
-      padding: 10px;
-    }
+    // width, height, margin
+    @include recipeCard(190, 190, 20);
   }
 
   // size on large and above
-  $widthOnLg: 250px;
   @include media-breakpoint-up(lg) {
-    width: $widthOnLg;
-    margin: 20px;
-
-    img {
-      // max-width: $widthOnLg;
-      max-height: 190px;
-    }
-
-    .recipe-card-title {
-      min-height: 75px;
-      padding: 10px;
-    }
+    // width, height, margin
+    @include recipeCard(250, 190, 20);
   }
 }
 </style>
