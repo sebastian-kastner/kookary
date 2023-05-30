@@ -9,8 +9,9 @@
       <span
         class="shopping-list-item-label"
         :class="isChecked ? 'checked-shopping-list-item' : ''"
-        >{{ getItemLabel() }}</span
       >
+        {{ getItemLabel() }}
+      </span>
     </div>
 
     <div v-if="removeItemHandler !== null" class="col-auto" @click="removeItem">

@@ -1,5 +1,5 @@
 <template>
-  <div class="row d-flex justify-content-center">
+  <div class="row d-flex justify-content-center row-cols-3">
     <recipe-card
       v-for="recipe in recipes"
       :key="recipe.recipeId"
