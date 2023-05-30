@@ -81,7 +81,7 @@
       </div>
 
       <div v-if="showServingsForm" class="row">
-        <div class="form-group form-inline">
+        <div class="mb-2 form-inline">
           Für
           <input
             v-model.number="internalServings"

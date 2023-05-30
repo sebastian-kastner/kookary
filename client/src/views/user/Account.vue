@@ -19,7 +19,7 @@
 
     <h3>Passwort ändern</h3>
 
-    <div class="form-group">
+    <div class="mb-2">
       <label for="old-password">Aktuelles Passwort</label>
       <input
         id="old-password"
@@ -30,7 +30,7 @@
       />
     </div>
 
-    <div class="form-group">
+    <div class="mb-2">
       <label for="new-password">Neues Passwort</label>
       <input
         id="new-password"
@@ -42,7 +42,7 @@
       />
     </div>
 
-    <div class="form-group">
+    <div class="mb-2">
       <label for="new-password-repeated">Neues Passwort wiederholen</label>
       <input
         id="new-password-repeated"

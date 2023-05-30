@@ -51,7 +51,7 @@
       <hr />
 
       <h4>Neues Passwort</h4>
-      <div class="form-group">
+      <div class="mb-2">
         <label for="new-password">Neues Passwort</label>
         <input
           id="new-password"
@@ -64,7 +64,7 @@
         />
       </div>
 
-      <div class="form-group">
+      <div class="mb-2">
         <label for="new-password-repeated">Neues Passwort wiederholen</label>
         <input
           id="new-password-repeated"

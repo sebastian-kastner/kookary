@@ -1,13 +1,13 @@
 <template>
-  <div id="ingredient-editor" class="form-group">
-    <div class="form-row">
+  <div id="ingredient-editor" class="mb-2">
+    <div class="d-flex flex-row">
       <div
         class="col-1 d-flex align-items-center justify-content-center"
         :class="handleClass"
       >
         <Icon icon="arrowDownUp" />
       </div>
-      <div class="col-5">
+      <div class="col-5 pe-1">
         <input
           v-if="ingredient.ingredient && ingredient.ingredient.ingredientId"
           v-model="ingredient.ingredient.name"
@@ -24,7 +24,7 @@
           @selectItem="setIngredient"
         />
       </div>
-      <div class="col-3">
+      <div class="col-3 pe-1">
         <input
           v-model="ingredient.quantity"
           type="text"
@@ -131,6 +131,7 @@ export default class RecipeIngredientEditor extends mixins(ToastMixin) {
   }
 
   .delete-ingredient-col {
+    min-width: 17px;
     svg {
       font-size: 1.5rem;
     }

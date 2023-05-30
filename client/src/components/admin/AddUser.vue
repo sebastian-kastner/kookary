@@ -14,7 +14,7 @@
         @click="$emit('cancel')"
       ></button>
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label for="email">eMail</label>
       <input
         id="email"
@@ -24,7 +24,7 @@
         placeholder="eMail"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label for="name">Name</label>
       <input
         id="name"
@@ -34,7 +34,7 @@
         placeholder="name"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label for="new-password">Passwort</label>
       <input
         id="new-password"
@@ -46,7 +46,7 @@
       />
     </div>
 
-    <div class="form-group">
+    <div class="mb-2">
       <label for="new-password-repeated">Neues Passwort wiederholen</label>
       <input
         id="new-password-repeated"
@@ -64,10 +64,10 @@
       {{ errorTxt }}
     </div>
 
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-end mb-2">
       <button
         type="submit"
-        class="btn btn-primary"
+        class="btn btn-outline-primary"
         :disabled="password != passwordRepeated"
         @click="createUser"
       >

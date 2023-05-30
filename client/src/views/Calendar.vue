@@ -1,13 +1,13 @@
 <template>
   <div id="calendar" class="main-content container">
-    <div class="form-row">
-      <div class="form-group col">
+    <div class="row">
+      <div class="mb-2 col">
         <label for="monthPicker"> Monat </label>
         <select
           id="monthPicker"
           v-model="selectedMonth"
           name="category"
-          class="form-control"
+          class="form-select"
           @change="updateMonth"
         >
           <option
@@ -19,7 +19,7 @@
           </option>
         </select>
       </div>
-      <div class="form-group col">
+      <div class="mb-2 col">
         <label for="nameFilter"> Suche </label>
         <input
           id="nameFilter"

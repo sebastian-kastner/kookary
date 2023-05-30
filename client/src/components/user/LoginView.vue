@@ -1,10 +1,10 @@
 <template>
-  <div id="login" class="form-group" @click.stop>
+  <div id="login" class="mb-2" @click.stop>
     <div v-if="errorTxt != ''" class="alert alert-danger" role="alert">
       {{ errorTxt }}
     </div>
 
-    <div class="form-group">
+    <div class="mb-2">
       <label for="email">Email adresse</label>
       <input
         id="email"
@@ -14,7 +14,7 @@
         placeholder="Email adresse"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label for="password">Password</label>
       <input
         id="password"
@@ -24,7 +24,7 @@
         placeholder="Passwort"
       />
     </div>
-    <div class="form-group custom-control-lg custom-control custom-checkbox">
+    <div class="mb-2 custom-control-lg custom-control custom-checkbox">
       <input
         id="remember-me"
         v-model="rememberMe"

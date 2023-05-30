@@ -1,6 +1,6 @@
 <template>
   <div id="recipe-editor-view" class="main-content">
-    <div class="form-group">
+    <div class="mb-2">
       <label for="recipe-name">Rezeptname</label>
       <input
         id="recipe-name"
@@ -11,7 +11,7 @@
         placeholder="Rezeptname"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label>Rezeptbild</label>
       <image-upload
         :input-file="recipeImage"
@@ -19,7 +19,7 @@
         @imageRemoved="onRecipeImageRemoved"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label>Tags</label>
       <div>
         <inline-item-list
@@ -31,7 +31,7 @@
     </div>
     <div class="row">
       <div class="col-5">
-        <div class="form-group">
+        <div class="mb-2">
           <label>Portionen</label>
           <input
             id="recipe-servings"
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="col-7">
-        <div class="form-group">
+        <div class="mb-2">
           <label>Quelle</label>
           <input
             id="recipe-source"
@@ -55,14 +55,14 @@
         </div>
       </div>
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label>Zutaten</label>
       <recipe-ingredients-editor
         :ingredients="recipe.ingredients"
         :existing-ingredients="existingIngredients"
       />
     </div>
-    <div class="form-group">
+    <div class="mb-2">
       <label>Beschreibung</label>
       <textarea
         id="exampleFormControlTextarea1"
