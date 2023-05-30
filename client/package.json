@@ -21,12 +21,12 @@
     "uuid": "^9.0.0",
     "vue": "^3.2.26",
     "vue-class-component": "^8.0.0-0",
+    "vue-draggable-next": "^2.1.1",
     "vue-facing-decorator": "^2.1.20",
     "vue-final-modal": "^4.4.2",
     "vue-router": "^4.0.3",
     "vue-toast-notification": "^3.1.1",
     "vue3-datepicker": "^0.3.4",
-    "vuedraggable": "^2.24.3",
     "vuex": "^4.0.0",
     "vuex-class-component": "^2.3.6"
   },

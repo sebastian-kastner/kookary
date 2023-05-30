@@ -1,37 +1,40 @@
 <template>
   <div>
-    <!-- <draggable
+    <draggable
       :list="ingredients"
       class="list-group"
       handle=".draggable-handle"
       @end="updatePositions"
-    > -->
-    <div
-      v-for="ingredient in ingredients"
-      v-bind="ingredient"
-      :key="ingredient.uuid"
     >
-      <recipe-ingredient-editor
-        :ingredient="ingredient"
-        :existing-ingredients="existingIngredients"
-        handle-class="draggable-handle"
-        @onNameChanged="updateIngredientName"
-        @onDelete="onDeleteIngredient"
-      />
-    </div>
-    <!-- </draggable> -->
+      <div
+        v-for="ingredient in ingredients"
+        v-bind="ingredient"
+        :key="ingredient.uuid"
+      >
+        <recipe-ingredient-editor
+          :ingredient="ingredient"
+          :existing-ingredients="existingIngredients"
+          handle-class="draggable-handle"
+          @onNameChanged="updateIngredientName"
+          @onDelete="onDeleteIngredient"
+        />
+      </div>
+    </draggable>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-facing-decorator";
-import draggable from "vuedraggable";
+import { VueDraggableNext } from "vue-draggable-next";
 import { RecipeIngredient, Ingredient } from "../types";
 import RecipeIngredientEditor from "./RecipeIngredientEditor.vue";
 import { v4 as uuid } from "uuid";
 
 @Component({
-  components: { RecipeIngredientEditor, draggable },
+  components: {
+    RecipeIngredientEditor,
+    draggable: VueDraggableNext,
+  },
 })
 export default class RecipeIngredientsEditor extends Vue {
   @Prop({ required: true }) ingredients!: RecipeIngredient[];
