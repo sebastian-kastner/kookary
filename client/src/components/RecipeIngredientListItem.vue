@@ -9,7 +9,9 @@
     >
       {{ getIngredientName(ingredient) }}
     </router-link>
-    <Icon v-if="isSeasonal(ingredient.ingredient)" icon="calendarWeek" />
+    <span class="ms-2">
+      <Icon v-if="isSeasonal(ingredient.ingredient)" icon="calendarWeek" />
+    </span>
   </li>
 </template>
 
