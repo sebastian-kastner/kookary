@@ -93,7 +93,6 @@ import { Options, Vue } from "vue-class-component";
 import { ModalsContainer } from "vue-final-modal";
 import "vue-final-modal/style.css";
 import "bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { userStore } from "./stores/rootStore";
 import { User } from "./types";
 import { UserStore } from "./stores/userStore";
@@ -149,6 +148,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+@import "styles/custom.scss";
 @import "styles/main.scss";
 @import "styles/variables.scss";
 

@@ -1,0 +1,18 @@
+// customization of bootstrap styles
+@import "variables";
+
+$theme-colors: (
+  "primary": $button-color-main,
+);
+
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+.btn-outline-primary, .btn-primary {
+  --bs-btn-hover-color: #ececec;
+  --bs-btn-active-color: #ececec;
+  --bs-btn-disabled-color: #ececec;
+}
+
+.btn-primary {
+  --bs-btn-color: #ececec;
+}
