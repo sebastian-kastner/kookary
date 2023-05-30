@@ -1,11 +1,9 @@
+<!-- eslint-disable vue/no-v-html -->
 <!-- 
     Code taken from: https://github.com/frikinside/vue3-simple-typeahead 
 -->
 <template>
-  <div
-    :id="wrapperId"
-    class="simple-typeahead"
-  >
+  <div :id="wrapperId" class="simple-typeahead">
     <input
       :id="inputId"
       v-model="input"
@@ -22,15 +20,9 @@
       @keydown.down.prevent="onArrowDown"
       @keydown.up.prevent="onArrowUp"
       @keydown.enter.tab.prevent="selectCurrentSelection"
-    >
-    <div
-      v-if="isListVisible"
-      class="simple-typeahead-list"
-    >
-      <div
-        v-if="$slots['list-header']"
-        class="simple-typeahead-list-header"
-      >
+    />
+    <div v-if="isListVisible" class="simple-typeahead-list">
+      <div v-if="$slots['list-header']" class="simple-typeahead-list-header">
         <slot name="list-header" />
       </div>
 
@@ -44,10 +36,7 @@
         @click="selectItem"
         @mouseenter="currentSelectionIndex = -1"
       >
-        <span
-          class="simple-typeahead-list-item-text"
-          :data-text="input"
-        >
+        <span class="simple-typeahead-list-item-text" :data-text="input">
           <Icon icon="plusCircle" />
           {{ input }}
         </span>
@@ -68,12 +57,14 @@
           v-if="$slots['list-item-text']"
           class="simple-typeahead-list-item-text"
           :data-text="itemProjection(item)"
-        ><slot
-          name="list-item-text"
-          :item="item"
-          :item-projection="itemProjection"
-          :bold-match-text="boldMatchText"
-        /></span>
+        >
+          <slot
+            name="list-item-text"
+            :item="item"
+            :item-projection="itemProjection"
+            :bold-match-text="boldMatchText"
+          />
+        </span>
         <span
           v-else
           class="simple-typeahead-list-item-text"
@@ -81,10 +72,7 @@
           v-html="boldMatchText(itemProjection(item))"
         />
       </div>
-      <div
-        v-if="$slots['list-footer']"
-        class="simple-typeahead-list-footer"
-      >
+      <div v-if="$slots['list-footer']" class="simple-typeahead-list-footer">
         <slot name="list-footer" />
       </div>
     </div>
@@ -93,9 +81,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-facing-decorator";
-import { Icon } from '@iconify/vue/dist/offline';
+import { Icon } from "@iconify/vue/dist/offline";
 
-@Component({ components: { Icon }})
+@Component({ components: { Icon } })
 export default class TypeaheadInput extends Vue {
   @Prop({ required: false })
   id!: string;
