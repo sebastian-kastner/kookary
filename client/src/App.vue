@@ -202,6 +202,7 @@ body {
 
   .nav-button.router-link-active {
     border-bottom: 2px solid $button-color-main;
+    text-decoration: none;
   }
 
   .dropdown-menu {
