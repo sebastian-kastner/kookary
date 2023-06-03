@@ -1,8 +1,3 @@
-import cursorIcon from '@iconify-icons/bi/input-cursor';
-import tagsIcon from '@iconify-icons/bi/tags';
-import bagIcon from '@iconify-icons/bi/bag';
-import calendarWeekIcon from '@iconify-icons/bi/calendar-week';
-import bellFillIcon from '@iconify-icons/bi/bell-fill';
 import { tagStore, ingredientStore } from "../../stores/rootStore";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Tag, Ingredient } from "../../types";
@@ -15,7 +10,7 @@ import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
 
 export type UiFilter = {
   name: string;
-  icon: unknown;
+  icon: string;
   component: unknown;
   applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
   isActive: (filter: RecipeFilter) => boolean;
@@ -24,7 +19,7 @@ export type UiFilter = {
 
 export const nameFilter: UiFilter = {
   name: "name",
-  icon: cursorIcon,
+  icon: "cursor",
   component: NameFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.nameContains = val;
@@ -35,7 +30,7 @@ export const nameFilter: UiFilter = {
 
 export const tagFilter: UiFilter = {
   name: "tags",
-  icon: tagsIcon,
+  icon: "tags",
   component: TagFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.tags = getTags(val.split(";"));
@@ -46,7 +41,7 @@ export const tagFilter: UiFilter = {
 
 export const ingredientFilter: UiFilter = {
   name: "ingredients",
-  icon: bagIcon,
+  icon: "bag",
   component: IngredientFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.ingredients = getIngredients(val.split(";"));
@@ -57,7 +52,7 @@ export const ingredientFilter: UiFilter = {
 
 export const seasonalFilter: UiFilter = {
   name: "seasonal",
-  icon: calendarWeekIcon,
+  icon: "calendarWeek",
   component: IsSeasonalFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.isSeasonal = true;
@@ -68,7 +63,7 @@ export const seasonalFilter: UiFilter = {
 
 export const markedFilter: UiFilter = {
   name: "marked",
-  icon: bellFillIcon,
+  icon: "bell",
   component: IsMarkedFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.marked = true;

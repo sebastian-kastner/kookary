@@ -9,7 +9,11 @@
       >
         <div class="row" @click="showFilter(filter.name)">
           <div class="col">
-            <component :is="filter.icon" />
+            <!-- #e35a27 active, white inactive -->
+            <Icon
+              :icon="filter.icon"
+              :color="activeFilter == filter.name ? 'e35a27' : 'white'"
+            />
           </div>
           <div
             class="col delete-filter"
@@ -108,17 +112,9 @@ $bottom-border: 3px;
     margin-right: 0px;
     margin-top: -1px;
 
-    svg {
-      fill: $background-color-main;
-    }
-
     &.active-filter {
       background-color: $highlight-color;
       margin-bottom: -$bottom-border - 1;
-
-      svg {
-        fill: $button-color-main;
-      }
     }
 
     .delete-filter {

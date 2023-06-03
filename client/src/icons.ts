@@ -21,6 +21,8 @@ import arrowDownUp from '@iconify-icons/bi/arrow-down-up';
 import calendarWeek from '@iconify-icons/bi/calendar-week';
 import plusCircle from '@iconify-icons/bi/plus-circle';
 import plus from '@iconify-icons/bi/plus';
+import cursor from '@iconify-icons/bi/input-cursor';
+import tags from '@iconify-icons/bi/tags';
 
 export function addIcons() {
   addIcon('burgerMenu', burger);
@@ -44,4 +46,6 @@ export function addIcons() {
   addIcon('calendarWeek', calendarWeek);
   addIcon('plusCircle', plusCircle);
   addIcon('plus', plus);
+  addIcon('cursor', cursor);
+  addIcon('tags', tags);
 }
