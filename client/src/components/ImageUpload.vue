@@ -7,15 +7,15 @@
         Bilder im Querformat sind empfohlen!
       </div>
     </div>
-    <div v-else class="custom-file" style="padding: 0; margin: 0">
+    <div v-else class="input-group">
       <input
         id="inputGroupFile"
         ref="fileInput"
+        class="form-control custom-file-input"
         type="file"
         accept="image/*"
         @input="selectImgFile"
       />
-      <label class="custom-file-label" for="inputGroupFile">Bild wählen</label>
     </div>
   </div>
 </template>
@@ -111,6 +111,10 @@ export default class ImageUpload extends Vue {
 .image-preview img {
   max-height: 300px;
   max-height: 200px;
+}
+
+.custom-file-input {
+  height: 100%;
 }
 
 .bad-dimension-hint {
