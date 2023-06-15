@@ -1,8 +1,8 @@
 import { Ingredient } from "../types";
 import { IngredientApi } from "../../rest/api";
 import { clientConfiguration } from "./clientConfiguration";
-import { convertIngredient } from "./ToViewModelConverter";
-import { toIri } from "./ToRestModelConverter";
+import * as toViewModel from "./ToViewModelConverter";
+import * as toRestModel from "./ToRestModelConverter";
 import { userStore } from "../stores/rootStore";
 import { USER_ENDPOINT } from "./endpoints";
 import { logAxiosError } from "./axiosErrorLogger";
@@ -16,7 +16,7 @@ export class IngredientsClient {
 
     const ingredients: Ingredient[] = [];
     apiIngredients.forEach((apiIngredient) => {
-      ingredients.push(convertIngredient(apiIngredient));
+      ingredients.push(toViewModel.convertIngredient(apiIngredient));
     });
 
     return ingredients;
@@ -29,10 +29,10 @@ export class IngredientsClient {
         this.client
           .postIngredientCollection({
             name: ingredientName,
-            author: toIri(USER_ENDPOINT, user.id),
+            author: toRestModel.toIri(USER_ENDPOINT, user.id),
           })
           .then((response) => {
-            resolve(convertIngredient(response.data));
+            resolve(toViewModel.convertIngredient(response.data));
           })
           .catch((e) => reject(e));
       } else {
@@ -42,7 +42,7 @@ export class IngredientsClient {
   }
 
   public async updateIngredient(ingredient: Ingredient): Promise<void> {
-    const apiIngredient = convertIngredient(ingredient);
+    const apiIngredient = toRestModel.convertIngredient(ingredient);
     return new Promise<void>((resolve, reject) => {
       if (!ingredient.ingredientId) {
         reject("Ingredient needs to be set!");
