@@ -99,8 +99,7 @@ if args.target == "all" or args.target == "client":
     cmd.exec("make build")
     
     print("### Removing old client..")
-    cmd.ssh_exec("rm -rf " + server_home + "/css/")
-    cmd.ssh_exec("rm -rf " + server_home + "/js/")
+    cmd.ssh_exec("rm -rf " + server_home + "/assets/")
     # this only removes the index.html file. if there are others files, they might need cleanup from time to time
     cmd.ssh_exec("rm -rf " + server_home + "/index.html")
 

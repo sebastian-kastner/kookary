@@ -23,6 +23,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 #[ORM\Entity]
 #[ApiResource(
+    attributes: [ "pagination_enabled" => false ],
     iri: 'https://schema.org/MediaObject',
     normalizationContext: ['groups' => ['media_object:read']],
     itemOperations: [

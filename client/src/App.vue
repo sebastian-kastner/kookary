@@ -233,7 +233,7 @@ body {
 }
 
 .main {
-  background-image: url("~@/../partial_bg.png");
+  background-image: url("~@/../../partial_bg.png");
   background-repeat: repeat-x;
   padding-top: 15px;
 }
