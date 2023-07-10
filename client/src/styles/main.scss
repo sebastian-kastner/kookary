@@ -12,6 +12,10 @@
   padding-top: $content-padding;
 }
 
+.vfm-modal-content {
+  overflow: scroll;
+}
+
 .rounded-button {
   width: auto !important;
   border: 2px solid $button-color-main;
