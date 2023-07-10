@@ -8,18 +8,18 @@ import { rootStore, userStore, initStores } from "./stores/rootStore";
 import ToastPlugin from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 
-const app = createApp(App);
 
 const vfm = createVfm();
 
-app.use(rootStore);
-app.use(vfm);
-app.use(router);
-app.use(ToastPlugin, { position: "bottom", type: "error", duration: 10000 });
+userStore.initUserLogin().finally(() => {
+  const app = createApp(App);
+  app.use(rootStore);
+  app.use(vfm);
+  app.use(router);
+  app.use(ToastPlugin, { position: "bottom", type: "error", duration: 10000 });
+  app.mount("#app");
+});
 
 initStores();
 addIcons();
 
-userStore.initUserLogin().finally(() => {
-  app.mount("#app");
-});
