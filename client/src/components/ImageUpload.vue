@@ -33,7 +33,6 @@ export default class ImageUpload extends Vue {
   badDimensions = false;
 
   @Prop({ required: false }) inputFile!: MediaObject;
-
   public mounted(): void {
     this.onInputFileChanged();
   }

@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { Vue, Component, Watch } from "vue-facing-decorator";
 import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
 import { ingredientStore } from "../stores/rootStore";
@@ -43,7 +43,7 @@ enum RecipeLoadType {
   Replace,
 }
 
-@Options({
+@Component({
   components: { RecipeList, TypeaheadInput, FilterComponent },
 })
 export default class RecipesView extends Vue {
@@ -62,19 +62,13 @@ export default class RecipesView extends Vue {
   page = 1;
   isLoading = false;
 
-  mounted(): void {
-    this.filters.forEach((filter) => {
-      const routeParam = this.$route.query[filter.name];
-      if (routeParam !== undefined) {
-        let val = "";
-        if (routeParam) {
-          val = routeParam.toString();
-        }
-        filter.applyRouteFilter(val, this.recipeFilter);
-      }
-    });
+  @Watch('$route.query', { deep: true })
+  onRouteParamsChange() {
+    this.applyRouteFilters();
+  }
 
-    this.applyFilter();
+  mounted(): void {
+    this.applyRouteFilters();
   }
 
   get filters(): UiFilter[] {
@@ -90,6 +84,21 @@ export default class RecipesView extends Vue {
     }
 
     return filters;
+  }
+
+  private async applyRouteFilters(): Promise<void> {
+    this.filters.forEach((filter) => {
+      const routeParam = this.$route.query[filter.name];
+      if (routeParam !== undefined) {
+        let val = "";
+        if (routeParam) {
+          val = routeParam.toString();
+        }
+        filter.applyRouteFilter(val, this.recipeFilter);
+      }
+    });
+
+    return this.applyFilter();
   }
 
   public async applyFilter(): Promise<void> {
