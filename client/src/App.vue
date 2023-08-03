@@ -34,12 +34,13 @@
             </div>
           </div>
 
+          <!-- brand; hidden on small and below if search is active -->
           <router-link class="navbar-brand" :class="{ 'd-none d-sm-block': searchActive }" to="/">
             &#129348; kookary
           </router-link>
         </div>
-
-        <!-- nav items in middle; only visible on large screens -->
+        
+        <!-- nav items in middle; only visible on large screens; hidden on medium as well if search is active -->
         <div v-if="!searchActive" class="d-none d-lg-block">
           <router-link
             v-for="navItem in navItems"
@@ -66,6 +67,7 @@
               v-model="searchTerm"
               type="text"
               class="form-control"
+              @keyup.enter="executeSearch"
             />
           </div>
           <span
@@ -76,6 +78,7 @@
             <Icon icon="search" />
           </span>
 
+          <!-- login and user menu; hidden on small and below if search is active -->
           <div :class="{ 'd-none d-md-block': searchActive }">
             <!-- Login button and login form if user is not logged in -->
             <span
@@ -177,13 +180,8 @@ export default class App extends Vue {
   }
 
   searchClicked(): void {
-    console.log(this.searchActive);
     if (this.searchActive) {
-      console.log("SEARCH ACTIVE!");
-      console.log("search term:", this.searchTerm);
-      if (this.searchTerm != "") {
-        console.log("DO THE REDIRECT!");
-      }
+      this.executeSearch();
     } else {
       this.searchActive = true;
     }
@@ -191,6 +189,12 @@ export default class App extends Vue {
 
   cancelSearch(): void {
     this.searchActive = false;
+  }
+
+  executeSearch(): void {
+    if (this.searchTerm != "") {
+      this.$router.push(`/recipes?name=${this.searchTerm}`);
+    }
   }
 }
 </script>
@@ -267,10 +271,6 @@ body {
     }
   }
 
-  #burger-menu {
-    padding-top: 0;
-  }
-  
   svg {
     font-size: 1.5em;
     padding-bottom: 3px;
