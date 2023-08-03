@@ -64,6 +64,7 @@
               </span>
             </div>
             <input
+              ref="searchinput"
               v-model="searchTerm"
               type="text"
               class="form-control"
@@ -184,6 +185,13 @@ export default class App extends Vue {
       this.executeSearch();
     } else {
       this.searchActive = true;
+      // wait for search input to be displayed and focus
+      this.$nextTick(() => {
+        const searchInput = this.$refs.searchinput;
+        if (searchInput && searchInput instanceof HTMLInputElement) {
+          searchInput.focus();
+        }
+      });
     }
   }
 
