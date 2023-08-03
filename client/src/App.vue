@@ -4,9 +4,9 @@
 
     <div class="topbar">
       <div class="d-flex justify-content-between align-items-center container">
-        <div class="topbar-left">
+        <div class="topbar-left d-flex d-flex-grow-1">
           <!-- burger menu; only visible on screens smaller than large -->
-          <div class="d-lg-none d-inline">
+          <div class="d-lg-none">
             <span
               id="burger-menu"
               class="btn"
@@ -34,13 +34,13 @@
             </div>
           </div>
 
-          <router-link class="navbar-brand" to="/">
+          <router-link class="navbar-brand" :class="{ 'd-none d-sm-block': searchActive }" to="/">
             &#129348; kookary
           </router-link>
         </div>
 
         <!-- nav items in middle; only visible on large screens -->
-        <div class="d-none d-lg-block">
+        <div v-if="!searchActive" class="d-none d-lg-block">
           <router-link
             v-for="navItem in navItems"
             :key="navItem.name"
@@ -51,31 +51,57 @@
           </router-link>
         </div>
 
-        <div class="topbar-right">
-          <!-- Login button and login form if user is not logged in -->
+        <div class="topbar-right d-flex">
+          <div v-if="searchActive" class="input-group">
+            <div class="input-group-prepend">
+              <span 
+                id="search-cancellation"
+                class="btn"
+                @click="cancelSearch"
+              >
+                <Icon icon="xCircle" />
+              </span>
+            </div>
+            <input
+              v-model="searchTerm"
+              type="text"
+              class="form-control"
+            />
+          </div>
           <span
-            id="user-dropdown-button"
-            class="btn dropdown-toggle"
-            type="button"
-            data-bs-toggle="dropdown"
-            data-bs-target="#userDropdownTarget"
-            aria-haspopup="true"
-            aria-expanded="false"
+            id="search-activator"  
+            class="btn"
+            @click="searchClicked"
           >
-            <span v-if="user === null">
-              <Icon icon="boxArrowInRight" /> Login
-            </span>
-            <span v-else>
-              <Icon icon="personCircle" /> {{ user.displayName }}
-            </span>
+            <Icon icon="search" />
           </span>
-          <div
-            id="userDropdownTarget"
-            class="dropdown-menu"
-            aria-labelledby="user-dropdown-button"
-          >
-            <login-view v-if="user === null" />
-            <user-menu v-else />
+
+          <div :class="{ 'd-none d-md-block': searchActive }">
+            <!-- Login button and login form if user is not logged in -->
+            <span
+              id="user-dropdown-button"
+              class="btn dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              data-bs-target="#userDropdownTarget"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span v-if="user === null">
+                <Icon icon="boxArrowInRight" /> Login
+              </span>
+              <span v-else>
+                <Icon icon="personCircle" /> {{ user.displayName }}
+              </span>
+            </span>
+            <div
+              id="userDropdownTarget"
+              class="dropdown-menu"
+              aria-labelledby="user-dropdown-button"
+            >
+              <login-view v-if="user === null" />
+              <user-menu v-else />
+            </div>
           </div>
         </div>
       </div>
@@ -117,12 +143,17 @@ export type NavItem = {
   },
 })
 export default class App extends Vue {
+  searchActive = false;
+  searchTerm = "";
+
   get user(): User | null {
     return userStore.user;
   }
+
   get userStore(): UserStore {
     return userStore;
   }
+
   get navItems(): NavItem[] {
     const items: NavItem[] = [];
     items.push({
@@ -143,6 +174,23 @@ export default class App extends Vue {
       to: "/calendar",
     });
     return items;
+  }
+
+  searchClicked(): void {
+    console.log(this.searchActive);
+    if (this.searchActive) {
+      console.log("SEARCH ACTIVE!");
+      console.log("search term:", this.searchTerm);
+      if (this.searchTerm != "") {
+        console.log("DO THE REDIRECT!");
+      }
+    } else {
+      this.searchActive = true;
+    }
+  }
+
+  cancelSearch(): void {
+    this.searchActive = false;
   }
 }
 </script>
@@ -222,14 +270,21 @@ body {
   #burger-menu {
     padding-top: 0;
   }
-
-  #user-dropdown-button,
-  #burger-menu {
-    svg {
-      font-size: 1.5em;
-      padding-bottom: 3px;
-    }
+  
+  svg {
+    font-size: 1.5em;
+    padding-bottom: 3px;
   }
+
+  .input-group-text {
+    border-radius: 10px 0 0 10px;
+  }
+
+  #search-cancellation {
+    background-color: $background-color-highlight-1;
+    border-radius: 10px 0 0 10px;
+  }
+
 }
 
 .main {

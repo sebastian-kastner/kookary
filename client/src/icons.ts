@@ -23,6 +23,7 @@ import plusCircle from '@iconify-icons/bi/plus-circle';
 import plus from '@iconify-icons/bi/plus';
 import cursor from '@iconify-icons/bi/input-cursor';
 import tags from '@iconify-icons/bi/tags';
+import search from '@iconify-icons/bi/search';
 
 export function addIcons() {
   addIcon('burgerMenu', burger);
@@ -48,4 +49,5 @@ export function addIcons() {
   addIcon('plus', plus);
   addIcon('cursor', cursor);
   addIcon('tags', tags);
+  addIcon('search', search);
 }
