@@ -16,15 +16,22 @@
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 
 @Component({
   components: {},
 })
 export default class NameFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
-
   internalValue = "";
+
+  @Watch('recipeFilter.nameContains')
+  filterValueChanges(): void {
+    console.log("filter value changed:", this.recipeFilter.nameContains);
+    if (this.recipeFilter.nameContains) {
+      this.internalValue = this.recipeFilter.nameContains;
+    }
+  }
 
   mounted(): void {
     if (this.recipeFilter.nameContains) {
