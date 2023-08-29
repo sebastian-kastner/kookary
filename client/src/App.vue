@@ -68,7 +68,7 @@
               v-model="searchTerm"
               type="text"
               class="form-control"
-              @keyup.enter="executeSearch"
+              @keyup.enter.prevent="executeSearch"
             />
           </div>
           <span
