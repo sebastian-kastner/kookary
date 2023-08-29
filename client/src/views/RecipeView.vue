@@ -109,7 +109,7 @@
       </div>
 
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="row" v-html="description" />
+      <div class="row recipe-description" v-html="description" />
 
       <div class="row">
         <h4>QUELLE</h4>
@@ -452,6 +452,10 @@ export default class RecipeView extends mixins(ToastMixin) {
 
   .servings-input {
     width: 60px;
+  }
+
+  .recipe-description {
+    max-width: 100%;
   }
 }
 </style>
