@@ -5,44 +5,46 @@
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
   >
-    <div class="d-flex justify-content-between">
-      <h4 class="ps-2 pe-2">{{ label }}</h4>
-      <button
-        type="button"
-        class="btn-close"
-        aria-label="Close"
-        @click="$emit('cancel')"
-      ></button>
-    </div>
+    <div class="add-cookup-container">
+      <div class="d-flex justify-content-between">
+        <h4 class="ps-2 pe-2">{{ label }}</h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          @click="$emit('cancel')"
+        ></button>
+      </div>
 
-    <div class="d-flex justify-content-center p-4">
-      <Datepicker
-        id="cookupDate"
-        v-model="cookupDate"
-        class="form-control"
-        placeholder="DD-MM-YYYY"
-        format="DD-MM-YYYY"
-      />
-      <div v-if="error" class="alert alert-error" warning="alert" />
-    </div>
+      <div class="d-flex justify-content-center p-4">
+        <Datepicker
+          id="cookupDate"
+          v-model="cookupDate"
+          class="form-control"
+          placeholder="DD-MM-YYYY"
+          format="DD-MM-YYYY"
+        />
+        <div v-if="error" class="alert alert-error" warning="alert" />
+      </div>
 
-    <div class="d-flex justify-content-between">
-      <button
-        type="button"
-        tabindex="0"
-        class="btn btn-outline-primary"
-        @click="$emit('cancel')"
-      >
-        Abbrechen
-      </button>
-      <button
-        type="button"
-        tabindex="0"
-        class="btn btn-outline-primary"
-        @click="addCookup"
-      >
-        Bestätigen
-      </button>
+      <div class="d-flex justify-content-between">
+        <button
+          type="button"
+          tabindex="0"
+          class="btn btn-outline-primary"
+          @click="$emit('cancel')"
+        >
+          Abbrechen
+        </button>
+        <button
+          type="button"
+          tabindex="0"
+          class="btn btn-outline-primary"
+          @click="addCookup"
+        >
+          Bestätigen
+        </button>
+      </div>
     </div>
   </VueFinalModal>
 </template>
@@ -115,7 +117,12 @@ export default class RecipeView extends mixins(ToastMixin) {
 .v3dp__datepicker {
   width: 280px;
 }
-// .form-control {
-//   width: 280px !important;
-// }
+.v3dp__popout {
+  position: fixed !important;
+}
+
+.add-cookup-container {
+  height: 420px;
+}
+
 </style>
