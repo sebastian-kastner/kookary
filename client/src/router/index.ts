@@ -28,6 +28,12 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: "Rezept bearbeiten" },
   },
   {
+    path: "/user/new-recipe",
+    name: "new-recipe",
+    component: RecipeEditorView,
+    meta: { title: "Neues Rezept" },
+  },
+  {
     path: "/user/shopping-list",
     name: "shopping-list",
     component: ShoppingList,
