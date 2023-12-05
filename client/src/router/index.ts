@@ -5,7 +5,7 @@ import RecipeOverview from "../views/RecipeOverview.vue";
 import Calendar from "../views/Calendar.vue";
 // user views
 import Account from "../views/user/Account.vue";
-import RecipeEditorView from "../views/RecipeEditorView.vue";
+import RecipeEditorView from "../views/user/RecipeEditorView.vue";
 import ShoppingList from "../views/user/ShoppingList.vue";
 // admin views
 import UserMgtmView from "../views/admin/UserMgmtView.vue";

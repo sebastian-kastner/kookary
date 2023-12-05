@@ -87,15 +87,15 @@ import { Options, Vue } from "vue-class-component";
 import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 import { v4 as uuid } from "uuid";
 import { useModal } from "vue-final-modal";
-import { Ingredient, Recipe, Tag, recipeFactory, MediaObject } from "../types";
-import { ingredientStore, tagStore } from "../stores/rootStore";
-import { RecipesClient } from "../clients/RecipesClient";
-import RecipeIngredientsEditor from "../components/RecipeIngredientsEditor.vue";
-import ImageUpload from "../components/ImageUpload.vue";
-import InlineItemList from "../components/InlineItemList.vue";
-import SaveButton from "../components/SaveButton.vue";
-import DialogModal from "../components/DialogModal.vue";
-import { getErrorMessage } from "../utils/errors";
+import { Ingredient, Recipe, Tag, recipeFactory, MediaObject } from "../../types";
+import { ingredientStore, tagStore } from "../../stores/rootStore";
+import { RecipesClient } from "../../clients/RecipesClient";
+import RecipeIngredientsEditor from "../../components/RecipeIngredientsEditor.vue";
+import ImageUpload from "../../components/ImageUpload.vue";
+import InlineItemList from "../../components/InlineItemList.vue";
+import SaveButton from "../../components/SaveButton.vue";
+import DialogModal from "../../components/DialogModal.vue";
+import { getErrorMessage } from "../../utils/errors";
 import { useToast } from "vue-toast-notification";
 
 @Options({
@@ -326,7 +326,7 @@ export default class RecipeEditorView extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables.scss";
+@import "../../styles/variables.scss";
 
 #recipe-editor-view {
   padding: $content-padding;
