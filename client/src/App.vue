@@ -169,7 +169,7 @@ export default class App extends Vue {
       items.push({
         icon: plusCircleIcon,
         name: "Neues Rezept",
-        to: "/user/recipe-editor",
+        to: "/user/new-recipe",
       });
     }
     items.push({
