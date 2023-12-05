@@ -187,21 +187,29 @@ export default class App extends Vue {
       this.searchActive = true;
       // wait for search input to be displayed and focus
       this.$nextTick(() => {
-        const searchInput = this.$refs.searchinput;
-        if (searchInput && searchInput instanceof HTMLInputElement) {
-          searchInput.focus();
-        }
+        this.focusSearchField();
       });
     }
   }
 
+  focusSearchField(): void {
+    const searchInput = this.$refs.searchinput;
+    if (searchInput && searchInput instanceof HTMLInputElement) {
+      searchInput.focus();
+    }
+  }
+
   cancelSearch(): void {
+    this.searchTerm = "";
     this.searchActive = false;
   }
 
   executeSearch(): void {
     if (this.searchTerm != "") {
       this.$router.push(`/recipes?name=${this.searchTerm}`);
+      this.cancelSearch();
+    } else {
+      this.focusSearchField();
     }
   }
 }
