@@ -17,26 +17,29 @@ const routes: Array<RouteRecordRaw> = [
   // general routes
   { path: "/", name: "home", component: HomeView },
   { path: "/recipe", name: "recipe", component: RecipeView },
-  { path: "/recipes", name: "recipes", component: RecipeOverview },
-  { path: "/calendar", name: "calendar", component: Calendar },
+  { path: "/recipes", name: "recipes", component: RecipeOverview, meta: { title: "Rezepte" } },
+  { path: "/calendar", name: "calendar", component: Calendar, meta: { title: "Saisonkalender" } },
   // user routes
-  { path: "/user/account", name: "account", component: Account },
+  { path: "/user/account", name: "account", component: Account, meta: { title: "Benutzer Account" } },
   {
     path: "/user/recipe-editor",
     name: "recipe-editor",
     component: RecipeEditorView,
+    meta: { title: "Rezept bearbeiten" },
   },
   {
     path: "/user/shopping-list",
     name: "shopping-list",
     component: ShoppingList,
+    meta: { title: "Einkaufsliste" },
   },
   // admin routes
-  { path: "/admin/users", name: "user-mgmt", component: UserMgtmView },
+  { path: "/admin/users", name: "user-mgmt", component: UserMgtmView, meta: { title: "Benutzerverwaltung" } },
   {
     path: "/admin/ingredients",
     name: "ingredient-mgmt",
     component: IngredientMgmtView,
+    meta: { title: "Zutatenverwaltung" },
   },
 ];
 
@@ -46,6 +49,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  let newTitle = "kookary";
+  if (to.meta && typeof to.meta.title === "string") {
+    newTitle = to.meta.title;
+  }
+  document.title = newTitle;
+
   if (to.path && to.path.startsWith("/user")) {
     if (!userStore.user) {
       next("/");

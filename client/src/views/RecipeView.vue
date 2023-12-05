@@ -182,6 +182,11 @@ export default class RecipeView extends mixins(ToastMixin) {
         .then((recipe) => {
           this.recipe = recipe;
           this.setRecipeFavouriteState();
+          
+          if(this.recipe.name) {
+            document.title = this.recipe.name;
+          }
+
           if (
             typeof this.recipe.servings === "number" &&
             this.recipe.servings > 0
