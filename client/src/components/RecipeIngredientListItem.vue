@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { round } from "lodash";
+import round from "lodash.round";
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 import { Ingredient, RecipeIngredient } from "../types";
 import { Icon } from "@iconify/vue/dist/offline";

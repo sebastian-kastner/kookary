@@ -13,6 +13,11 @@ server:
 build:
 	npm run build
 
+.PHONY: build-stats
+# create build stats
+build-stats:
+	npx vite-bundle-visualizer
+
 .PHONY: api
 # run api code generation
 api:

@@ -98,7 +98,7 @@ import { Component, Prop, mixins } from "vue-facing-decorator";
 import { User } from "../../types";
 import { userStore } from "../../stores/rootStore";
 import { UserClient } from "../../clients/UserClient";
-import { cloneDeep } from "lodash";
+import cloneDeep from "lodash.clonedeep";
 import { VueFinalModal } from "vue-final-modal";
 import { getErrorMessage } from "../../utils/errors";
 import ToastMixin from "../../mixins/ToastMixin.vue";
