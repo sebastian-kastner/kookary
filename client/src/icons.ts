@@ -5,6 +5,7 @@ import trash from '@iconify-icons/bi/trash';
 import xCircle from '@iconify-icons/bi/x-circle';
 import checkCircle from '@iconify-icons/bi/check-circle';
 import circle from '@iconify-icons/bi/circle';
+import filter from '@iconify-icons/bi/filter';
 import people from '@iconify-icons/bi/people';
 import person from '@iconify-icons/bi/person';
 import personCircle from '@iconify-icons/bi/person-circle';
@@ -31,6 +32,7 @@ export function addIcons() {
   addIcon('xCircle', xCircle);
   addIcon('checkCircle', checkCircle);
   addIcon('circle', circle);
+  addIcon('filter', filter);
   addIcon('people', people);
   addIcon('person', person);
   addIcon('personCircle', personCircle);

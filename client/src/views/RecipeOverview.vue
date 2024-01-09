@@ -1,11 +1,6 @@
 <template>
   <div id="recipe-overview" class="main-content">
-    <filter-component
-      :recipe-filter="recipeFilter"
-      :filters="filters"
-      @applyFilter="applyFilter"
-    />
-    <br />
+    <recipe-filter-bar />
     <recipe-list :recipes="recipes" />
     <div v-if="hasMoreRecipes" class="d-flex justify-content-center">
       <button
@@ -37,6 +32,7 @@ import { userStore } from "../stores/rootStore";
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
 import FilterComponent from "../components/recipe-filters/FilterComponent.vue";
+import RecipeFilterBar from "../components/recipe-filters/RecipeFilterBar.vue";
 
 enum RecipeLoadType {
   Append,
@@ -44,7 +40,12 @@ enum RecipeLoadType {
 }
 
 @Component({
-  components: { RecipeList, TypeaheadInput, FilterComponent },
+  components: {
+    RecipeList,
+    TypeaheadInput,
+    FilterComponent,
+    RecipeFilterBar,
+  },
 })
 export default class RecipesView extends Vue {
   recipeFilter: RecipeFilter = {
@@ -62,7 +63,7 @@ export default class RecipesView extends Vue {
   page = 1;
   isLoading = false;
 
-  @Watch('$route.query', { deep: true })
+  @Watch("$route.query", { deep: true })
   onRouteParamsChange() {
     this.applyRouteFilters();
   }
@@ -145,7 +146,3 @@ export default class RecipesView extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "../styles/variables.scss";
-</style>
