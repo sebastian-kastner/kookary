@@ -13,21 +13,23 @@
       <!-- FIXME: extract into separate component -->
       <div class="form-floating">
         <select id="sort-by-select" class="form-select">
-          <option value="name">Datum</option>
-          <option value="datum">Zuletzt gekocht</option>
+          <option value="datum">Datum</option>
+          <option value="last-time-cooked">Zuletzt gekocht</option>
           <option value="seasonality">Saisonalität</option>
         </select>
         <label for="sort-by-select">Sortieren nach</label>
       </div>
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head">Rezeptname</div>
+      <div class="filter-menu-row-head"><Icon icon="cursor" />Rezeptname</div>
       <div class="filter-menu-row-body">
         <input type="text" class="form-control" />
       </div>
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head">Saisonalität</div>
+      <div class="filter-menu-row-head">
+        <Icon icon="calendarWeek" />Saisonalität
+      </div>
       <div class="filter-menu-row-body">
         <div class="form-check">
           <input
@@ -43,19 +45,19 @@
       </div>
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head">Zutaten</div>
+      <div class="filter-menu-row-head"><Icon icon="bag" />Zutaten</div>
       <div class="filter-menu-row-body">
         <input type="text" class="form-control" />
       </div>
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head">Tags</div>
+      <div class="filter-menu-row-head"><Icon icon="tags" />Tags</div>
       <div class="filter-menu-row-body">
         <input type="text" class="form-control" />
       </div>
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head">Merkliste</div>
+      <div class="filter-menu-row-head"><Icon icon="bell" />Merkliste</div>
       <div class="filter-menu-row-body">
         <div class="form-check">
           <input
@@ -85,10 +87,11 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
+import { Icon } from "@iconify/vue/dist/offline";
 import cloneDeep from "lodash.clonedeep";
 
 @Component({
-  components: {},
+  components: { Icon },
 })
 export default class RecipeFilterMenu extends Vue {
   @Prop({ required: true }) filterMenuOpen!: boolean;
@@ -141,6 +144,13 @@ export default class RecipeFilterMenu extends Vue {
     .filter-menu-row-head {
       font-weight: bold;
       padding-bottom: 5px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+        font-size: 1.1rem;
+      }
     }
   }
 
