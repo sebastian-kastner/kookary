@@ -1,119 +1,113 @@
 <template>
-  <div id="app">
-    <ModalsContainer />
+  <ModalsContainer />
 
-    <div class="topbar">
-      <div class="d-flex justify-content-between align-items-center container">
-        <div class="topbar-left d-flex d-flex-grow-1">
-          <!-- burger menu; only visible on screens smaller than large -->
-          <div class="d-lg-none">
-            <span
-              id="burger-menu"
-              class="btn"
-              data-bs-toggle="dropdown"
-              data-bs-target="#burgerMenuDropdownTarget"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <Icon icon="burgerMenu" />
-            </span>
-            <div
-              id="burgerMenuDropdownTarget"
-              class="dropdown-menu"
-              aria-labelledby="burger-menu"
-            >
-              <router-link
-                v-for="navItem in navItems"
-                :key="navItem.name"
-                class="dropdown-item d-flex align-items-center"
-                :to="navItem.to"
-              >
-                <Icon :icon="navItem.icon" />
-                <component :is="navItem.icon" />{{ navItem.name }}
-              </router-link>
-            </div>
-          </div>
-
-          <!-- brand; hidden on small and below if search is active -->
-          <router-link class="navbar-brand" :class="{ 'd-none d-sm-block': searchActive }" to="/">
-            &#129348; kookary
-          </router-link>
-        </div>
-        
-        <!-- nav items in middle; only visible on large screens; hidden on medium as well if search is active -->
-        <div v-if="!searchActive" class="d-none d-lg-block">
-          <router-link
-            v-for="navItem in navItems"
-            :key="navItem.name"
-            :to="navItem.to"
-            class="nav-button"
-          >
-            {{ navItem.name }}
-          </router-link>
-        </div>
-
-        <div class="topbar-right d-flex">
-          <div v-if="searchActive" class="input-group">
-            <div class="input-group-prepend">
-              <span 
-                id="search-cancellation"
-                class="btn"
-                @click="cancelSearch"
-              >
-                <Icon icon="xCircle" />
-              </span>
-            </div>
-            <input
-              ref="searchinput"
-              v-model="searchTerm"
-              type="text"
-              class="form-control"
-              @keyup.enter.prevent="executeSearch"
-            />
-          </div>
+  <div class="topbar">
+    <div class="d-flex justify-content-between align-items-center container">
+      <div class="topbar-left d-flex d-flex-grow-1">
+        <!-- burger menu; only visible on screens smaller than large -->
+        <div class="d-lg-none">
           <span
-            id="search-activator"  
+            id="burger-menu"
             class="btn"
-            @click="searchClicked"
+            data-bs-toggle="dropdown"
+            data-bs-target="#burgerMenuDropdownTarget"
+            aria-haspopup="true"
+            aria-expanded="false"
           >
-            <Icon icon="search" />
+            <Icon icon="burgerMenu" />
           </span>
+          <div
+            id="burgerMenuDropdownTarget"
+            class="dropdown-menu"
+            aria-labelledby="burger-menu"
+          >
+            <router-link
+              v-for="navItem in navItems"
+              :key="navItem.name"
+              class="dropdown-item d-flex align-items-center"
+              :to="navItem.to"
+            >
+              <Icon :icon="navItem.icon" />
+              <component :is="navItem.icon" />{{ navItem.name }}
+            </router-link>
+          </div>
+        </div>
 
-          <!-- login and user menu; hidden on small and below if search is active -->
-          <div :class="{ 'd-none d-md-block': searchActive }">
-            <!-- Login button and login form if user is not logged in -->
-            <span
-              id="user-dropdown-button"
-              class="btn dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              data-bs-target="#userDropdownTarget"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <span v-if="user === null">
-                <Icon icon="boxArrowInRight" /> Login
-              </span>
-              <span v-else>
-                <Icon icon="personCircle" /> {{ user.displayName }}
-              </span>
+        <!-- brand; hidden on small and below if search is active -->
+        <router-link
+          class="navbar-brand"
+          :class="{ 'd-none d-sm-block': searchActive }"
+          to="/"
+        >
+          &#129348; kookary
+        </router-link>
+      </div>
+
+      <!-- nav items in middle; only visible on large screens; hidden on medium as well if search is active -->
+      <div v-if="!searchActive" class="d-none d-lg-block">
+        <router-link
+          v-for="navItem in navItems"
+          :key="navItem.name"
+          :to="navItem.to"
+          class="nav-button"
+        >
+          {{ navItem.name }}
+        </router-link>
+      </div>
+
+      <div class="topbar-right d-flex">
+        <div v-if="searchActive" class="input-group">
+          <div class="input-group-prepend">
+            <span id="search-cancellation" class="btn" @click="cancelSearch">
+              <Icon icon="xCircle" />
             </span>
-            <div
-              id="userDropdownTarget"
-              class="dropdown-menu"
-              aria-labelledby="user-dropdown-button"
-            >
-              <login-view v-if="user === null" />
-              <user-menu v-else />
-            </div>
+          </div>
+          <input
+            ref="searchinput"
+            v-model="searchTerm"
+            type="text"
+            class="form-control"
+            @keyup.enter.prevent="executeSearch"
+          />
+        </div>
+        <span id="search-activator" class="btn" @click="searchClicked">
+          <Icon icon="search" />
+        </span>
+
+        <!-- login and user menu; hidden on small and below if search is active -->
+        <div :class="{ 'd-none d-md-block': searchActive }">
+          <!-- Login button and login form if user is not logged in -->
+          <span
+            id="user-dropdown-button"
+            class="btn dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            data-bs-target="#userDropdownTarget"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span v-if="user === null">
+              <Icon icon="boxArrowInRight" /> Login
+            </span>
+            <span v-else>
+              <Icon icon="personCircle" /> {{ user.displayName }}
+            </span>
+          </span>
+          <div
+            id="userDropdownTarget"
+            class="dropdown-menu"
+            aria-labelledby="user-dropdown-button"
+          >
+            <login-view v-if="user === null" />
+            <user-menu v-else />
           </div>
         </div>
       </div>
     </div>
-    <div class="main">
-      <div class="main-wrapper container">
-        <router-view />
-      </div>
+  </div>
+  <div class="main">
+    <div class="main-wrapper container">
+      <router-view />
     </div>
   </div>
 </template>
@@ -300,7 +294,6 @@ body {
     background-color: $background-color-highlight-1;
     border-radius: 10px 0 0 10px;
   }
-
 }
 
 .main {
