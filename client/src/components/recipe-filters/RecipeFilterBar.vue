@@ -13,13 +13,10 @@
         </span>
       </div>
       <div class="form-floating">
-        <!-- FIXME: extract into separate component -->
-        <select id="sort-by-select" class="form-select">
-          <option value="name">Datum</option>
-          <option value="datum">Zuletzt gekocht</option>
-          <option value="seasonality">Saisonalität</option>
-        </select>
-        <label for="sort-by-select">Sortieren nach</label>
+        <recipe-order-by
+          :recipe-filter="recipeFilter"
+          @orderingUpdated="applyNewOrdering"
+        />
       </div>
     </div>
   </div>
@@ -30,9 +27,10 @@ import { Vue, Component } from "vue-facing-decorator";
 import { Icon } from "@iconify/vue/dist/offline";
 import RecipeFilterMenu from "./RecipeFilterMenu.vue";
 import { RecipeFilter } from "../../clients/RecipesClient";
+import RecipeOrderBy from "./RecipeOrderBy.vue";
 
 @Component({
-  components: { Icon, RecipeFilterMenu },
+  components: { Icon, RecipeFilterMenu, RecipeOrderBy },
 })
 export default class RecipeFilterBar extends Vue {
   filterMenuOpen = false;
@@ -45,11 +43,17 @@ export default class RecipeFilterBar extends Vue {
     marked: false,
   };
 
+  applyNewOrdering() {
+    //TODO: implement
+    console.log("applying new ordering");
+    console.log(this.recipeFilter);
+  }
+
   applyFilter(recipeFilter: RecipeFilter) {
+    //TODO: implement
     this.recipeFilter = recipeFilter;
     this.filterMenuOpen = false;
     console.log("applying filter", recipeFilter);
-    // TODO: update recipes
   }
 }
 </script>

@@ -10,15 +10,7 @@
       ></button>
     </div>
     <div class="filter-menu-row">
-      <!-- FIXME: extract into separate component -->
-      <div class="form-floating">
-        <select id="sort-by-select" class="form-select">
-          <option value="datum">Datum</option>
-          <option value="last-time-cooked">Zuletzt gekocht</option>
-          <option value="seasonality">Saisonalität</option>
-        </select>
-        <label for="sort-by-select">Sortieren nach</label>
-      </div>
+      <recipe-order-by :recipe-filter="localFilter" @orderingUpdated="onUpdate" />
     </div>
     <div class="filter-menu-row">
       <div class="filter-menu-row-head"><Icon icon="cursor" />Rezeptname</div>
@@ -90,8 +82,10 @@ import { RecipeFilter } from "../../clients/RecipesClient";
 import { Icon } from "@iconify/vue/dist/offline";
 import cloneDeep from "lodash.clonedeep";
 
+import RecipeOrderBy from "./RecipeOrderBy.vue";
+
 @Component({
-  components: { Icon },
+  components: { Icon, RecipeOrderBy },
 })
 export default class RecipeFilterMenu extends Vue {
   @Prop({ required: true }) filterMenuOpen!: boolean;
@@ -109,6 +103,10 @@ export default class RecipeFilterMenu extends Vue {
 
   closeMenu(): void {
     this.$emit("close-menu");
+  }
+
+  onUpdate(): void {
+    console.log(this.localFilter);
   }
 
   applyFilter() {
