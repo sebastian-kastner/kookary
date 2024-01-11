@@ -23,7 +23,8 @@
   color: $button-color-main;
 }
 
-.rounded-button.router-link-exact-active, .rounded-button.active {
+.rounded-button.router-link-exact-active,
+.rounded-button.active {
   background-color: $button-color-main;
   color: $background-color-main;
 }
@@ -45,9 +46,21 @@
     color: white;
   }
 
+  .item-delete {
+    padding-left: 5px;
+    margin-top: 0;
+    padding-right: 5px;
+    margin-bottom: 0;
+    display: inline-block;
+  }
+  .item-delete:hover {
+    color: black;
+    cursor: pointer;
+  }
 }
 
-.row ul, .row ol {
+.row ul,
+.row ol {
   margin-left: 30px;
 }
 

@@ -96,19 +96,5 @@ export default class InlineItemList extends Vue {
     display: inline-block;
     width: 150px;
   }
-
-  .inline-item-list-element {
-    .item-delete {
-      padding-left: 5px;
-      margin-top: 0;
-      padding-right: 5px;
-      margin-bottom: 0;
-      display: inline-block;
-    }
-    .item-delete:hover {
-      color: black;
-      cursor: pointer;
-    }
-  }
 }
 </style>

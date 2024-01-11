@@ -1,37 +1,37 @@
 <template>
-  <div class="row text-center">
-    <div class="col-12">
-      <input
-        v-model="internalValue"
-        type="text"
-        class="form-control"
-        placeholder="Name"
-        @blur="updateFilter"
-        @keydown.enter.tab.prevent="updateFilter"
-        @keydown.esc.prevent="resetFilter"
-      >
+  <div class="filter-menu-row-head"><Icon icon="cursor" />Rezeptname</div>
+  <div class="filter-menu-row-body">
+    <div
+      v-if="recipeFilter.nameContains && recipeFilter.nameContains !== ''"
+      class="inline-item-list-element"
+    >
+      {{ recipeFilter.nameContains }}
+      <span class="item-delete" @click="resetFilter">x</span>
     </div>
+    <input
+      v-else
+      v-model="internalValue"
+      type="text"
+      class="form-control"
+      placeholder="In Rezeptnamen suchen nach..."
+      @blur="updateFilter"
+      @keydown.enter.tab.prevent="updateFilter"
+      @keydown.esc.prevent="resetFilter"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 @Component({
   components: {},
+  emits: ["filterUpdated"],
 })
 export default class NameFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
   internalValue = "";
-
-  @Watch('recipeFilter.nameContains')
-  filterValueChanges(): void {
-    console.log("filter value changed:", this.recipeFilter.nameContains);
-    if (this.recipeFilter.nameContains) {
-      this.internalValue = this.recipeFilter.nameContains;
-    }
-  }
 
   mounted(): void {
     if (this.recipeFilter.nameContains) {
@@ -41,17 +41,36 @@ export default class NameFilterComponent extends Vue {
 
   updateFilter(): void {
     this.recipeFilter.nameContains = this.internalValue;
-    this.applyFilter();
+    this.emitFilterUpdated();
   }
 
-  applyFilter(): void {
-    this.$emit("applyFilter");
+  emitFilterUpdated(): void {
+    this.$emit("filterUpdated");
   }
 
   resetFilter(): void {
     this.internalValue = "";
     this.recipeFilter.nameContains = "";
-    this.applyFilter();
+    this.emitFilterUpdated();
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.filter-menu-row {
+    border-bottom: 1px solid lightgray;
+    padding: 15px 0;
+
+    .filter-menu-row-head {
+      font-weight: bold;
+      padding-bottom: 5px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+        font-size: 1.1rem;
+      }
+    }
+  }
+</style>

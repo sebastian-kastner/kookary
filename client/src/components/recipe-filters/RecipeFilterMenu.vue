@@ -10,13 +10,10 @@
       ></button>
     </div>
     <div class="filter-menu-row">
-      <recipe-order-by :recipe-filter="localFilter" @orderingUpdated="onUpdate" />
+      <recipe-order-by :recipe-filter="localFilter" @orderingUpdated="onFilterUpdate" />
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head"><Icon icon="cursor" />Rezeptname</div>
-      <div class="filter-menu-row-body">
-        <input type="text" class="form-control" />
-      </div>
+      <name-filter-component :recipe-filter="localFilter" @filterUpdated="onFilterUpdate" />
     </div>
     <div class="filter-menu-row">
       <div class="filter-menu-row-head">
@@ -83,9 +80,10 @@ import { Icon } from "@iconify/vue/dist/offline";
 import cloneDeep from "lodash.clonedeep";
 
 import RecipeOrderBy from "./RecipeOrderBy.vue";
+import NameFilterComponent from "./NameFilterComponent.vue";
 
 @Component({
-  components: { Icon, RecipeOrderBy },
+  components: { Icon, RecipeOrderBy, NameFilterComponent },
 })
 export default class RecipeFilterMenu extends Vue {
   @Prop({ required: true }) filterMenuOpen!: boolean;
@@ -105,7 +103,7 @@ export default class RecipeFilterMenu extends Vue {
     this.$emit("close-menu");
   }
 
-  onUpdate(): void {
+  onFilterUpdate(): void {
     console.log(this.localFilter);
   }
 
@@ -134,23 +132,6 @@ export default class RecipeFilterMenu extends Vue {
   border: 1px solid darkgray;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
-
-  .filter-menu-row {
-    border-bottom: 1px solid lightgray;
-    padding: 15px 0;
-
-    .filter-menu-row-head {
-      font-weight: bold;
-      padding-bottom: 5px;
-      display: flex;
-      align-items: center;
-
-      svg {
-        margin-right: 5px;
-        font-size: 1.1rem;
-      }
-    }
-  }
 
   .apply-filter {
     width: 100%;
