@@ -55,22 +55,3 @@ export default class NameFilterComponent extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.filter-menu-row {
-    border-bottom: 1px solid lightgray;
-    padding: 15px 0;
-
-    .filter-menu-row-head {
-      font-weight: bold;
-      padding-bottom: 5px;
-      display: flex;
-      align-items: center;
-
-      svg {
-        margin-right: 5px;
-        font-size: 1.1rem;
-      }
-    }
-  }
-</style>

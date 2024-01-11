@@ -10,28 +10,27 @@
       ></button>
     </div>
     <div class="filter-menu-row">
-      <recipe-order-by :recipe-filter="localFilter" @orderingUpdated="onFilterUpdate" />
+      <recipe-order-by
+        :recipe-filter="localFilter"
+        @orderingUpdated="onFilterUpdate"
+      />
     </div>
     <div class="filter-menu-row">
-      <name-filter-component :recipe-filter="localFilter" @filterUpdated="onFilterUpdate" />
+      <name-filter-component
+        :recipe-filter="localFilter"
+        @filterUpdated="onFilterUpdate"
+      />
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head">
-        <Icon icon="calendarWeek" />Saisonalität
-      </div>
-      <div class="filter-menu-row-body">
-        <div class="form-check">
-          <input
-            id="is-seasonal-filter"
-            class="form-check-input"
-            type="checkbox"
-            value=""
-          />
-          <label class="form-check-label" for="is-seasonal-filter">
-            Nur saisonale Rezepte
-          </label>
-        </div>
-      </div>
+      <boolean-filter-component
+        :recipe-filter="localFilter"
+        icon="calendarWeek"
+        title="Saisonalität"
+        label="Nur saisonale Rezepte"
+        checkbox-id="is-seasonal-filter"
+        :flag="localFilter?.isSeasonal"
+        @valueChanged="updateIsSeasonalFilter"
+      />
     </div>
     <div class="filter-menu-row">
       <div class="filter-menu-row-head"><Icon icon="bag" />Zutaten</div>
@@ -46,20 +45,15 @@
       </div>
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head"><Icon icon="bell" />Merkliste</div>
-      <div class="filter-menu-row-body">
-        <div class="form-check">
-          <input
-            id="is-marked-filter"
-            class="form-check-input"
-            type="checkbox"
-            value=""
-          />
-          <label class="form-check-label" for="is-marked-filter">
-            Nur Rezepte auf Merkliste
-          </label>
-        </div>
-      </div>
+      <boolean-filter-component
+        :recipe-filter="localFilter"
+        icon="bell"
+        title="Merkliste"
+        label="Nur Rezepte auf Merkliste"
+        checkbox-id="is-marked-filter"
+        :flag="localFilter?.marked"
+        @valueChanged="updateIsMarkedFilter"
+      />
     </div>
     <div class="py-4">
       <button
@@ -81,9 +75,15 @@ import cloneDeep from "lodash.clonedeep";
 
 import RecipeOrderBy from "./RecipeOrderBy.vue";
 import NameFilterComponent from "./NameFilterComponent.vue";
+import BooleanFilterComponent from "./BooleanFilterComponent.vue";
 
 @Component({
-  components: { Icon, RecipeOrderBy, NameFilterComponent },
+  components: {
+    Icon,
+    RecipeOrderBy,
+    NameFilterComponent,
+    BooleanFilterComponent,
+  },
 })
 export default class RecipeFilterMenu extends Vue {
   @Prop({ required: true }) filterMenuOpen!: boolean;
@@ -107,6 +107,20 @@ export default class RecipeFilterMenu extends Vue {
     console.log(this.localFilter);
   }
 
+  updateIsSeasonalFilter(newVal: boolean): void {
+    if (this.localFilter) {
+      this.localFilter.isSeasonal = newVal;
+    }
+    this.onFilterUpdate();
+  }
+
+  updateIsMarkedFilter(newVal: boolean): void {
+    if (this.localFilter) {
+      this.localFilter.marked = newVal;
+    }
+    this.onFilterUpdate();
+  }
+
   applyFilter() {
     if (!this.localFilter) {
       this.$emit("close-menu");
@@ -117,7 +131,7 @@ export default class RecipeFilterMenu extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../styles/variables.scss";
 
 #filter-menu {
@@ -132,6 +146,23 @@ export default class RecipeFilterMenu extends Vue {
   border: 1px solid darkgray;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+
+  .filter-menu-row {
+    border-bottom: 1px solid lightgray;
+    padding: 15px 0;
+
+    .filter-menu-row-head {
+      font-weight: bold;
+      padding-bottom: 5px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 5px;
+        font-size: 1.1rem;
+      }
+    }
+  }
 
   .apply-filter {
     width: 100%;

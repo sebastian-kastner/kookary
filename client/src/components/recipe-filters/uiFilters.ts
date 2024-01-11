@@ -8,6 +8,19 @@ import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
 import IngredientFilterComponent from "./IngredientFilterComponent.vue";
 import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
 
+/*
+ different filter types:
+  - string filter (name)
+  - boolean filter (isSeasonal, isMarked)
+  - list filter (tags, ingredients)
+
+ common operations:
+  - apply filter from route (?)
+  - update route with filter
+  - get key (key within the route, probably with a prefix)
+    alternative: "appliesTo(nameOfGetParam)"
+*/
+
 export type UiFilter = {
   name: string;
   icon: string;
