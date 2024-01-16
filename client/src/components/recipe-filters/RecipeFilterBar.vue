@@ -20,6 +20,11 @@
       </div>
     </div>
   </div>
+  <div id="active-filters-bar" class="container">
+    <div class="d-flex align-items-center">
+      
+    </div>
+  </div>
 </template>
 
 <script lang="ts">

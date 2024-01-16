@@ -2,12 +2,6 @@ import { tagStore, ingredientStore } from "../../stores/rootStore";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Tag, Ingredient } from "../../types";
 
-import NameFilterComponent from "./NameFilterComponent.vue";
-import TagFilterComponent from "./TagFilterComponent.vue";
-import IsSeasonalFilterComponent from "./IsSeasonalFilterComponent.vue";
-import IngredientFilterComponent from "./IngredientFilterComponent.vue";
-import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
-
 /*
  different filter types:
   - string filter (name)
@@ -25,7 +19,6 @@ export type UiFilter = {
   name: string;
   icon: string;
   applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
-  isActive: (filter: RecipeFilter) => boolean;
   resetFilter: (filter: RecipeFilter) => void;
 };
 
@@ -35,7 +28,6 @@ export const nameFilter: UiFilter = {
   applyRouteFilter: (val, filter) => {
     filter.nameContains = val;
   },
-  isActive: (filter) => listHasElements(filter.nameContains),
   resetFilter: (filter) => (filter.nameContains = ""),
 };
 
@@ -45,7 +37,6 @@ export const tagFilter: UiFilter = {
   applyRouteFilter: (val, filter) => {
     filter.tags = getTags(val.split(";"));
   },
-  isActive: (filter) => listHasElements(filter.tags),
   resetFilter: (filter) => (filter.tags = []),
 };
 
@@ -55,7 +46,6 @@ export const ingredientFilter: UiFilter = {
   applyRouteFilter: (val, filter) => {
     filter.ingredients = getIngredients(val.split(";"));
   },
-  isActive: (filter) => listHasElements(filter.ingredients),
   resetFilter: (filter) => (filter.ingredients = []),
 };
 
@@ -65,7 +55,6 @@ export const seasonalFilter: UiFilter = {
   applyRouteFilter: (val, filter) => {
     filter.isSeasonal = true;
   },
-  isActive: (filter) => filter.isSeasonal === true,
   resetFilter: (filter) => (filter.isSeasonal = false),
 };
 
@@ -75,16 +64,8 @@ export const markedFilter: UiFilter = {
   applyRouteFilter: (val, filter) => {
     filter.marked = true;
   },
-  isActive: (filter) => filter.marked === true,
   resetFilter: (filter) => (filter.marked = false),
 };
-
-function listHasElements(list: Array<object> | string | undefined): boolean {
-  if (list) {
-    return list.length > 0;
-  }
-  return false;
-}
 
 function getTags(tagIds: string[]): Tag[] {
   const tags: Tag[] = [];
