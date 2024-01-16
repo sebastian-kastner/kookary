@@ -37,8 +37,8 @@ export default class RecipeOrderBy extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
   orderOptions: OrderOption[] = [
-    { orderBy: "date", orderByDirection: "asc", label: "Datum (neueste zuerst)" },
-    { orderBy: "date", orderByDirection: "desc", label: "Datum (älteste zuerst)" },
+    { orderBy: "date", orderByDirection: "desc", label: "Datum (neueste zuerst)" },
+    { orderBy: "date", orderByDirection: "asc", label: "Datum (älteste zuerst)" },
     { orderBy: "name", orderByDirection: "asc", label: "Name (aufsteigend)" },
     { orderBy: "name", orderByDirection: "desc", label: "Name (absteigend)" },
   ];

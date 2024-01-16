@@ -12,13 +12,12 @@
     <div class="filter-menu-row">
       <recipe-order-by
         :recipe-filter="localFilter"
-        @orderingUpdated="onFilterUpdate"
+        @orderingUpdated="orderingUpdated"
       />
     </div>
     <div class="filter-menu-row">
       <name-filter-component
         :recipe-filter="localFilter"
-        @filterUpdated="onFilterUpdate"
       />
     </div>
     <div class="filter-menu-row">
@@ -35,13 +34,11 @@
     <div class="filter-menu-row">
       <ingredient-filter-component
         :recipe-filter="localFilter"
-        @filterUpdated="onFilterUpdate"
       />
     </div>
     <div class="filter-menu-row">
       <tag-filter-component
         :recipe-filter="localFilter"
-        @filterUpdated="onFilterUpdate"
       />
     </div>
     <div class="filter-menu-row">
@@ -96,7 +93,6 @@ export default class RecipeFilterMenu extends Vue {
   @Watch("filterMenuOpen")
   onFilterMenuOpenChanged() {
     if (this.filterMenuOpen) {
-      console.log("cloning filter for edit..");
       this.localFilter = cloneDeep(this.activeFilter);
     }
   }
@@ -105,22 +101,20 @@ export default class RecipeFilterMenu extends Vue {
     this.$emit("close-menu");
   }
 
-  onFilterUpdate(): void {
-    console.log(this.localFilter);
-  }
-
   updateIsSeasonalFilter(newVal: boolean): void {
     if (this.localFilter) {
       this.localFilter.isSeasonal = newVal;
     }
-    this.onFilterUpdate();
   }
 
   updateIsMarkedFilter(newVal: boolean): void {
     if (this.localFilter) {
       this.localFilter.marked = newVal;
     }
-    this.onFilterUpdate();
+  }
+
+  orderingUpdated(): void {
+    this.$emit("ordering-updated");
   }
 
   applyFilter() {

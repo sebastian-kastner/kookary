@@ -24,6 +24,7 @@ export type ActiveFilter = {
 export type UiFilterHandler = {
   name: string;
   applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
+  getRouteParams: (filter: RecipeFilter) => string | null;
   getActiveFilters: (filter: RecipeFilter) => ActiveFilter[];
 };
 
@@ -42,6 +43,12 @@ const nameFilter: UiFilterHandler = {
     } else {
       return [];
     }
+  },
+  getRouteParams: (filter) => {
+    if (filter.nameContains) {
+      return filter.nameContains;
+    }
+    return null;
   }
 };
 
@@ -66,6 +73,12 @@ const tagFilter: UiFilterHandler = {
       });
     }
     return activeFilters;
+  },
+  getRouteParams: (filter) => {
+    if (filter.tags) {
+      return filter.tags.map((t) => t.tagId).join(";");
+    }
+    return null;
   }
 };
 
@@ -90,6 +103,12 @@ const ingredientFilter: UiFilterHandler = {
       });
     }
     return activeFilters;
+  },
+  getRouteParams: (filter) => {
+    if (filter.ingredients) {
+      return filter.ingredients.map((i) => i.ingredientId).join(";");
+    }
+    return null;
   }
 };
 
@@ -108,6 +127,12 @@ const seasonalFilter: UiFilterHandler = {
     } else {
       return [];
     }
+  },
+  getRouteParams: (filter) => {
+    if (filter.isSeasonal) {
+      return "true";
+    }
+    return null;
   }
 };
 
@@ -126,6 +151,12 @@ const markedFilter: UiFilterHandler = {
     } else {
       return [];
     }
+  },
+  getRouteParams: (filter) => {
+    if (filter.marked) {
+      return "true";
+    }
+    return null;
   }
 };
 

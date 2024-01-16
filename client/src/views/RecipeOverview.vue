@@ -36,11 +36,11 @@ import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
 import { ingredientStore } from "../stores/rootStore";
 import { uiFilterHandlers, ActiveFilter } from "../components/recipe-filters/uiFilters";
-import { userStore } from "../stores/rootStore";
 import { Icon } from "@iconify/vue/dist/offline";
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
 import RecipeFilterBar from "../components/recipe-filters/RecipeFilterBar.vue";
+import { LocationQueryRaw } from "vue-router";
 
 enum RecipeLoadType {
   Append,
@@ -69,7 +69,6 @@ export default class RecipesView extends Vue {
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
 
-
   hasMoreRecipes = false;
   page = 1;
   isLoading = false;
@@ -85,41 +84,58 @@ export default class RecipesView extends Vue {
   }
 
   private async updateFilterFromRoute(): Promise<void> {
-    // this.filters.forEach((filter) => {
-    //   const routeParam = this.$route.query[filter.name];
-    //   if (routeParam !== undefined) {
-    //     let val = "";
-    //     if (routeParam) {
-    //       val = routeParam.toString();
-    //     }
-    //     filter.applyRouteFilter(val, this.recipeFilter);
-    //   }
-    // });
+    uiFilterHandlers.forEach((filter) => {
+      const routeParam = this.$route.query[filter.name];
+      if (routeParam !== undefined) {
+        let val = "";
+        if (routeParam) {
+          val = routeParam.toString();
+        }
+        filter.applyRouteFilter(val, this.recipeFilter);
+      }
+    });
+    this.reloadActiveFilters();
   }
 
   public async onFilterChanged(): Promise<void> {
-    // trigger recipe reload if filter changed
+    this.udapteRouteFromFilter();
     return this.reloadRecipes();
   }
 
   public async onFilterReplace(newFilter: RecipeFilter): Promise<void> {
     this.recipeFilter = newFilter;
+    this.onFilterChanged();
+  }
+  
+  private reloadActiveFilters(): void {
     const newFilters: ActiveFilter[] = [];
     uiFilterHandlers.forEach((handler) => {
       newFilters.push(...handler.getActiveFilters(this.recipeFilter));
     });
     this.activeFilters = newFilters;
-    this.onFilterChanged();
   }
 
   private udapteRouteFromFilter(): void {
-    // do something useful
+    const newRoute: LocationQueryRaw = {};
+    uiFilterHandlers.forEach((filter) => {
+      const routeParamVal = filter.getRouteParams(this.recipeFilter);
+      if (routeParamVal) {
+        newRoute[filter.name] = routeParamVal;
+      }
+    });
+    if (this.recipeFilter.orderBy) {
+      newRoute["orderBy"] = this.recipeFilter.orderBy;
+      if (this.recipeFilter.orderByDirection) {
+        newRoute["orderByDirection"] = this.recipeFilter.orderByDirection;
+      }
+    }
+    this.$router.push({ query: newRoute });
   }
 
   removeFilter(filter: ActiveFilter) {
     filter.remove();
     this.activeFilters.splice(this.activeFilters.indexOf(filter), 1);
-    this.reloadRecipes();
+    this.onFilterChanged();
   }
 
   public async reloadRecipes(): Promise<void> {
