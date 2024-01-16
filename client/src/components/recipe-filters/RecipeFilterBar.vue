@@ -20,15 +20,10 @@
       </div>
     </div>
   </div>
-  <div id="active-filters-bar" class="container">
-    <div class="d-flex align-items-center">
-      
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-facing-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Icon } from "@iconify/vue/dist/offline";
 import RecipeFilterMenu from "./RecipeFilterMenu.vue";
 import { RecipeFilter } from "../../clients/RecipesClient";
@@ -36,29 +31,19 @@ import RecipeOrderBy from "./RecipeOrderBy.vue";
 
 @Component({
   components: { Icon, RecipeFilterMenu, RecipeOrderBy },
+  emits: ["update-filter", "replace-filter"],
 })
 export default class RecipeFilterBar extends Vue {
   filterMenuOpen = false;
-
-  recipeFilter: RecipeFilter = {
-    tags: [],
-    ingredients: [],
-    nameContains: "",
-    isSeasonal: false,
-    marked: false,
-  };
+  @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
   applyNewOrdering() {
-    //TODO: implement
-    console.log("applying new ordering");
-    console.log(this.recipeFilter);
+    this.$emit("update-filter");
   }
 
   applyFilter(recipeFilter: RecipeFilter) {
-    //TODO: implement
-    this.recipeFilter = recipeFilter;
     this.filterMenuOpen = false;
-    console.log("applying filter", recipeFilter);
+    this.$emit("replace-filter", recipeFilter);
   }
 }
 </script>

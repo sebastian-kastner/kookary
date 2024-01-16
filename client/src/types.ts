@@ -19,6 +19,7 @@ export type Ingredient = {
   seasonStart?: null | number;
   seasonEnd?: null | number;
   ingredientCategoryId?: number;
+  uuid: string;
 };
 
 export type RecipeIngredient = {

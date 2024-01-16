@@ -15,56 +15,118 @@ import { Tag, Ingredient } from "../../types";
     alternative: "appliesTo(nameOfGetParam)"
 */
 
-export type UiFilter = {
+export type ActiveFilter = {
   name: string;
   icon: string;
+  remove: () => void;
+}
+
+export type UiFilterHandler = {
+  name: string;
   applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
-  resetFilter: (filter: RecipeFilter) => void;
+  getActiveFilters: (filter: RecipeFilter) => ActiveFilter[];
 };
 
-export const nameFilter: UiFilter = {
+const nameFilter: UiFilterHandler = {
   name: "name",
-  icon: "cursor",
   applyRouteFilter: (val, filter) => {
     filter.nameContains = val;
   },
-  resetFilter: (filter) => (filter.nameContains = ""),
+  getActiveFilters: (filter) => {
+    if (filter.nameContains) {
+      return [{
+        name: filter.nameContains,
+        icon: "cursor",
+        remove: () => filter.nameContains = "",
+      }];
+    } else {
+      return [];
+    }
+  }
 };
 
-export const tagFilter: UiFilter = {
+const tagFilter: UiFilterHandler = {
   name: "tags",
-  icon: "tags",
   applyRouteFilter: (val, filter) => {
     filter.tags = getTags(val.split(";"));
   },
-  resetFilter: (filter) => (filter.tags = []),
+  getActiveFilters: (filter) => {
+    const activeFilters: ActiveFilter[] = [];
+    if (filter.tags) {
+      filter.tags.forEach((tag) => {
+        activeFilters.push({
+          name: tag.name || "",
+          icon: "tag",
+          remove: () => {
+            if (filter.tags) {
+              filter.tags = filter.tags.filter((t) => t.tagId !== tag.tagId);
+            }
+          },
+        });
+      });
+    }
+    return activeFilters;
+  }
 };
 
-export const ingredientFilter: UiFilter = {
+const ingredientFilter: UiFilterHandler = {
   name: "ingredients",
-  icon: "bag",
   applyRouteFilter: (val, filter) => {
     filter.ingredients = getIngredients(val.split(";"));
   },
-  resetFilter: (filter) => (filter.ingredients = []),
+  getActiveFilters: (filter) => {
+    const activeFilters: ActiveFilter[] = [];
+    if (filter.ingredients) {
+      filter.ingredients.forEach((ingredient) => {
+        activeFilters.push({
+          name: ingredient.name || "",
+          icon: "bag",
+          remove: () => {
+            if (filter.ingredients) {
+              filter.ingredients = filter.ingredients.filter((i) => i.ingredientId !== ingredient.ingredientId);
+            }
+          },
+        });
+      });
+    }
+    return activeFilters;
+  }
 };
 
-export const seasonalFilter: UiFilter = {
+const seasonalFilter: UiFilterHandler = {
   name: "seasonal",
-  icon: "calendarWeek",
   applyRouteFilter: (val, filter) => {
     filter.isSeasonal = true;
   },
-  resetFilter: (filter) => (filter.isSeasonal = false),
+  getActiveFilters: (filter) => {
+    if (filter.isSeasonal) {
+      return [{
+        name: "Saisonal",
+        icon: "calendarWeek",
+        remove: () => filter.isSeasonal = false,
+      }];
+    } else {
+      return [];
+    }
+  }
 };
 
-export const markedFilter: UiFilter = {
+const markedFilter: UiFilterHandler = {
   name: "marked",
-  icon: "bell",
   applyRouteFilter: (val, filter) => {
     filter.marked = true;
   },
-  resetFilter: (filter) => (filter.marked = false),
+  getActiveFilters: (filter) => {
+    if (filter.marked) {
+      return [{
+        name: "Markierte Rezepte",
+        icon: "bell",
+        remove: () => filter.marked = false,
+      }];
+    } else {
+      return [];
+    }
+  }
 };
 
 function getTags(tagIds: string[]): Tag[] {
@@ -98,3 +160,11 @@ function getIngredients(ingredientIds: string[]): Ingredient[] {
   });
   return ingredients;
 }
+
+export const uiFilterHandlers: UiFilterHandler[] = [ 
+  nameFilter,
+  tagFilter,
+  ingredientFilter,
+  seasonalFilter,
+  markedFilter,
+];

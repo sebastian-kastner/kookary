@@ -1,6 +1,21 @@
 <template>
   <div id="recipe-overview" class="main-content">
-    <recipe-filter-bar />
+    <recipe-filter-bar :recipe-filter="recipeFilter" @replaceFilter="onFilterReplace" @updateFilter="onFilterChanged" />
+    <div id="active-filters-bar" class="container">
+      <div class="d-flex align-items-center">
+        <div class="inline-item-list">
+          <div
+            v-for="(activeFilter, index) in activeFilters"
+            :key="index"
+            class="inline-item-list-element"
+          >
+            <Icon :icon="activeFilter.icon" />
+            {{ activeFilter.name }}
+            <span class="item-delete" @click="removeFilter(activeFilter)">x</span>
+          </div>
+        </div>
+      </div>
+    </div>
     <recipe-list :recipes="recipes" />
     <div v-if="hasMoreRecipes" class="d-flex justify-content-center">
       <button
@@ -20,15 +35,9 @@ import { Vue, Component, Watch } from "vue-facing-decorator";
 import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
 import { ingredientStore } from "../stores/rootStore";
-import {
-  UiFilter,
-  nameFilter,
-  ingredientFilter,
-  seasonalFilter,
-  tagFilter,
-  markedFilter,
-} from "../components/recipe-filters/uiFilters";
+import { uiFilterHandlers, ActiveFilter } from "../components/recipe-filters/uiFilters";
 import { userStore } from "../stores/rootStore";
+import { Icon } from "@iconify/vue/dist/offline";
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
 import RecipeFilterBar from "../components/recipe-filters/RecipeFilterBar.vue";
@@ -43,6 +52,7 @@ enum RecipeLoadType {
     RecipeList,
     TypeaheadInput,
     RecipeFilterBar,
+    Icon,
   },
 })
 export default class RecipesView extends Vue {
@@ -54,8 +64,11 @@ export default class RecipesView extends Vue {
     marked: false,
   };
 
+  activeFilters: ActiveFilter[] = [];
+
   recipes: Recipe[] = [];
   recipeClient = new RecipesClient();
+
 
   hasMoreRecipes = false;
   page = 1;
@@ -63,44 +76,53 @@ export default class RecipesView extends Vue {
 
   @Watch("$route.query", { deep: true })
   onRouteParamsChange() {
-    this.applyRouteFilters();
+    this.updateFilterFromRoute();
   }
 
   mounted(): void {
-    this.applyRouteFilters();
+    this.updateFilterFromRoute();
+    this.reloadRecipes();
   }
 
-  get filters(): UiFilter[] {
-    const filters: UiFilter[] = [
-      nameFilter,
-      tagFilter,
-      ingredientFilter,
-      seasonalFilter,
-    ];
-
-    if (userStore.user && userStore.user.id) {
-      filters.push(markedFilter);
-    }
-
-    return filters;
+  private async updateFilterFromRoute(): Promise<void> {
+    // this.filters.forEach((filter) => {
+    //   const routeParam = this.$route.query[filter.name];
+    //   if (routeParam !== undefined) {
+    //     let val = "";
+    //     if (routeParam) {
+    //       val = routeParam.toString();
+    //     }
+    //     filter.applyRouteFilter(val, this.recipeFilter);
+    //   }
+    // });
   }
 
-  private async applyRouteFilters(): Promise<void> {
-    this.filters.forEach((filter) => {
-      const routeParam = this.$route.query[filter.name];
-      if (routeParam !== undefined) {
-        let val = "";
-        if (routeParam) {
-          val = routeParam.toString();
-        }
-        filter.applyRouteFilter(val, this.recipeFilter);
-      }
+  public async onFilterChanged(): Promise<void> {
+    // trigger recipe reload if filter changed
+    return this.reloadRecipes();
+  }
+
+  public async onFilterReplace(newFilter: RecipeFilter): Promise<void> {
+    this.recipeFilter = newFilter;
+    const newFilters: ActiveFilter[] = [];
+    uiFilterHandlers.forEach((handler) => {
+      newFilters.push(...handler.getActiveFilters(this.recipeFilter));
     });
-
-    return this.applyFilter();
+    this.activeFilters = newFilters;
+    this.onFilterChanged();
   }
 
-  public async applyFilter(): Promise<void> {
+  private udapteRouteFromFilter(): void {
+    // do something useful
+  }
+
+  removeFilter(filter: ActiveFilter) {
+    filter.remove();
+    this.activeFilters.splice(this.activeFilters.indexOf(filter), 1);
+    this.reloadRecipes();
+  }
+
+  public async reloadRecipes(): Promise<void> {
     this.recipeFilter.page = 1;
     this.loadRecipes(RecipeLoadType.Replace);
   }
