@@ -137,12 +137,27 @@ export default class RecipeFilterMenu extends Vue {
 
 <style lang="scss">
 @import "../../styles/variables.scss";
+@import "../../styles/breakpoints.scss";
+
+// width on xs
+@include media-breakpoint-down(sm) {
+  #filter-menu {
+    min-width: 100%;
+   }
+}
+
+@include media-breakpoint-up(sm) {
+  #filter-menu {
+    min-width: 500px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
 
 #filter-menu {
   position: fixed;
   top: 0;
   left: 0;
-  min-width: 450px;
   height: 100vh;
   background-color: white;
   z-index: 9999;
