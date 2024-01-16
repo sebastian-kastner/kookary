@@ -22,9 +22,10 @@
 <script lang="ts">
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
-  components: {},
+  components: { Icon },
   emits: ["valueChanged"],
 })
 export default class BooleanFilterComponent extends Vue {

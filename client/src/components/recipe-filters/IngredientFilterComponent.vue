@@ -16,12 +16,13 @@
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Vue, Component, Prop } from "vue-facing-decorator";
 import InlineItemList from "../InlineItemList.vue";
+import { Icon } from "@iconify/vue/dist/offline";
 import { ingredientStore } from "../../stores/rootStore";
 import { Ingredient } from "../../types";
 import { v4 as uuid } from "uuid";
 
 @Component({
-  components: { InlineItemList },
+  components: { InlineItemList, Icon },
   emits: ["filterUpdated"],
 })
 export default class IngredientFilterComponent extends Vue {

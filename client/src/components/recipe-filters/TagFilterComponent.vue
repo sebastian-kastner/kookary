@@ -1,5 +1,5 @@
 <template>
-  <div class="filter-menu-row-head"><Icon icon="bag" />Zutaten</div>
+  <div class="filter-menu-row-head"><Icon icon="tags" />Tags</div>
   <div class="filter-menu-row-body">
     <inline-item-list
       :suggest-items="existingTags"
@@ -17,9 +17,10 @@ import { Vue, Component, Prop } from "vue-facing-decorator";
 import InlineItemList from "../InlineItemList.vue";
 import { tagStore } from "../../stores/rootStore";
 import { Tag } from "../../types";
+import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
-  components: { InlineItemList },
+  components: { InlineItemList, Icon },
   emits: ["filterUpdated"],
 })
 export default class TagFilterComponent extends Vue {

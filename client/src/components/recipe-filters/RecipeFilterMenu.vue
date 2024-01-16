@@ -70,7 +70,6 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
-import { Icon } from "@iconify/vue/dist/offline";
 import cloneDeep from "lodash.clonedeep";
 
 import RecipeOrderBy from "./RecipeOrderBy.vue";
@@ -81,7 +80,6 @@ import TagFilterComponent from "./TagFilterComponent.vue";
 
 @Component({
   components: {
-    Icon,
     RecipeOrderBy,
     NameFilterComponent,
     BooleanFilterComponent,
