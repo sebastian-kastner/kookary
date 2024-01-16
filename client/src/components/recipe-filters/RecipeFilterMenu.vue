@@ -140,7 +140,7 @@ export default class RecipeFilterMenu extends Vue {
 
 @include media-breakpoint-up(sm) {
   #filter-menu {
-    min-width: 500px;
+    width: 500px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
