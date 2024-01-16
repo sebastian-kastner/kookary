@@ -128,7 +128,7 @@ export default class RecipeFilterMenu extends Vue {
       this.$emit("close-menu");
       return;
     }
-    this.$emit("apply-filter", this.activeFilter);
+    this.$emit("apply-filter", this.localFilter);
   }
 }
 </script>

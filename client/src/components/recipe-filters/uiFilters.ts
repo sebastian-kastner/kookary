@@ -24,7 +24,6 @@ import IsMarkedFilterComponent from "./IsMarkedFilterComponent.vue";
 export type UiFilter = {
   name: string;
   icon: string;
-  component: unknown;
   applyRouteFilter: (routeValue: string, filter: RecipeFilter) => void;
   isActive: (filter: RecipeFilter) => boolean;
   resetFilter: (filter: RecipeFilter) => void;
@@ -33,7 +32,6 @@ export type UiFilter = {
 export const nameFilter: UiFilter = {
   name: "name",
   icon: "cursor",
-  component: NameFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.nameContains = val;
   },
@@ -44,7 +42,6 @@ export const nameFilter: UiFilter = {
 export const tagFilter: UiFilter = {
   name: "tags",
   icon: "tags",
-  component: TagFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.tags = getTags(val.split(";"));
   },
@@ -55,7 +52,6 @@ export const tagFilter: UiFilter = {
 export const ingredientFilter: UiFilter = {
   name: "ingredients",
   icon: "bag",
-  component: IngredientFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.ingredients = getIngredients(val.split(";"));
   },
@@ -66,7 +62,6 @@ export const ingredientFilter: UiFilter = {
 export const seasonalFilter: UiFilter = {
   name: "seasonal",
   icon: "calendarWeek",
-  component: IsSeasonalFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.isSeasonal = true;
   },
@@ -77,7 +72,6 @@ export const seasonalFilter: UiFilter = {
 export const markedFilter: UiFilter = {
   name: "marked",
   icon: "bell",
-  component: IsMarkedFilterComponent,
   applyRouteFilter: (val, filter) => {
     filter.marked = true;
   },

@@ -31,7 +31,6 @@ import {
 import { userStore } from "../stores/rootStore";
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
-import FilterComponent from "../components/recipe-filters/FilterComponent.vue";
 import RecipeFilterBar from "../components/recipe-filters/RecipeFilterBar.vue";
 
 enum RecipeLoadType {
@@ -43,7 +42,6 @@ enum RecipeLoadType {
   components: {
     RecipeList,
     TypeaheadInput,
-    FilterComponent,
     RecipeFilterBar,
   },
 })
