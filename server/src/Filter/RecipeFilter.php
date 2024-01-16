@@ -32,9 +32,9 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const ORDER_BY_DIRECTION_PROPERTY = "order_by_direction";
 
-    const ORDER_BY_VALUES = [ 'date', 'rand', 'name' ];
+    const ORDER_BY_VALUES = ['date', 'rand', 'name'];
 
-    const ORDER_BY_DIRECTION_VALUES = [ 'desc', 'asc' ];
+    const ORDER_BY_DIRECTION_VALUES = ['desc', 'asc'];
 
     const AUTHOR_FILTER_PROPERTY = "author";
 
@@ -55,7 +55,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
         $this->security = $security;
     }
 
-    public function apply(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = []) {
+    public function apply(QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
+    {
         $this->orderBy = self::ORDER_BY_VALUES[0];
         $this->orderByDirection = self::ORDER_BY_DIRECTION_VALUES[0];
 
@@ -71,8 +72,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         string $operationName = null
-    )
-    {
+    ) {
         if ($value == "") {
             return;
         }
@@ -97,7 +97,22 @@ final class RecipeFilter extends AbstractContextAwareFilter
     private function addIngredientFilter(string $value, QueryBuilder $queryBuilder)
     {
         $this->joinRecipeIngredients($queryBuilder);
-        $queryBuilder->andWhere(sprintf("%s.ingredient = %d", self::RECIPE_INGREDIENT_ALIAS, $value));
+        $ingredientIds = $this->getIdListFromString($value);
+        // FIXME: allow to filter for multiple ingredients; the following filters for OR instead of AND
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->andX(
+                $queryBuilder->expr()->in(sprintf('%s.ingredient', self::RECIPE_INGREDIENT_ALIAS), $ingredientIds),
+            )
+        );
+
+        if (count($ingredientIds) > 1) {
+            $queryBuilder->having(
+                $queryBuilder->expr()->eq(
+                    sprintf('COUNT(DISTINCT %s.ingredient)', self::RECIPE_INGREDIENT_ALIAS),
+                    count($ingredientIds)
+                )
+            );
+        }
     }
 
     private function joinRecipeIngredients(QueryBuilder $queryBuilder)
@@ -112,6 +127,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
                     Join::WITH,
                     sprintf("%s.recipeId = %s.recipe", $recipeAlias, self::RECIPE_INGREDIENT_ALIAS)
                 );
+            $queryBuilder->groupBy(sprintf("%s.recipeId", $recipeAlias));
         }
     }
 
@@ -155,7 +171,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
             if (!in_array(self::INGREDIENT_ALIAS, $aliases)) {
                 $condition = str_replace(
-                    "[alias]", self::INGREDIENT_ALIAS,
+                    "[alias]",
+                    self::INGREDIENT_ALIAS,
                     "([alias].seasonStart < [alias].seasonEnd AND :currentMonth >= [alias].seasonStart AND :currentMonth <= [alias].seasonEnd) OR ([alias].seasonStart > [alias].seasonEnd AND (:currentMonth >= [alias].seasonStart OR :currentMonth <= [alias].seasonEnd))"
                 );
                 $this->joinRecipeIngredients($queryBuilder);
@@ -177,7 +194,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
         }
     }
 
-    private function addOrderByClause(QueryBuilder $queryBuilder) {
+    private function addOrderByClause(QueryBuilder $queryBuilder)
+    {
         // create direction value
         $trimmedOrderByDirection = strtolower(trim($this->orderByDirection));
         $dir = "";
@@ -187,7 +205,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
             $err = sprintf("Invalid value for %s. Allowed values are: %s", self::ORDER_BY_DIRECTION_PROPERTY, implode(", ", self::ORDER_BY_DIRECTION_VALUES));
             throw new \InvalidArgumentException($err);
         }
-        
+
         // create property value
         $trimmedOrderBy = strtolower(trim($this->orderBy));
         $prop = "";
@@ -206,14 +224,15 @@ final class RecipeFilter extends AbstractContextAwareFilter
             throw new \InvalidArgumentException($err);
         }
 
-        if($dir == "") {
+        if ($dir == "") {
             $queryBuilder->orderBy($prop);
         } else {
             $queryBuilder->orderBy($prop, $dir);
         }
     }
 
-    private function addAuthorFilter(string $value, QueryBuilder $queryBuilder) {
+    private function addAuthorFilter(string $value, QueryBuilder $queryBuilder)
+    {
         $authorIds = $this->getIdListFromString($value);
 
         $recipeAlias = $this->getRecipeAlias($queryBuilder);
@@ -221,12 +240,13 @@ final class RecipeFilter extends AbstractContextAwareFilter
         $queryBuilder->andWhere($condition);
     }
 
-    private function getIdListFromString(string $value): array {
+    private function getIdListFromString(string $value): array
+    {
         $valueArray = explode(",", $value);
         $ids = [];
         foreach ($valueArray as $item) {
             $trimmedItem = trim($item);
-            if(is_numeric($trimmedItem)) {
+            if (is_numeric($trimmedItem)) {
                 array_push($ids, $trimmedItem);
             } else {
                 throw new \InvalidArgumentException("Invalid number given: " + $trimmedItem);

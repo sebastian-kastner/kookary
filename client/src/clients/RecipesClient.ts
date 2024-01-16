@@ -48,12 +48,17 @@ export class RecipesClient {
       authorsArray = [userStore.user.id.toString()];
     }
 
-    // FIXME this only works for a single ingredient now
     let ingredientFilter: string | undefined;
     if (filter?.ingredients) {
       const ingredients = filter.ingredients;
       if (ingredients.length > 0) {
-        ingredientFilter = ingredients[0].ingredientId?.toString();
+        const ingredientIds: string[] = [];
+        ingredients.forEach((ingredient) => {
+          if (ingredient.ingredientId) {
+            ingredientIds.push(ingredient.ingredientId.toString());
+          }
+        });
+        ingredientFilter = ingredientIds.join(",");
       }
     }
     let tagFilter: string | undefined;
