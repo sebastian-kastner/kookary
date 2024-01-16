@@ -32,7 +32,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const ORDER_BY_DIRECTION_PROPERTY = "order_by_direction";
 
-    const ORDER_BY_VALUES = [ 'date', 'rand' ];
+    const ORDER_BY_VALUES = [ 'date', 'rand', 'name' ];
 
     const ORDER_BY_DIRECTION_VALUES = [ 'desc', 'asc' ];
 
@@ -195,6 +195,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
         if (in_array($trimmedOrderBy, self::ORDER_BY_VALUES)) {
             if ($trimmedOrderBy == 'date') {
                 $prop = sprintf("%s.dateAdded", $recipeAlias);
+            } else if ($trimmedOrderBy == 'name') {
+                $prop = sprintf("%s.name", $recipeAlias);
             } else if ($trimmedOrderBy == 'rand') {
                 $prop = "RAND()";
                 $dir = "";

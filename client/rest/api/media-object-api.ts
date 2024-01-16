@@ -72,11 +72,10 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
         /**
          * Retrieves the collection of MediaObject resources.
          * @summary Retrieves the collection of MediaObject resources.
-         * @param {number} [page] The collection page number
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMediaObjectCollection: async (page?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getMediaObjectCollection: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/media_objects`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -91,10 +90,6 @@ export const MediaObjectApiAxiosParamCreator = function (configuration?: Configu
 
             // authentication JWT required
             await setApiKeyToObject(localVarHeaderParameter, "Authorization", configuration)
-
-            if (page !== undefined) {
-                localVarQueryParameter['page'] = page;
-            }
 
 
     
@@ -220,12 +215,11 @@ export const MediaObjectApiFp = function(configuration?: Configuration) {
         /**
          * Retrieves the collection of MediaObject resources.
          * @summary Retrieves the collection of MediaObject resources.
-         * @param {number} [page] The collection page number
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getMediaObjectCollection(page?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getMediaObjectCollection(page, options);
+        async getMediaObjectCollection(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InlineResponse2003>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getMediaObjectCollection(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -275,12 +269,11 @@ export const MediaObjectApiFactory = function (configuration?: Configuration, ba
         /**
          * Retrieves the collection of MediaObject resources.
          * @summary Retrieves the collection of MediaObject resources.
-         * @param {number} [page] The collection page number
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getMediaObjectCollection(page?: number, options?: any): AxiosPromise<InlineResponse2003> {
-            return localVarFp.getMediaObjectCollection(page, options).then((request) => request(axios, basePath));
+        getMediaObjectCollection(options?: any): AxiosPromise<InlineResponse2003> {
+            return localVarFp.getMediaObjectCollection(options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves a MediaObject resource.
@@ -329,13 +322,12 @@ export class MediaObjectApi extends BaseAPI {
     /**
      * Retrieves the collection of MediaObject resources.
      * @summary Retrieves the collection of MediaObject resources.
-     * @param {number} [page] The collection page number
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MediaObjectApi
      */
-    public getMediaObjectCollection(page?: number, options?: AxiosRequestConfig) {
-        return MediaObjectApiFp(this.configuration).getMediaObjectCollection(page, options).then((request) => request(this.axios, this.basePath));
+    public getMediaObjectCollection(options?: AxiosRequestConfig) {
+        return MediaObjectApiFp(this.configuration).getMediaObjectCollection(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
