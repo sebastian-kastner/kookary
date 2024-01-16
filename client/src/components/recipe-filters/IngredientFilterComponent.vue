@@ -1,15 +1,14 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <inline-item-list
-        :suggest-items="existingIngredients"
-        :items="recipeFilter.ingredients"
-        :provide-id="getIngredientId"
-        :input-placeholder="inputPlaceholder"
-        @itemSelected="applyFilter"
-        @itemDeleted="applyFilter"
-      />
-    </div>
+  <div class="filter-menu-row-head"><Icon icon="bag" />Zutaten</div>
+  <div class="filter-menu-row-body">
+    <inline-item-list
+      :suggest-items="existingIngredients"
+      :items="recipeFilter.ingredients"
+      :provide-id="getIngredientId"
+      :input-placeholder="inputPlaceholder"
+      @itemSelected="filterUpdated"
+      @itemDeleted="filterUpdated"
+    />
   </div>
 </template>
 
@@ -23,18 +22,20 @@ import { v4 as uuid } from "uuid";
 
 @Component({
   components: { InlineItemList },
+  emits: ["filterUpdated"],
 })
 export default class IngredientFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
+  typeaheadValue = "";
   inputPlaceholder = "Zutatenname...";
 
   get existingIngredients(): Ingredient[] {
     return ingredientStore.ingredients;
   }
 
-  applyFilter(): void {
-    this.$emit("applyFilter");
+  filterUpdated(): void {
+    this.$emit("filterUpdated");
   }
 
   getIngredientId(ingredient: Ingredient): string {

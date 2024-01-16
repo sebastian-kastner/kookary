@@ -1,14 +1,13 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <inline-item-list
-        :suggest-items="existingTags"
-        :items="recipeFilter.tags"
-        :input-placeholder="inputPlaceholder"
-        @itemSelected="applyFilter"
-        @itemDeleted="applyFilter"
-      />
-    </div>
+  <div class="filter-menu-row-head"><Icon icon="bag" />Zutaten</div>
+  <div class="filter-menu-row-body">
+    <inline-item-list
+      :suggest-items="existingTags"
+      :items="recipeFilter.tags"
+      :input-placeholder="inputPlaceholder"
+      @itemSelected="filterUpdated"
+      @itemDeleted="filterUpdated"
+    />
   </div>
 </template>
 
@@ -21,18 +20,20 @@ import { Tag } from "../../types";
 
 @Component({
   components: { InlineItemList },
+  emits: ["filterUpdated"],
 })
-export default class NameFilterComponent extends Vue {
+export default class TagFilterComponent extends Vue {
   @Prop({ required: true }) recipeFilter!: RecipeFilter;
 
-  inputPlaceholder = "Tag Name...";
+  typeaheadValue = "";
+  inputPlaceholder = "Tag...";
 
   get existingTags(): Tag[] {
     return tagStore.tags;
   }
 
-  applyFilter(): void {
-    this.$emit("applyFilter");
+  filterUpdated(): void {
+    this.$emit("filterUpdated");
   }
 }
 </script>

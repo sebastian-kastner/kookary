@@ -33,16 +33,16 @@
       />
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head"><Icon icon="bag" />Zutaten</div>
-      <div class="filter-menu-row-body">
-        <input type="text" class="form-control" />
-      </div>
+      <ingredient-filter-component
+        :recipe-filter="localFilter"
+        @filterUpdated="onFilterUpdate"
+      />
     </div>
     <div class="filter-menu-row">
-      <div class="filter-menu-row-head"><Icon icon="tags" />Tags</div>
-      <div class="filter-menu-row-body">
-        <input type="text" class="form-control" />
-      </div>
+      <tag-filter-component
+        :recipe-filter="localFilter"
+        @filterUpdated="onFilterUpdate"
+      />
     </div>
     <div class="filter-menu-row">
       <boolean-filter-component
@@ -76,6 +76,8 @@ import cloneDeep from "lodash.clonedeep";
 import RecipeOrderBy from "./RecipeOrderBy.vue";
 import NameFilterComponent from "./NameFilterComponent.vue";
 import BooleanFilterComponent from "./BooleanFilterComponent.vue";
+import IngredientFilterComponent from "./IngredientFilterComponent.vue";
+import TagFilterComponent from "./TagFilterComponent.vue";
 
 @Component({
   components: {
@@ -83,6 +85,8 @@ import BooleanFilterComponent from "./BooleanFilterComponent.vue";
     RecipeOrderBy,
     NameFilterComponent,
     BooleanFilterComponent,
+    IngredientFilterComponent,
+    TagFilterComponent,
   },
 })
 export default class RecipeFilterMenu extends Vue {
