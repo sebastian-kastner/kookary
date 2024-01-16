@@ -149,8 +149,8 @@ export default class RecipeFilterMenu extends Vue {
 @include media-breakpoint-up(sm) {
   #filter-menu {
     min-width: 500px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
 }
 
@@ -163,8 +163,6 @@ export default class RecipeFilterMenu extends Vue {
   z-index: 9999;
   color: black;
   border: 1px solid darkgray;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
 
   .filter-menu-row {
     border-bottom: 1px solid lightgray;
