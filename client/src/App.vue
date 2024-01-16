@@ -200,7 +200,10 @@ export default class App extends Vue {
 
   executeSearch(): void {
     if (this.searchTerm != "") {
-      this.$router.push(`/recipes?name=${this.searchTerm}`);
+      this.$router.push({
+              path: "/recipes",
+              query: { ...this.$route.query, name: this.searchTerm },
+            });
       this.cancelSearch();
     } else {
       this.focusSearchField();

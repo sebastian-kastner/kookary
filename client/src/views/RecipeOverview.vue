@@ -76,6 +76,7 @@ export default class RecipesView extends Vue {
   @Watch("$route.query", { deep: true })
   onRouteParamsChange() {
     this.updateFilterFromRoute();
+    this.reloadRecipes();
   }
 
   mounted(): void {
