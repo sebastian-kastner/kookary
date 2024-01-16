@@ -134,10 +134,25 @@ final class RecipeFilter extends AbstractContextAwareFilter
     private function addTagFilter(string $value, QueryBuilder $queryBuilder)
     {
         $recipeAlias = $this->getRecipeAlias($queryBuilder);
+        $tagIds = $this->getIdListFromString($value);
         $queryBuilder
-            ->addSelect("t")
-            ->leftJoin(sprintf("%s.tags", $recipeAlias), "t")
-            ->andWhere(sprintf("t = %s", $value));
+            ->leftJoin(sprintf("%s.tags", $recipeAlias), self::TAG_ALIAS)
+            ->andWhere(
+                $queryBuilder->expr()->andX(
+                    $queryBuilder->expr()->in(self::TAG_ALIAS, $tagIds),
+                )
+            );
+        if (count($tagIds) > 1) {
+            // to make this group by statement work, the ONLY_FULL_GROUP_BY needs to be disabled
+            // for doctrine it is disabled in the doctrine.yaml configuration file
+            $queryBuilder->groupBy(sprintf("%s.recipeId", $recipeAlias));
+            $queryBuilder->having(
+                $queryBuilder->expr()->eq(
+                    sprintf('COUNT(DISTINCT %s.tagId)', self::TAG_ALIAS),
+                    count($tagIds)
+                )
+            );
+        }
     }
 
     private function addMarkedFilter(string $value, QueryBuilder $queryBuilder)

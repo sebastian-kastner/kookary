@@ -65,7 +65,13 @@ export class RecipesClient {
     if (filter?.tags) {
       const tags = filter.tags;
       if (tags.length > 0) {
-        tagFilter = tags[0].tagId?.toString();
+        const tagIds: string[] = [];
+        tags.forEach((tag) => {
+          if (tag.tagId) {
+            tagIds.push(tag.tagId.toString());
+          }
+        });
+        tagFilter = tagIds.join(",");
       }
     }
     let isSeasonal = false;

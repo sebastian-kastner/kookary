@@ -3,6 +3,10 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         # required for revers engineering of tables without primary key
         schema_filter: ~^(?!tag_to_recipe|image_to_recipe)~
+        options:
+            # this is required to make doctrine work with incomplete group by statements
+            # (e.g. to query for recipe with a set of given tags)
+            1002: 'SET sql_mode=(SELECT REPLACE(@@sql_mode, "ONLY_FULL_GROUP_BY", ""))'
 
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
