@@ -9,53 +9,49 @@
         @click="closeMenu"
       ></button>
     </div>
-    <div class="filter-menu-row">
-      <recipe-order-by
-        :recipe-filter="localFilter"
-        @orderingUpdated="orderingUpdated"
-      />
+    <div class="scrollable-filters">
+      <div class="filter-menu-row">
+        <recipe-order-by
+          :recipe-filter="localFilter"
+          @orderingUpdated="orderingUpdated"
+        />
+      </div>
+      <div class="filter-menu-row">
+        <name-filter-component :recipe-filter="localFilter" />
+      </div>
+      <div class="filter-menu-row">
+        <boolean-filter-component
+          :recipe-filter="localFilter"
+          icon="calendarWeek"
+          title="Saisonalität"
+          label="Nur saisonale Rezepte"
+          checkbox-id="is-seasonal-filter"
+          :flag="localFilter?.isSeasonal"
+          @valueChanged="updateIsSeasonalFilter"
+        />
+      </div>
+      <div class="filter-menu-row">
+        <ingredient-filter-component :recipe-filter="localFilter" />
+      </div>
+      <div class="filter-menu-row">
+        <tag-filter-component :recipe-filter="localFilter" />
+      </div>
+      <div class="filter-menu-row">
+        <boolean-filter-component
+          :recipe-filter="localFilter"
+          icon="bell"
+          title="Merkliste"
+          label="Nur Rezepte auf Merkliste"
+          checkbox-id="is-marked-filter"
+          :flag="localFilter?.marked"
+          @valueChanged="updateIsMarkedFilter"
+        />
+      </div>
     </div>
-    <div class="filter-menu-row">
-      <name-filter-component
-        :recipe-filter="localFilter"
-      />
-    </div>
-    <div class="filter-menu-row">
-      <boolean-filter-component
-        :recipe-filter="localFilter"
-        icon="calendarWeek"
-        title="Saisonalität"
-        label="Nur saisonale Rezepte"
-        checkbox-id="is-seasonal-filter"
-        :flag="localFilter?.isSeasonal"
-        @valueChanged="updateIsSeasonalFilter"
-      />
-    </div>
-    <div class="filter-menu-row">
-      <ingredient-filter-component
-        :recipe-filter="localFilter"
-      />
-    </div>
-    <div class="filter-menu-row">
-      <tag-filter-component
-        :recipe-filter="localFilter"
-      />
-    </div>
-    <div class="filter-menu-row">
-      <boolean-filter-component
-        :recipe-filter="localFilter"
-        icon="bell"
-        title="Merkliste"
-        label="Nur Rezepte auf Merkliste"
-        checkbox-id="is-marked-filter"
-        :flag="localFilter?.marked"
-        @valueChanged="updateIsMarkedFilter"
-      />
-    </div>
-    <div class="py-4">
+    <div class="pt-4 apply-filter">
       <button
         type="button"
-        class="apply-filter btn btn-outline-primary"
+        class="btn btn-outline-primary"
         @click="applyFilter"
       >
         Filtern!
@@ -135,7 +131,7 @@ export default class RecipeFilterMenu extends Vue {
 @include media-breakpoint-down(sm) {
   #filter-menu {
     min-width: 100%;
-   }
+  }
 }
 
 @include media-breakpoint-up(sm) {
@@ -150,11 +146,19 @@ export default class RecipeFilterMenu extends Vue {
   position: fixed;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   background-color: white;
   z-index: 9999;
   color: black;
   border: 1px solid darkgray;
+
+  .scrollable-filters {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
 
   .filter-menu-row {
     border-bottom: 1px solid lightgray;
@@ -174,7 +178,13 @@ export default class RecipeFilterMenu extends Vue {
   }
 
   .apply-filter {
-    width: 100%;
+    margin-top: auto;
+    text-align: center;
+    padding: 10px;
+
+    button {
+      width: 100%;
+    }
   }
 }
 </style>
