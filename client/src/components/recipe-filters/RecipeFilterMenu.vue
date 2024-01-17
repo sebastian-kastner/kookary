@@ -1,70 +1,76 @@
 <template>
-  <div v-if="filterMenuOpen" id="filter-menu" class="p-4">
-    <div class="d-flex justify-content-between">
-      <h3>Filtern & Sortieren</h3>
-      <button
-        type="button"
-        class="btn-close"
-        aria-label="Close"
-        @click="closeMenu"
-      ></button>
+  <VueFinalModal
+    class="vfm-modal"
+    content-class="vfm-modal-content"
+    overlay-transition="vfm-fade"
+    content-transition="vfm-fade"
+  >
+    <div id="filter-menu" class="p-4">
+      <div class="d-flex justify-content-between">
+        <h3>Filtern & Sortieren</h3>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          @click="closeMenu"
+        ></button>
+      </div>
+      <div class="scrollable-filters">
+        <div class="filter-menu-row">
+          <recipe-order-by
+            :recipe-filter="localFilter"
+          />
+        </div>
+        <div class="filter-menu-row">
+          <name-filter-component :recipe-filter="localFilter" />
+        </div>
+        <div class="filter-menu-row">
+          <boolean-filter-component
+            :recipe-filter="localFilter"
+            icon="calendarWeek"
+            title="Saisonalität"
+            label="Nur saisonale Rezepte"
+            checkbox-id="is-seasonal-filter"
+            :flag="localFilter?.isSeasonal"
+            @valueChanged="updateIsSeasonalFilter"
+          />
+        </div>
+        <div class="filter-menu-row">
+          <ingredient-filter-component :recipe-filter="localFilter" />
+        </div>
+        <div class="filter-menu-row">
+          <tag-filter-component :recipe-filter="localFilter" />
+        </div>
+        <div class="filter-menu-row">
+          <boolean-filter-component
+            :recipe-filter="localFilter"
+            icon="bell"
+            title="Merkliste"
+            label="Nur Rezepte auf Merkliste"
+            checkbox-id="is-marked-filter"
+            :flag="localFilter?.marked"
+            @valueChanged="updateIsMarkedFilter"
+          />
+        </div>
+      </div>
+      <div class="apply-filter">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          @click="applyFilter"
+        >
+          Filtern!
+        </button>
+      </div>
     </div>
-    <div class="scrollable-filters">
-      <div class="filter-menu-row">
-        <recipe-order-by
-          :recipe-filter="localFilter"
-          @orderingUpdated="orderingUpdated"
-        />
-      </div>
-      <div class="filter-menu-row">
-        <name-filter-component :recipe-filter="localFilter" />
-      </div>
-      <div class="filter-menu-row">
-        <boolean-filter-component
-          :recipe-filter="localFilter"
-          icon="calendarWeek"
-          title="Saisonalität"
-          label="Nur saisonale Rezepte"
-          checkbox-id="is-seasonal-filter"
-          :flag="localFilter?.isSeasonal"
-          @valueChanged="updateIsSeasonalFilter"
-        />
-      </div>
-      <div class="filter-menu-row">
-        <ingredient-filter-component :recipe-filter="localFilter" />
-      </div>
-      <div class="filter-menu-row">
-        <tag-filter-component :recipe-filter="localFilter" />
-      </div>
-      <div class="filter-menu-row">
-        <boolean-filter-component
-          :recipe-filter="localFilter"
-          icon="bell"
-          title="Merkliste"
-          label="Nur Rezepte auf Merkliste"
-          checkbox-id="is-marked-filter"
-          :flag="localFilter?.marked"
-          @valueChanged="updateIsMarkedFilter"
-        />
-      </div>
-    </div>
-    <div class="pt-4 apply-filter">
-      <button
-        type="button"
-        class="btn btn-outline-primary"
-        @click="applyFilter"
-      >
-        Filtern!
-      </button>
-    </div>
-  </div>
+  </VueFinalModal>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
-import cloneDeep from "lodash.clonedeep";
 
+import { VueFinalModal } from "vue-final-modal";
 import RecipeOrderBy from "./RecipeOrderBy.vue";
 import NameFilterComponent from "./NameFilterComponent.vue";
 import BooleanFilterComponent from "./BooleanFilterComponent.vue";
@@ -73,28 +79,20 @@ import TagFilterComponent from "./TagFilterComponent.vue";
 
 @Component({
   components: {
+    VueFinalModal,
     RecipeOrderBy,
     NameFilterComponent,
     BooleanFilterComponent,
     IngredientFilterComponent,
     TagFilterComponent,
   },
+  emits: ["apply", "close"],
 })
 export default class RecipeFilterMenu extends Vue {
-  @Prop({ required: true }) filterMenuOpen!: boolean;
-  @Prop({ required: true }) activeFilter!: RecipeFilter;
-
-  localFilter: RecipeFilter | null = null;
-
-  @Watch("filterMenuOpen")
-  onFilterMenuOpenChanged() {
-    if (this.filterMenuOpen) {
-      this.localFilter = cloneDeep(this.activeFilter);
-    }
-  }
+  @Prop({ required: true }) localFilter!: RecipeFilter;
 
   closeMenu(): void {
-    this.$emit("close-menu");
+    this.$emit("close");
   }
 
   updateIsSeasonalFilter(newVal: boolean): void {
@@ -109,16 +107,12 @@ export default class RecipeFilterMenu extends Vue {
     }
   }
 
-  orderingUpdated(): void {
-    this.$emit("ordering-updated");
-  }
-
   applyFilter() {
     if (!this.localFilter) {
-      this.$emit("close-menu");
+      this.$emit("close");
       return;
     }
-    this.$emit("apply-filter", this.localFilter);
+    this.$emit("apply", this.localFilter);
   }
 }
 </script>
@@ -127,7 +121,7 @@ export default class RecipeFilterMenu extends Vue {
 @import "../../styles/variables.scss";
 @import "../../styles/breakpoints.scss";
 
-// width on xs
+// extra styling on xs
 @include media-breakpoint-down(sm) {
   #filter-menu {
     min-width: 100%;
@@ -148,7 +142,7 @@ export default class RecipeFilterMenu extends Vue {
   left: 0;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background-color: white;
   z-index: 9999;
   color: black;
@@ -178,7 +172,6 @@ export default class RecipeFilterMenu extends Vue {
   }
 
   .apply-filter {
-    margin-top: auto;
     text-align: center;
     padding: 10px;
 
