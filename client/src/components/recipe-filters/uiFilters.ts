@@ -160,6 +160,43 @@ const markedFilter: UiFilterHandler = {
   }
 };
 
+const orderByFilter: UiFilterHandler = {
+  name: "orderBy",
+  applyRouteFilter: (val, filter) => {
+    if (val === "date" || val === "name") {
+      filter.orderBy = val;
+    }
+  },
+  getActiveFilters: (filter) => {
+    return [];
+  },
+  getRouteParams: (filter) => {
+    if (filter.orderBy) {
+      return filter.orderBy;
+    }
+    return null;
+  }
+};
+
+const orderByDirectionFilter: UiFilterHandler = {
+  name: "orderByDirection",
+  applyRouteFilter: (val, filter) => {
+    if (val === "asc" || val === "desc") {
+      filter.orderByDirection = val;
+    }
+  },
+  getActiveFilters: (filter) => {
+    return [];
+  },
+  getRouteParams: (filter) => {
+    if (filter.orderByDirection) {
+      return filter.orderByDirection;
+    }
+    return null;
+  }
+};
+
+// FIXME: this does not work on page reload because the ingredient store is not yet initialized
 function getTags(tagIds: string[]): Tag[] {
   const tags: Tag[] = [];
   tagIds.forEach((stringId) => {
@@ -176,6 +213,7 @@ function getTags(tagIds: string[]): Tag[] {
   return tags;
 }
 
+// FIXME: this does not work on page reload because the ingredient store is not yet initialized
 function getIngredients(ingredientIds: string[]): Ingredient[] {
   const ingredients: Ingredient[] = [];
   ingredientIds.forEach((stringId) => {
@@ -198,4 +236,6 @@ export const uiFilterHandlers: UiFilterHandler[] = [
   ingredientFilter,
   seasonalFilter,
   markedFilter,
+  orderByFilter,
+  orderByDirectionFilter,
 ];

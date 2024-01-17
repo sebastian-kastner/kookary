@@ -124,12 +124,6 @@ export default class RecipesView extends Vue {
         newRoute[filter.name] = routeParamVal;
       }
     });
-    if (this.recipeFilter.orderBy) {
-      newRoute["orderBy"] = this.recipeFilter.orderBy;
-      if (this.recipeFilter.orderByDirection) {
-        newRoute["orderByDirection"] = this.recipeFilter.orderByDirection;
-      }
-    }
     this.$router.push({ query: newRoute });
   }
 

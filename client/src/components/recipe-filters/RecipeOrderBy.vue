@@ -10,6 +10,7 @@
         v-for="option in orderOptions"
         :key="option.orderBy + '.' + option.orderByDirection"
         :value="option"
+        :selected="option === selectedOption"
       >
         {{ option.label }}
       </option>
@@ -19,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
+import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Icon } from "@iconify/vue/dist/offline";
 
@@ -45,7 +46,9 @@ export default class RecipeOrderBy extends Vue {
 
   selectedOption: OrderOption | null = null;
 
-  public mounted(): void {
+  @Watch("recipeFilter.orderBy", { immediate: true })
+  @Watch("recipeFilter.orderByDirection", { immediate: true })
+  public updateSelectedOption(): void {
     if (this.recipeFilter.orderBy && this.recipeFilter.orderByDirection) {
       const filterOption = this.orderOptions.find(
         (o) =>
