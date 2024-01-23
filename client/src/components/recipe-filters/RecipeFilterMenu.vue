@@ -143,6 +143,7 @@ export default class RecipeFilterMenu extends Vue {
   padding: 0;
   max-height: 100%;
   background-color: transparent;
+  border: none;
 
   #filter-menu {
     display: flex;
