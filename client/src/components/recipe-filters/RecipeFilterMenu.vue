@@ -17,9 +17,7 @@
       </div>
       <div class="scrollable-filters">
         <div class="filter-menu-row">
-          <recipe-order-by
-            :recipe-filter="localFilter"
-          />
+          <recipe-order-by :recipe-filter="localFilter" />
         </div>
         <div class="filter-menu-row">
           <name-filter-component :recipe-filter="localFilter" />
@@ -136,37 +134,44 @@ export default class RecipeFilterMenu extends Vue {
   }
 }
 
-#filter-menu {
+.vfm-modal-content {
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  background-color: white;
-  z-index: 9999;
-  color: black;
-  border: 1px solid darkgray;
+  margin: 0;
+  padding: 0;
+  max-height: 100%;
+  background-color: transparent;
 
-  .scrollable-filters {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-  }
+  #filter-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    color: black;
+    border: 1px solid darkgray;
+    height: 100%;
 
-  .filter-menu-row {
-    border-bottom: 1px solid lightgray;
-    padding: 15px 0;
+    .scrollable-filters {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
 
-    .filter-menu-row-head {
-      font-weight: bold;
-      padding-bottom: 5px;
-      display: flex;
-      align-items: center;
+    .filter-menu-row {
+      border-bottom: 1px solid lightgray;
+      padding: 15px 0;
 
-      svg {
-        margin-right: 5px;
-        font-size: 1.1rem;
+      .filter-menu-row-head {
+        font-weight: bold;
+        padding-bottom: 5px;
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 5px;
+          font-size: 1.1rem;
+        }
       }
     }
   }
