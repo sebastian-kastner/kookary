@@ -10,22 +10,46 @@ const VuexModule = createModule({
 export class IngredientStore extends VuexModule {
   private ingredientClient = new IngredientsClient();
 
+  public isInitialized = false;
+  private initPromise : Promise<Ingredient[]> | null = null;
+
   public ingredients: Ingredient[] = [];
   public ingredientMap: Map<number, Ingredient> = new Map<number, Ingredient>();
 
   @action
   async init() {
-    const ingredients = await this.ingredientClient.getIngredients();
+    const initPromise = this.ingredientClient.getIngredients();
+    this.SET_INIT_PROMISE(initPromise);
 
-    const ingredientMap = new Map<number, Ingredient>();
-    ingredients.forEach((ingredient) => {
-      if (ingredient.ingredientId && ingredient.name) {
-        ingredientMap.set(ingredient.ingredientId, ingredient);
-      }
+    return new Promise<void>((resolve, reject) => {
+      initPromise
+        .then((ingredients) => {
+          const ingredientMap = new Map<number, Ingredient>();
+          ingredients.forEach((ingredient) => {
+            if (ingredient.ingredientId && ingredient.name) {
+              ingredientMap.set(ingredient.ingredientId, ingredient);
+            }
+          });
+      
+          this.SET_INGREDIENTS(ingredients);
+          this.SET_INGREDIENTS_MAP(ingredientMap);
+          this.SET_IS_INITIALIZED(true);
+          resolve();
+        })
+        .catch((err) => reject(err));
     });
+  }
 
-    this.SET_INGREDIENTS(ingredients);
-    this.SET_INGREDIENTS_MAP(ingredientMap);
+  @action
+  async awaitInit(): Promise<void> {
+    if (this.isInitialized) {
+      return Promise.resolve();
+    }
+    else if (this.initPromise) {
+      await this.initPromise;
+      return Promise.resolve();
+    }
+    return Promise.reject("IngredientStore is not initialized");
   }
 
   @action
@@ -58,6 +82,16 @@ export class IngredientStore extends VuexModule {
         })
         .catch((err) => reject(err));
     });
+  }
+
+  @mutation
+  private SET_INIT_PROMISE(initPromise: Promise<Ingredient[]>) {
+    this.initPromise = initPromise;
+  }
+
+  @mutation
+  private SET_IS_INITIALIZED(isInitialized: boolean) {
+    this.isInitialized = isInitialized;
   }
 
   @mutation

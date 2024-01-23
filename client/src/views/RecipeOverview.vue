@@ -35,7 +35,7 @@ import { Vue, Component, Watch } from "vue-facing-decorator";
 import { RecipesClient, RecipeFilter } from "../clients/RecipesClient";
 import { Ingredient, Recipe } from "../types";
 import { ingredientStore } from "../stores/rootStore";
-import { uiFilterHandlers, ActiveFilter } from "../components/recipe-filters/uiFilters";
+import { filterHandlers, ActiveFilter } from "../components/recipe-filters/FilterHandlers";
 import { Icon } from "@iconify/vue/dist/offline";
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
@@ -75,26 +75,29 @@ export default class RecipesView extends Vue {
 
   @Watch("$route.query", { deep: true })
   onRouteParamsChange() {
-    this.updateFilterFromRoute();
-    this.reloadRecipes();
+    this.updateFilterFromRoute().then(() => {
+      this.reloadRecipes();
+    });
   }
 
   mounted(): void {
-    this.updateFilterFromRoute();
-    this.reloadRecipes();
+    this.updateFilterFromRoute().then(() => {
+      this.reloadRecipes();
+    });
   }
 
   private async updateFilterFromRoute(): Promise<void> {
-    uiFilterHandlers.forEach((filter) => {
+    // use for loop instead of forEach for easier async handling
+    for (const filter of filterHandlers) {
       const routeParam = this.$route.query[filter.name];
       if (routeParam !== undefined) {
         let val = "";
         if (routeParam) {
           val = routeParam.toString();
         }
-        filter.applyRouteFilter(val, this.recipeFilter);
+        await filter.applyRouteFilter(val, this.recipeFilter);
       }
-    });
+    }
     this.reloadActiveFilters();
   }
 
@@ -110,7 +113,7 @@ export default class RecipesView extends Vue {
   
   private reloadActiveFilters(): void {
     const newFilters: ActiveFilter[] = [];
-    uiFilterHandlers.forEach((handler) => {
+    filterHandlers.forEach((handler) => {
       newFilters.push(...handler.getActiveFilters(this.recipeFilter));
     });
     this.activeFilters = newFilters;
@@ -118,7 +121,7 @@ export default class RecipesView extends Vue {
 
   private udapteRouteFromFilter(): void {
     const newRoute: LocationQueryRaw = {};
-    uiFilterHandlers.forEach((filter) => {
+    filterHandlers.forEach((filter) => {
       const routeParamVal = filter.getRouteParams(this.recipeFilter);
       if (routeParamVal) {
         newRoute[filter.name] = routeParamVal;
@@ -177,3 +180,4 @@ export default class RecipesView extends Vue {
   }
 }
 </script>
+../components/recipe-filters/FilterHandlers
