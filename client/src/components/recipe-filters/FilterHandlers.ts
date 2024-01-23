@@ -2,19 +2,6 @@ import { tagStore, ingredientStore } from "../../stores/rootStore";
 import { RecipeFilter } from "../../clients/RecipesClient";
 import { Tag, Ingredient } from "../../types";
 
-/*
- different filter types:
-  - string filter (name)
-  - boolean filter (isSeasonal, isMarked)
-  - list filter (tags, ingredients)
-
- common operations:
-  - apply filter from route (?)
-  - update route with filter
-  - get key (key within the route, probably with a prefix)
-    alternative: "appliesTo(nameOfGetParam)"
-*/
-
 export type ActiveFilter = {
   name: string;
   icon: string;

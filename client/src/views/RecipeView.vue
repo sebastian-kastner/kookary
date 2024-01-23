@@ -111,10 +111,10 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="row recipe-description" v-html="description" />
 
-      <div class="row">
+      <div v-if="sourceLink && sourceLink !== ''" class="row">
         <h4>QUELLE</h4>
       </div>
-      <div class="row">
+      <div v-if="sourceLink && sourceLink !== ''" class="row source-link">
         <a v-if="sourceLink !== null" :href="sourceLink" target="_blank">
           {{ recipe.source }}
         </a>
@@ -461,6 +461,12 @@ export default class RecipeView extends mixins(ToastMixin) {
 
   .recipe-description {
     max-width: 100%;
+  }
+
+  .source-link {
+    a {
+      overflow-x: hidden;
+    }
   }
 }
 </style>
