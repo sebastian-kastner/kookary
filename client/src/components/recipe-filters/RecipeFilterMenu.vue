@@ -121,8 +121,12 @@ export default class RecipeFilterMenu extends Vue {
 
 // extra styling on xs
 @include media-breakpoint-down(sm) {
-  #filter-menu {
+  .vfm-modal-content {
     min-width: 100%;
+
+    #filter-menu {
+      min-width: 100%;
+    }
   }
 }
 
