@@ -109,27 +109,15 @@ export function convertRecipeIngredients(
   for (const key in apiIngredients) {
     ingredients.push(convertRecipeIngredient(apiIngredients[key]));
   }
-
-  ingredients.sort((a, b) => {
-    let aPos = 0;
-    let bPos = 0;
-
-    if (a.position) {
-      aPos = a.position;
-    } else if (a.recipeIngredientId) {
-      aPos = a.recipeIngredientId;
+  return ingredients.sort((a, b) => {
+    if (!a.position) {
+      return -1;
     }
-
-    if (b.position) {
-      bPos = b.position;
-    } else if (b.recipeIngredientId) {
-      bPos = b.recipeIngredientId;
+    if (!b.position) {
+      return 1;
     }
-
-    return aPos - bPos;
+    return a.position - b.position;
   });
-
-  return ingredients;
 }
 
 export function convertRecipe(apiRecipe: RecipeJsonld): Recipe {

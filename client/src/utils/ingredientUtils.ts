@@ -1,3 +1,5 @@
+import { RecipeIngredient  } from '../types'
+
 export function getIngredientLabel(
   name?: string | null,
   unit?: string | null,
@@ -18,4 +20,19 @@ export function getIngredientLabel(
     }
   }
   return label;
+}
+
+// FIXME: remove this debugging function
+export function checkIngredientPos(ingredients: RecipeIngredient[]): void {
+  ingredients.forEach((ingredient, index) => {
+    if(ingredient.position !== index) {
+      let label = "";
+      if (ingredient.ingredient && ingredient.ingredient.name) {
+        label = ingredient.ingredient.name;
+      } else if (ingredient.separatorLabel) {
+        label = ingredient.separatorLabel;
+      }
+      console.warn("Position mismatch:", label, "Expected:", index, "Actual:", ingredient.position)
+    }
+  });
 }

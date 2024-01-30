@@ -59,6 +59,7 @@ export default class RecipeIngredientsEditor extends Vue {
   @Prop({ required: true }) ingredients!: RecipeIngredient[];
   @Prop({ required: true }) existingIngredients!: Ingredient[];
 
+  // FIXME: why is this here?
   updateIngredientName(): void {
     if (this.ingredients) {
       const lastIngredient = this.ingredients[this.ingredients.length - 1].ingredient;
@@ -75,9 +76,7 @@ export default class RecipeIngredientsEditor extends Vue {
   }
 
   updatePositions(): void {
-    for (let i = 0; i < this.ingredients.length; i++) {
-      this.ingredients[i].position = i;
-    }
+    this.$emit("updateIngredientPositions");
   }
 
   onSeparatorDelete(separator: RecipeIngredient): void {
@@ -119,6 +118,7 @@ export default class RecipeIngredientsEditor extends Vue {
   addNewIngredient(): void {
     this.ingredients?.push({
       uuid: uuid(),
+      position: this.ingredients.length,
     });
   }
 }

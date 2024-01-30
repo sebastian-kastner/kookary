@@ -60,6 +60,7 @@
       <recipe-ingredients-editor
         :ingredients="recipe.ingredients"
         :existing-ingredients="existingIngredients"
+        @updateIngredientPositions="updateIngredientPositions"
       />
     </div>
     <div class="mb-2">
@@ -97,6 +98,8 @@ import SaveButton from "../../components/SaveButton.vue";
 import DialogModal from "../../components/DialogModal.vue";
 import { getErrorMessage } from "../../utils/errors";
 import { useToast } from "vue-toast-notification";
+
+import { checkIngredientPos } from '../../utils/ingredientUtils'
 
 @Options({
   components: {
@@ -184,6 +187,7 @@ export default class RecipeEditorView extends Vue {
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
         this.recipe = recipe;
         this.addNewIngredient();
+        checkIngredientPos(this.recipe.ingredients);
         if (this.recipe.tags === undefined) {
           this.recipe.tags = [];
         }
@@ -209,6 +213,12 @@ export default class RecipeEditorView extends Vue {
       this.ingredientsHaveChanges = true;
     } else {
       this.ingredientsInitialized = true;
+    }
+  }
+
+  updateIngredientPositions(): void {
+    for (let i = 0; i < this.recipe.ingredients.length; i++) {
+      this.recipe.ingredients[i].position = i;
     }
   }
 
@@ -266,7 +276,7 @@ export default class RecipeEditorView extends Vue {
   private addNewIngredient(): void {
     this.recipe.ingredients.push({
       uuid: uuid(),
-      position: this.recipe.ingredients.length + 1,
+      position: this.recipe.ingredients.length,
     });
   }
 
@@ -301,6 +311,10 @@ export default class RecipeEditorView extends Vue {
       this.doValidate = true;
     } else {
       this.isSaving = true;
+
+      this.updateIngredientPositions();
+      checkIngredientPos(this.recipe.ingredients);
+
       return new Promise<void>((resolve, reject) => {
         this.recipesClient
           .saveRecipe(this.recipe, this.ingredientsHaveChanges)
