@@ -94,14 +94,10 @@
       </div>
 
       <div class="row">
-        <ul>
-          <recipe-ingredient-list-item
-            v-for="ingredient in recipe.ingredients"
-            :key="ingredient.uuid"
-            :ingredient="ingredient"
-            :quantity-factor="quantityFactor"
-          />
-        </ul>
+        <recipe-ingredient-list
+          :ingredients="recipe.ingredients"
+          :quantity-factor="quantityFactor"
+        />
       </div>
 
       <div class="row">
@@ -140,12 +136,12 @@ import { userStore } from "../stores/rootStore";
 import { getErrorMessage } from "../utils/errors";
 import AddCookupView from "../components/user/AddCookupView.vue";
 import AddToShoppingListModal from "../components/user/AddToShoppingListModal.vue";
-import RecipeIngredientListItem from "../components/RecipeIngredientListItem.vue";
+import RecipeIngredientList from "../components/recipe-view/RecipeIngredientList.vue";
 import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
   components: {
-    RecipeIngredientListItem,
+    RecipeIngredientList,
     Icon,
   },
 })

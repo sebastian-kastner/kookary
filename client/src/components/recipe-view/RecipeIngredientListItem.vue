@@ -18,9 +18,9 @@
 <script lang="ts">
 import round from "lodash.round";
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
-import { Ingredient, RecipeIngredient } from "../types";
+import { Ingredient, RecipeIngredient } from "../../types";
 import { Icon } from "@iconify/vue/dist/offline";
-import RecipeCard from "./cards/RecipeCard.vue";
+import RecipeCard from "../cards/RecipeCard.vue";
 
 const currentMonth = new Date().getMonth() + 1;
 
