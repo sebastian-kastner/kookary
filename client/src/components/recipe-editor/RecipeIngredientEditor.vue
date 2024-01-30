@@ -55,11 +55,11 @@
 
 <script lang="ts">
 import { Component, Prop, mixins } from "vue-facing-decorator";
-import { RecipeIngredient, Ingredient } from "../types";
-import ToastMixin from "../mixins/ToastMixin.vue";
-import TypeaheadInput from "./TypeaheadInput.vue";
-import { ingredientStore } from "../stores/rootStore";
-import { getErrorMessage } from "../utils/errors";
+import { RecipeIngredient, Ingredient } from "../../types";
+import ToastMixin from "../../mixins/ToastMixin.vue";
+import TypeaheadInput from "..//TypeaheadInput.vue";
+import { ingredientStore } from "../../stores/rootStore";
+import { getErrorMessage } from "../../utils/errors";
 import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
@@ -117,7 +117,7 @@ export default class RecipeIngredientEditor extends mixins(ToastMixin) {
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/variables.scss";
+@import "../../styles/variables.scss";
 
 .ingredient-editor {
   .rounded-button {

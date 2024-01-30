@@ -92,7 +92,7 @@ export function convertRecipeIngredients(
   }
   const ingredients: RecipeIngredientJsonld[] = [];
   viewModelIngredients.forEach((viewModelIngredient) => {
-    if (viewModelIngredient.ingredient?.ingredientId) {
+    if (viewModelIngredient.ingredient?.ingredientId || (viewModelIngredient.separatorLabel && viewModelIngredient.separatorLabel !== "")) {
       ingredients.push(convertRecipeIngredient(viewModelIngredient, recipeId));
     }
   });

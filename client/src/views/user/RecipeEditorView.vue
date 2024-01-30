@@ -90,7 +90,7 @@ import { useModal } from "vue-final-modal";
 import { Ingredient, Recipe, Tag, recipeFactory, MediaObject } from "../../types";
 import { ingredientStore, tagStore } from "../../stores/rootStore";
 import { RecipesClient } from "../../clients/RecipesClient";
-import RecipeIngredientsEditor from "../../components/RecipeIngredientsEditor.vue";
+import RecipeIngredientsEditor from "../../components/recipe-editor/RecipeIngredientsEditor.vue";
 import ImageUpload from "../../components/ImageUpload.vue";
 import InlineItemList from "../../components/InlineItemList.vue";
 import SaveButton from "../../components/SaveButton.vue";
@@ -264,8 +264,9 @@ export default class RecipeEditorView extends Vue {
   }
 
   private addNewIngredient(): void {
-    this.recipe.ingredients?.push({
+    this.recipe.ingredients.push({
       uuid: uuid(),
+      position: this.recipe.ingredients.length + 1,
     });
   }
 
