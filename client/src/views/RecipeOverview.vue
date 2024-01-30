@@ -180,4 +180,3 @@ export default class RecipesView extends Vue {
   }
 }
 </script>
-../components/recipe-filters/FilterHandlers

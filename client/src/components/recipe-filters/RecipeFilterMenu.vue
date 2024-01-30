@@ -115,7 +115,7 @@ export default class RecipeFilterMenu extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../styles/variables.scss";
 @import "../../styles/breakpoints.scss";
 
