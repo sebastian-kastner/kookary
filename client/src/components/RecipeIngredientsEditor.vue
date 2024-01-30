@@ -42,7 +42,8 @@ export default class RecipeIngredientsEditor extends Vue {
 
   updateIngredientName(): void {
     if (this.ingredients) {
-      if (this.ingredients[this.ingredients.length - 1].ingredient?.name) {
+      const lastIngredient = this.ingredients[this.ingredients.length - 1].ingredient;
+      if (lastIngredient && lastIngredient.name) {
         this.addNewIngredient();
       }
     }

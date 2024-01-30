@@ -75,6 +75,7 @@ export function convertRecipeIngredient(
       ep.INGREDIENTS_ENDPOINT,
       viewModelIngredient.ingredient?.ingredientId
     ),
+    separatorLabel: viewModelIngredient.separatorLabel,
     unit: viewModelIngredient.unit,
     quantity: viewModelIngredient.quantity,
     position: viewModelIngredient.position,

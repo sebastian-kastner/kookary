@@ -58,8 +58,12 @@ export function convertTags(apiTags: string[] | undefined): Tag[] {
   return tags;
 }
 
-export function convertIngredient(apiIngredient: IngredientJsonld): Ingredient {
+export function convertIngredient(apiIngredient: IngredientJsonld): Ingredient | null {
+  if (!apiIngredient) {
+    return null;
+  }
   return {
+    uuid: uuid(),
     ingredientId: apiIngredient.ingredientId,
     name: apiIngredient.name,
     authorId: toId(apiIngredient.author),
@@ -86,6 +90,7 @@ export function convertRecipeIngredient(
   return {
     recipeIngredientId: apiIngredient.recipeIngredientId,
     ingredient: convertIngredient(apiIngredient.ingredient as IngredientJsonld),
+    separatorLabel: apiIngredient.separatorLabel,
     quantity: apiIngredient.quantity,
     unit: apiIngredient.unit,
     position: apiIngredient.position,

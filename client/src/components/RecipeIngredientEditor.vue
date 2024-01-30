@@ -1,5 +1,5 @@
 <template>
-  <div id="ingredient-editor" class="mb-2">
+  <div class="mb-2 ingredient-editor">
     <div class="d-flex flex-row">
       <div
         class="col-1 d-flex align-items-center justify-content-center"
@@ -116,10 +116,10 @@ export default class RecipeIngredientEditor extends mixins(ToastMixin) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../styles/variables.scss";
 
-#ingredient-editor {
+.ingredient-editor {
   .rounded-button {
     font-size: 13px;
     padding: 3px 8px 3px 9px;

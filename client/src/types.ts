@@ -26,6 +26,7 @@ export type RecipeIngredient = {
   recipeIngredientId?: number;
   uuid: string;
   ingredient?: Ingredient | null;
+  separatorLabel?: string | null;
   quantity?: string | null;
   unit?: string | null;
   position?: number | null;

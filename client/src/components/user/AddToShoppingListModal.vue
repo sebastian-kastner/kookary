@@ -75,14 +75,16 @@ export default class AddToShoppingListModal extends Vue {
 
   mounted(): void {
     this.ingredients.forEach((ingredient) => {
-      this.shoppingItems.push({
-        done: false,
-        ingredientId: ingredient.ingredient?.ingredientId,
-        name: ingredient.ingredient?.name,
-        unit: ingredient.unit,
-        quantity: ingredient.quantity,
-        user: this.user.id,
-      });
+      if (ingredient.ingredient) {
+        this.shoppingItems.push({
+          done: false,
+          ingredientId: ingredient.ingredient.ingredientId,
+          name: ingredient.ingredient.name,
+          unit: ingredient.unit,
+          quantity: ingredient.quantity,
+          user: this.user.id,
+        });
+      }
     });
   }
 
