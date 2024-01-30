@@ -116,8 +116,8 @@ export function convertRecipeIngredients(
       return -1;
     } else if (b.position) {
       return 1;
-    } else if (a.ingredient?.ingredientId && b.ingredient?.ingredientId) {
-      return a.ingredient.ingredientId - b.ingredient.ingredientId;
+    } else if (a.recipeIngredientId && b.recipeIngredientId) {
+      return a.recipeIngredientId - b.recipeIngredientId;
     }
     return 0;
   });
