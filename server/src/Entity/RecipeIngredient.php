@@ -32,6 +32,12 @@ class RecipeIngredient
     /**
      * @var string|null
      */
+    #[ORM\Column(name: "separator_label", type: "string", length: 80, nullable: true)]
+    private $separatorLabel;
+
+    /**
+     * @var string|null
+     */
     #[ORM\Column(name: "quantity", type: "string", length: 10, nullable: true)]
     private $quantity;
 
@@ -80,6 +86,18 @@ class RecipeIngredient
     public function setQuantity(?string $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getSeparatorLabel(): ?string
+    {
+        return $this->separatorLabel;
+    }
+
+    public function setSeparatorLabel(?string $separatorLabel): self
+    {
+        $this->separatorLabel = $separatorLabel;
 
         return $this;
     }

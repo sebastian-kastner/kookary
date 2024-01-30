@@ -37,6 +37,12 @@ export interface RecipeIngredient {
      * @type {string}
      * @memberof RecipeIngredient
      */
+    'separatorLabel'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecipeIngredient
+     */
     'quantity'?: string | null;
     /**
      * 

@@ -55,6 +55,12 @@ export interface RecipeIngredientJsonld {
      * @type {string}
      * @memberof RecipeIngredientJsonld
      */
+    'separatorLabel'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof RecipeIngredientJsonld
+     */
     'quantity'?: string | null;
     /**
      * 
