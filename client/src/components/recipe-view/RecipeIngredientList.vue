@@ -48,8 +48,6 @@ export default class RecipeIngredientList extends Vue {
         lastHeadline.ingredients.push(ingredient);
       }
     });
-    console.log(this.ingredients);
-    console.log(ingredientHeadlines);
     return ingredientHeadlines;
   }
 }

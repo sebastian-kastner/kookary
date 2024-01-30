@@ -110,13 +110,16 @@ export function convertRecipeIngredients(
     ingredients.push(convertRecipeIngredient(apiIngredients[key]));
   }
   return ingredients.sort((a, b) => {
-    if (!a.position) {
+    if (a.position && b.position) {
+      return a.position - b.position;
+    } else if (a.position) {
       return -1;
-    }
-    if (!b.position) {
+    } else if (b.position) {
       return 1;
+    } else if (a.ingredient?.ingredientId && b.ingredient?.ingredientId) {
+      return a.ingredient.ingredientId - b.ingredient.ingredientId;
     }
-    return a.position - b.position;
+    return 0;
   });
 }
 
