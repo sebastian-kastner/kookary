@@ -109,18 +109,7 @@ export function convertRecipeIngredients(
   for (const key in apiIngredients) {
     ingredients.push(convertRecipeIngredient(apiIngredients[key]));
   }
-  return ingredients.sort((a, b) => {
-    if (a.position && b.position) {
-      return a.position - b.position;
-    } else if (a.position) {
-      return -1;
-    } else if (b.position) {
-      return 1;
-    } else if (a.recipeIngredientId && b.recipeIngredientId) {
-      return a.recipeIngredientId - b.recipeIngredientId;
-    }
-    return 0;
-  });
+  return ingredients;
 }
 
 export function convertRecipe(apiRecipe: RecipeJsonld): Recipe {

@@ -98,8 +98,7 @@ import SaveButton from "../../components/SaveButton.vue";
 import DialogModal from "../../components/DialogModal.vue";
 import { getErrorMessage } from "../../utils/errors";
 import { useToast } from "vue-toast-notification";
-
-import { checkIngredientPos } from '../../utils/ingredientUtils'
+import { sortIngredients } from '../../utils/ingredientUtils'
 
 @Options({
   components: {
@@ -185,9 +184,9 @@ export default class RecipeEditorView extends Vue {
     if (routeRecipeId) {
       this.recipeId = routeRecipeId.toString();
       this.recipesClient.getRecipe(this.recipeId).then((recipe) => {
+        recipe.ingredients = sortIngredients(recipe.ingredients);
         this.recipe = recipe;
         this.addNewIngredient();
-        checkIngredientPos(this.recipe.ingredients);
         if (this.recipe.tags === undefined) {
           this.recipe.tags = [];
         }

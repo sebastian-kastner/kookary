@@ -22,6 +22,21 @@ export function getIngredientLabel(
   return label;
 }
 
+export function sortIngredients(ingredients: RecipeIngredient[]): RecipeIngredient[] {
+  return ingredients.sort((a, b) => {
+    if ((a.position && !isNaN(a.position)) && (b.position && !isNaN(b.position))) {
+      return a.position - b.position;
+    } else if (!a.position || isNaN(a.position)) {
+      return -1;
+    } else if (!b.position || isNaN(b.position)) {
+      return 1;
+    } else if (a.recipeIngredientId && b.recipeIngredientId) {
+      return a.recipeIngredientId - b.recipeIngredientId;
+    }
+    return 0;
+  });
+}
+
 // FIXME: remove this debugging function
 export function checkIngredientPos(ingredients: RecipeIngredient[]): void {
   ingredients.forEach((ingredient, index) => {

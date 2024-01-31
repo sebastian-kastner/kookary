@@ -134,6 +134,7 @@ import { marked } from "marked";
 import { mediaObjectStore } from "../stores/rootStore";
 import { userStore } from "../stores/rootStore";
 import { getErrorMessage } from "../utils/errors";
+import { sortIngredients } from "../utils/ingredientUtils";
 import AddCookupView from "../components/user/AddCookupView.vue";
 import AddToShoppingListModal from "../components/user/AddToShoppingListModal.vue";
 import RecipeIngredientList from "../components/recipe-view/RecipeIngredientList.vue";
@@ -176,6 +177,7 @@ export default class RecipeView extends mixins(ToastMixin) {
       this.recipesClient
         .getRecipe(this.recipeId)
         .then((recipe) => {
+          recipe.ingredients = sortIngredients(recipe.ingredients);
           this.recipe = recipe;
           this.setRecipeFavouriteState();
           
