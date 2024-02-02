@@ -1,6 +1,6 @@
 <template>
   <VueFinalModal
-    class="vfm-modal"
+    class="vfm-modal recipe-filter-container"
     content-class="vfm-modal-content"
     overlay-transition="vfm-fade"
     content-transition="vfm-fade"
@@ -115,78 +115,80 @@ export default class RecipeFilterMenu extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../styles/variables.scss";
 @import "../../styles/breakpoints.scss";
 
-// extra styling on xs
-@include media-breakpoint-down(sm) {
-  .vfm-modal-content {
-    min-width: 100%;
-
-    #filter-menu {
+.recipe-filter-container {
+  // extra styling on xs
+  @include media-breakpoint-down(sm) {
+    .vfm-modal-content {
       min-width: 100%;
-    }
-  }
-}
 
-@include media-breakpoint-up(sm) {
-  #filter-menu {
-    width: 500px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-  }
-}
-
-.vfm-modal-content {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  max-height: 100%;
-  background-color: transparent;
-  border: none;
-
-  #filter-menu {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    color: black;
-    border: 1px solid darkgray;
-    height: 100%;
-
-    .scrollable-filters {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .filter-menu-row {
-      border-bottom: 1px solid lightgray;
-      padding: 15px 0;
-
-      .filter-menu-row-head {
-        font-weight: bold;
-        padding-bottom: 5px;
-        display: flex;
-        align-items: center;
-
-        svg {
-          margin-right: 5px;
-          font-size: 1.1rem;
-        }
+      #filter-menu {
+        min-width: 100%;
       }
     }
   }
 
-  .apply-filter {
-    text-align: center;
-    padding: 10px;
+  @include media-breakpoint-up(sm) {
+    #filter-menu {
+      width: 500px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+  }
 
-    button {
-      width: 100%;
+  .vfm-modal-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    max-height: 100%;
+    background-color: transparent;
+    border: none;
+
+    #filter-menu {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      color: black;
+      border: 1px solid darkgray;
+      height: 100%;
+
+      .scrollable-filters {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
+
+      .filter-menu-row {
+        border-bottom: 1px solid lightgray;
+        padding: 15px 0;
+
+        .filter-menu-row-head {
+          font-weight: bold;
+          padding-bottom: 5px;
+          display: flex;
+          align-items: center;
+
+          svg {
+            margin-right: 5px;
+            font-size: 1.1rem;
+          }
+        }
+      }
+    }
+
+    .apply-filter {
+      text-align: center;
+      padding: 10px;
+
+      button {
+        width: 100%;
+      }
     }
   }
 }
