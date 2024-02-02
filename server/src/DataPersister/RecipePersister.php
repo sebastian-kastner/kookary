@@ -6,8 +6,8 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Doctrine\ORM\PersistentCollection;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
+use App\Service\SeasonalityScoreService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Vich\UploaderBundle\Handler\UploadHandler;
 
 final class RecipePersister implements ContextAwareDataPersisterInterface
@@ -27,13 +27,15 @@ final class RecipePersister implements ContextAwareDataPersisterInterface
         return $data instanceof Recipe;
     }
 
-    public function persist($data, array $context = [])
+    public function persist($recipe, array $context = [])
     {
         // this is one of the worst hacks of century!
-        if ($data instanceof Recipe) {
-            $ingredients = $data->getIngredients();
+        if ($recipe instanceof Recipe) {
+            $isNewRecipe = $recipe->getRecipeId() === null;
+
+            $ingredients = $recipe->getIngredients();
             // this seems to be true when updating a collection
-            // in that case we clear all ingredients
+            // in that case we clear all ingredients and update the seasonality scores
             if ($ingredients instanceof PersistentCollection) {
                 $snapshots = $ingredients->getSnapshot();
                 foreach ($snapshots as $snapshot) {
@@ -41,11 +43,24 @@ final class RecipePersister implements ContextAwareDataPersisterInterface
                         $this->entityManager->remove($snapshot);
                     }
                 }
+                $this->updateSeasonalityScores($recipe);
+            }
+
+            $this->entityManager->persist($recipe);
+            $this->entityManager->flush();
+
+            // for new recipes: update seasonality scores after recipe has been persisted
+            if ($isNewRecipe) {
+                $this->updateSeasonalityScores($recipe);
+                $this->entityManager->flush();
             }
         }
+    }
 
-        $this->entityManager->persist($data);
-        $this->entityManager->flush();
+    private function updateSeasonalityScores($recipe)
+    {
+        $seasonalityScoreService = new SeasonalityScoreService($this->entityManager);
+        $seasonalityScoreService->setRecipeScores($recipe);
     }
 
     public function remove($recipe, array $context = [])
