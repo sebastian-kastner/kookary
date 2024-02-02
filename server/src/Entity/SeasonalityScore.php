@@ -32,7 +32,7 @@ class SeasonalityScore
     /**
      * @var string|null
      */
-    #[ORM\Column(name: "separator_label", type: "decimal", precision: 5, scale: 2, nullable: true)]
+    #[ORM\Column(name: "score", type: "decimal", precision: 5, scale: 2, nullable: true)]
     private $score;
 
     /**
