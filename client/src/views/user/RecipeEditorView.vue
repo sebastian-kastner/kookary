@@ -312,8 +312,6 @@ export default class RecipeEditorView extends Vue {
       this.isSaving = true;
 
       this.updateIngredientPositions();
-      checkIngredientPos(this.recipe.ingredients);
-
       return new Promise<void>((resolve, reject) => {
         this.recipesClient
           .saveRecipe(this.recipe, this.ingredientsHaveChanges)

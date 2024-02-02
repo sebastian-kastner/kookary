@@ -1,6 +1,6 @@
 <template>
   <div v-for="(headline, index) in ingredientHeadlines" :key="index">
-    <h6 v-if="headline.label" class="mt-3">{{ headline.label }}</h6>
+    <h5 v-if="headline.label" class="mt-3">{{ headline.label }}</h5>
     <recipe-ingredient-list-item
       v-for="ingredient in headline.ingredients"
       :key="ingredient.uuid"
