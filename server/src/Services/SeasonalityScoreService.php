@@ -66,6 +66,21 @@ class SeasonalityScoreService
         return $seasonalIngredients;
     }
 
+    /**
+     * Calculate the seasonal score for a given month
+     * 
+     * Formula:
+     * 
+     * For each seasonal ingredient:
+     * 
+     *    ingredient_score = 1 - (months_in_season / 12)
+     * (The shorter the season, the bigger the seasonality score for the ingredient)
+     * 
+     * For each non seasonal ingredient the seasonality score is 0
+     * 
+     * The overall seasonality score per month is:
+     *   seasonality_of_month = sum(ingredient_scores) / nr_of_ingredients_with_season
+     */
     private function calculateSeasonalScoreForMonth(int $month, array $seasonalIngredients): float
     {
         if(count($seasonalIngredients) == 0) {
