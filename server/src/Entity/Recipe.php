@@ -94,6 +94,12 @@ class Recipe
     #[ORM\OneToMany(targetEntity: "RecipeIngredient", mappedBy: "recipe", cascade: ["all"])]
     private $ingredients;
 
+     /**
+     * @var \Doctrine\Common\Collections\Collection|\App\Entity\SeasonalityScore[]
+     */
+    #[ORM\OneToMany(targetEntity: "SeasonalityScore", mappedBy: "recipe", cascade: ["all"])]
+    public $seasonalityScores;
+
     /**
      * @var \Doctrine\Common\Collections\Collection|MediaObject[]
      */
@@ -111,7 +117,7 @@ class Recipe
     public $author;
 
     /**
-     * @var UserRecipeFavourites
+     * @var
      */
     #[ORM\OneToMany(targetEntity: "UserRecipeFavourites", mappedBy: "recipe", cascade: ["all"])]
     #[Ignore] // field is only added for cascades, dont include anywhere else
