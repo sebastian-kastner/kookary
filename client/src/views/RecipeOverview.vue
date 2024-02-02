@@ -18,14 +18,11 @@
     </div>
     <recipe-list :recipes="recipes" />
     <div v-if="hasMoreRecipes" class="d-flex justify-content-center">
-      <button
-        type="button"
-        class="btn rounded-button"
-        :disabled="isLoading"
-        @click="loadNextPage"
-      >
-        Mehr...
-      </button>
+      <save-button
+        button-text="Mehr..."
+        :is-loading="isLoading"
+        @onSave="loadNextPage"
+      />
     </div>
   </div>
 </template>
@@ -40,6 +37,7 @@ import { Icon } from "@iconify/vue/dist/offline";
 import RecipeList from "../components/RecipeList.vue";
 import TypeaheadInput from "../components/TypeaheadInput.vue";
 import RecipeFilterBar from "../components/recipe-filters/RecipeFilterBar.vue";
+import SaveButton from "../components/SaveButton.vue";
 import { LocationQueryRaw } from "vue-router";
 
 enum RecipeLoadType {
@@ -52,6 +50,7 @@ enum RecipeLoadType {
     RecipeList,
     TypeaheadInput,
     RecipeFilterBar,
+    SaveButton,
     Icon,
   },
 })
