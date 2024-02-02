@@ -6,7 +6,7 @@ use ApiPlatform\Core\DataPersister\ContextAwareDataPersisterInterface;
 use Doctrine\ORM\PersistentCollection;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
-use App\Service\SeasonalityScoreService;
+use App\Services\SeasonalityScoreService;
 use Doctrine\ORM\EntityManagerInterface;
 use Vich\UploaderBundle\Handler\UploadHandler;
 
