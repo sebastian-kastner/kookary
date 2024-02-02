@@ -38,7 +38,6 @@ class SeasonalityScoreService
                 $this->entityManager->persist($seasonalScore);
             }
         }
-        $this->entityManager->flush();
     }
 
     private function getSeasonalScores(Recipe $recipe): array

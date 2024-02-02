@@ -39,6 +39,7 @@ class SeasonalityScoreController extends AbstractController
         foreach ($recipes as $recipe) {
             $seasonailityScoreService->setRecipeScores($recipe);
         }
+        $this->entityManager->flush();
 
         return new Response('', 200);
     }
