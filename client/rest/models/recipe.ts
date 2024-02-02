@@ -14,6 +14,7 @@
 
 
 import { RecipeIngredient } from './recipe-ingredient';
+import { SeasonalityScore } from './seasonality-score';
 
 /**
  * Recipe
@@ -69,6 +70,12 @@ export interface Recipe {
      * @memberof Recipe
      */
     'ingredients'?: Array<RecipeIngredient>;
+    /**
+     * 
+     * @type {Array<SeasonalityScore>}
+     * @memberof Recipe
+     */
+    'seasonalityScores'?: Array<SeasonalityScore>;
     /**
      * 
      * @type {Array<string>}

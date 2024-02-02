@@ -24,6 +24,14 @@
       >
         <Icon icon="bag" /> Zutatenverwaltung
       </router-link>
+
+      <router-link
+        v-if="isAdmin"
+        class="dropdown-item d-flex align-items-center"
+        to="/admin/seasonality"
+      >
+        <Icon icon="calendarWeek" /> Saisonalität
+      </router-link>
     </div>
 
     <div class="dropdown-divider" />

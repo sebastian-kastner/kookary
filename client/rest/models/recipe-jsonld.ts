@@ -14,6 +14,7 @@
 
 
 import { RecipeIngredientJsonld } from './recipe-ingredient-jsonld';
+import { SeasonalityScoreJsonld } from './seasonality-score-jsonld';
 
 /**
  * Recipe
@@ -87,6 +88,12 @@ export interface RecipeJsonld {
      * @memberof RecipeJsonld
      */
     'ingredients'?: Array<RecipeIngredientJsonld>;
+    /**
+     * 
+     * @type {Array<SeasonalityScoreJsonld>}
+     * @memberof RecipeJsonld
+     */
+    'seasonalityScores'?: Array<SeasonalityScoreJsonld>;
     /**
      * 
      * @type {Array<string>}

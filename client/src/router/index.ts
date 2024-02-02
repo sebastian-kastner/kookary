@@ -10,6 +10,7 @@ import ShoppingList from "../views/user/ShoppingList.vue";
 // admin views
 import UserMgtmView from "../views/admin/UserMgmtView.vue";
 import IngredientMgmtView from "../views/admin/IngredientMgmtView.vue";
+import SeasonalityMgmtView from "../views/admin/SeasonalityMgmtView.vue";
 
 import { userStore } from "../stores/rootStore";
 
@@ -47,6 +48,7 @@ const routes: Array<RouteRecordRaw> = [
     component: IngredientMgmtView,
     meta: { title: "Zutatenverwaltung" },
   },
+  { path: "/admin/seasonality", name: "seasonality-mgmt", component: SeasonalityMgmtView, meta: { title: "Saisonalität aktualisieren" } },
 ];
 
 const router = createRouter({

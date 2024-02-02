@@ -9,7 +9,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use App\Entity\Recipe;
-use App\Entity\SeasonalityScore;
 use App\Services\SeasonalityScoreService;
 
 class SeasonalityScoreController extends AbstractController
@@ -24,8 +23,7 @@ class SeasonalityScoreController extends AbstractController
     #[Route('/api/update_seasonality_scores', name: 'seasonality_scores_update', methods: ['GET'])]
     public function calculateSeasonalityScore(Request $request): Response
     {
-        // TODO: only allow access for admins
-        // $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $recipeIds = $this->getRecipeIds($request);
         $recipes = [];
@@ -39,6 +37,8 @@ class SeasonalityScoreController extends AbstractController
         foreach ($recipes as $recipe) {
             $seasonailityScoreService->setRecipeScores($recipe);
         }
+
+        $this->entityManager->flush();
 
         return new Response('', 200);
     }

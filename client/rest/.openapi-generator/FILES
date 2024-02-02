@@ -43,6 +43,8 @@ models/recipe-ingredient-jsonld.ts
 models/recipe-ingredient.ts
 models/recipe-jsonld.ts
 models/recipe.ts
+models/seasonality-score-jsonld.ts
+models/seasonality-score.ts
 models/shopping-item-jsonld.ts
 models/shopping-item.ts
 models/tag-jsonld.ts
