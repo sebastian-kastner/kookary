@@ -120,16 +120,6 @@ export default class RecipeIngredientEditor extends mixins(ToastMixin) {
 @import "../../styles/variables.scss";
 
 .ingredient-editor {
-  .rounded-button {
-    font-size: 13px;
-    padding: 3px 8px 3px 9px;
-    border-radius: 40px;
-  }
-
-  input:disabled {
-    background-color: $background-color-highlight-1;
-  }
-
   .delete-ingredient-col {
     min-width: 17px;
     svg {

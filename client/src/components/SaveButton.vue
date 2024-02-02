@@ -36,4 +36,9 @@ export default class SaveButton extends Vue {
 .save-button {
   padding-left: 33px !important;
 }
+
+.save-button:disabled {
+  color: white;
+  background-color: $button-color-secondary;
+}
 </style>

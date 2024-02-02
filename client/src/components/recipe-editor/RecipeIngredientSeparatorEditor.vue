@@ -12,7 +12,7 @@
         <input
           v-model="separator.separatorLabel"
           placeholder="Überschrift, z.B. Für die Sauce"
-          class="form-control simple-typeahead-input"
+          class="form-control"
           type="text"
         />
       </div>
@@ -30,11 +30,10 @@
 import { Component, Prop, mixins } from "vue-facing-decorator";
 import { RecipeIngredient } from "../../types";
 import ToastMixin from "../../mixins/ToastMixin.vue";
-import TypeaheadInput from "..//TypeaheadInput.vue";
 import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
-  components: { TypeaheadInput, Icon },
+  components: { Icon },
 })
 export default class RecipeIngredientEditor extends mixins(ToastMixin) {
   @Prop({ required: true }) separator!: RecipeIngredient;
@@ -51,16 +50,6 @@ export default class RecipeIngredientEditor extends mixins(ToastMixin) {
 @import "../../styles/variables.scss";
 
 .separator-editor {
-  .rounded-button {
-    font-size: 13px;
-    padding: 3px 8px 3px 9px;
-    border-radius: 40px;
-  }
-
-  input:disabled {
-    background-color: $background-color-highlight-1;
-  }
-
   .delete-separator-col {
     min-width: 17px;
     svg {
