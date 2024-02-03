@@ -224,7 +224,7 @@ class OrderByFilterHandler extends FilterHandler {
   }
 
   public async applyRouteFilter(val: string, filter: RecipeFilter): Promise<void> {
-    if (val === "date" || val === "name") {
+    if (val === "date" || val === "name" || val === "seasonality") {
       filter.orderBy = val;
     }
   }

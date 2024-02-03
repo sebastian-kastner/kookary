@@ -25,7 +25,7 @@ import { RecipeFilter } from "../../clients/RecipesClient";
 import { Icon } from "@iconify/vue/dist/offline";
 
 type OrderOption = {
-  orderBy: "date" | "name";
+  orderBy: "date" | "name" | "seasonality";
   orderByDirection: "asc" | "desc";
   label: string;
 };
@@ -42,6 +42,7 @@ export default class RecipeOrderBy extends Vue {
     { orderBy: "date", orderByDirection: "asc", label: "Datum (älteste zuerst)" },
     { orderBy: "name", orderByDirection: "asc", label: "Name (aufsteigend)" },
     { orderBy: "name", orderByDirection: "desc", label: "Name (absteigend)" },
+    { orderBy: "seasonality", orderByDirection: "desc", label: "Saisonalität" },
   ];
 
   selectedOption: OrderOption | null = null;

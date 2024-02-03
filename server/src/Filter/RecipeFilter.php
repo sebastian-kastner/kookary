@@ -6,6 +6,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
 use App\Entity\RecipeIngredient;
+use App\Entity\SeasonalityScore;
 use App\Entity\User;
 use App\Entity\UserRecipeFavourites;
 use Doctrine\ORM\Query\Expr\Join;
@@ -32,7 +33,7 @@ final class RecipeFilter extends AbstractContextAwareFilter
 
     const ORDER_BY_DIRECTION_PROPERTY = "order_by_direction";
 
-    const ORDER_BY_VALUES = ['date', 'rand', 'name'];
+    const ORDER_BY_VALUES = ['date', 'rand', 'name', 'seasonality'];
 
     const ORDER_BY_DIRECTION_VALUES = ['desc', 'asc'];
 
@@ -43,6 +44,8 @@ final class RecipeFilter extends AbstractContextAwareFilter
     const INGREDIENT_ALIAS = "i";
     const TAG_ALIAS = "t";
     const FAVOURITE_RECIPE_ALIAS = "f";
+
+    const SEASONALITY_SCORE_ALIAS = "ss";
 
     private $security;
 
@@ -233,6 +236,9 @@ final class RecipeFilter extends AbstractContextAwareFilter
             } else if ($trimmedOrderBy == 'rand') {
                 $prop = "RAND()";
                 $dir = "";
+            } else if ($trimmedOrderBy == 'seasonality') {
+                $this->addSeasonalityScoreColumn($queryBuilder);
+                $prop = sprintf("%s.score", self::SEASONALITY_SCORE_ALIAS);
             }
         } else {
             $err = sprintf("Invalid value for %s. Allowed values are: %s", self::ORDER_BY_PROPERTY, implode(", ", self::ORDER_BY_VALUES));
@@ -244,6 +250,20 @@ final class RecipeFilter extends AbstractContextAwareFilter
         } else {
             $queryBuilder->orderBy($prop, $dir);
         }
+    }
+
+    private function addSeasonalityScoreColumn(QueryBuilder $queryBuilder)
+    {
+        $recipeAlias = $this->getRecipeAlias($queryBuilder);
+        $queryBuilder
+            // ->addSelect(sprintf('(%s.score)', self::SEASONALITY_SCORE_ALIAS))
+            ->leftJoin(
+                SeasonalityScore::class,
+                self::SEASONALITY_SCORE_ALIAS,
+                Join::WITH,
+                sprintf("%s.recipeId = %s.recipe AND %s.month = :currentMonth", $recipeAlias, self::SEASONALITY_SCORE_ALIAS, self::SEASONALITY_SCORE_ALIAS)
+            )
+            ->setParameter('currentMonth', date('n'));
     }
 
     private function addAuthorFilter(string $value, QueryBuilder $queryBuilder)
