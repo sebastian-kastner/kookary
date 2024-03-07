@@ -58,6 +58,7 @@ export type Recipe = {
   rating?: number | null;
   dateAdded?: string | null;
   ingredients: RecipeIngredient[];
+  currentSeasonalityScore?: number | null;
   tags: Tag[];
   images: MediaObject[];
   imagesToDelete: number[];

@@ -4,6 +4,7 @@
       v-for="recipe in recipes"
       :key="recipe.recipeId"
       :recipe="recipe"
+      :show-seasonality="showSeasonality"
     />
   </div>
 </template>
@@ -18,5 +19,6 @@ import RecipeCard from "./cards/RecipeCard.vue";
 })
 export default class RecipesView extends Vue {
   @Prop({ required: true }) recipes!: Recipe[];
+  @Prop({ required: false, default: false }) showSeasonality!: boolean;
 }
 </script>

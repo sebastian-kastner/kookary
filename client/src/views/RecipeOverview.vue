@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <recipe-list :recipes="recipes" />
+    <recipe-list :recipes="recipes" :show-seasonality="recipeFilter.orderBy === 'seasonality'" />
     <div v-if="hasMoreRecipes" class="d-flex justify-content-center">
       <save-button
         button-text="Mehr..."

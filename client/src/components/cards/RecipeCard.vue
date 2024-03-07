@@ -1,5 +1,11 @@
 <template>
   <div class="recipe-card col">
+    <div v-if="showSeasonality" class="seasonality-score text-end">
+      <Icon icon="calendarWeek" />
+      <span>
+        {{ recipe.currentSeasonalityScore }}
+      </span>
+    </div>
     <router-link
       :key="recipe.recipeId"
       :to="{ path: '/recipe', query: { recipeId: recipe.recipeId } }"
@@ -18,12 +24,14 @@
 import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Recipe } from "../../types";
 import { mediaObjectStore } from "../../stores/rootStore";
+import { Icon } from "@iconify/vue/dist/offline";
 
 @Component({
-  components: {},
+  components: { Icon },
 })
 export default class RecipeCard extends Vue {
   @Prop({ required: true }) recipe!: Recipe;
+  @Prop({ required: false, default: false }) showSeasonality!: boolean;
 
   get recipeImgSrc(): string {
     if (this.recipe.images.length > 0 && this.recipe.images[0].mediaObjectId) {
@@ -63,6 +71,14 @@ export default class RecipeCard extends Vue {
   a:hover {
     text-decoration: underline !important;
     text-decoration-color: black !important;
+  }
+
+  .seasonality-score {
+    font-size: 0.8em;
+    svg {
+      margin-bottom: 2px;
+      margin-right: 4px;
+    }
   }
 
   .recipe-card-title {

@@ -138,6 +138,7 @@ export function convertRecipe(apiRecipe: RecipeJsonld): Recipe {
     servings: servings,
     source: getStringOrNull(apiRecipe.source),
     dateAdded: apiRecipe.dateAdded,
+    currentSeasonalityScore: apiRecipe.currentSeasonalityScore,
     ingredients: convertRecipeIngredients(apiRecipe.ingredients),
     tags: convertTags(apiRecipe.tags),
     imagesToDelete: [],
