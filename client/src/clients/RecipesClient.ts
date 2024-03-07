@@ -18,7 +18,7 @@ export type RecipeFilter = {
   authors?: number[];
   // FIXME: this is currently not considered in the backend, plain pagination is used instead
   limit?: number;
-  orderBy?: "date" | "name" | "seasonality";
+  orderBy?: "date" | "name" | "seasonality" | "rand";
   orderByDirection?: "desc" | "asc";
 };
 

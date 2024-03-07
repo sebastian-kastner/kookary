@@ -2,11 +2,7 @@
   <div id="home" class="main-content">
     <recipe-card-list title="ZUFÄLLIG" :recipe-filter="randRecipeFilter" />
 
-    <recipe-card-list
-      title="SAISONAL"
-      :recipe-filter="seasonalRecipeFilter"
-      :more-link="{ path: '/recipes', query: { seasonal: null } }"
-    />
+    <recipe-card-list title="SAISONAL" :recipe-filter="seasonalRecipeFilter" :more-link="seasonalRecipesRoute" />
 
     <recipe-card-list
       v-if="userLoggedIn"
@@ -28,11 +24,19 @@ import { userStore } from "../stores/rootStore";
   },
 })
 export default class HomeView extends Vue {
+
+  seasonalRecipesRoute = {
+    path: "/recipes",
+    query: { orderBy: "seasonality", orderByDirection: "desc" },
+  };
+
   get userLoggedIn(): boolean {
     return userStore.user !== null;
   }
   seasonalRecipeFilter: RecipeFilter = {
     isSeasonal: true,
+    orderBy: "seasonality",
+    orderByDirection: "desc",
     limit: 6,
   };
   markedRecipeFilter: RecipeFilter = {
