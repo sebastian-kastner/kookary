@@ -80,17 +80,15 @@
         </div>
       </div>
 
-      <div v-if="showServingsForm" class="row">
-        <div class="mb-2 form-inline">
-          Für
-          <input
-            v-model.number="internalServings"
-            type="number"
-            class="form-control mx-sm-1 servings-input"
-            @input="setQuanitityFactor"
-          />
-          Personen
-        </div>
+      <div v-if="showServingsForm" class="row d-inline-block">
+        <span>Für</span>
+        <input
+          v-model.number="internalServings"
+          type="number"
+          class="form-control mx-sm-1 servings-input d-inline"
+          @input="setQuanitityFactor"
+        />
+        <span>Personen</span>
       </div>
 
       <div class="row">
@@ -180,8 +178,8 @@ export default class RecipeView extends mixins(ToastMixin) {
           recipe.ingredients = sortIngredients(recipe.ingredients);
           this.recipe = recipe;
           this.setRecipeFavouriteState();
-          
-          if(this.recipe.name) {
+
+          if (this.recipe.name) {
             document.title = this.recipe.name;
           }
 
