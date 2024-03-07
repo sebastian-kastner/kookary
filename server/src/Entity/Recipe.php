@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -98,7 +99,14 @@ class Recipe
      * @var \Doctrine\Common\Collections\Collection|\App\Entity\SeasonalityScore[]
      */
     #[ORM\OneToMany(targetEntity: "SeasonalityScore", mappedBy: "recipe", cascade: ["all"])]
+    #[Ignore] // field is only added to get score for the current month and for cascades
     public $seasonalityScores;
+
+    /**
+     * @var float|null
+     */
+    #[ApiProperty(readable: true, writable: false, identifier: false)]
+    public $currentSeasonalityScore;
 
     /**
      * @var \Doctrine\Common\Collections\Collection|MediaObject[]
@@ -117,7 +125,7 @@ class Recipe
     public $author;
 
     /**
-     * @var
+     * @var UserRecipeFavourites
      */
     #[ORM\OneToMany(targetEntity: "UserRecipeFavourites", mappedBy: "recipe", cascade: ["all"])]
     #[Ignore] // field is only added for cascades, dont include anywhere else
@@ -138,6 +146,7 @@ class Recipe
         $this->dateAdded = new DateTime();
         $this->markedBy = new ArrayCollection();
         $this->cookups = new ArrayCollection();
+        $this->seasonalityScores = new ArrayCollection();
     }
 
     public function getRecipeId(): ?int
@@ -293,6 +302,17 @@ class Recipe
         $this->author = $author;
 
         return $this;
+    }
+
+    public function getCurrentSeasonalityScore(): float
+    {
+        $currentScore = 0;
+        foreach ($this->seasonalityScores as $score) {
+            if ($score->getScore() > $currentScore) {
+                $currentScore = $score->getScore();
+            }
+        }
+        return $currentScore;
     }
 
 }
