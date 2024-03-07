@@ -52,12 +52,15 @@ export function convertIngredient(
   if (!apiIngredient) {
     return {};
   }
+  const seasonStart = (!apiIngredient.seasonStart || apiIngredient.seasonStart <= 0) ? null : apiIngredient.seasonStart;
+  const seasonEnd = (!apiIngredient.seasonEnd || apiIngredient.seasonEnd <= 0) ? null : apiIngredient.seasonEnd;
+
   return {
     ingredientId: apiIngredient.ingredientId,
     name: apiIngredient.name,
     author: getAuthorId(apiIngredient.authorId),
-    seasonStart: apiIngredient.seasonStart,
-    seasonEnd: apiIngredient.seasonEnd,
+    seasonStart: seasonStart,
+    seasonEnd: seasonEnd,
     category: toApiId(
       ep.INGREDIENT_CATEGORY_ENDPOINT,
       apiIngredient.ingredientCategoryId

@@ -35,8 +35,8 @@
         class="form-control"
         @change="updateIngredient"
       >
-        <option value="">
-          -
+        <option value="-1">
+          --
         </option>
         <option
           v-for="i in monthIndexes"
@@ -54,8 +54,8 @@
         class="form-control"
         @change="updateIngredient"
       >
-        <option value="">
-          -
+        <option value="-1">
+          --
         </option>
         <option
           v-for="i in monthIndexes"
