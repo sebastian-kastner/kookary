@@ -24,8 +24,6 @@ export * from './recipe';
 export * from './recipe-ingredient';
 export * from './recipe-ingredient-jsonld';
 export * from './recipe-jsonld';
-export * from './seasonality-score';
-export * from './seasonality-score-jsonld';
 export * from './shopping-item';
 export * from './shopping-item-jsonld';
 export * from './tag';
