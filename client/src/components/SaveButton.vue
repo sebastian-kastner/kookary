@@ -40,5 +40,6 @@ export default class SaveButton extends Vue {
 .save-button:disabled {
   color: white;
   background-color: $button-color-secondary;
+  border: black;
 }
 </style>
