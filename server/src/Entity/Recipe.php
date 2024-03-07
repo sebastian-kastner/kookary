@@ -304,15 +304,15 @@ class Recipe
         return $this;
     }
 
-    public function getCurrentSeasonalityScore(): float
+    public function getCurrentSeasonalityScore(): float | null
     {
-        $currentScore = 0;
+        $currentMonth = (new DateTime())->format('n');
         foreach ($this->seasonalityScores as $score) {
-            if ($score->getScore() > $currentScore) {
-                $currentScore = $score->getScore();
+            if ($score->getMonth() == $currentMonth) {
+                return $score->getScore();
             }
         }
-        return $currentScore;
+        return null; // No score found for the current month
     }
 
 }
