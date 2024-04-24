@@ -25,6 +25,7 @@ import plus from '@iconify-icons/bi/plus';
 import cursor from '@iconify-icons/bi/input-cursor';
 import tags from '@iconify-icons/bi/tags';
 import search from '@iconify-icons/bi/search';
+import warning from '@iconify-icons/bi/exclamation-triangle'
 
 export function addIcons() {
   addIcon('burgerMenu', burger);
@@ -52,4 +53,5 @@ export function addIcons() {
   addIcon('cursor', cursor);
   addIcon('tags', tags);
   addIcon('search', search);
+  addIcon('warning', warning);
 }

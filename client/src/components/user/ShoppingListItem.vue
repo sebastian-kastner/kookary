@@ -11,8 +11,17 @@
       </span>
     </div>
 
-    <div v-if="removeItemHandler !== null" class="pe-3" @click="removeItem">
-      <Icon icon="trash" />
+    <div class="d-flex">
+      <div
+        v-if="syncFailed"
+        class="pe-3"
+        title="Synchronization failed"
+      >
+        <Icon icon="warning" />
+      </div>
+      <div v-if="removeItemHandler !== null" class="pe-3" @click="removeItem">
+        <Icon icon="trash" />
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +46,8 @@ export default class ShoppingListItem extends Vue {
     newState: boolean
   ) => Promise<void>;
 
+  syncFailed = false;
+
   get isChecked(): boolean {
     if (this.shoppingItem.done) {
       return true;
@@ -54,7 +65,19 @@ export default class ShoppingListItem extends Vue {
 
   async toggle(): Promise<void> {
     const newDoneState = !this.isChecked;
+    this.setDoneState(newDoneState);
+  }
+
+  async setDoneState(newDoneState: boolean): Promise<void> {
     if (this.toggleItemHandler) {
+      this.shoppingItem.done = newDoneState;
+      this.toggleItemHandler(this.shoppingItem, newDoneState)
+        .then(() => {
+          this.syncFailed = false;
+        })
+        .catch(() => {
+          this.syncFailed = true;
+        });
       this.toggleItemHandler(this.shoppingItem, newDoneState);
     } else {
       this.shoppingItem.done = newDoneState;
@@ -63,7 +86,10 @@ export default class ShoppingListItem extends Vue {
 
   removeItem(): void {
     if (this.removeItemHandler) {
-      this.removeItemHandler(this.shoppingItem);
+      this.removeItemHandler(this.shoppingItem).catch(() => {
+        this.syncFailed = true;
+        this.setDoneState(true);
+      });
     }
   }
 }

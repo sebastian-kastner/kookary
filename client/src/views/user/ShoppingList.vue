@@ -147,11 +147,19 @@ export default class ShoppingList extends mixins(ToastMixin) {
     if (!shoppingItem.shoppingItemId) {
       throw new Error("No ShoppingItem Id set, cannot set done state!");
     }
-    this.shoppingListClient
-      .setDoneState(shoppingItem.shoppingItemId, newState)
-      .then(() => {
-        shoppingItem.done = newState;
-      });
+    
+    const itemId = shoppingItem.shoppingItemId;
+    return new Promise<void>((resolve, reject) => {
+      this.shoppingListClient
+        .setDoneState(itemId, newState)
+        .then(() => {
+          shoppingItem.done = newState;
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
   addNewIngredientItem(ingredient: Ingredient): void {
